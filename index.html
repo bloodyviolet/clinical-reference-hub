@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinical Reference & SUS Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="h-full flex flex-col font-sans antialiased selection:bg-teal-500 selection:text-white">
+
+  <!-- Navigation Bar -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/20 font-bold text-white text-lg">
+          Rx
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight text-white">Clinical Reference Hub</h1>
+          <p class="text-xs text-slate-400">SAE / NNN & Políticas Nacionais do SUS</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2 text-xs font-medium">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          API Online
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    
+    <!-- Tab Switcher -->
+    <div class="flex border-b border-slate-800 space-x-8">
+      <button id="tab-btn-sae" onclick="switchTab('sae')" class="pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition">
+        Diagnósticos de Enfermagem (SAE / NNN)
+      </button>
+      <button id="tab-btn-policy" onclick="switchTab('policy')" class="pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+        Políticas Nacionais de Saúde (SUS)
+      </button>
+    </div>
+
+    <!-- VIEW 1: SAE Search -->
+    <section id="view-sae" class="space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-base font-semibold text-white">Buscar Diagnóstico NANDA</h2>
+            <p class="text-xs text-slate-400">Digite o código (ex: 00355) ou palavra-chave (ex: ansiedade) para obter a definição bilíngue e os links NIC/NOC.</p>
+          </div>
+          <!-- Static PDF Button for NANDA -->
+          <a target="_blank" href="/docs/Nanda-I%202024-2026.pdf" class="inline-flex items-center justify-center px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white rounded-xl text-xs font-bold uppercase tracking-wide transition shadow-lg shadow-teal-600/20">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            NANDA-I 2024-2026 (PDF)
+          </a>
+        </div>
+        
+        <form onsubmit="searchSAE(event)" class="flex gap-3 max-w-xl pt-2 border-t border-slate-800 mt-4">
+          <input 
+            type="text" 
+            id="sae-input" 
+            placeholder="Ex: 00355, ansiedade, pain..." 
+            class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+            required
+          />
+          <button 
+            type="submit" 
+            class="bg-teal-600 hover:bg-teal-500 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-teal-600/20 active:scale-95">
+            Consultar
+          </button>
+        </form>
+      </div>
+
+      <div id="sae-result" class="hidden space-y-6"></div>
+    </section>
+
+    <!-- VIEW 2: Policies Explorer -->
+    <section id="view-policy" class="hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-base font-semibold text-white">Diretrizes e Políticas de Saúde Pública</h2>
+            <p class="text-xs text-slate-400">Selecione uma política do Ministério da Saúde para carregar suas diretrizes operacionais e clínicas.</p>
+          </div>
+          
+          <!-- Dynamic PDF Button for Policies (Hidden by default) -->
+          <a id="pdf-link" target="_blank" href="#" class="hidden inline-flex items-center justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold uppercase tracking-wide transition shadow-lg shadow-indigo-600/20">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            Ver Documento Oficial (PDF)
+          </a>
+        </div>
+
+        <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-800 mt-4">
+          <button onclick="loadPolicy('PNAISM')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISM (Mulher)</button>
+          <button onclick="loadPolicy('PNAISH')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISH (Homem)</button>
+          <button onclick="loadPolicy('PNAISC')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISC (Criança)</button>
+          <button onclick="loadPolicy('PNAB')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAB (Atenção Básica)</button>
+          <button onclick="loadPolicy('PNSTT')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNSTT (Trabalhador)</button>
+          <button onclick="loadPolicy('PNSPI')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNSPI (Pessoa Idosa)</button>
+        </div>
+      </div>
+
+      <div id="policy-loading" class="hidden text-center py-12 text-slate-400 text-sm">Carregando diretrizes...</div>
+      <div id="policy-results" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
+
+  </main>
+
+  <script>
+    function switchTab(tab) {
+      const saeView = document.getElementById('view-sae');
+      const policyView = document.getElementById('view-policy');
+      const saeBtn = document.getElementById('tab-btn-sae');
+      const policyBtn = document.getElementById('tab-btn-policy');
+
+      if (tab === 'sae') {
+        saeView.classList.remove('hidden');
+        policyView.classList.add('hidden');
+        saeBtn.className = "pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition";
+        policyBtn.className = "pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition";
+      } else {
+        saeView.classList.add('hidden');
+        policyView.classList.remove('hidden');
+        policyBtn.className = "pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition";
+        saeBtn.className = "pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition";
+      }
+    }
+
+    async function searchSAE(event) {
+      event.preventDefault();
+      const query = document.getElementById('sae-input').value.trim();
+      const container = document.getElementById('sae-result');
+      container.innerHTML = '<div class="text-sm text-slate-400">Consultando base clínica...</div>';
+      container.classList.remove('hidden');
+
+      try {
+        const response = await fetch(`/sae/search?q=${encodeURIComponent(query)}`);
+        
+        if (!response.ok) {
+           const errData = await response.json().catch(() => ({}));
+           throw new Error(errData.detail || 'Nenhum resultado encontrado.');
+        }
+        
+        const data = await response.json();
+
+        // Map over all returned results and build the UI cards
+        const htmlContent = data.map(item => `
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <span class="text-xs uppercase tracking-wider font-semibold text-teal-400">Código NANDA</span>
+                <h3 class="text-2xl font-black text-white tracking-tight">${item.code}</h3>
+              </div>
+              <span class="px-3 py-1 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg text-xs font-mono">ID #${item.id}</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Diagnóstico (PT)</span>
+                <p class="text-sm font-medium text-slate-100">${item.description_pt}</p>
+              </div>
+              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Diagnostic (EN)</span>
+                <p class="text-sm font-medium text-slate-100">${item.description_en}</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
+                <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Intervenção / NIC (PT)</span>
+                <p class="text-sm text-slate-200">${item.intervention_pt}</p>
+              </div>
+              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
+                <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Intervention / NIC (EN)</span>
+                <p class="text-sm text-slate-200">${item.intervention_en}</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
+                <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Resultado Esperado / NOC (PT)</span>
+                <p class="text-sm text-slate-200">${item.outcome_pt}</p>
+              </div>
+              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
+                <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Expected Outcome / NOC (EN)</span>
+                <p class="text-sm text-slate-200">${item.outcome_en}</p>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        container.innerHTML = htmlContent;
+
+      } catch (err) {
+        container.innerHTML = `
+          <div class="bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-rose-300 text-sm">
+            ${err.message}
+          </div>
+        `;
+      }
+    }
+
+    async function loadPolicy(policyName) {
+      const container = document.getElementById('policy-results');
+      const loader = document.getElementById('policy-loading');
+      const pdfBtn = document.getElementById('pdf-link');
+      
+      document.querySelectorAll('.policy-btn').forEach(btn => {
+        if (btn.innerText.includes(policyName)) {
+          btn.className = "policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-teal-600 text-white border border-teal-500 transition shadow-lg shadow-teal-600/20";
+        } else {
+          btn.className = "policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition";
+        }
+      });
+
+      pdfBtn.classList.remove('hidden');
+      pdfBtn.href = `/docs/${policyName}.pdf`;
+
+      container.innerHTML = '';
+      loader.classList.remove('hidden');
+
+      try {
+        const endpoint = policyName === 'PNAISM' ? '/pnaism/' : `/policy/${policyName}`;
+        const response = await fetch(endpoint);
+        if (!response.ok) throw new Error('Não foi possível carregar as diretrizes.');
+        const data = await response.json();
+
+        loader.classList.add('hidden');
+
+        container.innerHTML = data.map(item => `
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 shadow-lg hover:border-slate-700 transition flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 rounded bg-teal-500/10 text-teal-400 border border-teal-500/20 text-[10px] font-bold uppercase tracking-wider">
+                  ${item.policy_name || policyName}
+                </span>
+                <span class="text-[11px] text-slate-400 font-medium">${item.target_demographic}</span>
+              </div>
+              <h4 class="text-sm font-bold text-white tracking-tight">${item.directive}</h4>
+              <p class="text-xs text-slate-300 leading-relaxed">${item.clinical_guideline}</p>
+            </div>
+          </div>
+        `).join('');
+
+      } catch (err) {
+        loader.classList.add('hidden');
+        container.innerHTML = `
+          <div class="col-span-full bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-rose-300 text-sm text-center">
+            ${err.message}
+          </div>
+        `;
+      }
+    }
+  </script>
+
+  <!-- Footer -->
+  <footer class="mt-12 border-t border-slate-800 bg-slate-900/30 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="text-xs text-slate-500">
+        &copy; 2026 Saulo de Tarso Sobral Alves (Bloodviolet). Todos os direitos reservados.
+      </div>
+      <div class="flex space-x-4 text-xs text-slate-500">
+        <span>Contato: <a href="mailto:saulo.dimepi@gmail.com" class="text-teal-400 hover:text-teal-300 transition">saulo.dimepi@gmail.com</a></span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
