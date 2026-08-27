@@ -32,6 +32,13 @@ def read_root():
     if not os.path.exists(html_path):
         raise HTTPException(status_code=404, detail="index.html not found on server.")
     return FileResponse(html_path)
+@app.get("/manifest.json", response_class=FileResponse)
+def read_manifest():
+    return FileResponse(os.path.join(os.path.dirname(__file__), "manifest.json"))
+
+@app.get("/sw.js", response_class=FileResponse)
+def read_sw():
+    return FileResponse(os.path.join(os.path.dirname(__file__), "sw.js"))
 
 # --- SAE Diagnostics Keyword & Code Search ---
 @app.get("/sae/search")
