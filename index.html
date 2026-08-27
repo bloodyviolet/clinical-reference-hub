@@ -50,12 +50,15 @@
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
     
     <!-- Tab Switcher -->
-    <div class="flex border-b border-slate-800 space-x-8">
-      <button id="tab-btn-sae" onclick="switchTab('sae')" class="pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition">
+    <div class="flex border-b border-slate-800 space-x-6 overflow-x-auto">
+      <button id="tab-btn-sae" onclick="switchTab('sae')" class="whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition">
         Diagnósticos de Enfermagem (SAE / NNN)
       </button>
-      <button id="tab-btn-policy" onclick="switchTab('policy')" class="pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+      <button id="tab-btn-policy" onclick="switchTab('policy')" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
         Políticas Nacionais de Saúde (SUS)
+      </button>
+      <button id="tab-btn-calc" onclick="switchTab('calc')" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+        Calculadora Obstétrica
       </button>
     </div>
 
@@ -123,28 +126,66 @@
       <div id="policy-results" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
     </section>
 
+    <!-- VIEW 3: Obstetric Calculator -->
+    <section id="view-calc" class="hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Naegele's Rule -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+          <div>
+            <h2 class="text-base font-semibold text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-pink-500"></span>
+              Regra de Naegele (DPP / IG)
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Calcula a Data Provável do Parto e a Idade Gestacional atual com base na DUM.</p>
+          </div>
+          <form onsubmit="calculateNaegele(event)" class="space-y-4 pt-4 border-t border-slate-800">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wide mb-2">Data da Última Menstruação (DUM)</label>
+              <input type="date" id="dum-input" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition" required />
+            </div>
+            <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-pink-600/20 active:scale-95">Calcular DPP</button>
+          </form>
+          <div id="naegele-result" class="hidden mt-4 p-4 rounded-xl bg-slate-950/60 border border-slate-800"></div>
+        </div>
+
+        <!-- McDonald's Rule -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+          <div>
+            <h2 class="text-base font-semibold text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+              Regra de McDonald (AF)
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Estima a Idade Gestacional através da medida da Altura Fundo Uterina (AF).</p>
+          </div>
+          <form onsubmit="calculateMcDonald(event)" class="space-y-4 pt-4 border-t border-slate-800">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wide mb-2">Altura Uterina em cm</label>
+              <input type="number" step="0.1" id="au-input" placeholder="Ex: 24" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" required />
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-indigo-600/20 active:scale-95">Calcular Idade Gestacional</button>
+          </form>
+          <div id="mcdonald-result" class="hidden mt-4 p-4 rounded-xl bg-slate-950/60 border border-slate-800"></div>
+        </div>
+
+      </div>
+    </section>
+
   </main>
 
   <script>
+    // Tab Logic
     function switchTab(tab) {
-      const saeView = document.getElementById('view-sae');
-      const policyView = document.getElementById('view-policy');
-      const saeBtn = document.getElementById('tab-btn-sae');
-      const policyBtn = document.getElementById('tab-btn-policy');
-
-      if (tab === 'sae') {
-        saeView.classList.remove('hidden');
-        policyView.classList.add('hidden');
-        saeBtn.className = "pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition";
-        policyBtn.className = "pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition";
-      } else {
-        saeView.classList.add('hidden');
-        policyView.classList.remove('hidden');
-        policyBtn.className = "pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition";
-        saeBtn.className = "pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition";
-      }
+      const views = ['sae', 'policy', 'calc'];
+      views.forEach(v => {
+        document.getElementById(`view-${v}`).classList.add('hidden');
+        document.getElementById(`tab-btn-${v}`).className = "whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition";
+      });
+      document.getElementById(`view-${tab}`).classList.remove('hidden');
+      document.getElementById(`tab-btn-${tab}`).className = "whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition";
     }
 
+    // SAE Search Logic
     async function searchSAE(event) {
       event.preventDefault();
       const query = document.getElementById('sae-input').value.trim();
@@ -162,7 +203,6 @@
         
         const data = await response.json();
 
-        // Map over all returned results and build the UI cards
         const htmlContent = data.map(item => `
           <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-2xl">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4">
@@ -219,6 +259,7 @@
       }
     }
 
+    // Policy Logic
     async function loadPolicy(policyName) {
       const container = document.getElementById('policy-results');
       const loader = document.getElementById('policy-loading');
@@ -269,6 +310,67 @@
           </div>
         `;
       }
+    }
+
+    // Naegele's Rule Calculator
+    function calculateNaegele(event) {
+      event.preventDefault();
+      const dumStr = document.getElementById('dum-input').value;
+      if (!dumStr) return;
+
+      const parts = dumStr.split('-');
+      const dumDate = new Date(parts[0], parts[1] - 1, parts[2]);
+      
+      const dppDate = new Date(dumDate);
+      dppDate.setDate(dppDate.getDate() + 7);
+      dppDate.setMonth(dppDate.getMonth() + 9);
+
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      dumDate.setHours(0,0,0,0);
+
+      const diffTime = today - dumDate;
+      let igString = "Ainda não iniciada ou data inválida";
+      
+      if (diffTime >= 0) {
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const weeks = Math.floor(diffDays / 7);
+        const days = diffDays % 7;
+        igString = `${weeks} semanas e ${days} dias`;
+      }
+
+      const resBox = document.getElementById('naegele-result');
+      resBox.classList.remove('hidden');
+      resBox.innerHTML = `
+        <div class="space-y-2">
+          <p class="text-xs text-slate-400 uppercase tracking-wide font-semibold">Data Provável do Parto (DPP)</p>
+          <p class="text-xl font-bold text-pink-400">${dppDate.toLocaleDateString('pt-BR')}</p>
+          <hr class="border-slate-800 my-2">
+          <p class="text-xs text-slate-400 uppercase tracking-wide font-semibold">Idade Gestacional Hoje (IG)</p>
+          <p class="text-lg font-bold text-white">${igString}</p>
+        </div>
+      `;
+    }
+
+    // McDonald's Rule Calculator
+    function calculateMcDonald(event) {
+      event.preventDefault();
+      const au = parseFloat(document.getElementById('au-input').value);
+      if (!au || au <= 0) return;
+
+      const totalWeeks = (au * 8) / 7;
+      const weeksInt = Math.floor(totalWeeks);
+      const days = Math.round((totalWeeks - weeksInt) * 7);
+
+      const resBox = document.getElementById('mcdonald-result');
+      resBox.classList.remove('hidden');
+      resBox.innerHTML = `
+        <div class="space-y-2">
+          <p class="text-xs text-slate-400 uppercase tracking-wide font-semibold">Idade Gestacional Estimada</p>
+          <p class="text-xl font-bold text-indigo-400">${weeksInt} semanas e ${days} dias</p>
+          <p class="text-[10px] text-slate-500 mt-1">*Margem de erro comum de ± 2 semanas. Regra mais precisa entre 16 e 36 semanas.</p>
+        </div>
+      `;
     }
   </script>
 
