@@ -52,13 +52,13 @@
     <!-- Tab Switcher -->
     <div class="flex border-b border-slate-800 space-x-6 overflow-x-auto">
       <button id="tab-btn-sae" onclick="switchTab('sae')" class="whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition">
-        Diagnósticos de Enfermagem (SAE / NNN)
+        Diagnósticos de Enfermagem
       </button>
       <button id="tab-btn-policy" onclick="switchTab('policy')" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
-        Políticas Nacionais de Saúde (SUS)
+        Políticas Nacionais (SUS)
       </button>
       <button id="tab-btn-calc" onclick="switchTab('calc')" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
-        Calculadora Obstétrica
+        Calculadoras Clínicas
       </button>
     </div>
 
@@ -68,31 +68,18 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 class="text-base font-semibold text-white">Buscar Diagnóstico NANDA</h2>
-            <p class="text-xs text-slate-400">Digite o código (ex: 00355) ou palavra-chave (ex: ansiedade) para obter a definição bilíngue e os links NIC/NOC.</p>
+            <p class="text-xs text-slate-400">Digite o código (ex: 00355) ou palavra-chave (ex: ansiedade).</p>
           </div>
-          <!-- Static PDF Button for NANDA -->
           <a target="_blank" href="/docs/Nanda-I%202024-2026.pdf" class="inline-flex items-center justify-center px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white rounded-xl text-xs font-bold uppercase tracking-wide transition shadow-lg shadow-teal-600/20">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
             NANDA-I 2024-2026 (PDF)
           </a>
         </div>
         
         <form onsubmit="searchSAE(event)" class="flex gap-3 max-w-xl pt-2 border-t border-slate-800 mt-4">
-          <input 
-            type="text" 
-            id="sae-input" 
-            placeholder="Ex: 00355, ansiedade, pain..." 
-            class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
-            required
-          />
-          <button 
-            type="submit" 
-            class="bg-teal-600 hover:bg-teal-500 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-teal-600/20 active:scale-95">
-            Consultar
-          </button>
+          <input type="text" id="sae-input" placeholder="Ex: 00355, ansiedade..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition" required />
+          <button type="submit" class="bg-teal-600 hover:bg-teal-500 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-teal-600/20 active:scale-95">Consultar</button>
         </form>
       </div>
-
       <div id="sae-result" class="hidden space-y-6"></div>
     </section>
 
@@ -101,71 +88,178 @@
       <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 class="text-base font-semibold text-white">Diretrizes e Políticas de Saúde Pública</h2>
-            <p class="text-xs text-slate-400">Selecione uma política do Ministério da Saúde para carregar suas diretrizes operacionais e clínicas.</p>
+            <h2 class="text-base font-semibold text-white">Diretrizes de Saúde Pública</h2>
+            <p class="text-xs text-slate-400">Selecione uma política do Ministério da Saúde.</p>
           </div>
-          
-          <!-- Dynamic PDF Button for Policies (Hidden by default) -->
-          <a id="pdf-link" target="_blank" href="#" class="hidden inline-flex items-center justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold uppercase tracking-wide transition shadow-lg shadow-indigo-600/20">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-            Ver Documento Oficial (PDF)
-          </a>
+          <a id="pdf-link" target="_blank" href="#" class="hidden inline-flex items-center justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold uppercase tracking-wide transition shadow-lg shadow-indigo-600/20">Ver Documento (PDF)</a>
         </div>
-
         <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-800 mt-4">
-          <button onclick="loadPolicy('PNAISM')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISM (Mulher)</button>
-          <button onclick="loadPolicy('PNAISH')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISH (Homem)</button>
-          <button onclick="loadPolicy('PNAISC')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISC (Criança)</button>
-          <button onclick="loadPolicy('PNAB')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAB (Atenção Básica)</button>
-          <button onclick="loadPolicy('PNSTT')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNSTT (Trabalhador)</button>
-          <button onclick="loadPolicy('PNSPI')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNSPI (Pessoa Idosa)</button>
+          <button onclick="loadPolicy('PNAISM')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISM</button>
+          <button onclick="loadPolicy('PNAISH')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISH</button>
+          <button onclick="loadPolicy('PNAISC')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISC</button>
+          <button onclick="loadPolicy('PNAB')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAB</button>
+          <button onclick="loadPolicy('PNSPI')" class="policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNSPI</button>
         </div>
       </div>
-
       <div id="policy-loading" class="hidden text-center py-12 text-slate-400 text-sm">Carregando diretrizes...</div>
       <div id="policy-results" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
     </section>
 
-    <!-- VIEW 3: Obstetric Calculator -->
+    <!-- VIEW 3: Clinical Calculators -->
     <section id="view-calc" class="hidden space-y-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
-        <!-- Naegele's Rule -->
+        <!-- IMC Universal/OPAS -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+          <div>
+            <h2 class="text-base font-semibold text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              IMC (OMS / OPAS)
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Calcula o IMC e ajusta a classificação para idosos automaticamente (OPAS ≥60 anos).</p>
+          </div>
+          <form onsubmit="calculateBMI(event)" class="space-y-3 pt-4 border-t border-slate-800">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Peso (kg)</label>
+                <input type="number" step="0.1" id="bmi-w" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-emerald-500" required />
+              </div>
+              <div>
+                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Altura (m)</label>
+                <input type="number" step="0.01" id="bmi-h" placeholder="Ex: 1.75" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-emerald-500" required />
+              </div>
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-400 uppercase">Idade do Paciente</label>
+              <input type="number" id="bmi-age" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-emerald-500" required />
+            </div>
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular IMC</button>
+          </form>
+          <div id="bmi-result" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+        </div>
+
+        <!-- Cockcroft-Gault -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+          <div>
+            <h2 class="text-base font-semibold text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              Cockcroft-Gault (CrCl)
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Estima a Taxa de Filtração Glomerular para ajuste de dosagem renal.</p>
+          </div>
+          <form onsubmit="calculateCrCl(event)" class="space-y-3 pt-4 border-t border-slate-800">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Idade</label>
+                <input type="number" id="crcl-age" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-amber-500" required />
+              </div>
+              <div>
+                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Peso (kg)</label>
+                <input type="number" step="0.1" id="crcl-w" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-amber-500" required />
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Creatinina (mg/dL)</label>
+                <input type="number" step="0.01" id="crcl-cr" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-amber-500" required />
+              </div>
+              <div>
+                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Sexo Biológico</label>
+                <select id="crcl-sex" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-amber-500">
+                  <option value="M">Masculino</option>
+                  <option value="F">Feminino</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular Clearance</button>
+          </form>
+          <div id="crcl-result" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+        </div>
+
+        <!-- Holliday-Segar -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+          <div>
+            <h2 class="text-base font-semibold text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+              Regra de Holliday-Segar
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Calcula o volume de hidratação venosa de manutenção para pediatria (PNAISC).</p>
+          </div>
+          <form onsubmit="calculatePed(event)" class="space-y-3 pt-4 border-t border-slate-800">
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-400 uppercase">Peso da Criança (kg)</label>
+              <input type="number" step="0.1" id="ped-w" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-sky-500" required />
+            </div>
+            <button type="submit" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular Volume</button>
+          </form>
+          <div id="ped-result" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+        </div>
+
+        <!-- Calculo de Medicamentos -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+          <div>
+            <h2 class="text-base font-semibold text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+              Dosagem de Medicamentos
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Cálculo de diluição e administração baseado na regra de três (Volume a Aspirar).</p>
+          </div>
+          <form onsubmit="calculateMeds(event)" class="space-y-3 pt-4 border-t border-slate-800">
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-400 uppercase">Dose Prescrita (ex: 250mg)</label>
+              <input type="number" step="0.1" id="med-presc" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-rose-500" required />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Dose na Ampola</label>
+                <input type="number" step="0.1" id="med-disp" placeholder="Ex: 500" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-rose-500" required />
+              </div>
+              <div>
+                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Vol. da Ampola (mL)</label>
+                <input type="number" step="0.1" id="med-vol" placeholder="Ex: 5" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-rose-500" required />
+              </div>
+            </div>
+            <button type="submit" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular Volume</button>
+          </form>
+          <div id="med-result" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+        </div>
+
+        <!-- Naegele -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <div>
             <h2 class="text-base font-semibold text-white flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-pink-500"></span>
-              Regra de Naegele (DPP / IG)
+              Regra de Naegele (DPP)
             </h2>
-            <p class="text-xs text-slate-400 mt-1">Calcula a Data Provável do Parto e a Idade Gestacional atual com base na DUM.</p>
+            <p class="text-xs text-slate-400 mt-1">Calcula a Data Provável do Parto e Idade Gestacional (PNAISM).</p>
           </div>
-          <form onsubmit="calculateNaegele(event)" class="space-y-4 pt-4 border-t border-slate-800">
+          <form onsubmit="calculateNaegele(event)" class="space-y-3 pt-4 border-t border-slate-800">
             <div>
-              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wide mb-2">Data da Última Menstruação (DUM)</label>
-              <input type="date" id="dum-input" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition" required />
+              <label class="block text-[10px] font-semibold text-slate-400 uppercase">Data da Última Menstruação</label>
+              <input type="date" id="dum-input" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-pink-500" required />
             </div>
-            <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-pink-600/20 active:scale-95">Calcular DPP</button>
+            <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular DPP</button>
           </form>
-          <div id="naegele-result" class="hidden mt-4 p-4 rounded-xl bg-slate-950/60 border border-slate-800"></div>
+          <div id="naegele-result" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
 
-        <!-- McDonald's Rule -->
+        <!-- McDonald -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <div>
             <h2 class="text-base font-semibold text-white flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-              Regra de McDonald (AF)
+              Regra de McDonald
             </h2>
-            <p class="text-xs text-slate-400 mt-1">Estima a Idade Gestacional através da medida da Altura Fundo Uterina (AF).</p>
+            <p class="text-xs text-slate-400 mt-1">Estima Idade Gestacional pela Altura Fundo Uterina.</p>
           </div>
-          <form onsubmit="calculateMcDonald(event)" class="space-y-4 pt-4 border-t border-slate-800">
+          <form onsubmit="calculateMcDonald(event)" class="space-y-3 pt-4 border-t border-slate-800">
             <div>
-              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wide mb-2">Altura Uterina em cm</label>
-              <input type="number" step="0.1" id="au-input" placeholder="Ex: 24" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" required />
+              <label class="block text-[10px] font-semibold text-slate-400 uppercase">Altura Uterina (cm)</label>
+              <input type="number" step="0.1" id="au-input" placeholder="Ex: 24" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-indigo-500" required />
             </div>
-            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-indigo-600/20 active:scale-95">Calcular Idade Gestacional</button>
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular IG</button>
           </form>
-          <div id="mcdonald-result" class="hidden mt-4 p-4 rounded-xl bg-slate-950/60 border border-slate-800"></div>
+          <div id="mcdonald-result" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
 
       </div>
@@ -174,7 +268,6 @@
   </main>
 
   <script>
-    // Tab Logic
     function switchTab(tab) {
       const views = ['sae', 'policy', 'calc'];
       views.forEach(v => {
@@ -185,139 +278,163 @@
       document.getElementById(`tab-btn-${tab}`).className = "whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition";
     }
 
-    // SAE Search Logic
+    // SAE API
     async function searchSAE(event) {
       event.preventDefault();
       const query = document.getElementById('sae-input').value.trim();
       const container = document.getElementById('sae-result');
-      container.innerHTML = '<div class="text-sm text-slate-400">Consultando base clínica...</div>';
+      container.innerHTML = '<div class="text-sm text-slate-400">Consultando base...</div>';
       container.classList.remove('hidden');
 
       try {
         const response = await fetch(`/sae/search?q=${encodeURIComponent(query)}`);
-        
-        if (!response.ok) {
-           const errData = await response.json().catch(() => ({}));
-           throw new Error(errData.detail || 'Nenhum resultado encontrado.');
-        }
-        
+        if (!response.ok) throw new Error('Nenhum resultado encontrado.');
         const data = await response.json();
-
-        const htmlContent = data.map(item => `
-          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-2xl">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-              <div>
-                <span class="text-xs uppercase tracking-wider font-semibold text-teal-400">Código NANDA</span>
-                <h3 class="text-2xl font-black text-white tracking-tight">${item.code}</h3>
-              </div>
-              <span class="px-3 py-1 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg text-xs font-mono">ID #${item.id}</span>
+        container.innerHTML = data.map(item => `
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-lg">
+            <div class="flex justify-between border-b border-slate-800 pb-4">
+              <div><span class="text-xs uppercase font-semibold text-teal-400">Código NANDA</span><h3 class="text-2xl font-black text-white">${item.code}</h3></div>
+              <span class="px-3 py-1 bg-slate-800 text-slate-300 rounded-lg text-xs font-mono">ID #${item.id}</span>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Diagnóstico (PT)</span>
-                <p class="text-sm font-medium text-slate-100">${item.description_pt}</p>
-              </div>
-              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Diagnostic (EN)</span>
-                <p class="text-sm font-medium text-slate-100">${item.description_en}</p>
-              </div>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80"><span class="text-xs font-bold text-slate-400 uppercase">Diagnóstico (PT)</span><p class="text-sm text-slate-100">${item.description_pt}</p></div>
+              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80"><span class="text-xs font-bold text-slate-400 uppercase">Diagnostic (EN)</span><p class="text-sm text-slate-100">${item.description_en}</p></div>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
-                <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Intervenção / NIC (PT)</span>
-                <p class="text-sm text-slate-200">${item.intervention_pt}</p>
-              </div>
-              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
-                <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Intervention / NIC (EN)</span>
-                <p class="text-sm text-slate-200">${item.intervention_en}</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
-                <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Resultado Esperado / NOC (PT)</span>
-                <p class="text-sm text-slate-200">${item.outcome_pt}</p>
-              </div>
-              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
-                <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Expected Outcome / NOC (EN)</span>
-                <p class="text-sm text-slate-200">${item.outcome_en}</p>
-              </div>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80"><span class="text-xs font-bold text-cyan-400 uppercase">NIC (PT)</span><p class="text-sm text-slate-200">${item.intervention_pt}</p></div>
+              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80"><span class="text-xs font-bold text-emerald-400 uppercase">NOC (PT)</span><p class="text-sm text-slate-200">${item.outcome_pt}</p></div>
             </div>
           </div>
         `).join('');
-
-        container.innerHTML = htmlContent;
-
       } catch (err) {
-        container.innerHTML = `
-          <div class="bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-rose-300 text-sm">
-            ${err.message}
-          </div>
-        `;
+        container.innerHTML = `<div class="bg-rose-950/30 p-4 rounded-xl text-rose-300 text-sm">${err.message}</div>`;
       }
     }
 
-    // Policy Logic
+    // Policy API
     async function loadPolicy(policyName) {
       const container = document.getElementById('policy-results');
       const loader = document.getElementById('policy-loading');
-      const pdfBtn = document.getElementById('pdf-link');
-      
-      document.querySelectorAll('.policy-btn').forEach(btn => {
-        if (btn.innerText.includes(policyName)) {
-          btn.className = "policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-teal-600 text-white border border-teal-500 transition shadow-lg shadow-teal-600/20";
-        } else {
-          btn.className = "policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition";
-        }
-      });
+      document.getElementById('pdf-link').classList.remove('hidden');
+      document.getElementById('pdf-link').href = `/docs/${policyName}.pdf`;
 
-      pdfBtn.classList.remove('hidden');
-      pdfBtn.href = `/docs/${policyName}.pdf`;
+      document.querySelectorAll('.policy-btn').forEach(btn => {
+        btn.className = btn.innerText.includes(policyName) 
+          ? "policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-teal-600 text-white shadow-lg"
+          : "policy-btn px-3.5 py-1.5 mt-4 rounded-lg text-xs font-semibold bg-slate-800 text-slate-200";
+      });
 
       container.innerHTML = '';
       loader.classList.remove('hidden');
 
       try {
-        const endpoint = policyName === 'PNAISM' ? '/pnaism/' : `/policy/${policyName}`;
-        const response = await fetch(endpoint);
-        if (!response.ok) throw new Error('Não foi possível carregar as diretrizes.');
+        const response = await fetch(policyName === 'PNAISM' ? '/pnaism/' : `/policy/${policyName}`);
+        if (!response.ok) throw new Error('Falha ao carregar.');
         const data = await response.json();
-
         loader.classList.add('hidden');
-
         container.innerHTML = data.map(item => `
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 shadow-lg hover:border-slate-700 transition flex flex-col justify-between">
-            <div class="space-y-2">
-              <div class="flex items-center justify-between gap-2">
-                <span class="px-2 py-0.5 rounded bg-teal-500/10 text-teal-400 border border-teal-500/20 text-[10px] font-bold uppercase tracking-wider">
-                  ${item.policy_name || policyName}
-                </span>
-                <span class="text-[11px] text-slate-400 font-medium">${item.target_demographic}</span>
-              </div>
-              <h4 class="text-sm font-bold text-white tracking-tight">${item.directive}</h4>
-              <p class="text-xs text-slate-300 leading-relaxed">${item.clinical_guideline}</p>
-            </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+            <span class="px-2 py-0.5 rounded bg-teal-500/10 text-teal-400 border border-teal-500/20 text-[10px] font-bold uppercase">${item.policy_name || policyName}</span>
+            <h4 class="text-sm font-bold text-white mt-2">${item.directive}</h4>
+            <p class="text-xs text-slate-300 mt-1">${item.clinical_guideline}</p>
           </div>
         `).join('');
-
       } catch (err) {
         loader.classList.add('hidden');
-        container.innerHTML = `
-          <div class="col-span-full bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-rose-300 text-sm text-center">
-            ${err.message}
-          </div>
-        `;
+        container.innerHTML = `<div class="col-span-full bg-rose-950/30 p-4 rounded-xl text-rose-300 text-center">${err.message}</div>`;
       }
     }
 
-    // Naegele's Rule Calculator
-    function calculateNaegele(event) {
-      event.preventDefault();
+    // Calculators
+    function calculateBMI(e) {
+      e.preventDefault();
+      const w = parseFloat(document.getElementById('bmi-w').value);
+      const h = parseFloat(document.getElementById('bmi-h').value);
+      const age = parseInt(document.getElementById('bmi-age').value);
+      
+      const bmi = w / (h * h);
+      let classification = "";
+      
+      if (age >= 60) {
+         if (bmi < 22) classification = "Baixo peso (Risco Nutricional)";
+         else if (bmi <= 27) classification = "Adequado (Eutrófico)";
+         else classification = "Sobrepeso";
+      } else {
+         if (bmi < 18.5) classification = "Abaixo do peso";
+         else if (bmi <= 24.9) classification = "Peso normal";
+         else if (bmi <= 29.9) classification = "Sobrepeso";
+         else classification = "Obesidade";
+      }
+
+      const res = document.getElementById('bmi-result');
+      res.classList.remove('hidden');
+      res.innerHTML = `
+        <p class="text-[10px] text-slate-400 uppercase font-semibold">Tabela Aplicada: ${age >= 60 ? 'OPAS (Idoso)' : 'OMS (Adulto)'}</p>
+        <p class="text-xl font-bold text-emerald-400 mt-1">${bmi.toFixed(1)} kg/m²</p>
+        <p class="text-sm text-white font-medium">${classification}</p>
+      `;
+    }
+
+    function calculateCrCl(e) {
+      e.preventDefault();
+      const age = parseInt(document.getElementById('crcl-age').value);
+      const weight = parseFloat(document.getElementById('crcl-w').value);
+      const cr = parseFloat(document.getElementById('crcl-cr').value);
+      const sex = document.getElementById('crcl-sex').value;
+
+      let crcl = ((140 - age) * weight) / (72 * cr);
+      if (sex === 'F') crcl *= 0.85;
+
+      const res = document.getElementById('crcl-result');
+      res.classList.remove('hidden');
+      res.innerHTML = `
+        <p class="text-[10px] text-slate-400 uppercase font-semibold">Taxa de Filtração Glomerular</p>
+        <p class="text-xl font-bold text-amber-400 mt-1">${crcl.toFixed(1)} mL/min</p>
+      `;
+    }
+
+    function calculatePed(e) {
+      e.preventDefault();
+      const w = parseFloat(document.getElementById('ped-w').value);
+      let vol = 0;
+
+      if (w <= 10) vol = w * 100;
+      else if (w <= 20) vol = 1000 + ((w - 10) * 50);
+      else vol = 1500 + ((w - 20) * 20);
+
+      const mlPerHour = vol / 24;
+
+      const res = document.getElementById('ped-result');
+      res.classList.remove('hidden');
+      res.innerHTML = `
+        <p class="text-[10px] text-slate-400 uppercase font-semibold">Volume Total de Manutenção</p>
+        <p class="text-xl font-bold text-sky-400">${vol.toFixed(0)} mL / 24h</p>
+        <hr class="border-slate-800 my-2">
+        <p class="text-[10px] text-slate-400 uppercase font-semibold">Velocidade de Infusão (Microgotas)</p>
+        <p class="text-lg font-bold text-white">${mlPerHour.toFixed(1)} mL/h (microgotas/min)</p>
+      `;
+    }
+
+    function calculateMeds(e) {
+      e.preventDefault();
+      const presc = parseFloat(document.getElementById('med-presc').value);
+      const disp = parseFloat(document.getElementById('med-disp').value);
+      const vol = parseFloat(document.getElementById('med-vol').value);
+
+      const result = (presc * vol) / disp;
+
+      const res = document.getElementById('med-result');
+      res.classList.remove('hidden');
+      res.innerHTML = `
+        <p class="text-[10px] text-slate-400 uppercase font-semibold">Volume a Administrar</p>
+        <p class="text-xl font-bold text-rose-400 mt-1">${result.toFixed(2)} mL</p>
+      `;
+    }
+
+    function calculateNaegele(e) {
+      e.preventDefault();
       const dumStr = document.getElementById('dum-input').value;
       if (!dumStr) return;
-
       const parts = dumStr.split('-');
       const dumDate = new Date(parts[0], parts[1] - 1, parts[2]);
       
@@ -328,48 +445,35 @@
       const today = new Date();
       today.setHours(0,0,0,0);
       dumDate.setHours(0,0,0,0);
-
       const diffTime = today - dumDate;
-      let igString = "Ainda não iniciada ou data inválida";
       
+      let igString = "Ainda não iniciada ou data inválida";
       if (diffTime >= 0) {
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        const weeks = Math.floor(diffDays / 7);
-        const days = diffDays % 7;
-        igString = `${weeks} semanas e ${days} dias`;
+        igString = `${Math.floor(diffDays / 7)} sem e ${diffDays % 7} dias`;
       }
 
-      const resBox = document.getElementById('naegele-result');
-      resBox.classList.remove('hidden');
-      resBox.innerHTML = `
-        <div class="space-y-2">
-          <p class="text-xs text-slate-400 uppercase tracking-wide font-semibold">Data Provável do Parto (DPP)</p>
-          <p class="text-xl font-bold text-pink-400">${dppDate.toLocaleDateString('pt-BR')}</p>
-          <hr class="border-slate-800 my-2">
-          <p class="text-xs text-slate-400 uppercase tracking-wide font-semibold">Idade Gestacional Hoje (IG)</p>
-          <p class="text-lg font-bold text-white">${igString}</p>
-        </div>
+      const res = document.getElementById('naegele-result');
+      res.classList.remove('hidden');
+      res.innerHTML = `
+        <p class="text-[10px] text-slate-400 uppercase font-semibold">Data Provável do Parto</p>
+        <p class="text-xl font-bold text-pink-400">${dppDate.toLocaleDateString('pt-BR')}</p>
+        <p class="text-sm text-white mt-1">IG Hoje: <span class="font-bold">${igString}</span></p>
       `;
     }
 
-    // McDonald's Rule Calculator
-    function calculateMcDonald(event) {
-      event.preventDefault();
+    function calculateMcDonald(e) {
+      e.preventDefault();
       const au = parseFloat(document.getElementById('au-input').value);
-      if (!au || au <= 0) return;
-
       const totalWeeks = (au * 8) / 7;
       const weeksInt = Math.floor(totalWeeks);
       const days = Math.round((totalWeeks - weeksInt) * 7);
 
-      const resBox = document.getElementById('mcdonald-result');
-      resBox.classList.remove('hidden');
-      resBox.innerHTML = `
-        <div class="space-y-2">
-          <p class="text-xs text-slate-400 uppercase tracking-wide font-semibold">Idade Gestacional Estimada</p>
-          <p class="text-xl font-bold text-indigo-400">${weeksInt} semanas e ${days} dias</p>
-          <p class="text-[10px] text-slate-500 mt-1">*Margem de erro comum de ± 2 semanas. Regra mais precisa entre 16 e 36 semanas.</p>
-        </div>
+      const res = document.getElementById('mcdonald-result');
+      res.classList.remove('hidden');
+      res.innerHTML = `
+        <p class="text-[10px] text-slate-400 uppercase font-semibold">Idade Gestacional Estimada</p>
+        <p class="text-xl font-bold text-indigo-400">${weeksInt} sem e ${days} dias</p>
       `;
     }
   </script>
@@ -377,12 +481,8 @@
   <!-- Footer -->
   <footer class="mt-12 border-t border-slate-800 bg-slate-900/30 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <div class="text-xs text-slate-500">
-        &copy; 2026 Saulo de Tarso Sobral Alves (Bloodviolet). Todos os direitos reservados.
-      </div>
-      <div class="flex space-x-4 text-xs text-slate-500">
-        <span>Contato: <a href="mailto:saulo.dimepi@gmail.com" class="text-teal-400 hover:text-teal-300 transition">saulo.dimepi@gmail.com</a></span>
-      </div>
+      <div class="text-xs text-slate-500">&copy; 2026 Saulo de Tarso Sobral Alves (Bloodviolet). Todos os direitos reservados.</div>
+      <div class="flex space-x-4 text-xs text-slate-500">Contato: <a href="mailto:saulo.dimepi@gmail.com" class="text-teal-400 hover:text-teal-300 transition">saulo.dimepi@gmail.com</a></div>
     </div>
   </footer>
 </body>
