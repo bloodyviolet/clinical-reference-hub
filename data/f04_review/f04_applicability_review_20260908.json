@@ -1,0 +1,266 @@
+{
+  "finding": "F-04",
+  "review_date": "2026-09-08",
+  "source_language": "en-GB",
+  "target_language": "pt-BR",
+  "source_unique_applicability_strings": 50,
+  "source_alternative_links": 73,
+  "compatibility_contract": {
+    "applicability": "legacy EN compatibility field",
+    "applicability_en": "explicit EN-GB field",
+    "applicability_pt": "reviewed PT-BR field"
+  },
+  "review_notes": "Translations preserve the contextual meaning of the existing reviewed English applicability text. They do not change NIC/NOC classification identity or create new clinical indications.",
+  "items": [
+    {
+      "id": "F04-001",
+      "applicability_en": "Use for intrapartum maternal status.",
+      "applicability_pt": "Usar para avaliar o estado materno durante o parto."
+    },
+    {
+      "id": "F04-002",
+      "applicability_en": "Use for postpartum/puerperium maternal status.",
+      "applicability_pt": "Usar para avaliar o estado materno no pós-parto/puerpério."
+    },
+    {
+      "id": "F04-003",
+      "applicability_en": "Age 1 month.",
+      "applicability_pt": "Idade: 1 mês."
+    },
+    {
+      "id": "F04-004",
+      "applicability_en": "Age 1-5 years: development teaching for early childhood.",
+      "applicability_pt": "Idade de 1 a 5 anos: ensino sobre o desenvolvimento na primeira infância."
+    },
+    {
+      "id": "F04-005",
+      "applicability_en": "Age 12 months.",
+      "applicability_pt": "Idade: 12 meses."
+    },
+    {
+      "id": "F04-006",
+      "applicability_en": "Age 12-21 years: adolescent development teaching.",
+      "applicability_pt": "Idade de 12 a 21 anos: ensino sobre o desenvolvimento do adolescente."
+    },
+    {
+      "id": "F04-007",
+      "applicability_en": "Age 18 months.",
+      "applicability_pt": "Idade: 18 meses."
+    },
+    {
+      "id": "F04-008",
+      "applicability_en": "Age 2 months.",
+      "applicability_pt": "Idade: 2 meses."
+    },
+    {
+      "id": "F04-009",
+      "applicability_en": "Age 4 months.",
+      "applicability_pt": "Idade: 4 meses."
+    },
+    {
+      "id": "F04-010",
+      "applicability_en": "Age 6 months.",
+      "applicability_pt": "Idade: 6 meses."
+    },
+    {
+      "id": "F04-011",
+      "applicability_en": "Age 6-12 years: development teaching for middle childhood.",
+      "applicability_pt": "Idade de 6 a 12 anos: ensino sobre o desenvolvimento na infância média."
+    },
+    {
+      "id": "F04-012",
+      "applicability_en": "Age 6-7 years.",
+      "applicability_pt": "Idade: 6 a 7 anos."
+    },
+    {
+      "id": "F04-013",
+      "applicability_en": "Age 8-10 years.",
+      "applicability_pt": "Idade: 8 a 10 anos."
+    },
+    {
+      "id": "F04-014",
+      "applicability_en": "Age 9 months.",
+      "applicability_pt": "Idade: 9 meses."
+    },
+    {
+      "id": "F04-015",
+      "applicability_en": "Early adolescence.",
+      "applicability_pt": "Adolescência inicial."
+    },
+    {
+      "id": "F04-016",
+      "applicability_en": "Late adolescence.",
+      "applicability_pt": "Adolescência tardia."
+    },
+    {
+      "id": "F04-017",
+      "applicability_en": "Middle adolescence.",
+      "applicability_pt": "Adolescência média."
+    },
+    {
+      "id": "F04-018",
+      "applicability_en": "Use for broader substance-use treatment beyond acute withdrawal.",
+      "applicability_pt": "Usar para tratamento mais amplo do uso de substâncias, além do manejo da síndrome de abstinência aguda."
+    },
+    {
+      "id": "F04-019",
+      "applicability_en": "Use for longer-term consequences of substance addiction rather than acute withdrawal severity.",
+      "applicability_pt": "Usar para consequências de longo prazo da dependência de substâncias, em vez da gravidade da síndrome de abstinência aguda."
+    },
+    {
+      "id": "F04-020",
+      "applicability_en": "Use when maintenance is the relevant risk/prevention outcome.",
+      "applicability_pt": "Usar quando a manutenção da amamentação for o desfecho relevante de risco/prevenção."
+    },
+    {
+      "id": "F04-021",
+      "applicability_en": "Use when the desired outcome is overall community health status rather than resilience/coping capacity.",
+      "applicability_pt": "Usar quando o desfecho desejado for o estado geral de saúde da comunidade, e não a capacidade de resiliência/enfrentamento."
+    },
+    {
+      "id": "F04-022",
+      "applicability_en": "Antepartum fetal surveillance when clinically indicated.",
+      "applicability_pt": "Usar para vigilância fetal anteparto quando clinicamente indicada."
+    },
+    {
+      "id": "F04-023",
+      "applicability_en": "Fallback generic risk-control outcome when thrombus-specific indicators are not applicable.",
+      "applicability_pt": "Usar como desfecho genérico de controle de risco quando os indicadores específicos de trombo não forem aplicáveis."
+    },
+    {
+      "id": "F04-024",
+      "applicability_en": "High-risk intrapartum care when labour is underway.",
+      "applicability_pt": "Usar para cuidados intraparto de alto risco quando o trabalho de parto estiver em curso."
+    },
+    {
+      "id": "F04-025",
+      "applicability_en": "Use after breastfeeding has been established and maintenance is the target.",
+      "applicability_pt": "Usar após a amamentação estar estabelecida, quando a manutenção for o objetivo."
+    },
+    {
+      "id": "F04-026",
+      "applicability_en": "Use during labour/intrapartum care.",
+      "applicability_pt": "Usar durante o trabalho de parto/cuidados intraparto."
+    },
+    {
+      "id": "F04-027",
+      "applicability_en": "Use for antenatal preparation/risk reduction.",
+      "applicability_pt": "Usar para preparação pré-natal/redução de risco."
+    },
+    {
+      "id": "F04-028",
+      "applicability_en": "Use for postpartum risk management.",
+      "applicability_pt": "Usar para manejo de riscos no pós-parto."
+    },
+    {
+      "id": "F04-029",
+      "applicability_en": "Use for skin surveillance when integrity is threatened but not yet impaired.",
+      "applicability_pt": "Usar para vigilância da pele quando a integridade estiver ameaçada, mas ainda não comprometida."
+    },
+    {
+      "id": "F04-030",
+      "applicability_en": "Use if risk is being managed during labour.",
+      "applicability_pt": "Usar quando o risco estiver sendo manejado durante o trabalho de parto."
+    },
+    {
+      "id": "F04-031",
+      "applicability_en": "Use in the postpartum phase.",
+      "applicability_pt": "Usar na fase pós-parto."
+    },
+    {
+      "id": "F04-032",
+      "applicability_en": "Use specifically for alcohol withdrawal risk/management when alcohol is the substance.",
+      "applicability_pt": "Usar especificamente para risco ou manejo da síndrome de abstinência alcoólica quando o álcool for a substância envolvida."
+    },
+    {
+      "id": "F04-033",
+      "applicability_en": "Use specifically for alcohol withdrawal.",
+      "applicability_pt": "Usar especificamente para síndrome de abstinência alcoólica."
+    },
+    {
+      "id": "F04-034",
+      "applicability_en": "Use to trend tissue integrity when prevention is focused on maintaining intact tissue.",
+      "applicability_pt": "Usar para acompanhar a evolução da integridade tissular quando a prevenção estiver focada em manter o tecido íntegro."
+    },
+    {
+      "id": "F04-035",
+      "applicability_en": "Use when a generic patient risk-control outcome is required by the local care-plan framework.",
+      "applicability_pt": "Usar quando a estrutura local do plano de cuidados exigir um desfecho genérico de controle de risco do paciente."
+    },
+    {
+      "id": "F04-036",
+      "applicability_en": "Use when an established nipple-areolar wound/skin lesion requires wound care.",
+      "applicability_pt": "Usar quando uma ferida ou lesão cutânea mamilo-areolar estabelecida exigir cuidados com feridas."
+    },
+    {
+      "id": "F04-037",
+      "applicability_en": "Use when cardiopulmonary physiologic function is the monitored consequence rather than risk behaviour.",
+      "applicability_pt": "Usar quando a função fisiológica cardiopulmonar for a consequência monitorada, em vez do comportamento de risco."
+    },
+    {
+      "id": "F04-038",
+      "applicability_en": "Use when deficits relate to childbirth preparation.",
+      "applicability_pt": "Usar quando os déficits estiverem relacionados à preparação para o parto."
+    },
+    {
+      "id": "F04-039",
+      "applicability_en": "Use when fetal intrapartum status is the principal outcome.",
+      "applicability_pt": "Usar quando o estado fetal durante o parto for o principal desfecho."
+    },
+    {
+      "id": "F04-040",
+      "applicability_en": "Use when fetal prenatal status is the principal outcome.",
+      "applicability_pt": "Usar quando o estado fetal pré-natal for o principal desfecho."
+    },
+    {
+      "id": "F04-041",
+      "applicability_en": "Use when hypertension is the identified direction of instability.",
+      "applicability_pt": "Usar quando a instabilidade identificada se manifestar como hipertensão."
+    },
+    {
+      "id": "F04-042",
+      "applicability_en": "Use when hypotension is the identified direction of instability.",
+      "applicability_pt": "Usar quando a instabilidade identificada se manifestar como hipotensão."
+    },
+    {
+      "id": "F04-043",
+      "applicability_en": "Use when maintaining an established breastfeeding pattern is the target.",
+      "applicability_pt": "Usar quando o objetivo for manter um padrão de amamentação já estabelecido."
+    },
+    {
+      "id": "F04-044",
+      "applicability_en": "Use when maintaining breastfeeding is the target after establishment.",
+      "applicability_pt": "Usar quando o objetivo, após o estabelecimento da amamentação, for mantê-la."
+    },
+    {
+      "id": "F04-045",
+      "applicability_en": "Use when maintenance of breastfeeding is the clinically relevant prevention target.",
+      "applicability_pt": "Usar quando a manutenção da amamentação for o objetivo de prevenção clinicamente relevante."
+    },
+    {
+      "id": "F04-046",
+      "applicability_en": "Use when preparation for labour/childbirth is the dominant need.",
+      "applicability_pt": "Usar quando a preparação para o trabalho de parto/parto for a necessidade predominante."
+    },
+    {
+      "id": "F04-047",
+      "applicability_en": "Use when readiness focuses on sustained breastfeeding.",
+      "applicability_pt": "Usar quando a prontidão estiver voltada à manutenção sustentada da amamentação."
+    },
+    {
+      "id": "F04-048",
+      "applicability_en": "Use when the care problem is postpartum.",
+      "applicability_pt": "Usar quando o problema de cuidado ocorrer no pós-parto."
+    },
+    {
+      "id": "F04-049",
+      "applicability_en": "Use when the focus is general risk recognition/detection rather than elopement-specific risk.",
+      "applicability_pt": "Usar quando o foco for o reconhecimento/detecção geral de riscos, e não o risco específico de evasão."
+    },
+    {
+      "id": "F04-050",
+      "applicability_en": "Use when the ineffective process is occurring intrapartum.",
+      "applicability_pt": "Usar quando o processo ineficaz estiver ocorrendo durante o parto."
+    }
+  ]
+}

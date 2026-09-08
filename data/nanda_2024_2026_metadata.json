@@ -1,0 +1,2218 @@
+[
+  {
+    "code": "00097",
+    "domain": "1",
+    "class": "1",
+    "source_page": 207,
+    "pdf_page": 240,
+    "label_pt": "Diminuição do envolvimento em atividades de lazer"
+  },
+  {
+    "code": "00448",
+    "domain": "1",
+    "class": "1",
+    "source_page": 208,
+    "pdf_page": 241,
+    "label_pt": "Risco de diminuição do envolvimento em atividades de lazer"
+  },
+  {
+    "code": "00355",
+    "domain": "1",
+    "class": "1",
+    "source_page": 209,
+    "pdf_page": 242,
+    "label_pt": "Comportamentos sedentários excessivos"
+  },
+  {
+    "code": "00394",
+    "domain": "1",
+    "class": "1",
+    "source_page": 211,
+    "pdf_page": 244,
+    "label_pt": "Risco de comportamentos sedentários excessivos"
+  },
+  {
+    "code": "00273",
+    "domain": "1",
+    "class": "1",
+    "source_page": 212,
+    "pdf_page": 246,
+    "label_pt": "Campo energético desequilibrado"
+  },
+  {
+    "code": "00276",
+    "domain": "1",
+    "class": "2",
+    "source_page": 214,
+    "pdf_page": 248,
+    "label_pt": "Autogestão ineficaz da saúde"
+  },
+  {
+    "code": "00369",
+    "domain": "1",
+    "class": "2",
+    "source_page": 216,
+    "pdf_page": 251,
+    "label_pt": "Risco de autogestão ineficaz da saúde"
+  },
+  {
+    "code": "00293",
+    "domain": "1",
+    "class": "2",
+    "source_page": 218,
+    "pdf_page": 253,
+    "label_pt": "Preparação para uma melhor autogestão da saúde"
+  },
+  {
+    "code": "00080",
+    "domain": "1",
+    "class": "2",
+    "source_page": 219,
+    "pdf_page": 254,
+    "label_pt": "Gestão ineficaz da saúde familiar"
+  },
+  {
+    "code": "00410",
+    "domain": "1",
+    "class": "2",
+    "source_page": 221,
+    "pdf_page": 257,
+    "label_pt": "Risco de gestão ineficaz da saúde familiar"
+  },
+  {
+    "code": "00356",
+    "domain": "1",
+    "class": "2",
+    "source_page": 223,
+    "pdf_page": 259,
+    "label_pt": "Gestão ineficaz da saúde comunitária"
+  },
+  {
+    "code": "00413",
+    "domain": "1",
+    "class": "2",
+    "source_page": 224,
+    "pdf_page": 260,
+    "label_pt": "Risco de gestão ineficaz da saúde comunitária"
+  },
+  {
+    "code": "00489",
+    "domain": "1",
+    "class": "2",
+    "source_page": 225,
+    "pdf_page": 262,
+    "label_pt": "Risco de autogestão ineficaz do padrão de glicemia"
+  },
+  {
+    "code": "00277",
+    "domain": "1",
+    "class": "2",
+    "source_page": 227,
+    "pdf_page": 264,
+    "label_pt": "Autogestão ineficaz da síndrome do olho seco"
+  },
+  {
+    "code": "00352",
+    "domain": "1",
+    "class": "2",
+    "source_page": 229,
+    "pdf_page": 268,
+    "label_pt": "Autogestão ineficaz da boca seca"
+  },
+  {
+    "code": "00412",
+    "domain": "1",
+    "class": "2",
+    "source_page": 232,
+    "pdf_page": 272,
+    "label_pt": "Risco de autogestão ineficaz da boca seca"
+  },
+  {
+    "code": "00397",
+    "domain": "1",
+    "class": "2",
+    "source_page": 234,
+    "pdf_page": 274,
+    "label_pt": "Autogestão ineficaz da fadiga"
+  },
+  {
+    "code": "00278",
+    "domain": "1",
+    "class": "2",
+    "source_page": 236,
+    "pdf_page": 277,
+    "label_pt": "Autogestão ineficaz do linfedema"
+  },
+  {
+    "code": "00281",
+    "domain": "1",
+    "class": "2",
+    "source_page": 238,
+    "pdf_page": 280,
+    "label_pt": "Risco de autogestão ineficaz do linfedema"
+  },
+  {
+    "code": "00384",
+    "domain": "1",
+    "class": "2",
+    "source_page": 240,
+    "pdf_page": 282,
+    "label_pt": "Autogestão ineficaz da náusea"
+  },
+  {
+    "code": "00418",
+    "domain": "1",
+    "class": "2",
+    "source_page": 242,
+    "pdf_page": 286,
+    "label_pt": "Autogestão ineficaz da dor"
+  },
+  {
+    "code": "00447",
+    "domain": "1",
+    "class": "2",
+    "source_page": 244,
+    "pdf_page": 289,
+    "label_pt": "Preparação para um melhor autogerenciamento do peso"
+  },
+  {
+    "code": "00398",
+    "domain": "1",
+    "class": "2",
+    "source_page": 245,
+    "pdf_page": 291,
+    "label_pt": "Autogestão ineficaz do excesso de peso"
+  },
+  {
+    "code": "00487",
+    "domain": "1",
+    "class": "2",
+    "source_page": 248,
+    "pdf_page": 294,
+    "label_pt": "Risco de autogestão ineficaz do excesso de peso"
+  },
+  {
+    "code": "00485",
+    "domain": "1",
+    "class": "2",
+    "source_page": 250,
+    "pdf_page": 297,
+    "label_pt": "Autogestão ineficaz do baixo peso"
+  },
+  {
+    "code": "00486",
+    "domain": "1",
+    "class": "2",
+    "source_page": 253,
+    "pdf_page": 301,
+    "label_pt": "Risco de autogestão ineficaz do baixo peso"
+  },
+  {
+    "code": "00292",
+    "domain": "1",
+    "class": "2",
+    "source_page": 255,
+    "pdf_page": 303,
+    "label_pt": "Comportamentos ineficazes de manutenção da saúde"
+  },
+  {
+    "code": "00395",
+    "domain": "1",
+    "class": "2",
+    "source_page": 257,
+    "pdf_page": 306,
+    "label_pt": "Risco de comportamentos ineficazes de manutenção da saúde"
+  },
+  {
+    "code": "00300",
+    "domain": "1",
+    "class": "2",
+    "source_page": 259,
+    "pdf_page": 309,
+    "label_pt": "Comportamentos ineficazes de manutenção doméstica"
+  },
+  {
+    "code": "00308",
+    "domain": "1",
+    "class": "2",
+    "source_page": 261,
+    "pdf_page": 311,
+    "label_pt": "Risco de comportamentos ineficazes de manutenção doméstica"
+  },
+  {
+    "code": "00309",
+    "domain": "1",
+    "class": "2",
+    "source_page": 262,
+    "pdf_page": 312,
+    "label_pt": "Prontidão para comportamentos aprimorados de manutenção doméstica"
+  },
+  {
+    "code": "00307",
+    "domain": "1",
+    "class": "2",
+    "source_page": 263,
+    "pdf_page": 313,
+    "label_pt": "Prontidão para um maior envolvimento em exercícios físicos"
+  },
+  {
+    "code": "00339",
+    "domain": "1",
+    "class": "2",
+    "source_page": 264,
+    "pdf_page": 315,
+    "label_pt": "Alfabetização em saúde inadequada"
+  },
+  {
+    "code": "00411",
+    "domain": "1",
+    "class": "2",
+    "source_page": 266,
+    "pdf_page": 317,
+    "label_pt": "Risco de alfabetização em saúde inadequada"
+  },
+  {
+    "code": "00262",
+    "domain": "1",
+    "class": "2",
+    "source_page": 267,
+    "pdf_page": 319,
+    "label_pt": "Preparação para uma maior literacia em saúde"
+  },
+  {
+    "code": "00340",
+    "domain": "1",
+    "class": "2",
+    "source_page": 268,
+    "pdf_page": 320,
+    "label_pt": "Preparação para um envelhecimento saudável aprimorado"
+  },
+  {
+    "code": "00353",
+    "domain": "1",
+    "class": "2",
+    "source_page": 269,
+    "pdf_page": 321,
+    "label_pt": "Síndrome de fragilidade do idoso"
+  },
+  {
+    "code": "00357",
+    "domain": "1",
+    "class": "2",
+    "source_page": 271,
+    "pdf_page": 324,
+    "label_pt": "Risco de síndrome de fragilidade em idosos"
+  },
+  {
+    "code": "00343",
+    "domain": "2",
+    "class": "1",
+    "source_page": 275,
+    "pdf_page": 329,
+    "label_pt": "ingestão nutricional inadequada"
+  },
+  {
+    "code": "00409",
+    "domain": "2",
+    "class": "1",
+    "source_page": 277,
+    "pdf_page": 333,
+    "label_pt": "Risco de ingestão nutricional inadequada"
+  },
+  {
+    "code": "00419",
+    "domain": "2",
+    "class": "1",
+    "source_page": 279,
+    "pdf_page": 335,
+    "label_pt": "Prontidão para uma ingestão nutricional aprimorada"
+  },
+  {
+    "code": "00359",
+    "domain": "2",
+    "class": "1",
+    "source_page": 280,
+    "pdf_page": 336,
+    "label_pt": "Ingestão nutricional inadequada de proteínas e energia"
+  },
+  {
+    "code": "00360",
+    "domain": "2",
+    "class": "1",
+    "source_page": 282,
+    "pdf_page": 339,
+    "label_pt": "Risco de ingestão nutricional inadequada de proteínas e energia"
+  },
+  {
+    "code": "00371",
+    "domain": "2",
+    "class": "1",
+    "source_page": 284,
+    "pdf_page": 341,
+    "label_pt": "amamentação ineficaz"
+  },
+  {
+    "code": "00406",
+    "domain": "2",
+    "class": "1",
+    "source_page": 286,
+    "pdf_page": 344,
+    "label_pt": "Risco de amamentação ineficaz"
+  },
+  {
+    "code": "00347",
+    "domain": "2",
+    "class": "1",
+    "source_page": 288,
+    "pdf_page": 347,
+    "label_pt": "Interrupção do aleitamento materno exclusivo"
+  },
+  {
+    "code": "00382",
+    "domain": "2",
+    "class": "1",
+    "source_page": 290,
+    "pdf_page": 349,
+    "label_pt": "Risco de interrupção do aleitamento materno exclusivo"
+  },
+  {
+    "code": "00479",
+    "domain": "2",
+    "class": "1",
+    "source_page": 292,
+    "pdf_page": 351,
+    "label_pt": "Prontidão para amamentação aprimorada"
+  },
+  {
+    "code": "00333",
+    "domain": "2",
+    "class": "1",
+    "source_page": 293,
+    "pdf_page": 352,
+    "label_pt": "Produção inadequada de leite humano"
+  },
+  {
+    "code": "00334",
+    "domain": "2",
+    "class": "1",
+    "source_page": 296,
+    "pdf_page": 356,
+    "label_pt": "Risco de produção inadequada de leite materno"
+  },
+  {
+    "code": "00271",
+    "domain": "2",
+    "class": "1",
+    "source_page": 298,
+    "pdf_page": 358,
+    "label_pt": "Dinâmica ineficaz da alimentação infantil"
+  },
+  {
+    "code": "00270",
+    "domain": "2",
+    "class": "1",
+    "source_page": 300,
+    "pdf_page": 361,
+    "label_pt": "Dinâmica alimentar infantil ineficaz"
+  },
+  {
+    "code": "00269",
+    "domain": "2",
+    "class": "1",
+    "source_page": 302,
+    "pdf_page": 363,
+    "label_pt": "Dinâmicas alimentares ineficazes na adolescência"
+  },
+  {
+    "code": "00103",
+    "domain": "2",
+    "class": "1",
+    "source_page": 304,
+    "pdf_page": 366,
+    "label_pt": "Dificuldade de deglutição"
+  },
+  {
+    "code": "00194",
+    "domain": "2",
+    "class": "4",
+    "source_page": 306,
+    "pdf_page": 369,
+    "label_pt": "Hiperbilirrubinemia neonatal"
+  },
+  {
+    "code": "00230",
+    "domain": "2",
+    "class": "4",
+    "source_page": 308,
+    "pdf_page": 371,
+    "label_pt": "Risco de hiperbilirrubinemia neonatal"
+  },
+  {
+    "code": "00491",
+    "domain": "2",
+    "class": "5",
+    "source_page": 309,
+    "pdf_page": 373,
+    "label_pt": "Risco de desequilíbrio hidroeletrolítico"
+  },
+  {
+    "code": "00492",
+    "domain": "2",
+    "class": "5",
+    "source_page": 310,
+    "pdf_page": 374,
+    "label_pt": "Risco de desequilíbrio do volume de fluidos"
+  },
+  {
+    "code": "00026",
+    "domain": "2",
+    "class": "5",
+    "source_page": 311,
+    "pdf_page": 376,
+    "label_pt": "Volume excessivo de fluido"
+  },
+  {
+    "code": "00370",
+    "domain": "2",
+    "class": "5",
+    "source_page": 313,
+    "pdf_page": 378,
+    "label_pt": "Risco de volume excessivo de fluidos"
+  },
+  {
+    "code": "00421",
+    "domain": "2",
+    "class": "5",
+    "source_page": 314,
+    "pdf_page": 379,
+    "label_pt": "Volume de fluido inadequado"
+  },
+  {
+    "code": "00420",
+    "domain": "2",
+    "class": "5",
+    "source_page": 316,
+    "pdf_page": 381,
+    "label_pt": "Risco de volume inadequado de fluidos"
+  },
+  {
+    "code": "00016",
+    "domain": "3",
+    "class": "1",
+    "source_page": 319,
+    "pdf_page": 386,
+    "label_pt": "Eliminação urinária prejudicada"
+  },
+  {
+    "code": "00322",
+    "domain": "3",
+    "class": "1",
+    "source_page": 320,
+    "pdf_page": 388,
+    "label_pt": "Risco de retenção urinária"
+  },
+  {
+    "code": "00297",
+    "domain": "3",
+    "class": "1",
+    "source_page": 321,
+    "pdf_page": 389,
+    "label_pt": "Incontinência urinária associada à deficiência"
+  },
+  {
+    "code": "00310",
+    "domain": "3",
+    "class": "1",
+    "source_page": 323,
+    "pdf_page": 391,
+    "label_pt": "Incontinência urinária mista"
+  },
+  {
+    "code": "00017",
+    "domain": "3",
+    "class": "1",
+    "source_page": 324,
+    "pdf_page": 393,
+    "label_pt": "Incontinência urinária de esforço"
+  },
+  {
+    "code": "00019",
+    "domain": "3",
+    "class": "1",
+    "source_page": 325,
+    "pdf_page": 394,
+    "label_pt": "Incontinência urinária de urgência"
+  },
+  {
+    "code": "00022",
+    "domain": "3",
+    "class": "1",
+    "source_page": 327,
+    "pdf_page": 396,
+    "label_pt": "Risco de incontinência urinária de urgência"
+  },
+  {
+    "code": "00423",
+    "domain": "3",
+    "class": "2",
+    "source_page": 328,
+    "pdf_page": 398,
+    "label_pt": "Motilidade gastrointestinal prejudicada"
+  },
+  {
+    "code": "00422",
+    "domain": "3",
+    "class": "2",
+    "source_page": 329,
+    "pdf_page": 400,
+    "label_pt": "Risco de comprometimento da motilidade gastrointestinal"
+  },
+  {
+    "code": "00344",
+    "domain": "3",
+    "class": "2",
+    "source_page": 330,
+    "pdf_page": 402,
+    "label_pt": "Eliminação intestinal prejudicada"
+  },
+  {
+    "code": "00346",
+    "domain": "3",
+    "class": "2",
+    "source_page": 332,
+    "pdf_page": 404,
+    "label_pt": "Risco de comprometimento da eliminação intestinal"
+  },
+  {
+    "code": "00235",
+    "domain": "3",
+    "class": "2",
+    "source_page": 334,
+    "pdf_page": 406,
+    "label_pt": "constipação funcional crônica"
+  },
+  {
+    "code": "00236",
+    "domain": "3",
+    "class": "2",
+    "source_page": 336,
+    "pdf_page": 409,
+    "label_pt": "Risco de constipação funcional crônica"
+  },
+  {
+    "code": "00424",
+    "domain": "3",
+    "class": "2",
+    "source_page": 338,
+    "pdf_page": 412,
+    "label_pt": "Incontinência fecal prejudicada"
+  },
+  {
+    "code": "00345",
+    "domain": "3",
+    "class": "2",
+    "source_page": 340,
+    "pdf_page": 414,
+    "label_pt": "Risco de incontinência fecal"
+  },
+  {
+    "code": "00030",
+    "domain": "3",
+    "class": "4",
+    "source_page": 341,
+    "pdf_page": 416,
+    "label_pt": "Troca gasosa prejudicada"
+  },
+  {
+    "code": "00337",
+    "domain": "4",
+    "class": "1",
+    "source_page": 345,
+    "pdf_page": 422,
+    "label_pt": "Padrão de sono ineficaz"
+  },
+  {
+    "code": "00407",
+    "domain": "4",
+    "class": "1",
+    "source_page": 347,
+    "pdf_page": 425,
+    "label_pt": "Risco de padrão de sono ineficaz"
+  },
+  {
+    "code": "00417",
+    "domain": "4",
+    "class": "1",
+    "source_page": 349,
+    "pdf_page": 427,
+    "label_pt": "Preparação para um padrão de sono melhorado"
+  },
+  {
+    "code": "00323",
+    "domain": "4",
+    "class": "1",
+    "source_page": 350,
+    "pdf_page": 428,
+    "label_pt": "Comportamentos ineficazes de higiene do sono"
+  },
+  {
+    "code": "00408",
+    "domain": "4",
+    "class": "1",
+    "source_page": 352,
+    "pdf_page": 430,
+    "label_pt": "Risco de comportamentos ineficazes de higiene do sono"
+  },
+  {
+    "code": "00085",
+    "domain": "4",
+    "class": "2",
+    "source_page": 353,
+    "pdf_page": 432,
+    "label_pt": "Mobilidade física prejudicada"
+  },
+  {
+    "code": "00324",
+    "domain": "4",
+    "class": "2",
+    "source_page": 355,
+    "pdf_page": 434,
+    "label_pt": "Risco de mobilidade física comprometida"
+  },
+  {
+    "code": "00091",
+    "domain": "4",
+    "class": "2",
+    "source_page": 356,
+    "pdf_page": 436,
+    "label_pt": "Mobilidade reduzida no leito"
+  },
+  {
+    "code": "00089",
+    "domain": "4",
+    "class": "2",
+    "source_page": 357,
+    "pdf_page": 438,
+    "label_pt": "Mobilidade reduzida em cadeira de rodas"
+  },
+  {
+    "code": "00363",
+    "domain": "4",
+    "class": "2",
+    "source_page": 359,
+    "pdf_page": 440,
+    "label_pt": "Capacidade de sentar-se prejudicada"
+  },
+  {
+    "code": "00364",
+    "domain": "4",
+    "class": "2",
+    "source_page": 360,
+    "pdf_page": 442,
+    "label_pt": "Capacidade de ficar em pé prejudicada"
+  },
+  {
+    "code": "00367",
+    "domain": "4",
+    "class": "2",
+    "source_page": 361,
+    "pdf_page": 444,
+    "label_pt": "Capacidade de transferência prejudicada"
+  },
+  {
+    "code": "00365",
+    "domain": "4",
+    "class": "2",
+    "source_page": 363,
+    "pdf_page": 445,
+    "label_pt": "Capacidade de locomoção prejudicada"
+  },
+  {
+    "code": "00298",
+    "domain": "4",
+    "class": "3",
+    "source_page": 364,
+    "pdf_page": 447,
+    "label_pt": "Diminuição da tolerância à atividade"
+  },
+  {
+    "code": "00299",
+    "domain": "4",
+    "class": "3",
+    "source_page": 365,
+    "pdf_page": 449,
+    "label_pt": "Risco de diminuição da tolerância à atividade"
+  },
+  {
+    "code": "00477",
+    "domain": "4",
+    "class": "3",
+    "source_page": 366,
+    "pdf_page": 451,
+    "label_pt": "sobrecarga de fadiga excessiva"
+  },
+  {
+    "code": "00465",
+    "domain": "4",
+    "class": "3",
+    "source_page": 368,
+    "pdf_page": 453,
+    "label_pt": "Recuperação cirúrgica prejudicada"
+  },
+  {
+    "code": "00464",
+    "domain": "4",
+    "class": "3",
+    "source_page": 370,
+    "pdf_page": 455,
+    "label_pt": "Risco de recuperação cirúrgica comprometida"
+  },
+  {
+    "code": "00311",
+    "domain": "4",
+    "class": "4",
+    "source_page": 372,
+    "pdf_page": 457,
+    "label_pt": "Risco de comprometimento da função cardiovascular"
+  },
+  {
+    "code": "00362",
+    "domain": "4",
+    "class": "4",
+    "source_page": 374,
+    "pdf_page": 459,
+    "label_pt": "Risco de pressão arterial desequilibrada"
+  },
+  {
+    "code": "00240",
+    "domain": "4",
+    "class": "4",
+    "source_page": 375,
+    "pdf_page": 461,
+    "label_pt": "Risco de diminuição do débito cardíaco"
+  },
+  {
+    "code": "00201",
+    "domain": "4",
+    "class": "4",
+    "source_page": 377,
+    "pdf_page": 463,
+    "label_pt": "Risco de perfusão ineficaz do tecido cerebral"
+  },
+  {
+    "code": "00204",
+    "domain": "4",
+    "class": "4",
+    "source_page": 378,
+    "pdf_page": 465,
+    "label_pt": "Perfusão tecidual periférica ineficaz"
+  },
+  {
+    "code": "00228",
+    "domain": "4",
+    "class": "4",
+    "source_page": 380,
+    "pdf_page": 467,
+    "label_pt": "Risco de perfusão tecidual periférica ineficaz"
+  },
+  {
+    "code": "00032",
+    "domain": "4",
+    "class": "4",
+    "source_page": 381,
+    "pdf_page": 468,
+    "label_pt": "Padrão respiratório ineficaz"
+  },
+  {
+    "code": "00033",
+    "domain": "4",
+    "class": "4",
+    "source_page": 383,
+    "pdf_page": 471,
+    "label_pt": "Ventilação espontânea prejudicada"
+  },
+  {
+    "code": "00431",
+    "domain": "4",
+    "class": "4",
+    "source_page": 384,
+    "pdf_page": 472,
+    "label_pt": "Resposta prejudicada ao desmame ventilatório em crianças"
+  },
+  {
+    "code": "00430",
+    "domain": "4",
+    "class": "4",
+    "source_page": 386,
+    "pdf_page": 475,
+    "label_pt": "Resposta prejudicada ao desmame ventilatório em adultos"
+  },
+  {
+    "code": "00331",
+    "domain": "4",
+    "class": "5",
+    "source_page": 388,
+    "pdf_page": 478,
+    "label_pt": "Síndrome da capacidade reduzida de autocuidado"
+  },
+  {
+    "code": "00332",
+    "domain": "4",
+    "class": "5",
+    "source_page": 389,
+    "pdf_page": 480,
+    "label_pt": "Síndrome de risco de diminuição da capacidade de autocuidado"
+  },
+  {
+    "code": "00442",
+    "domain": "4",
+    "class": "5",
+    "source_page": 390,
+    "pdf_page": 481,
+    "label_pt": "Prontidão para habilidades aprimoradas de autocuidado"
+  },
+  {
+    "code": "00326",
+    "domain": "4",
+    "class": "5",
+    "source_page": 391,
+    "pdf_page": 482,
+    "label_pt": "Capacidade reduzida de tomar banho"
+  },
+  {
+    "code": "00327",
+    "domain": "4",
+    "class": "5",
+    "source_page": 392,
+    "pdf_page": 484,
+    "label_pt": "Capacidade reduzida de se vestir"
+  },
+  {
+    "code": "00328",
+    "domain": "4",
+    "class": "5",
+    "source_page": 394,
+    "pdf_page": 486,
+    "label_pt": "Capacidade de alimentação reduzida"
+  },
+  {
+    "code": "00330",
+    "domain": "4",
+    "class": "5",
+    "source_page": 395,
+    "pdf_page": 488,
+    "label_pt": "Capacidade reduzida de cuidar da higiene pessoal"
+  },
+  {
+    "code": "00329",
+    "domain": "4",
+    "class": "5",
+    "source_page": 397,
+    "pdf_page": 490,
+    "label_pt": "Diminuição da capacidade de usar o banheiro"
+  },
+  {
+    "code": "00375",
+    "domain": "4",
+    "class": "5",
+    "source_page": 398,
+    "pdf_page": 492,
+    "label_pt": "Comportamentos ineficazes de higiene oral"
+  },
+  {
+    "code": "00414",
+    "domain": "4",
+    "class": "5",
+    "source_page": 400,
+    "pdf_page": 494,
+    "label_pt": "Risco de comportamentos ineficazes de higiene oral"
+  },
+  {
+    "code": "00128",
+    "domain": "5",
+    "class": "4",
+    "source_page": 403,
+    "pdf_page": 498,
+    "label_pt": "Confusão aguda"
+  },
+  {
+    "code": "00173",
+    "domain": "5",
+    "class": "4",
+    "source_page": 405,
+    "pdf_page": 501,
+    "label_pt": "Risco de confusão aguda"
+  },
+  {
+    "code": "00129",
+    "domain": "5",
+    "class": "4",
+    "source_page": 406,
+    "pdf_page": 502,
+    "label_pt": "Confusão crônica"
+  },
+  {
+    "code": "00222",
+    "domain": "5",
+    "class": "4",
+    "source_page": 408,
+    "pdf_page": 504,
+    "label_pt": "Controle de impulsos ineficaz"
+  },
+  {
+    "code": "00493",
+    "domain": "5",
+    "class": "4",
+    "source_page": 409,
+    "pdf_page": 506,
+    "label_pt": "Processos de pensamento interrompidos"
+  },
+  {
+    "code": "00435",
+    "domain": "5",
+    "class": "4",
+    "source_page": 411,
+    "pdf_page": 508,
+    "label_pt": "Conhecimento inadequado sobre saúde"
+  },
+  {
+    "code": "00499",
+    "domain": "5",
+    "class": "4",
+    "source_page": 413,
+    "pdf_page": 510,
+    "label_pt": "Preparação para um maior conhecimento sobre saúde"
+  },
+  {
+    "code": "00131",
+    "domain": "5",
+    "class": "4",
+    "source_page": 414,
+    "pdf_page": 511,
+    "label_pt": "Memória prejudicada"
+  },
+  {
+    "code": "00429",
+    "domain": "5",
+    "class": "4",
+    "source_page": 415,
+    "pdf_page": 513,
+    "label_pt": "Comprometimento na tomada de decisões"
+  },
+  {
+    "code": "00184",
+    "domain": "5",
+    "class": "4",
+    "source_page": 416,
+    "pdf_page": 515,
+    "label_pt": "Preparação para uma tomada de decisão aprimorada"
+  },
+  {
+    "code": "00242",
+    "domain": "5",
+    "class": "4",
+    "source_page": 417,
+    "pdf_page": 516,
+    "label_pt": "Comprometimento da capacidade de tomar decisões emancipadas"
+  },
+  {
+    "code": "00244",
+    "domain": "5",
+    "class": "4",
+    "source_page": 418,
+    "pdf_page": 517,
+    "label_pt": "Risco de comprometimento na tomada de decisões emancipadas"
+  },
+  {
+    "code": "00243",
+    "domain": "5",
+    "class": "4",
+    "source_page": 419,
+    "pdf_page": 519,
+    "label_pt": "Prontidão para uma tomada de decisão emancipada aprimorada"
+  },
+  {
+    "code": "00051",
+    "domain": "5",
+    "class": "5",
+    "source_page": 420,
+    "pdf_page": 520,
+    "label_pt": "Comunicação verbal prejudicada"
+  },
+  {
+    "code": "00434",
+    "domain": "5",
+    "class": "5",
+    "source_page": 422,
+    "pdf_page": 523,
+    "label_pt": "Risco de comprometimento da comunicação verbal"
+  },
+  {
+    "code": "00368",
+    "domain": "5",
+    "class": "5",
+    "source_page": 423,
+    "pdf_page": 524,
+    "label_pt": "Prontidão para uma comunicação verbal aprimorada"
+  },
+  {
+    "code": "00167",
+    "domain": "6",
+    "class": "1",
+    "source_page": 426,
+    "pdf_page": 527,
+    "label_pt": "Prontidão para um autoconceito aprimorado"
+  },
+  {
+    "code": "00494",
+    "domain": "6",
+    "class": "1",
+    "source_page": 427,
+    "pdf_page": 528,
+    "label_pt": "Identidade pessoal perturbada"
+  },
+  {
+    "code": "00495",
+    "domain": "6",
+    "class": "1",
+    "source_page": 428,
+    "pdf_page": 530,
+    "label_pt": "síndrome de identidade familiar desestruturada"
+  },
+  {
+    "code": "00496",
+    "domain": "6",
+    "class": "1",
+    "source_page": 430,
+    "pdf_page": 532,
+    "label_pt": "Risco de síndrome de identidade familiar desestruturada"
+  },
+  {
+    "code": "00488",
+    "domain": "6",
+    "class": "1",
+    "source_page": 431,
+    "pdf_page": 534,
+    "label_pt": "Risco de violação da dignidade humana"
+  },
+  {
+    "code": "00341",
+    "domain": "6",
+    "class": "1",
+    "source_page": 432,
+    "pdf_page": 535,
+    "label_pt": "Prontidão para uma identidade social transgênero aprimorada"
+  },
+  {
+    "code": "00483",
+    "domain": "6",
+    "class": "2",
+    "source_page": 433,
+    "pdf_page": 536,
+    "label_pt": "autoestima cronicamente inadequada"
+  },
+  {
+    "code": "00480",
+    "domain": "6",
+    "class": "2",
+    "source_page": 435,
+    "pdf_page": 539,
+    "label_pt": "Risco de baixa autoestima crônica"
+  },
+  {
+    "code": "00481",
+    "domain": "6",
+    "class": "2",
+    "source_page": 437,
+    "pdf_page": 541,
+    "label_pt": "autoestima inadequada situacional"
+  },
+  {
+    "code": "00482",
+    "domain": "6",
+    "class": "2",
+    "source_page": 439,
+    "pdf_page": 543,
+    "label_pt": "Risco de autoestima inadequada situacional"
+  },
+  {
+    "code": "00338",
+    "domain": "6",
+    "class": "2",
+    "source_page": 441,
+    "pdf_page": 545,
+    "label_pt": "Autoeficácia inadequada em saúde"
+  },
+  {
+    "code": "00497",
+    "domain": "6",
+    "class": "3",
+    "source_page": 443,
+    "pdf_page": 547,
+    "label_pt": "Imagem corporal distorcida"
+  },
+  {
+    "code": "00436",
+    "domain": "7",
+    "class": "1",
+    "source_page": 447,
+    "pdf_page": 552,
+    "label_pt": "Comportamentos parentais problemáticos"
+  },
+  {
+    "code": "00437",
+    "domain": "7",
+    "class": "1",
+    "source_page": 449,
+    "pdf_page": 555,
+    "label_pt": "Risco de comportamentos parentais problemáticos"
+  },
+  {
+    "code": "00438",
+    "domain": "7",
+    "class": "1",
+    "source_page": 451,
+    "pdf_page": 558,
+    "label_pt": "Prontidão para comportamentos parentais aprimorados"
+  },
+  {
+    "code": "00387",
+    "domain": "7",
+    "class": "1",
+    "source_page": 452,
+    "pdf_page": 559,
+    "label_pt": "Conflito excessivo nos papéis parentais"
+  },
+  {
+    "code": "00389",
+    "domain": "7",
+    "class": "2",
+    "source_page": 454,
+    "pdf_page": 561,
+    "label_pt": "Padrões de interação familiar perturbados"
+  },
+  {
+    "code": "00440",
+    "domain": "7",
+    "class": "2",
+    "source_page": 456,
+    "pdf_page": 563,
+    "label_pt": "Risco de padrões de interação familiar interrompidos"
+  },
+  {
+    "code": "00388",
+    "domain": "7",
+    "class": "2",
+    "source_page": 457,
+    "pdf_page": 565,
+    "label_pt": "Processos familiares prejudicados"
+  },
+  {
+    "code": "00159",
+    "domain": "7",
+    "class": "2",
+    "source_page": 460,
+    "pdf_page": 569,
+    "label_pt": "Preparação para processos familiares aprimorados"
+  },
+  {
+    "code": "00439",
+    "domain": "7",
+    "class": "2",
+    "source_page": 461,
+    "pdf_page": 570,
+    "label_pt": "Risco de comportamentos de apego perturbado"
+  },
+  {
+    "code": "00055",
+    "domain": "7",
+    "class": "3",
+    "source_page": 463,
+    "pdf_page": 572,
+    "label_pt": "Desempenho de função ineficaz"
+  },
+  {
+    "code": "00449",
+    "domain": "7",
+    "class": "3",
+    "source_page": 465,
+    "pdf_page": 574,
+    "label_pt": "relacionamento íntimo ineficaz"
+  },
+  {
+    "code": "00445",
+    "domain": "7",
+    "class": "3",
+    "source_page": 467,
+    "pdf_page": 577,
+    "label_pt": "Risco de relacionamento íntimo ineficaz"
+  },
+  {
+    "code": "00446",
+    "domain": "7",
+    "class": "3",
+    "source_page": 468,
+    "pdf_page": 578,
+    "label_pt": "Prontidão para um relacionamento íntimo mais profundo"
+  },
+  {
+    "code": "00052",
+    "domain": "7",
+    "class": "3",
+    "source_page": 469,
+    "pdf_page": 580,
+    "label_pt": "Interação social prejudicada"
+  },
+  {
+    "code": "00221",
+    "domain": "7",
+    "class": "3",
+    "source_page": 471,
+    "pdf_page": 582,
+    "label_pt": "Processo de gravidez ineficaz"
+  },
+  {
+    "code": "00227",
+    "domain": "7",
+    "class": "3",
+    "source_page": 473,
+    "pdf_page": 584,
+    "label_pt": "Risco de processo reprodutivo ineficaz"
+  },
+  {
+    "code": "00208",
+    "domain": "7",
+    "class": "3",
+    "source_page": 474,
+    "pdf_page": 585,
+    "label_pt": "Preparação para um processo de gestação aprimorado"
+  },
+  {
+    "code": "00386",
+    "domain": "8",
+    "class": "2",
+    "source_page": 476,
+    "pdf_page": 589,
+    "label_pt": "Disfunção sexual"
+  },
+  {
+    "code": "00349",
+    "domain": "8",
+    "class": "3",
+    "source_page": 478,
+    "pdf_page": 592,
+    "label_pt": "Risco de comprometimento da díade materno-fetal"
+  },
+  {
+    "code": "00141",
+    "domain": "9",
+    "class": "1",
+    "source_page": 483,
+    "pdf_page": 597,
+    "label_pt": "Síndrome pós-traumática"
+  },
+  {
+    "code": "00145",
+    "domain": "9",
+    "class": "1",
+    "source_page": 485,
+    "pdf_page": 599,
+    "label_pt": "Risco de síndrome pós-traumática"
+  },
+  {
+    "code": "00484",
+    "domain": "9",
+    "class": "1",
+    "source_page": 486,
+    "pdf_page": 601,
+    "label_pt": "Risco de transição migratória interrompida"
+  },
+  {
+    "code": "00405",
+    "domain": "9",
+    "class": "2",
+    "source_page": 487,
+    "pdf_page": 602,
+    "label_pt": "Enfrentamento desadaptativo"
+  },
+  {
+    "code": "00158",
+    "domain": "9",
+    "class": "2",
+    "source_page": 489,
+    "pdf_page": 605,
+    "label_pt": "Prontidão para um enfrentamento aprimorado"
+  },
+  {
+    "code": "00373",
+    "domain": "9",
+    "class": "2",
+    "source_page": 490,
+    "pdf_page": 606,
+    "label_pt": "Enfrentamento familiar desadaptativo"
+  },
+  {
+    "code": "00075",
+    "domain": "9",
+    "class": "2",
+    "source_page": 491,
+    "pdf_page": 607,
+    "label_pt": "Prontidão para um melhor enfrentamento familiar"
+  },
+  {
+    "code": "00456",
+    "domain": "9",
+    "class": "2",
+    "source_page": 492,
+    "pdf_page": 608,
+    "label_pt": "Enfrentamento comunitário desadaptativo"
+  },
+  {
+    "code": "00076",
+    "domain": "9",
+    "class": "2",
+    "source_page": 493,
+    "pdf_page": 610,
+    "label_pt": "Prontidão para uma melhor adaptação à comunidade"
+  },
+  {
+    "code": "00366",
+    "domain": "9",
+    "class": "2",
+    "source_page": 494,
+    "pdf_page": 611,
+    "label_pt": "sobrecarga excessiva de cuidados"
+  },
+  {
+    "code": "00401",
+    "domain": "9",
+    "class": "2",
+    "source_page": 496,
+    "pdf_page": 614,
+    "label_pt": "Risco de sobrecarga de cuidados"
+  },
+  {
+    "code": "00301",
+    "domain": "9",
+    "class": "2",
+    "source_page": 498,
+    "pdf_page": 616,
+    "label_pt": "Luto desadaptativo"
+  },
+  {
+    "code": "00302",
+    "domain": "9",
+    "class": "2",
+    "source_page": 500,
+    "pdf_page": 618,
+    "label_pt": "Risco de luto desadaptativo"
+  },
+  {
+    "code": "00285",
+    "domain": "9",
+    "class": "2",
+    "source_page": 501,
+    "pdf_page": 620,
+    "label_pt": "Preparação para um luto mais profundo"
+  },
+  {
+    "code": "00210",
+    "domain": "9",
+    "class": "2",
+    "source_page": 502,
+    "pdf_page": 621,
+    "label_pt": "Resiliência prejudicada"
+  },
+  {
+    "code": "00211",
+    "domain": "9",
+    "class": "2",
+    "source_page": 504,
+    "pdf_page": 623,
+    "label_pt": "Risco de resiliência prejudicada"
+  },
+  {
+    "code": "00212",
+    "domain": "9",
+    "class": "2",
+    "source_page": 505,
+    "pdf_page": 625,
+    "label_pt": "Preparação para uma maior resiliência"
+  },
+  {
+    "code": "00185",
+    "domain": "9",
+    "class": "2",
+    "source_page": 506,
+    "pdf_page": 626,
+    "label_pt": "Prontidão para uma esperança maior"
+  },
+  {
+    "code": "00325",
+    "domain": "9",
+    "class": "2",
+    "source_page": 507,
+    "pdf_page": 628,
+    "label_pt": "Autocompaixão inadequada"
+  },
+  {
+    "code": "00400",
+    "domain": "9",
+    "class": "2",
+    "source_page": 509,
+    "pdf_page": 630,
+    "label_pt": "Ansiedade excessiva"
+  },
+  {
+    "code": "00399",
+    "domain": "9",
+    "class": "2",
+    "source_page": 511,
+    "pdf_page": 633,
+    "label_pt": "Ansiedade excessiva em relação à morte"
+  },
+  {
+    "code": "00390",
+    "domain": "9",
+    "class": "2",
+    "source_page": 513,
+    "pdf_page": 635,
+    "label_pt": "Medo excessivo"
+  },
+  {
+    "code": "00010",
+    "domain": "9",
+    "class": "3",
+    "source_page": 515,
+    "pdf_page": 637,
+    "label_pt": "Risco de disreflexia autonômica"
+  },
+  {
+    "code": "00372",
+    "domain": "9",
+    "class": "3",
+    "source_page": 517,
+    "pdf_page": 640,
+    "label_pt": "Regulação emocional ineficaz"
+  },
+  {
+    "code": "00241",
+    "domain": "9",
+    "class": "3",
+    "source_page": 519,
+    "pdf_page": 642,
+    "label_pt": "Regulação do humor prejudicada"
+  },
+  {
+    "code": "00258",
+    "domain": "9",
+    "class": "3",
+    "source_page": 521,
+    "pdf_page": 645,
+    "label_pt": "síndrome de abstinência aguda de substâncias"
+  },
+  {
+    "code": "00259",
+    "domain": "9",
+    "class": "3",
+    "source_page": 522,
+    "pdf_page": 646,
+    "label_pt": "Risco de síndrome de abstinência aguda de substâncias"
+  },
+  {
+    "code": "00175",
+    "domain": "10",
+    "class": "3",
+    "source_page": 524,
+    "pdf_page": 649,
+    "label_pt": "Angústia moral"
+  },
+  {
+    "code": "00454",
+    "domain": "10",
+    "class": "3",
+    "source_page": 525,
+    "pdf_page": 651,
+    "label_pt": "Bem-estar espiritual prejudicado"
+  },
+  {
+    "code": "00460",
+    "domain": "10",
+    "class": "3",
+    "source_page": 527,
+    "pdf_page": 654,
+    "label_pt": "Risco de comprometimento do bem-estar espiritual"
+  },
+  {
+    "code": "00068",
+    "domain": "10",
+    "class": "3",
+    "source_page": 529,
+    "pdf_page": 656,
+    "label_pt": "Prontidão para um maior bem-estar espiritual"
+  },
+  {
+    "code": "00169",
+    "domain": "10",
+    "class": "3",
+    "source_page": 531,
+    "pdf_page": 658,
+    "label_pt": "Religiosidade prejudicada"
+  },
+  {
+    "code": "00170",
+    "domain": "10",
+    "class": "3",
+    "source_page": 533,
+    "pdf_page": 660,
+    "label_pt": "Risco de religiosidade prejudicada"
+  },
+  {
+    "code": "00171",
+    "domain": "10",
+    "class": "3",
+    "source_page": 534,
+    "pdf_page": 661,
+    "label_pt": "Prontidão para uma religiosidade reforçada"
+  },
+  {
+    "code": "00361",
+    "domain": "11",
+    "class": "1",
+    "source_page": 538,
+    "pdf_page": 668,
+    "label_pt": "Resposta imune prejudicada"
+  },
+  {
+    "code": "00004",
+    "domain": "11",
+    "class": "1",
+    "source_page": 540,
+    "pdf_page": 670,
+    "label_pt": "Risco de infecção"
+  },
+  {
+    "code": "00500",
+    "domain": "11",
+    "class": "1",
+    "source_page": 542,
+    "pdf_page": 672,
+    "label_pt": "Risco de infecção da ferida cirúrgica"
+  },
+  {
+    "code": "00336",
+    "domain": "11",
+    "class": "2",
+    "source_page": 543,
+    "pdf_page": 674,
+    "label_pt": "Risco de lesão física"
+  },
+  {
+    "code": "00350",
+    "domain": "11",
+    "class": "2",
+    "source_page": 544,
+    "pdf_page": 676,
+    "label_pt": "Risco de queimaduras"
+  },
+  {
+    "code": "00351",
+    "domain": "11",
+    "class": "2",
+    "source_page": 545,
+    "pdf_page": 677,
+    "label_pt": "Risco de lesão por frio"
+  },
+  {
+    "code": "00245",
+    "domain": "11",
+    "class": "2",
+    "source_page": 546,
+    "pdf_page": 679,
+    "label_pt": "Risco de lesão na córnea"
+  },
+  {
+    "code": "00219",
+    "domain": "11",
+    "class": "2",
+    "source_page": 547,
+    "pdf_page": 681,
+    "label_pt": "Risco de olho seco"
+  },
+  {
+    "code": "00087",
+    "domain": "11",
+    "class": "2",
+    "source_page": 549,
+    "pdf_page": 683,
+    "label_pt": "Risco de lesão por posicionamento perioperatório"
+  },
+  {
+    "code": "00287",
+    "domain": "11",
+    "class": "2",
+    "source_page": 550,
+    "pdf_page": 685,
+    "label_pt": "Lesão por pressão neonatal"
+  },
+  {
+    "code": "00288",
+    "domain": "11",
+    "class": "2",
+    "source_page": 552,
+    "pdf_page": 687,
+    "label_pt": "Risco de lesão por pressão neonatal"
+  },
+  {
+    "code": "00313",
+    "domain": "11",
+    "class": "2",
+    "source_page": 554,
+    "pdf_page": 690,
+    "label_pt": "Lesão por pressão infantil"
+  },
+  {
+    "code": "00286",
+    "domain": "11",
+    "class": "2",
+    "source_page": 557,
+    "pdf_page": 693,
+    "label_pt": "Risco de lesão por pressão em crianças"
+  },
+  {
+    "code": "00312",
+    "domain": "11",
+    "class": "2",
+    "source_page": 559,
+    "pdf_page": 697,
+    "label_pt": "Lesão por pressão em adultos"
+  },
+  {
+    "code": "00304",
+    "domain": "11",
+    "class": "2",
+    "source_page": 561,
+    "pdf_page": 700,
+    "label_pt": "Risco de lesão por pressão em adultos"
+  },
+  {
+    "code": "00250",
+    "domain": "11",
+    "class": "2",
+    "source_page": 563,
+    "pdf_page": 703,
+    "label_pt": "Risco de lesão do trato urinário"
+  },
+  {
+    "code": "00044",
+    "domain": "11",
+    "class": "2",
+    "source_page": 564,
+    "pdf_page": 704,
+    "label_pt": "Integridade tecidual comprometida"
+  },
+  {
+    "code": "00248",
+    "domain": "11",
+    "class": "2",
+    "source_page": 566,
+    "pdf_page": 708,
+    "label_pt": "Risco de integridade tecidual comprometida"
+  },
+  {
+    "code": "00046",
+    "domain": "11",
+    "class": "2",
+    "source_page": 568,
+    "pdf_page": 711,
+    "label_pt": "Integridade da pele comprometida"
+  },
+  {
+    "code": "00047",
+    "domain": "11",
+    "class": "2",
+    "source_page": 570,
+    "pdf_page": 714,
+    "label_pt": "Risco de integridade da pele comprometida"
+  },
+  {
+    "code": "00461",
+    "domain": "11",
+    "class": "2",
+    "source_page": 572,
+    "pdf_page": 716,
+    "label_pt": "Integridade comprometida do complexo aréolo-mamilar"
+  },
+  {
+    "code": "00462",
+    "domain": "11",
+    "class": "2",
+    "source_page": 574,
+    "pdf_page": 719,
+    "label_pt": "Risco de comprometimento da integridade do complexo aréolo-mamilar"
+  },
+  {
+    "code": "00045",
+    "domain": "11",
+    "class": "2",
+    "source_page": 576,
+    "pdf_page": 721,
+    "label_pt": "Integridade da membrana mucosa oral comprometida"
+  },
+  {
+    "code": "00247",
+    "domain": "11",
+    "class": "2",
+    "source_page": 578,
+    "pdf_page": 724,
+    "label_pt": "Risco de comprometimento da integridade da mucosa oral"
+  },
+  {
+    "code": "00306",
+    "domain": "11",
+    "class": "2",
+    "source_page": 579,
+    "pdf_page": 726,
+    "label_pt": "Risco de quedas em crianças"
+  },
+  {
+    "code": "00303",
+    "domain": "11",
+    "class": "2",
+    "source_page": 271,
+    "pdf_page": 729,
+    "label_pt": "Risco de quedas em adultos"
+  },
+  {
+    "code": "00039",
+    "domain": "11",
+    "class": "2",
+    "source_page": 583,
+    "pdf_page": 732,
+    "label_pt": "Risco de aspiração"
+  },
+  {
+    "code": "00031",
+    "domain": "11",
+    "class": "2",
+    "source_page": 584,
+    "pdf_page": 734,
+    "label_pt": "Desobstrução ineficaz das vias aéreas"
+  },
+  {
+    "code": "00463",
+    "domain": "11",
+    "class": "2",
+    "source_page": 586,
+    "pdf_page": 736,
+    "label_pt": "Risco de asfixia acidental"
+  },
+  {
+    "code": "00374",
+    "domain": "11",
+    "class": "2",
+    "source_page": 588,
+    "pdf_page": 739,
+    "label_pt": "Risco de sangramento excessivo"
+  },
+  {
+    "code": "00205",
+    "domain": "11",
+    "class": "2",
+    "source_page": 589,
+    "pdf_page": 740,
+    "label_pt": "Risco de choque"
+  },
+  {
+    "code": "00291",
+    "domain": "11",
+    "class": "2",
+    "source_page": 591,
+    "pdf_page": 742,
+    "label_pt": "Risco de trombose"
+  },
+  {
+    "code": "00425",
+    "domain": "11",
+    "class": "2",
+    "source_page": 592,
+    "pdf_page": 744,
+    "label_pt": "Risco de comprometimento da função neurovascular periférica"
+  },
+  {
+    "code": "00156",
+    "domain": "11",
+    "class": "2",
+    "source_page": 593,
+    "pdf_page": 746,
+    "label_pt": "Risco de morte súbita infantil"
+  },
+  {
+    "code": "00290",
+    "domain": "11",
+    "class": "2",
+    "source_page": 594,
+    "pdf_page": 747,
+    "label_pt": "Risco de tentativa de fuga"
+  },
+  {
+    "code": "00138",
+    "domain": "11",
+    "class": "3",
+    "source_page": 596,
+    "pdf_page": 749,
+    "label_pt": "Risco de violência direcionada a terceiros"
+  },
+  {
+    "code": "00272",
+    "domain": "11",
+    "class": "3",
+    "source_page": 597,
+    "pdf_page": 750,
+    "label_pt": "Risco de mutilação genital feminina"
+  },
+  {
+    "code": "00466",
+    "domain": "11",
+    "class": "3",
+    "source_page": 598,
+    "pdf_page": 752,
+    "label_pt": "Risco de comportamento suicida autolesivo"
+  },
+  {
+    "code": "00467",
+    "domain": "11",
+    "class": "3",
+    "source_page": 601,
+    "pdf_page": 756,
+    "label_pt": "Comportamento autolesivo não suicida"
+  },
+  {
+    "code": "00468",
+    "domain": "11",
+    "class": "3",
+    "source_page": 604,
+    "pdf_page": 760,
+    "label_pt": "Risco de comportamento autolesivo não suicida"
+  },
+  {
+    "code": "00181",
+    "domain": "11",
+    "class": "4",
+    "source_page": 607,
+    "pdf_page": 763,
+    "label_pt": "Contaminação"
+  },
+  {
+    "code": "00180",
+    "domain": "11",
+    "class": "4",
+    "source_page": 610,
+    "pdf_page": 767,
+    "label_pt": "Risco de contaminação"
+  },
+  {
+    "code": "00469",
+    "domain": "11",
+    "class": "4",
+    "source_page": 612,
+    "pdf_page": 769,
+    "label_pt": "Risco de envenenamento acidental"
+  },
+  {
+    "code": "00404",
+    "domain": "11",
+    "class": "4",
+    "source_page": 614,
+    "pdf_page": 771,
+    "label_pt": "Risco de doenças ocupacionais"
+  },
+  {
+    "code": "00402",
+    "domain": "11",
+    "class": "4",
+    "source_page": 616,
+    "pdf_page": 773,
+    "label_pt": "Risco de lesões físicas ocupacionais"
+  },
+  {
+    "code": "00217",
+    "domain": "11",
+    "class": "5",
+    "source_page": 618,
+    "pdf_page": 775,
+    "label_pt": "Risco de reação alérgica"
+  },
+  {
+    "code": "00042",
+    "domain": "11",
+    "class": "5",
+    "source_page": 619,
+    "pdf_page": 776,
+    "label_pt": "Risco de reação alérgica ao látex"
+  },
+  {
+    "code": "00008",
+    "domain": "11",
+    "class": "6",
+    "source_page": 620,
+    "pdf_page": 778,
+    "label_pt": "Termorregulação ineficaz"
+  },
+  {
+    "code": "00274",
+    "domain": "11",
+    "class": "6",
+    "source_page": 621,
+    "pdf_page": 780,
+    "label_pt": "Risco de termorregulação ineficaz"
+  },
+  {
+    "code": "00474",
+    "domain": "11",
+    "class": "6",
+    "source_page": 622,
+    "pdf_page": 781,
+    "label_pt": "Diminuição da temperatura corporal neonatal"
+  },
+  {
+    "code": "00476",
+    "domain": "11",
+    "class": "6",
+    "source_page": 624,
+    "pdf_page": 784,
+    "label_pt": "Risco de diminuição da temperatura corporal neonatal"
+  },
+  {
+    "code": "00472",
+    "domain": "11",
+    "class": "6",
+    "source_page": 626,
+    "pdf_page": 786,
+    "label_pt": "Diminuição da temperatura corporal"
+  },
+  {
+    "code": "00473",
+    "domain": "11",
+    "class": "6",
+    "source_page": 628,
+    "pdf_page": 789,
+    "label_pt": "Risco de diminuição da temperatura corporal"
+  },
+  {
+    "code": "00490",
+    "domain": "11",
+    "class": "6",
+    "source_page": 629,
+    "pdf_page": 791,
+    "label_pt": "Risco de diminuição da temperatura corporal perioperatória"
+  },
+  {
+    "code": "00007",
+    "domain": "11",
+    "class": "6",
+    "source_page": 630,
+    "pdf_page": 793,
+    "label_pt": "Hipertermia"
+  },
+  {
+    "code": "00471",
+    "domain": "11",
+    "class": "6",
+    "source_page": 632,
+    "pdf_page": 796,
+    "label_pt": "Risco de hipertermia"
+  },
+  {
+    "code": "00380",
+    "domain": "12",
+    "class": "1",
+    "source_page": 637,
+    "pdf_page": 801,
+    "label_pt": "Conforto físico prejudicado"
+  },
+  {
+    "code": "00378",
+    "domain": "12",
+    "class": "1",
+    "source_page": 639,
+    "pdf_page": 803,
+    "label_pt": "Prontidão para maior conforto físico"
+  },
+  {
+    "code": "00342",
+    "domain": "12",
+    "class": "1",
+    "source_page": 640,
+    "pdf_page": 804,
+    "label_pt": "Síndrome de conforto no fim da vida prejudicada"
+  },
+  {
+    "code": "00132",
+    "domain": "12",
+    "class": "1",
+    "source_page": 641,
+    "pdf_page": 806,
+    "label_pt": "Dor aguda"
+  },
+  {
+    "code": "00255",
+    "domain": "12",
+    "class": "1",
+    "source_page": 642,
+    "pdf_page": 807,
+    "label_pt": "Síndrome da dor crônica"
+  },
+  {
+    "code": "00133",
+    "domain": "12",
+    "class": "1",
+    "source_page": 643,
+    "pdf_page": 809,
+    "label_pt": "dor crônica"
+  },
+  {
+    "code": "00256",
+    "domain": "12",
+    "class": "1",
+    "source_page": 645,
+    "pdf_page": 811,
+    "label_pt": "dor do parto"
+  },
+  {
+    "code": "00376",
+    "domain": "12",
+    "class": "3",
+    "source_page": 647,
+    "pdf_page": 814,
+    "label_pt": "Prontidão para maior conforto social"
+  },
+  {
+    "code": "00383",
+    "domain": "12",
+    "class": "3",
+    "source_page": 648,
+    "pdf_page": 815,
+    "label_pt": "Conexões sociais inadequadas"
+  },
+  {
+    "code": "00358",
+    "domain": "12",
+    "class": "3",
+    "source_page": 650,
+    "pdf_page": 817,
+    "label_pt": "Rede de apoio social inadequada"
+  },
+  {
+    "code": "00475",
+    "domain": "12",
+    "class": "3",
+    "source_page": 652,
+    "pdf_page": 819,
+    "label_pt": "Solidão excessiva"
+  },
+  {
+    "code": "00335",
+    "domain": "12",
+    "class": "3",
+    "source_page": 653,
+    "pdf_page": 821,
+    "label_pt": "Risco de solidão excessiva"
+  },
+  {
+    "code": "00379",
+    "domain": "12",
+    "class": "4",
+    "source_page": 654,
+    "pdf_page": 823,
+    "label_pt": "Conforto psicológico prejudicado"
+  },
+  {
+    "code": "00377",
+    "domain": "12",
+    "class": "4",
+    "source_page": 656,
+    "pdf_page": 825,
+    "label_pt": "Prontidão para um maior conforto psicológico"
+  },
+  {
+    "code": "00348",
+    "domain": "13",
+    "class": "1",
+    "source_page": 658,
+    "pdf_page": 827,
+    "label_pt": "Atraso no crescimento infantil"
+  },
+  {
+    "code": "00478",
+    "domain": "13",
+    "class": "1",
+    "source_page": 660,
+    "pdf_page": 830,
+    "label_pt": "Risco de atraso no crescimento infantil"
+  },
+  {
+    "code": "00314",
+    "domain": "13",
+    "class": "2",
+    "source_page": 662,
+    "pdf_page": 831,
+    "label_pt": "Atraso no desenvolvimento infantil"
+  },
+  {
+    "code": "00305",
+    "domain": "13",
+    "class": "2",
+    "source_page": 664,
+    "pdf_page": 834,
+    "label_pt": "Risco de atraso no desenvolvimento infantil"
+  },
+  {
+    "code": "00315",
+    "domain": "13",
+    "class": "2",
+    "source_page": 666,
+    "pdf_page": 836,
+    "label_pt": "Atraso no desenvolvimento motor infantil"
+  },
+  {
+    "code": "00316",
+    "domain": "13",
+    "class": "2",
+    "source_page": 668,
+    "pdf_page": 838,
+    "label_pt": "Risco de atraso no desenvolvimento motor infantil"
+  },
+  {
+    "code": "00451",
+    "domain": "13",
+    "class": "2",
+    "source_page": 670,
+    "pdf_page": 841,
+    "label_pt": "Organização neurodesenvolvimental infantil prejudicada"
+  },
+  {
+    "code": "00452",
+    "domain": "13",
+    "class": "2",
+    "source_page": 672,
+    "pdf_page": 844,
+    "label_pt": "Risco de comprometimento da organização do neurodesenvolvimento infantil"
+  },
+  {
+    "code": "00453",
+    "domain": "13",
+    "class": "2",
+    "source_page": 674,
+    "pdf_page": 846,
+    "label_pt": "Preparação para uma melhor organização do neurodesenvolvimento infantil"
+  },
+  {
+    "code": "00295",
+    "domain": "13",
+    "class": "2",
+    "source_page": 675,
+    "pdf_page": 847,
+    "label_pt": "Resposta de sucção-deglutição ineficaz em bebês"
+  }
+]

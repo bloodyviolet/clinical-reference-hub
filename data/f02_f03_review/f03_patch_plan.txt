@@ -1,0 +1,4 @@
+F-03 corrections for the future immutable candidate only:
+00278: Ineffective lymphooooedema self-management -> Ineffective lymphoedema self-management
+00281: Risk for ineffective lymphooooedema self-management -> Risk for ineffective lymphoedema self-management
+No current production DB is modified by this artifact.

@@ -1,0 +1,20 @@
+F-02/F-03 FINAL CORPUS QC
+========================
+NIC modules: 110
+NOC modules: 115
+NIC status counts: {'EVIDENCE_REVIEWED_RECOVERED_OR_DRIFT_DRAFT': 34, 'EVIDENCE_REVIEWED_AUTHOR_NEW_DRAFT': 51, 'EVIDENCE_REVIEWED_HIGH_RISK_DRAFT': 25}
+NOC status counts: {'EVIDENCE_REVIEWED_RECOVERED_OR_DRIFT_DRAFT': 37, 'EVIDENCE_REVIEWED_AUTHOR_NEW_DRAFT': 66, 'EVIDENCE_REVIEWED_HIGH_RISK_DRAFT': 12}
+Unique evidence URLs: 82 across 15 approved authoritative domains
+Exact duplicate NIC bodies: 0
+Exact duplicate NOC bodies: 0
+Near-duplicate NIC pairs >=0.76: 0
+Near-duplicate NOC pairs >=0.76: 0
+Old F-02 generic boilerplate markers: absent
+Universal 2/5->4/5 target pattern: absent
+Fixed medication doses/universal physiologic targets invented locally: none detected
+Current EN/PT code-label title alignment: PASS
+EN/PT numeric consistency and clause-structure parity: PASS
+Therapeutic Touch 5465: explicit evidence limitation and non-substitution boundary: PASS
+F-03 typo patch queued; not applied to production.
+
+QC RESULT: PASS — no blocking corpus-level issues detected.

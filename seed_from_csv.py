@@ -1,19 +1,10 @@
-import csv
-import requests
+"""Backward-compatible entry point for the SAE CSV seeder.
 
-API_URL = "http://127.0.0.1:8000/sae/"
-CSV_FILE = "nanda.csv"
+The old version POSTed each row to an API endpoint that no longer exists.
+This wrapper now uses the transactional local seeder instead.
+"""
+from seed_sae import seed_database
 
-# Open and read the CSV file
-with open(CSV_FILE, mode='r', encoding='utf-8') as file:
-    reader = csv.DictReader(file)
-    
-    # Loop through each row in the spreadsheet
-    for row in reader:
-        # The CSV headers match our API payload perfectly
-        response = requests.post(API_URL, json=row)
-        
-        if response.status_code == 200:
-            print(f"Successfully added NANDA: {row['code']}")
-        else:
-            print(f"Failed to add {row['code']}: {response.text}")
+
+if __name__ == "__main__":
+    seed_database()

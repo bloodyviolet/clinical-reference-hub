@@ -1,0 +1,11 @@
+{
+  "name": "medical-api-dashboard-assets",
+  "private": true,
+  "scripts": {
+    "build:css": "node scripts/build_css.cjs"
+  },
+  "devDependencies": {
+    "postcss": "8.5.6",
+    "tailwindcss": "4.1.10"
+  }
+}

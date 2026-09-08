@@ -1,0 +1,18 @@
+F-03 source-drift observation during F-02E3
+==============================================
+
+NANDA 00278
+Observed source: 'Ineffective lymphooooedema self-management'
+Review artifact anticipated: 'Ineffective lymphooooedema self-management'
+Canonical replacement: 'Ineffective lymphoedema self-management'
+
+NANDA 00281
+Observed source: 'Risk for ineffective lymphooooedema self-management'
+Review artifact anticipated: 'Risk for ineffective lymphooooedema self-management'
+Canonical replacement: 'Risk for ineffective lymphoedema self-management'
+
+Resolution:
+The candidate generator accepts only the reviewed
+lymphoedema records and only repeated-'o' corruption
+that normalizes exactly to the canonical reviewed label.
+All other F-03 source drift remains fatal.

@@ -2,35 +2,15 @@
 <html lang="pt-BR" class="h-full bg-slate-950 text-slate-100">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0d9488">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="/manifest.json?v=611">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
   <title>Clinical Reference & SUS Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#f0fdfa',
-              500: '#14b8a6',
-              600: '#0d9488',
-              700: '#0f766e',
-            }
-          }
-        }
-      }
-    }
-    
-    // PWA Service Worker Registration
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('App Pronto para Instalação'))
-        .catch(err => console.log('Erro no SW', err));
-    }
-  </script>
+  <link rel="stylesheet" href="/assets/app.css">
 </head>
 <body class="h-full flex flex-col font-sans antialiased selection:bg-teal-500 selection:text-white">
 
@@ -47,9 +27,9 @@
         </div>
       </div>
       <div class="flex items-center space-x-2 text-xs font-medium">
-        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-          <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          API Online
+        <span id="api-status" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-500/10 text-slate-300 border border-slate-500/20">
+          <span id="api-status-dot" class="w-1.5 h-1.5 mr-1.5 rounded-full bg-slate-400"></span>
+          <span id="api-status-text" aria-live="polite">Verificando API...</span>
         </span>
       </div>
     </div>
@@ -59,89 +39,90 @@
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
     
     <!-- Tab Switcher -->
-    <div class="flex border-b border-slate-800 space-x-6 overflow-x-auto pb-1 scrollbar-hide">
-      <button id="tab-btn-sae" onclick="switchTab('sae')" class="whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition">
+    <div class="flex border-b border-slate-800 space-x-6 overflow-x-auto pb-1 scrollbar-hide" role="tablist" aria-label="Seções do dashboard">
+      <button id="tab-btn-sae" role="tab" aria-controls="view-sae" aria-selected="true" data-tab="sae" class="whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition">
         Diagnósticos SAE
       </button>
-      <button id="tab-btn-policy" onclick="switchTab('policy')" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+      <button id="tab-btn-policy" role="tab" aria-controls="view-policy" aria-selected="false" data-tab="policy" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
         Políticas (SUS)
       </button>
-      <button id="tab-btn-calc" onclick="switchTab('calc')" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+      <button id="tab-btn-calc" role="tab" aria-controls="view-calc" aria-selected="false" data-tab="calc" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
         Calculadoras
       </button>
-      <button id="tab-btn-scales" onclick="switchTab('scales')" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+      <button id="tab-btn-scales" role="tab" aria-controls="view-scales" aria-selected="false" data-tab="scales" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
         Escalas Clínicas
       </button>
     </div>
 
     <!-- VIEW 1: SAE Search -->
-    <section id="view-sae" class="space-y-6">
+    <section id="view-sae" role="tabpanel" aria-labelledby="tab-btn-sae" class="space-y-6">
       <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 class="text-base font-semibold text-white">Buscar Diagnóstico NANDA</h2>
             <p class="text-xs text-slate-400">Digite o código (ex: 00355) ou palavra-chave (ex: ansiedade) para links NIC/NOC.</p>
+            <p class="text-[11px] text-amber-300/90 mt-1">Mapeamentos primários curados para NANDA-I 2024–2026 (13ª ed.), NIC 8ª ed. e NOC 7ª ed., com nível de confiança e referência por diagnóstico. Não constituem crosswalk oficial e exigem julgamento clínico.</p>
           </div>
-          <!-- Restored Static PDF Button for NANDA -->
-          <a target="_blank" href="/docs/Nanda-I%202024-2026.pdf" class="inline-flex items-center justify-center px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white rounded-xl text-xs font-bold uppercase tracking-wide transition shadow-lg shadow-teal-600/20 shrink-0">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-            NANDA-I 2024-2026 (PDF)
+          <a target="_blank" rel="noopener noreferrer" href="/docs/Nanda-I%202024-2026.pdf" class="inline-flex items-center justify-center px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white rounded-xl text-xs font-bold uppercase tracking-wide transition shadow-lg shadow-teal-600/20 shrink-0">
+            NANDA-I 2024–2026 (PDF)
           </a>
         </div>
         
-        <form onsubmit="searchSAE(event)" class="flex gap-3 max-w-xl pt-2 border-t border-slate-800 mt-4">
-          <input type="text" id="sae-input" placeholder="Ex: 00355, ansiedade, pain..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition" required />
+        <form id="sae-search-form" class="flex gap-3 max-w-xl pt-2 border-t border-slate-800 mt-4">
+          <input type="text" id="sae-input" aria-label="Buscar diagnóstico por código ou palavra-chave" placeholder="Ex: 00355, ansiedade, pain..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition" required />
           <button type="submit" class="bg-teal-600 hover:bg-teal-500 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-teal-600/20 active:scale-95">Consultar</button>
         </form>
       </div>
-      <div id="sae-result" class="hidden space-y-6"></div>
+      <div id="sae-result" aria-live="polite" class="hidden space-y-6"></div>
     </section>
 
     <!-- VIEW 2: Policies Explorer -->
-    <section id="view-policy" class="hidden space-y-6">
+    <section id="view-policy" role="tabpanel" aria-labelledby="tab-btn-policy" class="hidden space-y-6">
       <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 class="text-base font-semibold text-white">Diretrizes e Políticas de Saúde Pública</h2>
             <p class="text-xs text-slate-400">Selecione uma política do Ministério da Saúde para carregar suas diretrizes operacionais.</p>
           </div>
-          <!-- Restored Dynamic PDF Button for Policies -->
-          <a id="pdf-link" target="_blank" href="#" class="hidden items-center justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold uppercase tracking-wide transition shadow-lg shadow-indigo-600/20 shrink-0">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-            Documento Oficial (PDF)
-          </a>
-        </div>
-        <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-800 mt-4">
-          <button onclick="loadPolicy('PNAISM')" class="policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISM</button>
-          <button onclick="loadPolicy('PNAISH')" class="policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISH</button>
-          <button onclick="loadPolicy('PNAISC')" class="policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISC</button>
-          <button onclick="loadPolicy('PNAB')" class="policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAB</button>
-          <button onclick="loadPolicy('PNSPI')" class="policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNSPI</button>
-        </div>
-      </div>
-      <div id="policy-loading" class="hidden text-center py-12 text-slate-400 text-sm">Carregando diretrizes...</div>
-      <div id="policy-results" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-    </section>
+         <!-- Restored Dynamic PDF Button for Policies -->
+                   <a id="pdf-link" target="_blank" href="#" class="hidden inline-flex items-center justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold uppercase tracking-wide transition shadow-lg shadow-indigo-600/20 shrink-0">
+                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                     Documento Oficial (PDF)
+                   </a>
+                 </div>
+                 <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-800 mt-4">
+                   <button data-policy="PNAISM" class="policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISM</button>
+                   <button data-policy="PNAISH" class="policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISH</button>
+                   <button data-policy="PNAISC" class="policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAISC</button>
+                   <button data-policy="PNAB" class="policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNAB</button>
+                   <button data-policy="PNSTT" class="policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNSTT</button>
+                   <button data-policy="PNSPI" class="policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNSPI</button>
+                   <button data-policy="PNSIPN" class="policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">PNSIPN</button>                   
+                 </div>
+               </div>
+               <div id="policy-loading" aria-live="polite" class="hidden text-center py-12 text-slate-400 text-sm">Carregando diretrizes...</div>
+               <div id="policy-results" aria-live="polite" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+             </section>
 
     <!-- VIEW 3: Clinical Calculators -->
-    <section id="view-calc" class="hidden space-y-6">
+    <section id="view-calc" role="tabpanel" aria-labelledby="tab-btn-calc" class="hidden space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
         <!-- Gotejamento -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <h2 class="text-base font-semibold text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan-500"></span>Cálculo de Gotejamento</h2>
-          <form onsubmit="calculateDrip(event)" class="space-y-3 pt-2 border-t border-slate-800">
+          <form id="drip-form" class="space-y-3 pt-2 border-t border-slate-800">
             <div>
-              <label class="block text-[10px] font-semibold text-slate-400 uppercase">Volume Total (mL)</label>
-              <input type="number" step="1" id="drip-v" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-cyan-500" required />
+              <label for="drip-v" class="block text-[10px] font-semibold text-slate-400 uppercase">Volume Total (mL)</label>
+              <input type="number" step="1" min="1" max="100000" id="drip-v" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-cyan-500" required />
             </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Tempo</label>
-                <input type="number" step="1" id="drip-t" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-cyan-500" required />
+                <label for="drip-t" class="block text-[10px] font-semibold text-slate-400 uppercase">Tempo</label>
+                <input type="number" step="1" min="1" max="100000" id="drip-t" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-cyan-500" required />
               </div>
               <div>
-                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Unidade</label>
+                <label for="drip-u" class="block text-[10px] font-semibold text-slate-400 uppercase">Unidade</label>
                 <select id="drip-u" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-cyan-500">
                   <option value="h">Horas</option><option value="m">Minutos</option>
                 </select>
@@ -149,155 +130,171 @@
             </div>
             <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular Fluxo</button>
           </form>
-          <div id="drip-result" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+          <p class="text-[10px] text-slate-500">Fatores padrão exibidos: macrogotas 20 gotas/mL · microgotas 60 microgotas/mL. Confirme o fator nominal do equipo utilizado.</p>
+          <div id="drip-result" aria-live="polite" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
 
         <!-- Calculo de Medicamentos -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <h2 class="text-base font-semibold text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-rose-500"></span>Dosagem (Regra de Três)</h2>
-          <form onsubmit="calculateMeds(event)" class="space-y-3 pt-2 border-t border-slate-800">
+          <form id="meds-form" class="space-y-3 pt-2 border-t border-slate-800">
             <div>
-              <label class="block text-[10px] font-semibold text-slate-400 uppercase">Dose Prescrita (ex: 250mg)</label>
-              <input type="number" step="0.1" id="med-presc" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-rose-500" required />
+              <label class="block text-[10px] font-semibold text-slate-400 uppercase" for="med-presc">Dose Prescrita</label>
+              <div class="grid grid-cols-[1fr_auto] gap-2">
+                <input type="number" step="0.001" min="0.001" id="med-presc" placeholder="Ex: 1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-rose-500" required />
+                <select id="med-presc-unit" aria-label="Unidade da dose prescrita" class="bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-sm text-white">
+                  <option value="mcg">mcg</option><option value="mg" selected>mg</option><option value="g">g</option><option value="UI">UI</option><option value="mEq">mEq</option>
+                </select>
+              </div>
             </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Dose Ampola</label>
-                <input type="number" step="0.1" id="med-disp" placeholder="Ex: 500" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-rose-500" required />
+                <label class="block text-[10px] font-semibold text-slate-400 uppercase" for="med-disp">Dose Disponível</label>
+                <input type="number" step="0.001" min="0.001" id="med-disp" placeholder="Ex: 500" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-rose-500" required />
+                <select id="med-disp-unit" aria-label="Unidade da dose disponível" class="mt-2 w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-sm text-white">
+                  <option value="mcg">mcg</option><option value="mg" selected>mg</option><option value="g">g</option><option value="UI">UI</option><option value="mEq">mEq</option>
+                </select>
               </div>
               <div>
-                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Vol. Ampola (mL)</label>
-                <input type="number" step="0.1" id="med-vol" placeholder="Ex: 5" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-rose-500" required />
+                <label class="block text-[10px] font-semibold text-slate-400 uppercase" for="med-vol">Vol. Disponível (mL)</label>
+                <input type="number" step="0.01" min="0.01" max="10000" id="med-vol" placeholder="Ex: 5" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-rose-500" required />
               </div>
             </div>
             <button type="submit" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular Volume a Aspirar</button>
           </form>
-          <div id="med-result" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+          <div id="med-result" aria-live="polite" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
 
         <!-- IMC -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <h2 class="text-base font-semibold text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>IMC (OMS/OPAS)</h2>
-          <form onsubmit="calculateBMI(event)" class="space-y-3 pt-2 border-t border-slate-800">
+          <form id="bmi-form" class="space-y-3 pt-2 border-t border-slate-800">
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Peso (kg)</label>
-                <input type="number" step="0.1" id="bmi-w" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-emerald-500" required />
+                <label for="bmi-w" class="block text-[10px] font-semibold text-slate-400 uppercase">Peso (kg)</label>
+                <input type="number" step="0.1" min="0.5" max="500" id="bmi-w" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-emerald-500" required />
               </div>
               <div>
-                <label class="block text-[10px] font-semibold text-slate-400 uppercase">Altura (m)</label>
-                <input type="number" step="0.01" id="bmi-h" placeholder="Ex: 1.75" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-emerald-500" required />
+                <label for="bmi-h" class="block text-[10px] font-semibold text-slate-400 uppercase">Altura (m)</label>
+                <input type="number" step="0.01" min="0.3" max="2.6" id="bmi-h" placeholder="Ex: 1.75" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-emerald-500" required />
               </div>
             </div>
             <div>
-              <label class="block text-[10px] font-semibold text-slate-400 uppercase">Idade do Paciente</label>
-              <input type="number" id="bmi-age" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-emerald-500" required />
+              <label for="bmi-age" class="block text-[10px] font-semibold text-slate-400 uppercase">Idade do Paciente</label>
+              <input type="number" min="0" max="120" id="bmi-age" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-emerald-500" required />
             </div>
             <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular IMC</button>
           </form>
-          <div id="bmi-result" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+          <div id="bmi-result" aria-live="polite" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
 
         <!-- Holliday-Segar -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <h2 class="text-base font-semibold text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-sky-500"></span>Regra de Holliday-Segar</h2>
-          <form onsubmit="calculatePed(event)" class="space-y-3 pt-2 border-t border-slate-800">
+          <form id="ped-form" class="space-y-3 pt-2 border-t border-slate-800">
             <div>
-              <label class="block text-[10px] font-semibold text-slate-400 uppercase">Peso da Criança (kg)</label>
-              <input type="number" step="0.1" id="ped-w" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-sky-500" required />
+              <label for="ped-w" class="block text-[10px] font-semibold text-slate-400 uppercase">Peso da Criança (kg)</label>
+              <input type="number" step="0.1" min="0.5" max="200" id="ped-w" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-sky-500" required />
             </div>
             <button type="submit" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular Hidratação</button>
           </form>
-          <div id="ped-result" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+          <div id="ped-result" aria-live="polite" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
 
         <!-- CrCl -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <h2 class="text-base font-semibold text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-500"></span>Cockcroft-Gault (CrCl)</h2>
-          <form onsubmit="calculateCrCl(event)" class="space-y-3 pt-2 border-t border-slate-800">
+          <form id="crcl-form" class="space-y-3 pt-2 border-t border-slate-800">
             <div class="grid grid-cols-2 gap-3">
-              <div><label class="block text-[10px] font-semibold text-slate-400 uppercase">Idade</label><input type="number" id="crcl-age" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-amber-500" required /></div>
-              <div><label class="block text-[10px] font-semibold text-slate-400 uppercase">Peso (kg)</label><input type="number" step="0.1" id="crcl-w" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-amber-500" required /></div>
-              <div><label class="block text-[10px] font-semibold text-slate-400 uppercase">Cr (mg/dL)</label><input type="number" step="0.01" id="crcl-cr" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-amber-500" required /></div>
-              <div><label class="block text-[10px] font-semibold text-slate-400 uppercase">Sexo</label><select id="crcl-sex" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-amber-500"><option value="M">M</option><option value="F">F</option></select></div>
+              <div><label for="crcl-age" class="block text-[10px] font-semibold text-slate-400 uppercase">Idade</label><input type="number" min="18" max="120" id="crcl-age" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-amber-500" required /></div>
+              <div><label for="crcl-w" class="block text-[10px] font-semibold text-slate-400 uppercase">Peso (kg)</label><input type="number" step="0.1" min="1" max="500" id="crcl-w" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-amber-500" required /></div>
+              <div><label for="crcl-cr" class="block text-[10px] font-semibold text-slate-400 uppercase">Cr (mg/dL)</label><input type="number" step="0.01" min="0.1" max="30" id="crcl-cr" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-amber-500" required /></div>
+              <div><label for="crcl-sex" class="block text-[10px] font-semibold text-slate-400 uppercase">Sexo</label><select id="crcl-sex" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-amber-500"><option value="M">M</option><option value="F">F</option></select></div>
             </div>
             <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular Clearance</button>
           </form>
-          <div id="crcl-result" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+          <div id="crcl-result" aria-live="polite" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
         
         <!-- Naegele & McDonald -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <h2 class="text-base font-semibold text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-pink-500"></span>Obstetrícia</h2>
           
-          <form onsubmit="calculateNaegele(event)" class="space-y-3 pt-2 border-t border-slate-800">
+          <form id="naegele-form" class="space-y-3 pt-2 border-t border-slate-800">
             <div>
-              <label class="block text-[10px] font-semibold text-slate-400 uppercase">Data da Última Menstruação (DUM)</label>
+              <label for="dum-input" class="block text-[10px] font-semibold text-slate-400 uppercase">Data da Última Menstruação (DUM)</label>
               <div class="flex gap-2">
                 <input type="date" id="dum-input" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-pink-500" required />
                 <button type="submit" class="bg-pink-600 hover:bg-pink-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">DPP</button>
               </div>
             </div>
           </form>
-          <div id="naegele-result" class="hidden p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+          <div id="naegele-result" aria-live="polite" class="hidden p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
 
-          <form onsubmit="calculateMcDonald(event)" class="space-y-3 pt-2 border-t border-slate-800">
+          <form id="mcdonald-form" class="space-y-3 pt-2 border-t border-slate-800">
             <div>
-              <label class="block text-[10px] font-semibold text-slate-400 uppercase">Altura Uterina em cm (Regra de McDonald)</label>
+              <label for="au-input" class="block text-[10px] font-semibold text-slate-400 uppercase">Altura Uterina em cm (Regra de McDonald)</label>
               <div class="flex gap-2">
-                <input type="number" step="0.1" id="au-input" placeholder="Ex: 24" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-indigo-500" required />
+                <input type="number" step="0.1" min="10" max="45" id="au-input" placeholder="Ex: 24" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-indigo-500" required />
                 <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">IG</button>
               </div>
             </div>
           </form>
-          <div id="mcdonald-result" class="hidden p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+          <div id="mcdonald-result" aria-live="polite" class="hidden p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
 
       </div>
     </section>
 
     <!-- VIEW 4: Escalas Clínicas -->
-    <section id="view-scales" class="hidden space-y-6">
+    <section id="view-scales" role="tabpanel" aria-labelledby="tab-btn-scales" class="hidden space-y-6">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         <!-- Glasgow -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <h2 class="text-base font-semibold text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-500"></span>Escala de Coma de Glasgow</h2>
-          <form onchange="scoreGlasgow()" class="space-y-4 pt-2 border-t border-slate-800">
+          <form id="glasgow-form" class="space-y-4 pt-2 border-t border-slate-800">
             <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1">Abertura Ocular</label>
-              <select id="glasgow-e" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-purple-500"><option value="4">4 - Espontânea</option><option value="3">3 - À voz</option><option value="2">2 - À dor</option><option value="1">1 - Nenhuma</option></select>
+              <label for="glasgow-e" class="block text-xs font-semibold text-slate-300 mb-1">Abertura Ocular</label>
+              <select id="glasgow-e" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-purple-500"><option value="" selected disabled>Selecione...</option><option value="4">4 - Espontânea</option><option value="3">3 - À voz</option><option value="2">2 - À pressão</option><option value="1">1 - Nenhuma</option><option value="NT">NT - Não testável</option></select>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1">Resposta Verbal</label>
-              <select id="glasgow-v" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-purple-500"><option value="5">5 - Orientada</option><option value="4">4 - Confusa</option><option value="3">3 - Palavras Inapropriadas</option><option value="2">2 - Sons Incompreensíveis</option><option value="1">1 - Nenhuma</option></select>
+              <label for="glasgow-v" class="block text-xs font-semibold text-slate-300 mb-1">Resposta Verbal</label>
+              <select id="glasgow-v" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-purple-500"><option value="" selected disabled>Selecione...</option><option value="5">5 - Orientada</option><option value="4">4 - Confusa</option><option value="3">3 - Palavras</option><option value="2">2 - Sons</option><option value="1">1 - Nenhuma</option><option value="NT">NT - Não testável (ex: tubo traqueal)</option></select>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1">Resposta Motora</label>
-              <select id="glasgow-m" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-purple-500"><option value="6">6 - Obedece a comandos</option><option value="5">5 - Localiza a dor</option><option value="4">4 - Flexão normal (retirada)</option><option value="3">3 - Flexão anormal (decorticação)</option><option value="2">2 - Extensão (descerebração)</option><option value="1">1 - Nenhuma</option></select>
+              <label for="glasgow-m" class="block text-xs font-semibold text-slate-300 mb-1">Resposta Motora</label>
+              <select id="glasgow-m" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-purple-500"><option value="" selected disabled>Selecione...</option><option value="6">6 - Obedece a comandos</option><option value="5">5 - Localiza estímulo</option><option value="4">4 - Flexão normal (retirada)</option><option value="3">3 - Flexão anormal</option><option value="2">2 - Extensão</option><option value="1">1 - Nenhuma</option><option value="NT">NT - Não testável</option></select>
             </div>
           </form>
           <div class="mt-4 p-4 rounded-xl bg-purple-900/20 border border-purple-500/30 text-center">
             <p class="text-xs text-purple-300 uppercase tracking-wide font-bold">Pontuação Total</p>
-            <p id="glasgow-total" class="text-4xl font-black text-white mt-1">15</p>
+            <p id="glasgow-total" aria-live="polite" class="text-4xl font-black text-white mt-1">—</p><p id="glasgow-note" aria-live="polite" class="text-[11px] text-slate-400 mt-2">Selecione todos os componentes.</p>
           </div>
         </div>
 
         <!-- Apgar -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <h2 class="text-base font-semibold text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-fuchsia-500"></span>Índice de Apgar</h2>
-          <form onchange="scoreApgar()" class="space-y-4 pt-2 border-t border-slate-800">
+          <form id="apgar-form" class="space-y-4 pt-2 border-t border-slate-800">
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-400 uppercase mb-1" for="apgar-time">Momento da avaliação</label>
+              <select id="apgar-time" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-xs text-white">
+                <option value="" selected disabled>Selecione...</option><option value="1">1 minuto</option><option value="5">5 minutos</option><option value="10">10 minutos / reavaliação</option>
+              </select>
+            </div>
             <div class="grid grid-cols-2 gap-4">
-              <div><label class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Aparência (Cor)</label><select id="apgar-a" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-xs text-white focus:ring-2 focus:ring-fuchsia-500"><option value="2">2 - Rosado</option><option value="1">1 - Acrocianose</option><option value="0">0 - Cianose central</option></select></div>
-              <div><label class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Pulso (FC)</label><select id="apgar-p" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-xs text-white focus:ring-2 focus:ring-fuchsia-500"><option value="2">2 - > 100 bpm</option><option value="1">1 - < 100 bpm</option><option value="0">0 - Ausente</option></select></div>
-              <div><label class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Gesticulação</label><select id="apgar-g" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-xs text-white focus:ring-2 focus:ring-fuchsia-500"><option value="2">2 - Choro/Tosse</option><option value="1">1 - Careta</option><option value="0">0 - Sem resposta</option></select></div>
-              <div><label class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Atividade (Tônus)</label><select id="apgar-t" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-xs text-white focus:ring-2 focus:ring-fuchsia-500"><option value="2">2 - Movimento Ativo</option><option value="1">1 - Flexão leve</option><option value="0">0 - Flácido</option></select></div>
-              <div class="col-span-2"><label class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Respiração</label><select id="apgar-r" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-xs text-white focus:ring-2 focus:ring-fuchsia-500"><option value="2">2 - Choro forte / Regular</option><option value="1">1 - Fraco / Irregular</option><option value="0">0 - Ausente</option></select></div>
+              <div><label for="apgar-a" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Aparência (Cor)</label><select id="apgar-a" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-xs text-white focus:ring-2 focus:ring-fuchsia-500"><option value="" selected disabled>Selecione...</option><option value="2">2 - Rosado</option><option value="1">1 - Acrocianose</option><option value="0">0 - Cianose central</option></select></div>
+              <div><label for="apgar-p" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Pulso (FC)</label><select id="apgar-p" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-xs text-white focus:ring-2 focus:ring-fuchsia-500"><option value="" selected disabled>Selecione...</option><option value="2">2 - > 100 bpm</option><option value="1">1 - &lt; 100 bpm</option><option value="0">0 - Ausente</option></select></div>
+              <div><label for="apgar-g" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Gesticulação</label><select id="apgar-g" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-xs text-white focus:ring-2 focus:ring-fuchsia-500"><option value="" selected disabled>Selecione...</option><option value="2">2 - Choro/Tosse</option><option value="1">1 - Careta</option><option value="0">0 - Sem resposta</option></select></div>
+              <div><label for="apgar-t" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Atividade (Tônus)</label><select id="apgar-t" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-xs text-white focus:ring-2 focus:ring-fuchsia-500"><option value="" selected disabled>Selecione...</option><option value="2">2 - Movimento Ativo</option><option value="1">1 - Flexão leve</option><option value="0">0 - Flácido</option></select></div>
+              <div class="col-span-2"><label for="apgar-r" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Respiração</label><select id="apgar-r" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-xs text-white focus:ring-2 focus:ring-fuchsia-500"><option value="" selected disabled>Selecione...</option><option value="2">2 - Choro forte / Regular</option><option value="1">1 - Fraco / Irregular</option><option value="0">0 - Ausente</option></select></div>
             </div>
           </form>
           <div class="mt-4 p-4 rounded-xl bg-fuchsia-900/20 border border-fuchsia-500/30 text-center">
-            <p class="text-xs text-fuchsia-300 uppercase tracking-wide font-bold">Vitalidade</p>
-            <p id="apgar-total" class="text-4xl font-black text-white mt-1">10</p>
+            <p class="text-xs text-fuchsia-300 uppercase tracking-wide font-bold">Pontuação Apgar</p>
+            <p id="apgar-total" aria-live="polite" class="text-4xl font-black text-white mt-1">—</p>
+            <p id="apgar-note" aria-live="polite" class="text-[11px] text-slate-400 mt-2">Informe o momento e todos os cinco componentes.</p>
           </div>
         </div>
 
@@ -306,282 +303,7 @@
 
   </main>
 
-  <script>
-    // Tab Logic
-    function switchTab(tab) {
-      const views = ['sae', 'policy', 'calc', 'scales'];
-      views.forEach(v => {
-        document.getElementById(`view-${v}`).classList.add('hidden');
-        document.getElementById(`tab-btn-${v}`).className = "whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition";
-      });
-      document.getElementById(`view-${tab}`).classList.remove('hidden');
-      document.getElementById(`tab-btn-${tab}`).className = "whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition";
-    }
-
-    // SAE API - Restored the full rich UI!
-    async function searchSAE(event) {
-      event.preventDefault();
-      const query = document.getElementById('sae-input').value.trim();
-      const container = document.getElementById('sae-result');
-      container.innerHTML = '<div class="text-sm text-slate-400">Consultando base clínica...</div>';
-      container.classList.remove('hidden');
-
-      try {
-        const response = await fetch(`/sae/search?q=${encodeURIComponent(query)}`);
-        if (!response.ok) throw new Error('Nenhum resultado encontrado.');
-        const data = await response.json();
-
-        container.innerHTML = data.map(item => `
-          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-2xl">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-              <div>
-                <span class="text-xs uppercase tracking-wider font-semibold text-teal-400">Código NANDA</span>
-                <h3 class="text-2xl font-black text-white tracking-tight">${item.code}</h3>
-              </div>
-              <span class="px-3 py-1 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg text-xs font-mono">ID #${item.id}</span>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Diagnóstico (PT)</span>
-                <p class="text-sm font-medium text-slate-100">${item.description_pt}</p>
-              </div>
-              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Diagnostic (EN)</span>
-                <p class="text-sm font-medium text-slate-100">${item.description_en}</p>
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
-                <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Intervenção / NIC (PT)</span>
-                <p class="text-sm text-slate-200">${item.intervention_pt}</p>
-              </div>
-              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
-                <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Intervention / NIC (EN)</span>
-                <p class="text-sm text-slate-200">${item.intervention_en}</p>
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
-                <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Resultado Esperado / NOC (PT)</span>
-                <p class="text-sm text-slate-200">${item.outcome_pt}</p>
-              </div>
-              <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
-                <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Expected Outcome / NOC (EN)</span>
-                <p class="text-sm text-slate-200">${item.outcome_en}</p>
-              </div>
-            </div>
-          </div>
-        `).join('');
-
-      } catch (err) {
-        container.innerHTML = `<div class="bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-rose-300 text-sm">${err.message}</div>`;
-      }
-    }
-
-    // Policy API - Restored the full rich UI!
-    async function loadPolicy(policyName) {
-      const container = document.getElementById('policy-results');
-      const loader = document.getElementById('policy-loading');
-      
-      const pdfBtn = document.getElementById('pdf-link');
-      pdfBtn.classList.remove('hidden');
-      pdfBtn.classList.add('inline-flex'); // Restore Tailwind flexbox
-      pdfBtn.href = `/docs/${policyName}.pdf`;
-
-      document.querySelectorAll('.policy-btn').forEach(btn => {
-        if (btn.innerText.includes(policyName)) {
-          btn.className = "policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-teal-600 text-white border border-teal-500 transition shadow-lg shadow-teal-600/20";
-        } else {
-          btn.className = "policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition";
-        }
-      });
-
-      container.innerHTML = '';
-      loader.classList.remove('hidden');
-
-      try {
-        const response = await fetch(policyName === 'PNAISM' ? '/pnaism/' : `/policy/${policyName}`);
-        if (!response.ok) throw new Error('Não foi possível carregar as diretrizes.');
-        const data = await response.json();
-
-        loader.classList.add('hidden');
-        container.innerHTML = data.map(item => `
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 shadow-lg hover:border-slate-700 transition flex flex-col justify-between">
-            <div class="space-y-2">
-              <div class="flex items-center justify-between gap-2">
-                <span class="px-2 py-0.5 rounded bg-teal-500/10 text-teal-400 border border-teal-500/20 text-[10px] font-bold uppercase tracking-wider">
-                  ${item.policy_name || policyName}
-                </span>
-                <span class="text-[11px] text-slate-400 font-medium">${item.target_demographic}</span>
-              </div>
-              <h4 class="text-sm font-bold text-white tracking-tight">${item.directive}</h4>
-              <p class="text-xs text-slate-300 leading-relaxed">${item.clinical_guideline}</p>
-            </div>
-          </div>
-        `).join('');
-
-      } catch (err) {
-        loader.classList.add('hidden');
-        container.innerHTML = `<div class="col-span-full bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-rose-300 text-sm text-center">${err.message}</div>`;
-      }
-    }
-
-    // Calculators
-    function calculateDrip(e) {
-      e.preventDefault();
-      const v = parseFloat(document.getElementById('drip-v').value);
-      const t = parseFloat(document.getElementById('drip-t').value);
-      const u = document.getElementById('drip-u').value;
-      
-      let gotas, micro;
-      if (u === 'h') { gotas = v / (t * 3); micro = v / t; } 
-      else { gotas = (v * 20) / t; micro = (v * 60) / t; }
-
-      const res = document.getElementById('drip-result');
-      res.classList.remove('hidden');
-      res.innerHTML = `
-        <div class="grid grid-cols-2 text-center divide-x divide-slate-800">
-          <div><p class="text-[10px] font-semibold text-slate-400 uppercase">Gotas/min</p><p class="text-2xl font-bold text-cyan-400">${Math.round(gotas)}</p></div>
-          <div><p class="text-[10px] font-semibold text-slate-400 uppercase">Microgotas/min</p><p class="text-2xl font-bold text-cyan-400">${Math.round(micro)}</p></div>
-        </div>
-      `;
-    }
-
-    function calculateMeds(e) {
-      e.preventDefault();
-      const presc = parseFloat(document.getElementById('med-presc').value);
-      const disp = parseFloat(document.getElementById('med-disp').value);
-      const vol = parseFloat(document.getElementById('med-vol').value);
-      const result = (presc * vol) / disp;
-
-      const res = document.getElementById('med-result');
-      res.classList.remove('hidden');
-      res.innerHTML = `<p class="text-[10px] font-semibold text-slate-400 uppercase">Volume a Aspirar</p><p class="text-2xl font-bold text-rose-400">${result.toFixed(2)} mL</p>`;
-    }
-
-    function calculateBMI(e) {
-      e.preventDefault();
-      const w = parseFloat(document.getElementById('bmi-w').value);
-      const h = parseFloat(document.getElementById('bmi-h').value);
-      const age = parseInt(document.getElementById('bmi-age').value);
-      const bmi = w / (h * h);
-      let classification = "";
-      
-      if (age >= 60) {
-         if (bmi < 22) classification = "Baixo peso (Risco Nutricional)";
-         else if (bmi <= 27) classification = "Adequado (Eutrófico)";
-         else classification = "Sobrepeso";
-      } else {
-         if (bmi < 18.5) classification = "Abaixo do peso";
-         else if (bmi <= 24.9) classification = "Peso normal";
-         else if (bmi <= 29.9) classification = "Sobrepeso";
-         else classification = "Obesidade";
-      }
-
-      const res = document.getElementById('bmi-result');
-      res.classList.remove('hidden');
-      res.innerHTML = `
-        <p class="text-[10px] font-semibold text-slate-400 uppercase">Tabela Aplicada: ${age >= 60 ? 'OPAS (Idoso)' : 'OMS (Adulto)'}</p>
-        <p class="text-2xl font-bold text-emerald-400 mt-1">${bmi.toFixed(1)} kg/m²</p>
-        <p class="text-sm font-medium text-white">${classification}</p>
-      `;
-    }
-
-    function calculatePed(e) {
-      e.preventDefault();
-      const w = parseFloat(document.getElementById('ped-w').value);
-      let vol = 0;
-      if (w <= 10) vol = w * 100;
-      else if (w <= 20) vol = 1000 + ((w - 10) * 50);
-      else vol = 1500 + ((w - 20) * 20);
-
-      const mlPerHour = vol / 24;
-      const res = document.getElementById('ped-result');
-      res.classList.remove('hidden');
-      res.innerHTML = `
-        <p class="text-[10px] font-semibold text-slate-400 uppercase">Volume Total de Manutenção</p>
-        <p class="text-xl font-bold text-sky-400">${vol.toFixed(0)} mL / 24h</p>
-        <hr class="border-slate-800 my-2">
-        <p class="text-[10px] font-semibold text-slate-400 uppercase">Velocidade de Infusão</p>
-        <p class="text-lg font-bold text-white">${mlPerHour.toFixed(1)} mL/h (microgotas/min)</p>
-      `;
-    }
-
-    function calculateCrCl(e) {
-      e.preventDefault();
-      const age = parseInt(document.getElementById('crcl-age').value);
-      const w = parseFloat(document.getElementById('crcl-w').value);
-      const cr = parseFloat(document.getElementById('crcl-cr').value);
-      const sex = document.getElementById('crcl-sex').value;
-
-      let crcl = ((140 - age) * w) / (72 * cr);
-      if (sex === 'F') crcl *= 0.85;
-
-      const res = document.getElementById('crcl-result');
-      res.classList.remove('hidden');
-      res.innerHTML = `<p class="text-[10px] font-semibold text-slate-400 uppercase">Taxa de Filtração Glomerular</p><p class="text-2xl font-bold text-amber-400 mt-1">${crcl.toFixed(1)} mL/min</p>`;
-    }
-
-    function calculateNaegele(e) {
-      e.preventDefault();
-      const dumStr = document.getElementById('dum-input').value;
-      if (!dumStr) return;
-      const parts = dumStr.split('-');
-      const dumDate = new Date(parts[0], parts[1] - 1, parts[2]);
-      const dppDate = new Date(dumDate);
-      dppDate.setDate(dppDate.getDate() + 7);
-      dppDate.setMonth(dppDate.getMonth() + 9);
-
-      const today = new Date();
-      today.setHours(0,0,0,0);
-      dumDate.setHours(0,0,0,0);
-      const diffTime = today - dumDate;
-      let igString = "Ainda não iniciada ou data inválida";
-      
-      if (diffTime >= 0) {
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        igString = `${Math.floor(diffDays / 7)} sem e ${diffDays % 7} dias`;
-      }
-
-      const res = document.getElementById('naegele-result');
-      res.classList.remove('hidden');
-      res.innerHTML = `
-        <p class="text-[10px] font-semibold text-slate-400 uppercase">Data Provável do Parto</p>
-        <p class="text-xl font-bold text-pink-400">${dppDate.toLocaleDateString('pt-BR')}</p>
-        <p class="text-sm text-white mt-1">IG Hoje: <span class="font-bold">${igString}</span></p>
-      `;
-    }
-
-    function calculateMcDonald(e) {
-      e.preventDefault();
-      const au = parseFloat(document.getElementById('au-input').value);
-      if (!au || au <= 0) return;
-      const totalWeeks = (au * 8) / 7;
-      const weeksInt = Math.floor(totalWeeks);
-      const days = Math.round((totalWeeks - weeksInt) * 7);
-
-      const res = document.getElementById('mcdonald-result');
-      res.classList.remove('hidden');
-      res.innerHTML = `<p class="text-[10px] font-semibold text-slate-400 uppercase">Idade Gestacional Estimada</p><p class="text-xl font-bold text-indigo-400">${weeksInt} sem e ${days} dias</p>`;
-    }
-
-    // Escalas (Automáticas)
-    function scoreGlasgow() {
-      const e = parseInt(document.getElementById('glasgow-e').value);
-      const v = parseInt(document.getElementById('glasgow-v').value);
-      const m = parseInt(document.getElementById('glasgow-m').value);
-      document.getElementById('glasgow-total').innerText = e + v + m;
-    }
-    
-    function scoreApgar() {
-      const a = parseInt(document.getElementById('apgar-a').value);
-      const p = parseInt(document.getElementById('apgar-p').value);
-      const g = parseInt(document.getElementById('apgar-g').value);
-      const t = parseInt(document.getElementById('apgar-t').value);
-      const r = parseInt(document.getElementById('apgar-r').value);
-      document.getElementById('apgar-total').innerText = a + p + g + t + r;
-    }
-  </script>
+  <script src="/assets/app.js" defer></script>
 
   <!-- Footer -->
   <footer class="mt-12 border-t border-slate-800 bg-slate-900/30 py-6">

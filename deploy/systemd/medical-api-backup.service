@@ -1,0 +1,32 @@
+[Unit]
+Description=Backup Medical API SQLite database
+After=medical-api.service
+
+[Service]
+Type=oneshot
+User=medical-api
+Group=medical-api
+WorkingDirectory=/opt/medical-api/app
+EnvironmentFile=/etc/medical-api/medical-api.env
+Environment=MEDICAL_API_PYTHON=/opt/medical-api/app/.venv/bin/python
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/medical-api/app/.venv/bin/python /opt/medical-api/app/scripts/backup_db.py --keep 14
+UMask=0027
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ProtectKernelLogs=true
+ProtectClock=true
+LockPersonality=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+AmbientCapabilities=
+ReadWritePaths=/var/lib/medical-api

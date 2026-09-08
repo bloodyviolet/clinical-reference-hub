@@ -1,0 +1,25 @@
+{
+  "database_revision": "0007",
+  "guidance_f03_count": 2,
+  "guidance_nic_count": 110,
+  "guidance_noc_count": 115,
+  "guidance_patch_sha256": "1f86859b4dbad584b060dee3c8f8dc824be57cbf686e8f780d78b2cb2a45785e",
+  "guidance_semantic_sha256": "78fac32c701c6585522a22449af7fc21bd1fad2f21bd1748500ad00816d2efc2",
+  "link_classifications": {
+    "NIC": 300,
+    "NOC": 327
+  },
+  "link_count": 627,
+  "link_roles": {
+    "alternative": 73,
+    "primary": 554
+  },
+  "links_semantic_sha256": "129de6af9f1de0fe6ea0ef536d8bc1abe0540607cbde1834f38758d9601ffa84",
+  "manifest_version": 1,
+  "offline_policies_sha256": "7a7b9ecbb889b233d47a7d6d35b14143589580338ab93788d0261b69cc944d02",
+  "offline_sae_sha256": "51b7eb408f50e12f04dc15d17e923666357eebea0bce1446b5f1e16b3e289f45",
+  "policies_semantic_sha256": "743b889551fc71b67fdd83e66cf3f048eb877c43bb83281a7b814326eafdfd23",
+  "policy_count": 54,
+  "sae_count": 277,
+  "sae_semantic_sha256": "fd4922aa3cdbbab58b8d2236fd109869996d6dd6617eef6dc252e1fd0dc2ca70"
+}

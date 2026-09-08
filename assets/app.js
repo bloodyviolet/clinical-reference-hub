@@ -1,0 +1,708 @@
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function showError(elementId, message) {
+  const res = document.getElementById(elementId);
+  res.classList.remove('hidden');
+  res.innerHTML = `<p class="text-sm font-medium text-rose-300">${escapeHtml(message)}</p>`;
+}
+
+function safeExternalUrl(value) {
+  try {
+    const url = new URL(String(value));
+    return url.protocol === 'https:' ? url.href : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+const OFFLINE_SAE_URL = '/assets/offline/sae.json';
+const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
+let offlineSaePromise = null;
+let offlinePoliciesPromise = null;
+
+function normaliseSearch(value) {
+  return String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR');
+}
+
+function confidencePt(value) {
+  return ({ high: 'alta', moderate: 'moderada', review_required: 'revisão necessária' })[value] || value || '—';
+}
+
+function verificationPt(value) {
+  return ({
+    curated_current_edition: 'curado · edição atual',
+    current_edition_verified: 'verificado · edição atual',
+    contextual_current_edition: 'contextual · edição atual',
+  })[value] || value || '—';
+}
+
+function mappingStatusPt(value) {
+  return ({
+    curated_current_editions_contextual: 'curadoria contextual · edições atuais',
+  })[value] || value || '—';
+}
+
+async function responseFromOfflineCache(url) {
+  if (typeof caches === 'undefined') return null;
+  try {
+    const cached = await caches.match(url, { ignoreSearch: true });
+    return cached && cached.ok ? cached : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+async function loadOfflineSaeBundle() {
+  if (!offlineSaePromise) {
+    offlineSaePromise = (async () => {
+      let response = await responseFromOfflineCache(OFFLINE_SAE_URL);
+      if (!response) response = await fetch(OFFLINE_SAE_URL, { cache: 'force-cache' });
+      if (!response.ok) throw new Error('Base SAE offline indisponível.');
+      const data = await response.json();
+      if (!Array.isArray(data.items) || data.count !== data.items.length) {
+        throw new Error('Base SAE offline inválida.');
+      }
+      return data;
+    })().catch((error) => {
+      offlineSaePromise = null;
+      throw error;
+    });
+  }
+  return offlineSaePromise;
+}
+
+async function loadOfflinePoliciesBundle() {
+  if (!offlinePoliciesPromise) {
+    offlinePoliciesPromise = (async () => {
+      let response = await responseFromOfflineCache(OFFLINE_POLICIES_URL);
+      if (!response) response = await fetch(OFFLINE_POLICIES_URL, { cache: 'force-cache' });
+      if (!response.ok) throw new Error('Base de políticas offline indisponível.');
+      const data = await response.json();
+      if (!data.policies || typeof data.policies !== 'object') {
+        throw new Error('Base de políticas offline inválida.');
+      }
+      return data;
+    })().catch((error) => {
+      offlinePoliciesPromise = null;
+      throw error;
+    });
+  }
+  return offlinePoliciesPromise;
+}
+
+async function searchSaeOffline(query, limit = 50) {
+  const bundle = await loadOfflineSaeBundle();
+  const needle = normaliseSearch(query);
+  const matches = bundle.items.filter((item) => {
+    const links = [...(item.nic_links || []), ...(item.noc_links || [])];
+    const fields = [
+      item.code, item.description_pt, item.description_en,
+      item.nic_code, item.nic_label_pt, item.nic_label_en,
+      item.noc_code, item.noc_label_pt, item.noc_label_en,
+      ...links.flatMap((link) => [link.code, link.label_pt, link.label_en]),
+    ];
+    return fields.some((value) => normaliseSearch(value).includes(needle));
+  }).slice(0, limit);
+  if (!matches.length) throw new Error(`Nenhum diagnóstico encontrado offline para a busca: '${query}'`);
+  return { query, limit, offset: 0, returned: matches.length, items: matches };
+}
+
+async function policyOffline(policyName) {
+  const bundle = await loadOfflinePoliciesBundle();
+  const key = String(policyName || '').trim().toUpperCase();
+  const data = bundle.policies[key];
+  if (!data) throw new Error(`Diretriz ${key} não está disponível na base offline.`);
+  return data;
+}
+
+
+function renderContextualLinks(links, classification) {
+  const alternatives = Array.isArray(links) ? links.filter(link => link.role === 'alternative') : [];
+  if (!alternatives.length) return '';
+  const accent = classification === 'NIC' ? 'cyan' : 'emerald';
+  return `
+    <div class="bg-slate-950/50 border border-${accent}-900/40 rounded-xl p-4 space-y-3">
+      <div class="flex items-center justify-between gap-3">
+        <span class="text-xs font-bold text-${accent}-300 uppercase tracking-wider">${classification} · alternativas contextuais</span>
+        <span class="text-[10px] text-slate-500">selecionar após avaliação</span>
+      </div>
+      <div class="space-y-2">
+        ${alternatives.map(link => `
+          <div class="border border-slate-800 rounded-lg p-3 bg-slate-900/50">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="font-mono text-xs font-bold text-${accent}-300">${escapeHtml(link.code)}</span>
+              <span lang="pt-BR" class="text-xs font-semibold text-slate-100">${escapeHtml(link.label_pt)}</span>
+              <span lang="en-GB" class="text-[10px] text-slate-500">${escapeHtml(link.label_en)}</span>
+            </div>
+            <p lang="pt-BR" class="text-[11px] text-slate-300 mt-2"><span class="font-semibold text-slate-400">Aplicabilidade (PT-BR):</span> ${escapeHtml(link.applicability_pt || link.applicability || '—')}</p>
+            <p lang="en-GB" class="text-[11px] text-slate-300 mt-1"><span class="font-semibold text-slate-400">Applicability (EN-GB):</span> ${escapeHtml(link.applicability_en || link.applicability || '—')}</p>
+            <p class="text-[10px] text-slate-500 mt-1">Confiança: ${escapeHtml(confidencePt(link.confidence))} · ${escapeHtml(verificationPt(link.verification_status))}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+}
+
+function isPositiveFinite(...values) {
+  return values.every((value) => Number.isFinite(value) && value > 0);
+}
+
+function formatPositiveMeasurement(value, {
+  decimalsAtOrAboveOne = 2,
+  threshold = 0.001,
+} = {}) {
+  if (!Number.isFinite(value) || value <= 0) return '—';
+
+  if (value < threshold) {
+    return `<${threshold.toFixed(3)}`;
+  }
+
+  if (value >= 1) {
+    return value.toFixed(decimalsAtOrAboveOne);
+  }
+
+  if (value >= 0.1) return value.toFixed(2);
+  if (value >= 0.01) return value.toFixed(3);
+  if (value >= 0.001) return value.toFixed(4);
+
+  return value.toPrecision(3);
+}
+
+const DRIP_FACTORS = Object.freeze({
+  macro: 20,
+  micro: 60,
+});
+
+function switchTab(tab) {
+  const views = ['sae', 'policy', 'calc', 'scales'];
+  views.forEach(v => {
+    const view = document.getElementById(`view-${v}`);
+    const button = document.getElementById(`tab-btn-${v}`);
+    view.classList.add('hidden');
+    button.setAttribute('aria-selected', 'false');
+    button.className = "whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition";
+  });
+  document.getElementById(`view-${tab}`).classList.remove('hidden');
+  document.getElementById(`tab-btn-${tab}`).setAttribute('aria-selected', 'true');
+  document.getElementById(`tab-btn-${tab}`).className = "whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition";
+}
+
+async function checkApiHealth() {
+  const badge = document.getElementById('api-status');
+  const dot = document.getElementById('api-status-dot');
+  const text = document.getElementById('api-status-text');
+  try {
+    const response = await fetch('/api/v1/healthz', { cache: 'no-store' });
+    if (!response.ok) throw new Error('healthcheck failed');
+    const health = await response.json();
+    badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
+    dot.className = 'w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400';
+    text.textContent = health.sae_enabled ? 'API Online' : 'API Online · SAE desativado';
+  } catch (_) {
+    const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
+    badge.className = offline
+      ? 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20'
+      : 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-300 border border-rose-500/20';
+    dot.className = offline
+      ? 'w-1.5 h-1.5 mr-1.5 rounded-full bg-amber-400'
+      : 'w-1.5 h-1.5 mr-1.5 rounded-full bg-rose-400';
+    text.textContent = offline ? 'Modo Offline · dados locais' : 'API Indisponível';
+  }
+}
+
+async function searchSAE(event) {
+  event.preventDefault();
+  const query = document.getElementById('sae-input').value.trim();
+  const container = document.getElementById('sae-result');
+  container.classList.remove('hidden');
+
+  if (!query || query.length > 100) {
+    container.innerHTML = '<div class="bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-rose-300 text-sm">Informe uma busca de 1 a 100 caracteres.</div>';
+    return;
+  }
+
+  container.innerHTML = '<div class="text-sm text-slate-400">Consultando base clínica...</div>';
+  try {
+    let data;
+    let source = 'api';
+    try {
+      const response = await fetch(`/api/v1/sae/search?q=${encodeURIComponent(query)}&limit=50`);
+      if (!response.ok) {
+        let message = 'Nenhum resultado encontrado.';
+        try { message = (await response.json()).detail || message; } catch (_) {}
+        const error = new Error(message);
+        error.httpStatus = response.status;
+        throw error;
+      }
+      data = await response.json();
+      if (response.headers?.get?.('X-Clinical-Offline') === '1') source = 'offline';
+    } catch (error) {
+      if (error.httpStatus && error.httpStatus !== 503) throw error;
+      data = await searchSaeOffline(query, 50);
+      source = 'offline';
+    }
+
+    const sourceNotice = source === 'offline'
+      ? '<div class="bg-amber-950/30 border border-amber-700/50 p-3 rounded-xl text-amber-200 text-xs mb-4">Modo offline: resultados fornecidos pela base clínica local empacotada nesta versão.</div>'
+      : '';
+    container.innerHTML = sourceNotice + data.items.map(item => `
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-2xl">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div>
+            <span class="text-xs uppercase tracking-wider font-semibold text-teal-400">Código NANDA</span>
+            <h3 class="text-2xl font-black text-white tracking-tight">${escapeHtml(item.code)}</h3>
+          </div>
+          <span class="px-3 py-1 bg-slate-800 border border-slate-700 text-slate-300 rounded-lg text-xs font-mono">ID #${escapeHtml(item.id)}</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Diagnóstico (PT-BR)</span>
+            <p lang="pt-BR" class="text-sm font-medium text-slate-100">${escapeHtml(item.description_pt)}</p>
+          </div>
+          <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-1">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Diagnostic (EN-GB)</span>
+            <p lang="en-GB" class="text-sm font-medium text-slate-100">${escapeHtml(item.description_en)}</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-slate-950/60 p-4 rounded-xl border border-cyan-900/50 space-y-2">
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">NIC primária ${escapeHtml(item.nic_code || '—')}</span>
+              <span class="text-[10px] text-slate-500">8ª edição</span>
+            </div>
+            <p lang="pt-BR" class="text-sm font-semibold text-slate-100">${escapeHtml(item.nic_label_pt || item.nic_label_en || '—')}</p>
+            <p lang="en-GB" class="text-xs text-slate-400">${escapeHtml(item.nic_label_en || '')}</p>
+            <div class="pt-2 border-t border-slate-800 space-y-2">
+              <p lang="pt-BR" class="text-xs text-slate-300"><span class="font-semibold text-cyan-300">PT-BR:</span> ${escapeHtml(item.intervention_pt || '—')}</p>
+              <p lang="en-GB" class="text-xs text-slate-300"><span class="font-semibold text-cyan-300">EN-GB:</span> ${escapeHtml(item.intervention_en || '—')}</p>
+            </div>
+          </div>
+          <div class="bg-slate-950/60 p-4 rounded-xl border border-emerald-900/50 space-y-2">
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">NOC primário ${escapeHtml(item.noc_code || '—')}</span>
+              <span class="text-[10px] text-slate-500">7ª edição</span>
+            </div>
+            <p lang="pt-BR" class="text-sm font-semibold text-slate-100">${escapeHtml(item.noc_label_pt || item.noc_label_en || '—')}</p>
+            <p lang="en-GB" class="text-xs text-slate-400">${escapeHtml(item.noc_label_en || '')}</p>
+            <div class="pt-2 border-t border-slate-800 space-y-2">
+              <p lang="pt-BR" class="text-xs text-slate-300"><span class="font-semibold text-emerald-300">PT-BR:</span> ${escapeHtml(item.outcome_pt || '—')}</p>
+              <p lang="en-GB" class="text-xs text-slate-300"><span class="font-semibold text-emerald-300">EN-GB:</span> ${escapeHtml(item.outcome_en || '—')}</p>
+            </div>
+          </div>
+        </div>
+        ${(Array.isArray(item.nic_links) && item.nic_links.some(link => link.role === 'alternative')) || (Array.isArray(item.noc_links) && item.noc_links.some(link => link.role === 'alternative')) ? `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${renderContextualLinks(item.nic_links, 'NIC')}
+            ${renderContextualLinks(item.noc_links, 'NOC')}
+          </div>` : ''}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-[11px]">
+          <div class="bg-slate-950/50 border border-slate-800 rounded-lg p-3"><span class="text-slate-500 uppercase font-semibold">NANDA-I</span><p class="text-slate-300 mt-1">Domínio ${escapeHtml(item.nanda_domain || '—')} · Classe ${escapeHtml(item.nanda_class || '—')} · p. ${escapeHtml(item.nanda_source_page || '—')}</p></div>
+          <div class="bg-slate-950/50 border border-slate-800 rounded-lg p-3"><span class="text-slate-500 uppercase font-semibold">Confiança</span><p class="text-amber-200 mt-1">${escapeHtml(confidencePt(item.mapping_confidence))}</p></div>
+          <div class="bg-slate-950/50 border border-slate-800 rounded-lg p-3"><span class="text-slate-500 uppercase font-semibold">Revisão</span><p class="text-slate-300 mt-1">${escapeHtml(item.mapping_review_date || '—')}</p></div>
+        </div>
+        <div class="text-[11px] text-slate-300 border-t border-slate-800 pt-3 space-y-2">
+          <p><span class="font-semibold text-amber-200">Racional técnico (EN):</span> ${escapeHtml(item.mapping_rationale || '—')}</p>
+          <p><span class="font-semibold text-amber-200">Status:</span> ${escapeHtml(mappingStatusPt(item.mapping_status))}</p>
+          <p><span class="font-semibold text-amber-200">Metodologia (EN):</span> ${escapeHtml(item.mapping_methodology || '—')}</p>
+          ${safeExternalUrl(item.mapping_reference) ? `<a class="inline-flex text-teal-300 hover:text-teal-200 underline underline-offset-2" href="${escapeHtml(safeExternalUrl(item.mapping_reference))}" target="_blank" rel="noopener noreferrer">Referência do mapeamento ↗</a>` : ''}
+          ${item.nanda_pdf_page ? `<a class="ml-3 inline-flex text-teal-300 hover:text-teal-200 underline underline-offset-2" href="/docs/Nanda-I%202024-2026.pdf#page=${encodeURIComponent(item.nanda_pdf_page)}" target="_blank" rel="noopener noreferrer">Abrir NANDA-I na página citada ↗</a>` : ''}
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    container.innerHTML = `<div class="bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-rose-300 text-sm">${escapeHtml(err.message)}</div>`;
+  }
+}
+
+async function loadPolicy(policyName) {
+  const container = document.getElementById('policy-results');
+  const loader = document.getElementById('policy-loading');
+  const pdfBtn = document.getElementById('pdf-link');
+  pdfBtn.classList.remove('hidden');
+  pdfBtn.classList.add('inline-flex');
+  pdfBtn.href = `/docs/${encodeURIComponent(policyName)}.pdf`;
+
+  document.querySelectorAll('.policy-btn').forEach(btn => {
+    if (btn.innerText.includes(policyName)) {
+      btn.className = "policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-teal-600 text-white border border-teal-500 transition shadow-lg shadow-teal-600/20";
+    } else {
+      btn.className = "policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition";
+    }
+  });
+
+  container.innerHTML = '';
+  loader.classList.remove('hidden');
+  try {
+    let data;
+    let source = 'api';
+    try {
+      const response = await fetch(`/api/v1/policies/${encodeURIComponent(policyName)}`);
+      if (!response.ok) {
+        let message = 'Não foi possível carregar as diretrizes.';
+        try { message = (await response.json()).detail || message; } catch (_) {}
+        const error = new Error(message);
+        error.httpStatus = response.status;
+        throw error;
+      }
+      data = await response.json();
+      if (response.headers?.get?.('X-Clinical-Offline') === '1') source = 'offline';
+    } catch (error) {
+      if (error.httpStatus && error.httpStatus !== 503) throw error;
+      data = await policyOffline(policyName);
+      source = 'offline';
+    }
+    loader.classList.add('hidden');
+    const sourceNotice = source === 'offline'
+      ? '<div class="col-span-full bg-amber-950/30 border border-amber-700/50 p-3 rounded-xl text-amber-200 text-xs">Modo offline: diretrizes fornecidas pela base local empacotada nesta versão. Links/PDFs externos podem exigir conexão.</div>'
+      : '';
+    container.innerHTML = sourceNotice + data.items.map(item => {
+      const sourceUrl = safeExternalUrl(item.source_url);
+      const sourceLink = sourceUrl
+        ? `<a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer" class="text-teal-300 hover:text-teal-200 underline underline-offset-2">${escapeHtml(item.source_title)}</a>`
+        : `<span>${escapeHtml(item.source_title)}</span>`;
+      return `
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 shadow-lg hover:border-slate-700 transition flex flex-col justify-between">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="px-2 py-0.5 rounded bg-teal-500/10 text-teal-400 border border-teal-500/20 text-[10px] font-bold uppercase tracking-wider">${escapeHtml(item.policy_name || policyName)}</span>
+            <span class="text-[11px] text-slate-400 font-medium">${escapeHtml(item.target_demographic)}</span>
+          </div>
+          <h4 class="text-sm font-bold text-white tracking-tight">${escapeHtml(item.directive)}</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">${escapeHtml(item.clinical_guideline)}</p>
+        </div>
+        <div class="pt-3 mt-1 border-t border-slate-800 text-[11px] text-slate-500 leading-relaxed">
+          <div><span class="font-semibold text-slate-400">Fonte:</span> ${sourceLink}</div>
+          ${item.source_version ? `<div><span class="font-semibold text-slate-400">Versão:</span> ${escapeHtml(item.source_version)}</div>` : ''}
+          ${item.source_page ? `<div><span class="font-semibold text-slate-400">Localizador:</span> ${escapeHtml(item.source_page)}</div>` : ''}
+          <div><span class="font-semibold text-slate-400">Evidência:</span> ${escapeHtml(item.evidence_level || 'policy_level')}</div>
+          <div><span class="font-semibold text-slate-400">Revisão clínica:</span> ${escapeHtml(item.last_clinical_review)} · <span class="uppercase">${escapeHtml(item.status)}</span></div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch (err) {
+    loader.classList.add('hidden');
+    container.innerHTML = `<div class="col-span-full bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-rose-300 text-sm text-center">${escapeHtml(err.message)}</div>`;
+  }
+}
+
+function calculateDrip(e) {
+  e.preventDefault();
+  const v = Number.parseFloat(document.getElementById('drip-v').value);
+  const t = Number.parseFloat(document.getElementById('drip-t').value);
+  const u = document.getElementById('drip-u').value;
+  if (!isPositiveFinite(v, t)) return showError('drip-result', 'Volume e tempo devem ser maiores que zero.');
+
+  const minutes = u === 'h' ? t * 60 : t;
+  const gotas = (v * DRIP_FACTORS.macro) / minutes;
+  const micro = (v * DRIP_FACTORS.micro) / minutes;
+
+  if (!isPositiveFinite(gotas, micro)) {
+    return showError('drip-result', 'Não foi possível calcular um fluxo válido.');
+  }
+
+  const macroDisplay = formatPositiveMeasurement(gotas);
+  const microDisplay = formatPositiveMeasurement(micro);
+  const lowFlow = gotas < 1 || micro < 1;
+
+  const res = document.getElementById('drip-result');
+  res.classList.remove('hidden');
+  res.innerHTML = `
+    <div class="grid grid-cols-2 text-center divide-x divide-slate-800">
+      <div>
+        <p class="text-[10px] font-semibold text-slate-400 uppercase">Gotas/min · equipo ${DRIP_FACTORS.macro} gotas/mL</p>
+        <p class="text-2xl font-bold text-cyan-400">${macroDisplay}</p>
+      </div>
+      <div>
+        <p class="text-[10px] font-semibold text-slate-400 uppercase">Microgotas/min · equipo ${DRIP_FACTORS.micro} microgotas/mL</p>
+        <p class="text-2xl font-bold text-cyan-400">${microDisplay}</p>
+      </div>
+    </div>
+    ${lowFlow ? '<p class="text-[11px] text-amber-300 mt-3">Fluxo matemático positivo inferior a 1 gota/min em pelo menos um fator. Não arredonde para zero; confirme o equipo e avalie dispositivo de infusão apropriado.</p>' : ''}
+  `;
+}
+
+const DOSE_UNITS = {
+  mcg: { group: 'mass', factor: 0.001 },
+  mg: { group: 'mass', factor: 1 },
+  g: { group: 'mass', factor: 1000 },
+  UI: { group: 'UI', factor: 1 },
+  mEq: { group: 'mEq', factor: 1 },
+};
+
+function calculateMeds(e) {
+  e.preventDefault();
+  const presc = Number.parseFloat(document.getElementById('med-presc').value);
+  const disp = Number.parseFloat(document.getElementById('med-disp').value);
+  const vol = Number.parseFloat(document.getElementById('med-vol').value);
+  const prescUnit = document.getElementById('med-presc-unit').value;
+  const dispUnit = document.getElementById('med-disp-unit').value;
+  if (!isPositiveFinite(presc, disp, vol)) return showError('med-result', 'Dose prescrita, dose disponível e volume devem ser maiores que zero.');
+
+  const prescribedDef = DOSE_UNITS[prescUnit];
+  const availableDef = DOSE_UNITS[dispUnit];
+  if (!prescribedDef || !availableDef || prescribedDef.group !== availableDef.group) {
+    return showError('med-result', 'As unidades da dose prescrita e da dose disponível precisam ser compatíveis.');
+  }
+
+  const prescribedBase = presc * prescribedDef.factor;
+  const availableBase = disp * availableDef.factor;
+  const result = (prescribedBase * vol) / availableBase;
+  if (!isPositiveFinite(result)) return showError('med-result', 'Não foi possível calcular um volume válido.');
+
+  const resultDisplay = formatPositiveMeasurement(result);
+  const belowDisplayThreshold = result < 0.001;
+
+  const res = document.getElementById('med-result');
+  res.classList.remove('hidden');
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">Volume calculado</p>
+    <p class="text-2xl font-bold text-rose-400">${resultDisplay} mL</p>
+    ${belowDisplayThreshold ? '<p class="text-[11px] text-amber-300 mt-2">O resultado matemático é positivo e inferior a 0,001 mL. Não interprete nem arredonde como zero; confirme concentração, apresentação e dispositivo de medida antes da administração.</p>' : ''}
+    <p class="text-[11px] text-slate-400 mt-2">Confirme concentração, apresentação, via e limites de dose antes da administração.</p>
+  `;
+}
+
+function calculateBMI(e) {
+  e.preventDefault();
+  const w = Number.parseFloat(document.getElementById('bmi-w').value);
+  const h = Number.parseFloat(document.getElementById('bmi-h').value);
+  const age = Number.parseInt(document.getElementById('bmi-age').value, 10);
+  if (!isPositiveFinite(w, h) || !Number.isInteger(age) || age < 0 || age > 120) {
+    return showError('bmi-result', 'Informe peso, altura e idade válidos.');
+  }
+
+  const bmi = w / (h * h);
+  if (!Number.isFinite(bmi)) return showError('bmi-result', 'Não foi possível calcular um IMC válido.');
+
+  const res = document.getElementById('bmi-result');
+  res.classList.remove('hidden');
+  if (age < 20) {
+    res.innerHTML = `
+      <p class="text-[10px] font-semibold text-amber-300 uppercase">Classificação pediátrica não calculada</p>
+      <p class="text-2xl font-bold text-emerald-400 mt-1">${bmi.toFixed(1)} kg/m²</p>
+      <p class="text-sm text-slate-300 mt-1">Em crianças e adolescentes, a interpretação exige idade e sexo com curvas/percentis apropriados; os cortes de adultos não são aplicáveis.</p>
+    `;
+    return;
+  }
+
+  let classification = '';
+  if (age >= 60) {
+    if (bmi <= 22) classification = 'Baixo peso (risco nutricional)';
+    else if (bmi < 27) classification = 'Adequado (eutrófico)';
+    else classification = 'Sobrepeso';
+  } else {
+    if (bmi < 18.5) classification = 'Abaixo do peso';
+    else if (bmi < 25) classification = 'Peso normal';
+    else if (bmi < 30) classification = 'Sobrepeso';
+    else classification = 'Obesidade';
+  }
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">Tabela aplicada: ${age >= 60 ? 'idoso' : 'adulto'}</p>
+    <p class="text-2xl font-bold text-emerald-400 mt-1">${bmi.toFixed(1)} kg/m²</p>
+    <p class="text-sm font-medium text-white">${escapeHtml(classification)}</p>
+  `;
+}
+
+function calculatePed(e) {
+  e.preventDefault();
+  const w = Number.parseFloat(document.getElementById('ped-w').value);
+  if (!isPositiveFinite(w) || w > 200) return showError('ped-result', 'Informe um peso pediátrico válido.');
+
+  let vol = 0;
+  if (w <= 10) vol = w * 100;
+  else if (w <= 20) vol = 1000 + ((w - 10) * 50);
+  else vol = 1500 + ((w - 20) * 20);
+
+  const mlPerHour = vol / 24;
+  const res = document.getElementById('ped-result');
+  res.classList.remove('hidden');
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">Volume basal de manutenção</p>
+    <p class="text-xl font-bold text-sky-400">${vol.toFixed(0)} mL / 24h</p>
+    <hr class="border-slate-800 my-2">
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">Velocidade média</p>
+    <p class="text-lg font-bold text-white">${mlPerHour.toFixed(1)} mL/h</p>
+    <p class="text-[11px] text-slate-400 mt-2">Estimativa de manutenção; necessidades reais variam com idade, estado clínico, perdas, eletrólitos e comorbidades.</p>
+  `;
+}
+
+function calculateCrCl(e) {
+  e.preventDefault();
+  const age = Number.parseInt(document.getElementById('crcl-age').value, 10);
+  const w = Number.parseFloat(document.getElementById('crcl-w').value);
+  const cr = Number.parseFloat(document.getElementById('crcl-cr').value);
+  const sex = document.getElementById('crcl-sex').value;
+  if (!Number.isInteger(age) || age < 18 || age > 120 || !isPositiveFinite(w, cr)) {
+    return showError('crcl-result', 'Cockcroft-Gault requer idade adulta, peso e creatinina sérica válidos.');
+  }
+
+  let crcl = ((140 - age) * w) / (72 * cr);
+  if (sex === 'F') crcl *= 0.85;
+  if (!isPositiveFinite(crcl)) return showError('crcl-result', 'Não foi possível calcular um clearance válido.');
+
+  const res = document.getElementById('crcl-result');
+  res.classList.remove('hidden');
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">Clearance de creatinina estimado (Cockcroft-Gault)</p>
+    <p class="text-2xl font-bold text-amber-400 mt-1">${crcl.toFixed(1)} mL/min</p>
+    <p class="text-[11px] text-slate-400 mt-2">Não é equivalente à TFG/eGFR. A escolha do peso e a aplicabilidade da fórmula dependem do contexto clínico.</p>
+  `;
+}
+
+function calculateNaegele(e) {
+  e.preventDefault();
+  const dumStr = document.getElementById('dum-input').value;
+  if (!dumStr) return showError('naegele-result', 'Informe a data da última menstruação.');
+
+  const [year, month, day] = dumStr.split('-').map(Number);
+  const dumDate = new Date(year, month - 1, day, 12, 0, 0, 0);
+  if (Number.isNaN(dumDate.getTime())) return showError('naegele-result', 'DUM inválida.');
+
+  const today = new Date();
+  today.setHours(12, 0, 0, 0);
+  const diffDays = Math.floor((today - dumDate) / 86400000);
+  if (diffDays < 0) return showError('naegele-result', 'A DUM não pode estar no futuro.');
+  if (diffDays > 315) return showError('naegele-result', 'A DUM informada resulta em idade gestacional acima de 45 semanas; confirme a data e a datação obstétrica.');
+
+  const dppDate = new Date(dumDate);
+  dppDate.setDate(dppDate.getDate() + 280);
+  const weeks = Math.floor(diffDays / 7);
+  const days = diffDays % 7;
+
+  const res = document.getElementById('naegele-result');
+  res.classList.remove('hidden');
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">Data provável do parto</p>
+    <p class="text-xl font-bold text-pink-400">${dppDate.toLocaleDateString('pt-BR')}</p>
+    <p class="text-sm text-white mt-1">IG pela DUM hoje: <span class="font-bold">${weeks} sem e ${days} dias</span></p>
+    <p class="text-[11px] text-slate-400 mt-2">Estimativa baseada em DUM; confirme com critérios obstétricos apropriados, especialmente quando a DUM for incerta ou o ciclo for irregular.</p>
+  `;
+}
+
+function calculateMcDonald(e) {
+  e.preventDefault();
+  const au = Number.parseFloat(document.getElementById('au-input').value);
+  if (!Number.isFinite(au) || au < 10 || au > 45) {
+    return showError('mcdonald-result', 'Informe uma altura uterina entre 10 e 45 cm.');
+  }
+
+  const totalDays = Math.round(((au * 8) / 7) * 7);
+  const weeks = Math.floor(totalDays / 7);
+  const days = totalDays % 7;
+  const res = document.getElementById('mcdonald-result');
+  res.classList.remove('hidden');
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">Estimativa histórica pela regra de McDonald</p>
+    <p class="text-xl font-bold text-indigo-400">${weeks} sem e ${days} dias</p>
+    <p class="text-[11px] text-slate-400 mt-2">A altura uterina é principalmente uma medida de acompanhamento do crescimento uterino/fetal e não deve substituir a datação obstétrica adequada.</p>
+  `;
+}
+
+function scoreGlasgow() {
+  const ids = ['glasgow-e', 'glasgow-v', 'glasgow-m'];
+  const values = ids.map((id) => document.getElementById(id).value);
+  const total = document.getElementById('glasgow-total');
+  const note = document.getElementById('glasgow-note');
+
+  if (values.some((value) => value === '')) {
+    total.textContent = '—';
+    note.textContent = 'Selecione todos os componentes.';
+    return;
+  }
+
+  const labels = ['E', 'V', 'M'];
+  const components = values.map((value, index) => `${labels[index]}${value}`).join(' ');
+  if (values.includes('NT')) {
+    total.textContent = 'NT';
+    note.textContent = `${components}. Quando um componente não é testável, registre os componentes e não reporte um total numérico.`;
+    return;
+  }
+
+  const score = values.reduce((sum, value) => sum + Number.parseInt(value, 10), 0);
+  total.textContent = String(score);
+  note.textContent = components;
+}
+
+function scoreApgar() {
+  const time = document.getElementById('apgar-time').value;
+  const ids = ['apgar-a', 'apgar-p', 'apgar-g', 'apgar-t', 'apgar-r'];
+  const values = ids.map((id) => document.getElementById(id).value);
+  const total = document.getElementById('apgar-total');
+  const note = document.getElementById('apgar-note');
+
+  if (!time || values.some((value) => value === '')) {
+    total.textContent = '—';
+    note.textContent = 'Informe o momento e todos os cinco componentes.';
+    return;
+  }
+
+  const score = values.reduce((sum, value) => sum + Number.parseInt(value, 10), 0);
+  total.textContent = String(score);
+  note.textContent = `Avaliação aos ${time} min. O Apgar descreve a condição do recém-nascido e não deve ser usado isoladamente para decidir o início da reanimação.`;
+}
+
+function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => console.log('App Pronto para Instalação'))
+      .catch((err) => console.log('Erro no SW', err));
+  }
+}
+
+function wireUiEvents() {
+  document.querySelectorAll('[data-tab]').forEach((button) => {
+    button.addEventListener('click', () => switchTab(button.dataset.tab));
+  });
+  document.querySelectorAll('[data-policy]').forEach((button) => {
+    button.addEventListener('click', () => loadPolicy(button.dataset.policy));
+  });
+
+  const submitHandlers = {
+    'sae-search-form': searchSAE,
+    'drip-form': calculateDrip,
+    'meds-form': calculateMeds,
+    'bmi-form': calculateBMI,
+    'ped-form': calculatePed,
+    'crcl-form': calculateCrCl,
+    'naegele-form': calculateNaegele,
+    'mcdonald-form': calculateMcDonald,
+  };
+  Object.entries(submitHandlers).forEach(([id, handler]) => {
+    document.getElementById(id)?.addEventListener('submit', handler);
+  });
+  document.getElementById('glasgow-form')?.addEventListener('change', scoreGlasgow);
+  document.getElementById('apgar-form')?.addEventListener('change', scoreApgar);
+
+  const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('keydown', (event) => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      let next = index;
+      if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+      if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+      if (event.key === 'Home') next = 0;
+      if (event.key === 'End') next = tabs.length - 1;
+      tabs[next].focus();
+      switchTab(tabs[next].dataset.tab);
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  registerServiceWorker();
+  wireUiEvents();
+  checkApiHealth();
+  if (typeof window !== 'undefined') {
+    window.addEventListener('online', checkApiHealth);
+    window.addEventListener('offline', checkApiHealth);
+  }
+});

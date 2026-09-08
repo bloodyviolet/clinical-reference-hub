@@ -1,0 +1,38 @@
+services:
+  medical-api:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - medical_api_data:/data
+    environment:
+      MEDICAL_API_ENV: production
+      MEDICAL_API_PUBLIC_ORIGIN: ${MEDICAL_API_PUBLIC_ORIGIN:?set MEDICAL_API_PUBLIC_ORIGIN}
+      MEDICAL_API_ALLOWED_HOSTS: "${MEDICAL_API_ALLOWED_HOSTS:?set MEDICAL_API_ALLOWED_HOSTS},127.0.0.1,localhost"
+      MEDICAL_API_ENABLE_DOCS: "false"
+      MEDICAL_API_HSTS: "true"
+      MEDICAL_API_ENABLE_SAE: "true"
+      MEDICAL_API_ENFORCE_DEPENDENCY_LOCK: "true"
+      MEDICAL_API_RATE_LIMIT_ENABLED: "true"
+      MEDICAL_API_RATE_LIMIT_PER_MINUTE: "120"
+      MEDICAL_API_SEARCH_RATE_LIMIT_PER_MINUTE: "60"
+      MEDICAL_API_JSON_LOGS: "true"
+      # When the host reverse proxy connects through this fixed Docker network,
+      # traffic normally appears from the bridge gateway (.1). Verify on your host.
+      MEDICAL_API_TRUSTED_PROXIES: "172.30.0.1"
+      MEDICAL_API_BACKUP_DIR: /data/backups
+    networks:
+      medical_api_net:
+        ipv4_address: 172.30.0.3
+
+volumes:
+  medical_api_data:
+
+networks:
+  medical_api_net:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

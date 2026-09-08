@@ -1,0 +1,60 @@
+{
+  "review_date": "2026-09-07",
+  "purpose": "Licensed-source provenance for the Pass 5 NANDA-I/NIC/NOC mapping audit. Source books are not copied into the deployment package.",
+  "language_policy": {
+    "source_books": "es",
+    "api_display": [
+      "en-GB",
+      "pt-BR"
+    ],
+    "translation_policy": "Classification identifiers remain canonical. Short user-facing labels are locally rendered in en-GB and pt-BR; clinical definitions, activities and indicators are not reproduced."
+  },
+  "sources": [
+    {
+      "classification": "NIC",
+      "edition": "8th edition",
+      "uploaded_filename": "1025169755-NIC-Octava-edicio-n.pdf",
+      "sha256": "03db2ae5ea5e8eec1a442b6279a9b7fe2ea80dd76eeb8d3ff8d717b9c3b633b3",
+      "pdf_pages": 616,
+      "language": "Spanish",
+      "institutional_source": true,
+      "packaged_with_application": false,
+      "source_use": "Edition/methodology verification and licensed terminology review; current code-label list cross-checked against the current NIC 8 classification listing.",
+      "methodology_locator": "PDF viewer page 17: Cómo encontrar una intervención"
+    },
+    {
+      "classification": "NOC",
+      "edition": "7th edition (2024 Spanish translation)",
+      "uploaded_filename": "883160270-NOC-Septima-Edicion-2024.pdf",
+      "sha256": "2098d3bdf335d8e4559460547791ff2fc1b3d256c262b8af5151b853e2bdb46b",
+      "pdf_pages": 876,
+      "language": "Spanish",
+      "institutional_source": true,
+      "packaged_with_application": false,
+      "source_use": "Edition/methodology verification and licensed terminology review; current code-label list cross-checked against the current NOC 7 classification listing.",
+      "methodology_locator": "PDF viewer pages 28-29: Identificación del destinatario / Cómo elegir los resultados"
+    }
+  ],
+  "supplemental_current_code_label_sources": {
+    "NIC": "https://www.salusplay.com/blog/clasificacion-completa-intervenciones-enfermeria-nic-2024/",
+    "NOC": "https://www.salusplay.com/apuntes/pae-y-diagnosticos-de-enfermeria-nanda-noc-y-nic/anexo-2-clasificacion-completa-de-resultados-de-enfermeria-noc-2024-8",
+    "official_edition_baseline": "https://nursing.uiowa.edu/center-for-nursing-classification-and-clinical-effectiveness"
+  },
+  "audit_counts": {
+    "nanda_diagnoses": 277,
+    "primary_mappings": 554,
+    "total_classification_links": 627,
+    "contextual_alternatives": 73,
+    "diagnoses_with_contextual_alternatives": 26,
+    "primary_mapping_confidence": {
+      "high": 229,
+      "moderate": 48
+    },
+    "link_verification_status": {
+      "curated_current_edition": 519,
+      "current_edition_verified": 35,
+      "contextual_current_edition": 73
+    }
+  },
+  "interpretation": "The sources explicitly support context-sensitive selection. The project therefore stores a compatibility primary NIC/NOC pair for backward compatibility plus one-to-many contextual alternatives where phase, age, substance, or care context materially changes the appropriate classification target."
+}
