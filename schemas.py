@@ -177,3 +177,151 @@ class PolicyIndexItem(BaseModel):
 
 class PolicyIndexResponse(BaseModel):
     items: list[PolicyIndexItem]
+
+
+# ---------------------------------------------------------------------------
+# v2 clinical-tool language/provenance contract.
+# API_VERSION remains 1.4.5 until final v2.0.0 qualification.
+# ---------------------------------------------------------------------------
+
+TranslationStatus = Literal[
+    "official_original",
+    "official_translation",
+    "validated_translation",
+    "informative_translation",
+    "local_translation",
+    "local_translation_with_disclaimer_required",
+    "not_applicable",
+]
+
+
+class ClinicalToolMetadataResponse(BaseModel):
+    id: str
+    name_pt: str
+    name_en: str
+    description_pt: str
+    description_en: str
+
+    aliases_pt: list[str]
+    aliases_en: list[str]
+
+    publisher: str
+    source_title: str
+    source_version: str
+    source_url: HttpUrl
+
+    source_language: str
+    canonical_language: str
+
+    translation_status_pt: TranslationStatus
+    translation_status_en: TranslationStatus
+
+    translation_disclaimer_required: bool
+    translation_disclaimer_source_url: HttpUrl | None = None
+
+    translation_note_pt: str | None = None
+    translation_note_en: str | None = None
+
+    population_pt: str
+    population_en: str
+
+    limitations_pt: list[str]
+    limitations_en: list[str]
+
+    licensing_note_pt: str
+    licensing_note_en: str
+
+    clinical_review_date: date
+    offline_capable: bool
+
+
+NEWS2Consciousness = Literal[
+    "alert",
+    "new_confusion",
+    "voice",
+    "pain",
+    "unresponsive",
+]
+
+
+class NEWS2Input(BaseModel):
+    respiration_rate: int = Field(gt=0)
+    spo2: int = Field(ge=1, le=100)
+
+    spo2_scale: Literal[1, 2] = 1
+    scale2_prescribed: bool = False
+    supplemental_oxygen: bool = False
+
+    systolic_bp: int = Field(gt=0)
+    pulse: int = Field(gt=0)
+
+    consciousness: NEWS2Consciousness
+
+    temperature: float = Field(
+        ge=20.0,
+        le=50.0,
+    )
+
+
+class NEWS2Components(BaseModel):
+    respiration_rate: int = Field(ge=0, le=3)
+    spo2: int = Field(ge=0, le=3)
+    supplemental_oxygen: int = Field(ge=0, le=2)
+    systolic_bp: int = Field(ge=0, le=3)
+    pulse: int = Field(ge=0, le=3)
+    consciousness: int = Field(ge=0, le=3)
+    temperature: int = Field(ge=0, le=3)
+
+
+class NEWS2Response(BaseModel):
+    tool: Literal["news2"]
+
+    total: int = Field(
+        ge=0,
+        le=19,
+    )
+
+    components: NEWS2Components
+
+    spo2_scale: Literal[1, 2]
+    scale2_prescribed: bool
+    supplemental_oxygen: bool
+
+    single_parameter_red_score: bool
+
+    aggregate_band: Literal[
+        "zero",
+        "low",
+        "medium",
+        "high",
+    ]
+
+    aggregate_label_pt: str
+    aggregate_label_en: str
+
+    trigger_code: Literal[
+        "zero",
+        "low",
+        "single_red",
+        "medium",
+        "high",
+    ]
+
+    trigger_label_pt: str
+    trigger_label_en: str
+
+    monitoring_code: Literal[
+        "minimum_12_hourly",
+        "minimum_4_to_6_hourly",
+        "minimum_hourly",
+        "continuous",
+    ]
+
+    monitoring_pt: str
+    monitoring_en: str
+
+    response_pt: str
+    response_en: str
+
+    clinical_judgement_note_pt: str
+    clinical_judgement_note_en: str

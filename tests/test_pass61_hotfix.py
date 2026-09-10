@@ -69,10 +69,12 @@ def test_offline_bundles_are_complete_and_match_database():
 
 def test_service_worker_precaches_offline_data_and_local_icons():
     sw = (ROOT / "sw.js").read_text(encoding="utf-8")
-    assert "clinical-reference-v8-a06-a07-a08-functional-qc" in sw
+    assert "clinical-reference-v9-v2-clinical-expansion" in sw
     for path in (
         "/assets/offline/sae.json",
         "/assets/offline/policies.json",
+        "/assets/i18n.js",
+        "/assets/clinical-tools.js",
         "/assets/icons/icon-192.png",
         "/assets/icons/icon-512.png",
         "/assets/icons/apple-touch-icon.png",

@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session, selectinload
 
 import database
 import schemas
+from clinical_tools.news2 import NEWS2_METADATA, calculate_news2
 from config import load_settings
 from observability import RateLimitMiddleware, RequestContextMiddleware, configure_logging
 from scripts.clinical_content import file_hash, validate_release_content
@@ -610,6 +611,42 @@ def api_policy_index(db: Session = Depends(get_db)):
 def api_get_policy(policy_name: str, db: Session = Depends(get_db)):
     name, results = _get_policy_rows(policy_name, db)
     return {"policy_name": name, "returned": len(results), "items": results}
+
+
+@api_v1.get(
+    "/tools/news2/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_news2_metadata():
+    """Return NEWS2 provenance and bilingual metadata."""
+    return NEWS2_METADATA
+
+
+@api_v1.post(
+    "/tools/news2",
+    response_model=schemas.NEWS2Response,
+)
+def api_news2_calculate(
+    payload: schemas.NEWS2Input,
+):
+    """Calculate NEWS2 from one complete observation set."""
+    try:
+        return calculate_news2(
+            respiration_rate=payload.respiration_rate,
+            spo2=payload.spo2,
+            spo2_scale=payload.spo2_scale,
+            scale2_prescribed=payload.scale2_prescribed,
+            supplemental_oxygen=payload.supplemental_oxygen,
+            systolic_bp=payload.systolic_bp,
+            pulse=payload.pulse,
+            consciousness=payload.consciousness,
+            temperature=payload.temperature,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
 
 
 app.include_router(api_v1)

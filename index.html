@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="h-full bg-slate-950 text-slate-100">
+<html lang="pt-BR" data-ui-language="pt-BR" class="h-full bg-slate-950 text-slate-100">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,13 +23,17 @@
         </div>
         <div>
           <h1 class="text-lg font-bold tracking-tight text-white">Clinical Reference Hub</h1>
-          <p class="text-[10px] sm:text-xs text-slate-400">SAE / NNN & Políticas Nacionais do SUS</p>
+          <p data-i18n="nav.subtitle" class="text-[10px] sm:text-xs text-slate-400">SAE / NNN & Políticas Nacionais do SUS</p>
         </div>
       </div>
       <div class="flex items-center space-x-2 text-xs font-medium">
+        <div class="inline-flex items-center rounded-lg border border-slate-700 bg-slate-950/70 p-0.5" role="group" aria-label="Language">
+          <button type="button" data-language="pt-BR" aria-pressed="true" class="px-2 py-1 rounded-md bg-teal-600 text-white font-bold">PT-BR</button>
+          <button type="button" data-language="en-GB" aria-pressed="false" class="px-2 py-1 rounded-md text-slate-400 hover:text-white">EN-GB</button>
+        </div>
         <span id="api-status" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-500/10 text-slate-300 border border-slate-500/20">
           <span id="api-status-dot" class="w-1.5 h-1.5 mr-1.5 rounded-full bg-slate-400"></span>
-          <span id="api-status-text" aria-live="polite">Verificando API...</span>
+          <span id="api-status-text" aria-live="polite" data-i18n="status.checking">Verificando API...</span>
         </span>
       </div>
     </div>
@@ -40,16 +44,16 @@
     
     <!-- Tab Switcher -->
     <div class="flex border-b border-slate-800 space-x-6 overflow-x-auto pb-1 scrollbar-hide" role="tablist" aria-label="Seções do dashboard">
-      <button id="tab-btn-sae" role="tab" aria-controls="view-sae" aria-selected="true" data-tab="sae" class="whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition">
+      <button id="tab-btn-sae" role="tab" aria-controls="view-sae" aria-selected="true" data-tab="sae" class="whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition" data-i18n="nav.sae">
         Diagnósticos SAE
       </button>
-      <button id="tab-btn-policy" role="tab" aria-controls="view-policy" aria-selected="false" data-tab="policy" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+      <button id="tab-btn-policy" role="tab" aria-controls="view-policy" aria-selected="false" data-tab="policy" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition" data-i18n="nav.policy">
         Políticas (SUS)
       </button>
-      <button id="tab-btn-calc" role="tab" aria-controls="view-calc" aria-selected="false" data-tab="calc" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+      <button id="tab-btn-calc" role="tab" aria-controls="view-calc" aria-selected="false" data-tab="calc" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition" data-i18n="nav.calc">
         Calculadoras
       </button>
-      <button id="tab-btn-scales" role="tab" aria-controls="view-scales" aria-selected="false" data-tab="scales" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+      <button id="tab-btn-scales" role="tab" aria-controls="view-scales" aria-selected="false" data-tab="scales" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition" data-i18n="nav.scales">
         Escalas Clínicas
       </button>
     </div>
@@ -250,6 +254,87 @@
     <section id="view-scales" role="tabpanel" aria-labelledby="tab-btn-scales" class="hidden space-y-6">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
+        <!-- NEWS2 -->
+        <div id="news2-card" class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+          <div class="space-y-1">
+            <h2 data-i18n="news2.title" class="text-base font-semibold text-white">NEWS2 · Deterioração Clínica</h2>
+            <p data-i18n="news2.description" class="text-xs text-slate-400">National Early Warning Score 2 para avaliação de deterioração clínica aguda.</p>
+          </div>
+
+          <form id="news2-form" class="space-y-4 pt-2 border-t border-slate-800">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+
+              <div>
+                <label data-i18n="news2.rr" for="news2-rr" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Frequência respiratória (irpm)</label>
+                <input id="news2-rr" type="number" min="1" step="1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="news2.spo2" for="news2-spo2" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">SpO₂ (%)</label>
+                <input id="news2-spo2" type="number" min="1" max="100" step="1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="news2.scale" for="news2-scale" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Escala de SpO₂</label>
+                <select id="news2-scale" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="1" data-i18n="news2.scale1">Escala 1</option>
+                  <option value="2" data-i18n="news2.scale2">Escala 2 · alvo 88–92%</option>
+                </select>
+              </div>
+
+              <div>
+                <label data-i18n="news2.sbp" for="news2-sbp" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Pressão arterial sistólica (mmHg)</label>
+                <input id="news2-sbp" type="number" min="1" step="1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="news2.pulse" for="news2-pulse" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Pulso (bpm)</label>
+                <input id="news2-pulse" type="number" min="1" step="1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="news2.temperature" for="news2-temp" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Temperatura (°C)</label>
+                <input id="news2-temp" type="number" min="20" max="50" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div class="sm:col-span-2 lg:col-span-3">
+                <label data-i18n="news2.consciousness" for="news2-consciousness" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Consciência / nova confusão</label>
+                <select id="news2-consciousness" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="alert" data-i18n="news2.alert">Alerta</option>
+                  <option value="new_confusion" data-i18n="news2.confusion">Nova confusão</option>
+                  <option value="voice" data-i18n="news2.voice">Responde à voz</option>
+                  <option value="pain" data-i18n="news2.pain">Responde à dor</option>
+                  <option value="unresponsive" data-i18n="news2.unresponsive">Não responsivo</option>
+                </select>
+              </div>
+
+            </div>
+
+            <div class="space-y-2 rounded-xl border border-slate-800 bg-slate-950/50 p-3">
+
+              <label class="flex items-start gap-2 text-xs text-slate-300">
+                <input id="news2-oxygen" type="checkbox" class="mt-0.5">
+                <span data-i18n="news2.oxygen">Paciente recebendo oxigênio suplementar</span>
+              </label>
+
+              <label class="flex items-start gap-2 text-xs text-amber-200">
+                <input id="news2-scale2-prescribed" type="checkbox" class="mt-0.5">
+                <span data-i18n="news2.scale2confirm">Confirmo que o alvo 88–92% foi definido sob direção clínica qualificada.</span>
+              </label>
+
+            </div>
+
+            <button type="submit" data-i18n="news2.calculate" class="w-full bg-red-600 hover:bg-red-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular NEWS2</button>
+          </form>
+
+          <div id="news2-result" aria-live="polite" class="hidden rounded-xl border border-slate-800 bg-slate-950/60 p-4"></div>
+
+          <div class="border-t border-slate-800 pt-3 text-[10px] text-slate-500 space-y-1">
+            <p><span data-i18n="news2.source">Fonte</span>: Royal College of Physicians · NEWS2 · 2017.</p>
+            <p data-i18n="news2.translation">PT-BR é tradução local informativa; consulte o material original do RCP antes do uso clínico.</p>
+          </div>
+        </div>
+
         <!-- Glasgow -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <h2 class="text-base font-semibold text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-500"></span>Escala de Coma de Glasgow</h2>
@@ -303,6 +388,8 @@
 
   </main>
 
+  <script src="/assets/i18n.js" defer></script>
+  <script src="/assets/clinical-tools.js" defer></script>
   <script src="/assets/app.js" defer></script>
 
   <!-- Footer -->

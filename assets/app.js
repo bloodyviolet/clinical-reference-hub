@@ -13,6 +13,22 @@ function showError(elementId, message) {
   res.innerHTML = `<p class="text-sm font-medium text-rose-300">${escapeHtml(message)}</p>`;
 }
 
+
+function uiLanguage() {
+  return (
+    globalThis.ClinicalI18n
+      ?.getLanguage?.()
+    || 'pt-BR'
+  );
+}
+
+
+function clinicalText(pt, en) {
+  return uiLanguage() === 'en-GB'
+    ? en
+    : pt;
+}
+
 function safeExternalUrl(value) {
   try {
     const url = new URL(String(value));
@@ -606,6 +622,403 @@ function calculateMcDonald(e) {
   `;
 }
 
+
+let lastNews2Result = null;
+let lastNews2Source = null;
+
+
+function renderNews2Result(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'news2-result'
+    );
+
+  if (!res || !result) return;
+
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+
+  const aggregate =
+    result[`aggregate_label_${suffix}`];
+
+  const trigger =
+    result[`trigger_label_${suffix}`];
+
+  const monitoring =
+    result[`monitoring_${suffix}`];
+
+  const response =
+    result[`response_${suffix}`];
+
+  const judgement =
+    result[
+      `clinical_judgement_note_${suffix}`
+    ];
+
+
+  const components = [
+    [
+      'RR',
+      result.components.respiration_rate
+    ],
+
+    [
+      'SpO₂',
+      result.components.spo2
+    ],
+
+    [
+      'O₂',
+      result.components.supplemental_oxygen
+    ],
+
+    [
+      'SBP',
+      result.components.systolic_bp
+    ],
+
+    [
+      'Pulse',
+      result.components.pulse
+    ],
+
+    [
+      'ACVPU',
+      result.components.consciousness
+    ],
+
+    [
+      'Temp',
+      result.components.temperature
+    ]
+  ];
+
+
+  const offlineNotice =
+    source === 'offline'
+      ? `<p class="text-[11px] text-amber-300 mt-3">${escapeHtml(
+          globalThis.ClinicalI18n
+            ?.t?.('news2.offline')
+          || clinicalText(
+            'Resultado calculado localmente em modo offline.',
+            'Result calculated locally while offline.'
+          )
+        )}</p>`
+      : '';
+
+
+  res.classList.remove(
+    'hidden'
+  );
+
+
+  res.innerHTML = `
+    <div class="flex flex-wrap items-end justify-between gap-4">
+
+      <div>
+        <p class="text-[10px] font-semibold text-slate-400 uppercase">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('news2.result')
+            || clinicalText(
+              'Pontuação NEWS2',
+              'NEWS2 score'
+            )
+          )}
+        </p>
+
+        <p class="text-4xl font-black text-white">
+          ${escapeHtml(result.total)}
+        </p>
+
+        <p class="text-sm font-semibold text-red-300">
+          ${escapeHtml(aggregate)}
+        </p>
+
+        <p class="text-xs text-amber-200 mt-1">
+          ${escapeHtml(trigger)}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-7 gap-1 text-center">
+        ${components.map(
+          ([label, value]) => `
+            <div class="rounded bg-slate-900 px-2 py-1">
+              <div class="text-[9px] text-slate-500">
+                ${escapeHtml(label)}
+              </div>
+              <div class="text-sm font-bold text-slate-100">
+                ${escapeHtml(value)}
+              </div>
+            </div>
+          `
+        ).join('')}
+      </div>
+
+    </div>
+
+    <div class="mt-4 space-y-3 text-xs">
+
+      <div>
+        <span class="font-semibold text-slate-400">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('news2.monitoring')
+            || clinicalText(
+              'Monitorização',
+              'Monitoring'
+            )
+          )}:
+        </span>
+        <span class="text-slate-200">
+          ${escapeHtml(monitoring)}
+        </span>
+      </div>
+
+      <div>
+        <span class="font-semibold text-slate-400">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('news2.response')
+            || clinicalText(
+              'Resposta clínica',
+              'Clinical response'
+            )
+          )}:
+        </span>
+        <span class="text-slate-200">
+          ${escapeHtml(response)}
+        </span>
+      </div>
+
+      <p class="text-[11px] text-slate-400">
+        ${escapeHtml(judgement)}
+      </p>
+
+    </div>
+
+    ${offlineNotice}
+  `;
+}
+
+
+async function calculateNews2(event) {
+  event.preventDefault();
+
+
+  const payload = {
+    respiration_rate:
+      Number.parseInt(
+        document.getElementById(
+          'news2-rr'
+        ).value,
+        10
+      ),
+
+    spo2:
+      Number.parseInt(
+        document.getElementById(
+          'news2-spo2'
+        ).value,
+        10
+      ),
+
+    spo2_scale:
+      Number.parseInt(
+        document.getElementById(
+          'news2-scale'
+        ).value,
+        10
+      ),
+
+    scale2_prescribed:
+      document.getElementById(
+        'news2-scale2-prescribed'
+      ).checked,
+
+    supplemental_oxygen:
+      document.getElementById(
+        'news2-oxygen'
+      ).checked,
+
+    systolic_bp:
+      Number.parseInt(
+        document.getElementById(
+          'news2-sbp'
+        ).value,
+        10
+      ),
+
+    pulse:
+      Number.parseInt(
+        document.getElementById(
+          'news2-pulse'
+        ).value,
+        10
+      ),
+
+    consciousness:
+      document.getElementById(
+        'news2-consciousness'
+      ).value,
+
+    temperature:
+      Number.parseFloat(
+        document.getElementById(
+          'news2-temp'
+        ).value
+      )
+  };
+
+
+  const numeric = [
+    payload.respiration_rate,
+    payload.spo2,
+    payload.systolic_bp,
+    payload.pulse,
+    payload.temperature
+  ];
+
+
+  if (
+    !numeric.every(
+      Number.isFinite
+    )
+  ) {
+    return showError(
+      'news2-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('news2.invalid')
+      || clinicalText(
+        'Parâmetros NEWS2 inválidos.',
+        'Invalid NEWS2 parameters.'
+      )
+    );
+  }
+
+
+  if (
+    payload.spo2_scale === 2
+    && !payload.scale2_prescribed
+  ) {
+    return showError(
+      'news2-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('news2.scale2Required')
+      || clinicalText(
+        'A Escala 2 exige alvo 88–92% definido sob direção clínica qualificada.',
+        'Scale 2 requires an 88–92% target set under qualified clinical direction.'
+      )
+    );
+  }
+
+
+  let result;
+  let source = 'api';
+
+
+  try {
+    const apiResponse = await fetch(
+      '/api/v1/tools/news2',
+      {
+        method: 'POST',
+
+        headers: {
+          'Content-Type':
+            'application/json'
+        },
+
+        body:
+          JSON.stringify(payload)
+      }
+    );
+
+
+    if (!apiResponse.ok) {
+      let detail =
+        clinicalText(
+          'Não foi possível calcular o NEWS2.',
+          'Unable to calculate NEWS2.'
+        );
+
+      try {
+        detail =
+          (await apiResponse.json())
+            .detail
+          || detail;
+      } catch (_) {}
+
+
+      const error =
+        new Error(detail);
+
+      error.httpStatus =
+        apiResponse.status;
+
+      throw error;
+    }
+
+
+    result =
+      await apiResponse.json();
+
+  } catch (error) {
+
+    if (error.httpStatus) {
+      return showError(
+        'news2-result',
+        error.message
+      );
+    }
+
+
+    try {
+      result =
+        globalThis.ClinicalTools
+          .calculateNews2(
+            payload
+          );
+
+      source = 'offline';
+
+    } catch (_) {
+      return showError(
+        'news2-result',
+
+        globalThis.ClinicalI18n
+          ?.t?.('news2.invalid')
+        || clinicalText(
+          'Não foi possível calcular o NEWS2.',
+          'Unable to calculate NEWS2.'
+        )
+      );
+    }
+  }
+
+
+  lastNews2Result =
+    result;
+
+  lastNews2Source =
+    source;
+
+
+  renderNews2Result(
+    result,
+    source
+  );
+}
+
+
 function scoreGlasgow() {
   const ids = ['glasgow-e', 'glasgow-v', 'glasgow-m'];
   const values = ids.map((id) => document.getElementById(id).value);
@@ -667,6 +1080,7 @@ function wireUiEvents() {
 
   const submitHandlers = {
     'sae-search-form': searchSAE,
+    'news2-form': calculateNews2,
     'drip-form': calculateDrip,
     'meds-form': calculateMeds,
     'bmi-form': calculateBMI,
@@ -706,3 +1120,17 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('offline', checkApiHealth);
   }
 });
+
+
+
+globalThis.addEventListener?.(
+  'clinical-language-change',
+  () => {
+    if (lastNews2Result) {
+      renderNews2Result(
+        lastNews2Result,
+        lastNews2Source
+      );
+    }
+  }
+);

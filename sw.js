@@ -1,10 +1,12 @@
-const CACHE_NAME = 'clinical-reference-v8-a06-a07-a08-functional-qc';
+const CACHE_NAME = 'clinical-reference-v9-v2-clinical-expansion';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [
   '/',
   '/manifest.json?v=611',
   '/assets/app.css',
+  '/assets/i18n.js',
+  '/assets/clinical-tools.js',
   '/assets/app.js',
   '/assets/icons/icon-192.png',
   '/assets/icons/icon-512.png',
