@@ -1019,6 +1019,713 @@ async function calculateNews2(event) {
 }
 
 
+
+let lastEgfrResult = null;
+let lastEgfrSource = null;
+
+let lastCkdResult = null;
+let lastCkdSource = null;
+
+let lastAkiResult = null;
+let lastAkiSource = null;
+
+
+function nullableClinicalNumber(id) {
+  const value =
+    document.getElementById(id)?.value;
+
+  if (
+    value === ''
+    || value === null
+    || value === undefined
+  ) {
+    return null;
+  }
+
+  const parsed =
+    Number.parseFloat(value);
+
+  return Number.isFinite(parsed)
+    ? parsed
+    : null;
+}
+
+
+async function runClinicalCalculator(
+  url,
+  payload,
+  offlineCalculator
+) {
+  try {
+    const response = await fetch(
+      url,
+      {
+        method: 'POST',
+
+        headers: {
+          'Content-Type':
+            'application/json'
+        },
+
+        body:
+          JSON.stringify(payload)
+      }
+    );
+
+
+    if (!response.ok) {
+      let detail =
+        clinicalText(
+          'Não foi possível calcular o resultado.',
+          'Unable to calculate the result.'
+        );
+
+      try {
+        const body =
+          await response.json();
+
+        detail =
+          body.detail
+          || detail;
+
+      } catch (_) {}
+
+
+      const error =
+        new Error(detail);
+
+      error.httpStatus =
+        response.status;
+
+      throw error;
+    }
+
+
+    return {
+      result:
+        await response.json(),
+
+      source: 'api'
+    };
+
+  } catch (error) {
+    if (error.httpStatus) {
+      throw error;
+    }
+
+    return {
+      result:
+        offlineCalculator(payload),
+
+      source: 'offline'
+    };
+  }
+}
+
+
+function renalOfflineNotice(source) {
+  if (source !== 'offline') {
+    return '';
+  }
+
+  return `
+    <p class="text-[11px] text-amber-300 mt-3">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('renal.offline')
+        || clinicalText(
+          'Resultado calculado localmente em modo offline.',
+          'Result calculated locally while offline.'
+        )
+      )}
+    </p>
+  `;
+}
+
+
+function renderEgfrResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'renal-egfr-result'
+    );
+
+  if (!res || !result) return;
+
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+
+  res.classList.remove('hidden');
+
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('renal.result')
+        || clinicalText(
+          'Resultado',
+          'Result'
+        )
+      )}
+    </p>
+
+    <p class="text-2xl font-bold text-teal-300 mt-1">
+      ${escapeHtml(
+        result.egfr_ml_min_1_73m2.toFixed(1)
+      )}
+      <span class="text-xs text-slate-400">
+        mL/min/1.73 m²
+      </span>
+    </p>
+
+    <p class="text-sm font-semibold text-white mt-1">
+      ${escapeHtml(result.gfr_category)}
+      ·
+      ${escapeHtml(
+        result[
+          `gfr_category_label_${suffix}`
+        ]
+      )}
+    </p>
+
+    <p class="text-[11px] text-slate-400 mt-2">
+      ${escapeHtml(
+        result[
+          `interpretation_${suffix}`
+        ]
+      )}
+    </p>
+
+    ${renalOfflineNotice(source)}
+  `;
+}
+
+
+async function calculateEgfrTool(event) {
+  event.preventDefault();
+
+
+  const payload = {
+    age_years:
+      Number.parseInt(
+        document.getElementById(
+          'renal-egfr-age'
+        ).value,
+        10
+      ),
+
+    sex:
+      document.getElementById(
+        'renal-egfr-sex'
+      ).value,
+
+    serum_creatinine:
+      Number.parseFloat(
+        document.getElementById(
+          'renal-egfr-cr'
+        ).value
+      ),
+
+    creatinine_unit:
+      document.getElementById(
+        'renal-egfr-unit'
+      ).value
+  };
+
+
+  if (
+    !Number.isInteger(
+      payload.age_years
+    )
+    || payload.age_years < 18
+    || payload.age_years > 120
+    || !Number.isFinite(
+      payload.serum_creatinine
+    )
+    || payload.serum_creatinine <= 0
+    || ![
+      'female',
+      'male'
+    ].includes(payload.sex)
+  ) {
+    return showError(
+      'renal-egfr-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('renal.invalidEgfr')
+      || clinicalText(
+        'Informe dados válidos para TFGe.',
+        'Enter valid eGFR data.'
+      )
+    );
+  }
+
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/egfr-ckd-epi-2021',
+      payload,
+      globalThis.ClinicalTools
+        .calculateEgfrCkdEpi2021
+    );
+
+
+    lastEgfrResult =
+      result;
+
+    lastEgfrSource =
+      source;
+
+
+    const ckdInput =
+      document.getElementById(
+        'renal-ckd-egfr'
+      );
+
+    if (ckdInput) {
+      ckdInput.value =
+        result.egfr_ml_min_1_73m2
+          .toFixed(1);
+    }
+
+
+    renderEgfrResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'renal-egfr-result',
+      error.message
+    );
+  }
+}
+
+
+function renderCkdResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'renal-ckd-result'
+    );
+
+  if (!res || !result) return;
+
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+
+  const status =
+    result[
+      `ckd_status_${suffix}`
+    ];
+
+
+  const note =
+    result[
+      `classification_note_${suffix}`
+    ];
+
+
+  res.classList.remove('hidden');
+
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      KDIGO G/A
+    </p>
+
+    <p class="text-2xl font-bold text-emerald-400 mt-1">
+      ${escapeHtml(
+        result.ga_classification
+      )}
+    </p>
+
+    <p class="text-sm text-white mt-1">
+      ${escapeHtml(status)}
+    </p>
+
+    <p class="text-[11px] text-slate-400 mt-2">
+      ${escapeHtml(note)}
+    </p>
+
+    ${renalOfflineNotice(source)}
+  `;
+}
+
+
+async function calculateCkdTool(event) {
+  event.preventDefault();
+
+
+  const egfr =
+    Number.parseFloat(
+      document.getElementById(
+        'renal-ckd-egfr'
+      ).value
+    );
+
+
+  const acr =
+    nullableClinicalNumber(
+      'renal-ckd-acr'
+    );
+
+
+  if (
+    !Number.isFinite(egfr)
+    || egfr < 0
+    || (
+      acr !== null
+      && acr < 0
+    )
+  ) {
+    return showError(
+      'renal-ckd-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('renal.invalidCkd')
+      || clinicalText(
+        'Informe dados válidos para classificação renal.',
+        'Enter valid kidney-classification data.'
+      )
+    );
+  }
+
+
+  const payload = {
+    egfr_ml_min_1_73m2:
+      egfr,
+
+    acr,
+
+    acr_unit:
+      document.getElementById(
+        'renal-ckd-acr-unit'
+      ).value,
+
+    chronicity_at_least_3_months:
+      document.getElementById(
+        'renal-ckd-chronicity'
+      ).checked,
+
+    other_kidney_damage_marker:
+      document.getElementById(
+        'renal-ckd-other-marker'
+      ).checked
+  };
+
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/ckd-classification',
+      payload,
+      globalThis.ClinicalTools
+        .classifyCkd
+    );
+
+
+    lastCkdResult =
+      result;
+
+    lastCkdSource =
+      source;
+
+
+    renderCkdResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'renal-ckd-result',
+      error.message
+    );
+  }
+}
+
+
+function renderAkiResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'renal-aki-result'
+    );
+
+  if (!res || !result) return;
+
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+
+  const interpretation =
+    result[
+      `interpretation_${suffix}`
+    ];
+
+
+  const criteria =
+    result[
+      `criteria_${suffix}`
+    ] || [];
+
+
+  const stageLabel =
+    result.stage === null
+      ? clinicalText(
+          'Não classificável',
+          'Not classifiable'
+        )
+      : clinicalText(
+          `KDIGO estágio ${result.stage}`,
+          `KDIGO stage ${result.stage}`
+        );
+
+
+  const urineRate =
+    result.urine_output_ml_kg_h;
+
+
+  res.classList.remove('hidden');
+
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      KDIGO AKI
+    </p>
+
+    <p class="text-2xl font-bold text-amber-300 mt-1">
+      ${escapeHtml(stageLabel)}
+    </p>
+
+    ${
+      urineRate !== null
+        ? `
+          <p class="text-xs text-slate-300 mt-1">
+            ${escapeHtml(
+              clinicalText(
+                'Diurese calculada',
+                'Calculated urine output'
+              )
+            )}:
+            ${escapeHtml(
+              urineRate.toFixed(4)
+            )}
+            mL/kg/h
+          </p>
+        `
+        : ''
+    }
+
+    ${
+      criteria.length
+        ? `
+          <ul class="mt-3 space-y-1">
+            ${criteria.map(
+              item => `
+                <li class="text-[11px] text-slate-300">
+                  • ${escapeHtml(item)}
+                </li>
+              `
+            ).join('')}
+          </ul>
+        `
+        : ''
+    }
+
+    <p class="text-[11px] text-slate-400 mt-3">
+      ${escapeHtml(interpretation)}
+    </p>
+
+    ${renalOfflineNotice(source)}
+  `;
+}
+
+
+async function calculateAkiTool(event) {
+  event.preventDefault();
+
+
+  const current =
+    nullableClinicalNumber(
+      'renal-aki-current'
+    );
+
+  const baseline =
+    nullableClinicalNumber(
+      'renal-aki-baseline'
+    );
+
+  const interval =
+    nullableClinicalNumber(
+      'renal-aki-interval'
+    );
+
+  const weight =
+    nullableClinicalNumber(
+      'renal-aki-weight'
+    );
+
+  const urine =
+    nullableClinicalNumber(
+      'renal-aki-urine'
+    );
+
+  const urineHours =
+    nullableClinicalNumber(
+      'renal-aki-urine-hours'
+    );
+
+  const anuria =
+    nullableClinicalNumber(
+      'renal-aki-anuria'
+    );
+
+
+  if (
+    baseline !== null
+    && current === null
+  ) {
+    return showError(
+      'renal-aki-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.(
+          'renal.akiBaselineNeedsCurrent'
+        )
+      || clinicalText(
+        'A creatinina basal exige creatinina atual.',
+        'Baseline creatinine requires current creatinine.'
+      )
+    );
+  }
+
+
+  const urineCount = [
+    weight,
+    urine,
+    urineHours
+  ].filter(
+    value => value !== null
+  ).length;
+
+
+  if (
+    urineCount !== 0
+    && urineCount !== 3
+  ) {
+    return showError(
+      'renal-aki-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('renal.akiUrineGroup')
+      || clinicalText(
+        'Informe peso, diurese e duração conjuntamente.',
+        'Provide weight, urine output and duration together.'
+      )
+    );
+  }
+
+
+  const payload = {
+    current_creatinine:
+      current,
+
+    current_creatinine_unit:
+      document.getElementById(
+        'renal-aki-current-unit'
+      ).value,
+
+    baseline_creatinine:
+      baseline,
+
+    baseline_creatinine_unit:
+      baseline === null
+        ? null
+        : document.getElementById(
+            'renal-aki-baseline-unit'
+          ).value,
+
+    baseline_interval_hours:
+      interval,
+
+    weight_kg:
+      weight,
+
+    urine_output_ml:
+      urine,
+
+    urine_output_duration_hours:
+      urineHours,
+
+    anuria_duration_hours:
+      anuria,
+
+    renal_replacement_therapy:
+      document.getElementById(
+        'renal-aki-krt'
+      ).checked
+  };
+
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/kdigo-aki',
+      payload,
+      globalThis.ClinicalTools
+        .calculateKdigoAki
+    );
+
+
+    lastAkiResult =
+      result;
+
+    lastAkiSource =
+      source;
+
+
+    renderAkiResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'renal-aki-result',
+      error.message
+    );
+  }
+}
+
+
 function scoreGlasgow() {
   const ids = ['glasgow-e', 'glasgow-v', 'glasgow-m'];
   const values = ids.map((id) => document.getElementById(id).value);
@@ -1081,6 +1788,9 @@ function wireUiEvents() {
   const submitHandlers = {
     'sae-search-form': searchSAE,
     'news2-form': calculateNews2,
+    'renal-egfr-form': calculateEgfrTool,
+    'renal-ckd-form': calculateCkdTool,
+    'renal-aki-form': calculateAkiTool,
     'drip-form': calculateDrip,
     'meds-form': calculateMeds,
     'bmi-form': calculateBMI,
@@ -1130,6 +1840,27 @@ globalThis.addEventListener?.(
       renderNews2Result(
         lastNews2Result,
         lastNews2Source
+      );
+    }
+
+    if (lastEgfrResult) {
+      renderEgfrResult(
+        lastEgfrResult,
+        lastEgfrSource
+      );
+    }
+
+    if (lastCkdResult) {
+      renderCkdResult(
+        lastCkdResult,
+        lastCkdSource
+      );
+    }
+
+    if (lastAkiResult) {
+      renderAkiResult(
+        lastAkiResult,
+        lastAkiSource
       );
     }
   }

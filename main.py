@@ -13,6 +13,14 @@ from sqlalchemy.orm import Session, selectinload
 import database
 import schemas
 from clinical_tools.news2 import NEWS2_METADATA, calculate_news2
+from clinical_tools.renal import (
+    AKI_METADATA,
+    CKD_METADATA,
+    EGFR_METADATA,
+    calculate_egfr_ckd_epi_2021,
+    calculate_kdigo_aki,
+    classify_ckd,
+)
 from config import load_settings
 from observability import RateLimitMiddleware, RequestContextMiddleware, configure_logging
 from scripts.clinical_content import file_hash, validate_release_content
@@ -641,6 +649,116 @@ def api_news2_calculate(
             pulse=payload.pulse,
             consciousness=payload.consciousness,
             temperature=payload.temperature,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/egfr-ckd-epi-2021/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_egfr_metadata():
+    return EGFR_METADATA
+
+
+@api_v1.post(
+    "/tools/egfr-ckd-epi-2021",
+    response_model=schemas.EGFRResponse,
+)
+def api_calculate_egfr(
+    payload: schemas.EGFRInput,
+):
+    try:
+        return calculate_egfr_ckd_epi_2021(
+            age_years=payload.age_years,
+            sex=payload.sex,
+            serum_creatinine=payload.serum_creatinine,
+            creatinine_unit=payload.creatinine_unit,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/ckd-classification/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_ckd_metadata():
+    return CKD_METADATA
+
+
+@api_v1.post(
+    "/tools/ckd-classification",
+    response_model=schemas.CKDClassificationResponse,
+)
+def api_classify_ckd(
+    payload: schemas.CKDClassificationInput,
+):
+    try:
+        return classify_ckd(
+            egfr_ml_min_1_73m2=payload.egfr_ml_min_1_73m2,
+            acr=payload.acr,
+            acr_unit=payload.acr_unit,
+            chronicity_at_least_3_months=(
+                payload.chronicity_at_least_3_months
+            ),
+            other_kidney_damage_marker=(
+                payload.other_kidney_damage_marker
+            ),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/kdigo-aki/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_kdigo_aki_metadata():
+    return AKI_METADATA
+
+
+@api_v1.post(
+    "/tools/kdigo-aki",
+    response_model=schemas.KDIGOAKIResponse,
+)
+def api_calculate_kdigo_aki(
+    payload: schemas.KDIGOAKIInput,
+):
+    try:
+        return calculate_kdigo_aki(
+            current_creatinine=payload.current_creatinine,
+            current_creatinine_unit=(
+                payload.current_creatinine_unit
+            ),
+            baseline_creatinine=payload.baseline_creatinine,
+            baseline_creatinine_unit=(
+                payload.baseline_creatinine_unit
+            ),
+            baseline_interval_hours=(
+                payload.baseline_interval_hours
+            ),
+            weight_kg=payload.weight_kg,
+            urine_output_ml=payload.urine_output_ml,
+            urine_output_duration_hours=(
+                payload.urine_output_duration_hours
+            ),
+            anuria_duration_hours=(
+                payload.anuria_duration_hours
+            ),
+            renal_replacement_therapy=(
+                payload.renal_replacement_therapy
+            ),
         )
     except ValueError as exc:
         raise HTTPException(

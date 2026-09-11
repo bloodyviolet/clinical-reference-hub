@@ -108,7 +108,109 @@
         'A Escala 2 exige confirmação explícita de alvo 88–92% definido sob direção clínica qualificada.',
 
       'news2.invalid':
-        'Preencha todos os parâmetros NEWS2 com valores válidos.'
+        'Preencha todos os parâmetros NEWS2 com valores válidos.',
+
+      'renal.title':
+        'Suite Renal · KDIGO / CKD-EPI',
+
+      'renal.description':
+        'TFGe CKD-EPI 2021, classificação KDIGO 2024 de DRC e estadiamento KDIGO 2012 de LRA.',
+
+      'renal.egfrTitle':
+        'TFGe · CKD-EPI 2021',
+
+      'renal.age':
+        'Idade (anos)',
+
+      'renal.sex':
+        'Sexo usado pela equação',
+
+      'renal.female':
+        'Feminino',
+
+      'renal.male':
+        'Masculino',
+
+      'renal.creatinine':
+        'Creatinina sérica',
+
+      'renal.unit':
+        'Unidade',
+
+      'renal.calculateEgfr':
+        'Calcular TFGe',
+
+      'renal.ckdTitle':
+        'DRC · KDIGO 2024',
+
+      'renal.egfrValue':
+        'TFGe (mL/min/1,73 m²)',
+
+      'renal.acr':
+        'Relação albumina/creatinina urinária',
+
+      'renal.acrOptional':
+        'RAC urinária · opcional',
+
+      'renal.chronicity':
+        'Anormalidade renal presente por pelo menos 3 meses',
+
+      'renal.otherMarker':
+        'Há outro marcador de dano renal',
+
+      'renal.classifyCkd':
+        'Classificar G/A e avaliar critérios de DRC',
+
+      'renal.akiTitle':
+        'LRA · KDIGO 2012',
+
+      'renal.currentCr':
+        'Creatinina atual · opcional',
+
+      'renal.baselineCr':
+        'Creatinina basal · opcional',
+
+      'renal.intervalHours':
+        'Intervalo basal→atual (horas)',
+
+      'renal.weight':
+        'Peso (kg) para diurese',
+
+      'renal.urine':
+        'Diurese total (mL)',
+
+      'renal.urineHours':
+        'Período da diurese (horas)',
+
+      'renal.anuriaHours':
+        'Duração da anúria (horas)',
+
+      'renal.krt':
+        'Terapia renal substitutiva iniciada',
+
+      'renal.stageAki':
+        'Avaliar / estadiar LRA',
+
+      'renal.result':
+        'Resultado',
+
+      'renal.offline':
+        'Resultado calculado localmente em modo offline.',
+
+      'renal.invalidEgfr':
+        'Informe idade adulta, sexo e creatinina sérica válidos.',
+
+      'renal.invalidCkd':
+        'Informe uma TFGe válida e, se utilizada, uma RAC não negativa.',
+
+      'renal.akiBaselineNeedsCurrent':
+        'Creatinina basal só pode ser avaliada quando a creatinina atual também é informada.',
+
+      'renal.akiUrineGroup':
+        'Para avaliar diurese, informe conjuntamente peso, volume urinário e duração.',
+
+      'renal.source':
+        'Fontes: CKD-EPI 2021 / National Kidney Foundation; KDIGO CKD 2024; KDIGO AKI 2012.'
     },
 
     'en-GB': {
@@ -209,7 +311,109 @@
         'Scale 2 requires explicit confirmation of an 88–92% target set under qualified clinical direction.',
 
       'news2.invalid':
-        'Complete all NEWS2 parameters with valid values.'
+        'Complete all NEWS2 parameters with valid values.',
+
+      'renal.title':
+        'Renal Suite · KDIGO / CKD-EPI',
+
+      'renal.description':
+        'CKD-EPI 2021 eGFR, KDIGO 2024 CKD classification and KDIGO 2012 AKI staging.',
+
+      'renal.egfrTitle':
+        'eGFR · CKD-EPI 2021',
+
+      'renal.age':
+        'Age (years)',
+
+      'renal.sex':
+        'Sex used by the equation',
+
+      'renal.female':
+        'Female',
+
+      'renal.male':
+        'Male',
+
+      'renal.creatinine':
+        'Serum creatinine',
+
+      'renal.unit':
+        'Unit',
+
+      'renal.calculateEgfr':
+        'Calculate eGFR',
+
+      'renal.ckdTitle':
+        'CKD · KDIGO 2024',
+
+      'renal.egfrValue':
+        'eGFR (mL/min/1.73 m²)',
+
+      'renal.acr':
+        'Urine albumin-to-creatinine ratio',
+
+      'renal.acrOptional':
+        'Urine ACR · optional',
+
+      'renal.chronicity':
+        'Kidney abnormality present for at least 3 months',
+
+      'renal.otherMarker':
+        'Another marker of kidney damage is present',
+
+      'renal.classifyCkd':
+        'Classify G/A and assess CKD criteria',
+
+      'renal.akiTitle':
+        'AKI · KDIGO 2012',
+
+      'renal.currentCr':
+        'Current creatinine · optional',
+
+      'renal.baselineCr':
+        'Baseline creatinine · optional',
+
+      'renal.intervalHours':
+        'Baseline→current interval (hours)',
+
+      'renal.weight':
+        'Weight (kg) for urine output',
+
+      'renal.urine':
+        'Total urine output (mL)',
+
+      'renal.urineHours':
+        'Urine-output period (hours)',
+
+      'renal.anuriaHours':
+        'Anuria duration (hours)',
+
+      'renal.krt':
+        'Kidney replacement therapy initiated',
+
+      'renal.stageAki':
+        'Assess / stage AKI',
+
+      'renal.result':
+        'Result',
+
+      'renal.offline':
+        'Result calculated locally while offline.',
+
+      'renal.invalidEgfr':
+        'Enter a valid adult age, sex and serum creatinine.',
+
+      'renal.invalidCkd':
+        'Enter a valid eGFR and, when supplied, a non-negative ACR.',
+
+      'renal.akiBaselineNeedsCurrent':
+        'Baseline creatinine can only be assessed when current creatinine is also supplied.',
+
+      'renal.akiUrineGroup':
+        'To assess urine output, provide weight, urine volume and duration together.',
+
+      'renal.source':
+        'Sources: CKD-EPI 2021 / National Kidney Foundation; KDIGO CKD 2024; KDIGO AKI 2012.'
     }
   };
 

@@ -325,3 +325,199 @@ class NEWS2Response(BaseModel):
 
     clinical_judgement_note_pt: str
     clinical_judgement_note_en: str
+
+
+# ---------------------------------------------------------------------------
+# v2 Item 2 — adult renal tools.
+# ---------------------------------------------------------------------------
+
+RenalSex = Literal[
+    "female",
+    "male",
+]
+
+CreatinineUnit = Literal[
+    "mg/dL",
+    "umol/L",
+]
+
+ACRUnit = Literal[
+    "mg/g",
+    "mg/mmol",
+]
+
+
+class EGFRInput(BaseModel):
+    age_years: int = Field(
+        ge=18,
+        le=120,
+    )
+    sex: RenalSex
+    serum_creatinine: float = Field(gt=0)
+    creatinine_unit: CreatinineUnit = "mg/dL"
+
+
+class EGFRResponse(BaseModel):
+    tool: Literal["egfr_ckd_epi_2021"]
+    equation: str
+    race_coefficient_used: Literal[False]
+    age_years: int
+    sex: RenalSex
+    creatinine_mg_dl: float
+    egfr_ml_min_1_73m2: float
+
+    gfr_category: Literal[
+        "G1",
+        "G2",
+        "G3a",
+        "G3b",
+        "G4",
+        "G5",
+    ]
+
+    gfr_category_label_pt: str
+    gfr_category_label_en: str
+    interpretation_pt: str
+    interpretation_en: str
+
+
+class CKDClassificationInput(BaseModel):
+    egfr_ml_min_1_73m2: float = Field(ge=0)
+
+    acr: float | None = Field(
+        default=None,
+        ge=0,
+    )
+
+    acr_unit: ACRUnit = "mg/g"
+
+    chronicity_at_least_3_months: bool = False
+    other_kidney_damage_marker: bool = False
+
+
+class CKDClassificationResponse(BaseModel):
+    tool: Literal["ckd_classification"]
+
+    gfr_category: Literal[
+        "G1",
+        "G2",
+        "G3a",
+        "G3b",
+        "G4",
+        "G5",
+    ]
+
+    gfr_category_label_pt: str
+    gfr_category_label_en: str
+
+    albuminuria_category: Literal[
+        "A1",
+        "A2",
+        "A3",
+    ] | None
+
+    albuminuria_category_label_pt: str | None
+    albuminuria_category_label_en: str | None
+
+    ga_classification: str
+
+    chronicity_at_least_3_months: bool
+    other_kidney_damage_marker: bool
+
+    ckd_status_code: Literal[
+        "criteria_met",
+        "chronicity_not_established",
+        "criteria_not_met_by_supplied_data",
+    ]
+
+    ckd_status_pt: str
+    ckd_status_en: str
+
+    classification_note_pt: str
+    classification_note_en: str
+
+
+class KDIGOAKIInput(BaseModel):
+    current_creatinine: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    current_creatinine_unit: CreatinineUnit = "mg/dL"
+
+    baseline_creatinine: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    baseline_creatinine_unit: CreatinineUnit | None = None
+
+    baseline_interval_hours: float | None = Field(
+        default=None,
+        ge=0,
+    )
+
+    weight_kg: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    urine_output_ml: float | None = Field(
+        default=None,
+        ge=0,
+    )
+
+    urine_output_duration_hours: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    anuria_duration_hours: float | None = Field(
+        default=None,
+        ge=0,
+    )
+
+    renal_replacement_therapy: bool = False
+
+
+class KDIGOAKIResponse(BaseModel):
+    tool: Literal["kdigo_aki"]
+
+    evaluable: bool
+    aki_criteria_met: bool | None
+
+    stage: Literal[
+        0,
+        1,
+        2,
+        3,
+    ] | None
+
+    creatinine_stage: Literal[
+        0,
+        1,
+        2,
+        3,
+    ] | None
+
+    urine_output_stage: Literal[
+        0,
+        1,
+        2,
+        3,
+    ] | None
+
+    rrt_stage: Literal[3] | None
+
+    current_creatinine_mg_dl: float | None
+
+    creatinine_ratio: float | None
+    creatinine_delta_mg_dl: float | None
+    urine_output_ml_kg_h: float | None
+
+    criteria_codes: list[str]
+    criteria_pt: list[str]
+    criteria_en: list[str]
+
+    interpretation_pt: str
+    interpretation_en: str

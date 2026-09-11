@@ -1,0 +1,224 @@
+{
+  "egfr_nkf_verification": [
+    {
+      "age_years": 18,
+      "sex": "male",
+      "serum_creatinine": 0.9,
+      "expected_rounded": 127,
+      "expected_1dp": 127.0
+    },
+    {
+      "age_years": 18,
+      "sex": "male",
+      "serum_creatinine": 0.91,
+      "expected_rounded": 125,
+      "expected_1dp": 125.3
+    },
+    {
+      "age_years": 18,
+      "sex": "female",
+      "serum_creatinine": 0.7,
+      "expected_rounded": 128,
+      "expected_1dp": 128.5
+    },
+    {
+      "age_years": 18,
+      "sex": "female",
+      "serum_creatinine": 0.71,
+      "expected_rounded": 126,
+      "expected_1dp": 126.3
+    },
+    {
+      "age_years": 90,
+      "sex": "male",
+      "serum_creatinine": 0.5,
+      "expected_rounded": 97,
+      "expected_1dp": 96.9
+    },
+    {
+      "age_years": 90,
+      "sex": "male",
+      "serum_creatinine": 1.5,
+      "expected_rounded": 44,
+      "expected_1dp": 44.0
+    },
+    {
+      "age_years": 90,
+      "sex": "female",
+      "serum_creatinine": 0.5,
+      "expected_rounded": 89,
+      "expected_1dp": 89.0
+    },
+    {
+      "age_years": 90,
+      "sex": "female",
+      "serum_creatinine": 1.5,
+      "expected_rounded": 33,
+      "expected_1dp": 32.9
+    }
+  ],
+  "ckd": [
+    {
+      "name": "g1_a1_not_ckd",
+      "input": {
+        "egfr_ml_min_1_73m2": 95,
+        "acr": 10,
+        "acr_unit": "mg/g",
+        "chronicity_at_least_3_months": true,
+        "other_kidney_damage_marker": false
+      },
+      "ga": "G1/A1",
+      "status": "criteria_not_met_by_supplied_data"
+    },
+    {
+      "name": "g2_other_marker_chronic",
+      "input": {
+        "egfr_ml_min_1_73m2": 70,
+        "acr": 10,
+        "acr_unit": "mg/g",
+        "chronicity_at_least_3_months": true,
+        "other_kidney_damage_marker": true
+      },
+      "ga": "G2/A1",
+      "status": "criteria_met"
+    },
+    {
+      "name": "g3b_a2_chronicity_unknown",
+      "input": {
+        "egfr_ml_min_1_73m2": 40,
+        "acr": 100,
+        "acr_unit": "mg/g",
+        "chronicity_at_least_3_months": false,
+        "other_kidney_damage_marker": false
+      },
+      "ga": "G3b/A2",
+      "status": "chronicity_not_established"
+    },
+    {
+      "name": "g3b_a2_ckd",
+      "input": {
+        "egfr_ml_min_1_73m2": 40,
+        "acr": 100,
+        "acr_unit": "mg/g",
+        "chronicity_at_least_3_months": true,
+        "other_kidney_damage_marker": false
+      },
+      "ga": "G3b/A2",
+      "status": "criteria_met"
+    }
+  ],
+  "aki": [
+    {
+      "name": "stage1_delta",
+      "input": {
+        "current_creatinine": 1.2,
+        "current_creatinine_unit": "mg/dL",
+        "baseline_creatinine": 0.9,
+        "baseline_creatinine_unit": "mg/dL",
+        "baseline_interval_hours": 24,
+        "weight_kg": null,
+        "urine_output_ml": null,
+        "urine_output_duration_hours": null,
+        "anuria_duration_hours": null,
+        "renal_replacement_therapy": false
+      },
+      "stage": 1
+    },
+    {
+      "name": "stage2_ratio",
+      "input": {
+        "current_creatinine": 2.0,
+        "current_creatinine_unit": "mg/dL",
+        "baseline_creatinine": 1.0,
+        "baseline_creatinine_unit": "mg/dL",
+        "baseline_interval_hours": 24,
+        "weight_kg": null,
+        "urine_output_ml": null,
+        "urine_output_duration_hours": null,
+        "anuria_duration_hours": null,
+        "renal_replacement_therapy": false
+      },
+      "stage": 2
+    },
+    {
+      "name": "stage3_urine",
+      "input": {
+        "current_creatinine": null,
+        "current_creatinine_unit": "mg/dL",
+        "baseline_creatinine": null,
+        "baseline_creatinine_unit": null,
+        "baseline_interval_hours": null,
+        "weight_kg": 70,
+        "urine_output_ml": 400,
+        "urine_output_duration_hours": 24,
+        "anuria_duration_hours": null,
+        "renal_replacement_therapy": false
+      },
+      "stage": 3
+    },
+    {
+      "name": "stage3_anuria",
+      "input": {
+        "current_creatinine": null,
+        "current_creatinine_unit": "mg/dL",
+        "baseline_creatinine": null,
+        "baseline_creatinine_unit": null,
+        "baseline_interval_hours": null,
+        "weight_kg": null,
+        "urine_output_ml": null,
+        "urine_output_duration_hours": null,
+        "anuria_duration_hours": 12,
+        "renal_replacement_therapy": false
+      },
+      "stage": 3
+    },
+    {
+      "name": "stage3_rrt",
+      "input": {
+        "current_creatinine": null,
+        "current_creatinine_unit": "mg/dL",
+        "baseline_creatinine": null,
+        "baseline_creatinine_unit": null,
+        "baseline_interval_hours": null,
+        "weight_kg": null,
+        "urine_output_ml": null,
+        "urine_output_duration_hours": null,
+        "anuria_duration_hours": null,
+        "renal_replacement_therapy": true
+      },
+      "stage": 3
+    },
+    {
+      "name": "old_baseline_not_evaluable",
+      "input": {
+        "current_creatinine": 2.0,
+        "current_creatinine_unit": "mg/dL",
+        "baseline_creatinine": 1.0,
+        "baseline_creatinine_unit": "mg/dL",
+        "baseline_interval_hours": 200,
+        "weight_kg": null,
+        "urine_output_ml": null,
+        "urine_output_duration_hours": null,
+        "anuria_duration_hours": null,
+        "renal_replacement_therapy": false
+      },
+      "stage": null
+    },
+    {
+      "name": "exact_half_urine_boundary",
+      "input": {
+        "current_creatinine": 1.0,
+        "current_creatinine_unit": "mg/dL",
+        "baseline_creatinine": null,
+        "baseline_creatinine_unit": null,
+        "baseline_interval_hours": null,
+        "weight_kg": 70,
+        "urine_output_ml": 210,
+        "urine_output_duration_hours": 6,
+        "anuria_duration_hours": null,
+        "renal_replacement_therapy": false
+      },
+      "stage": 0
+    }
+  ]
+}

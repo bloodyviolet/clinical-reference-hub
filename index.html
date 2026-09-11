@@ -220,6 +220,182 @@
           <div id="crcl-result" aria-live="polite" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
         
+        <!-- Renal Suite -->
+        <div id="renal-suite-card" class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+
+          <div class="space-y-1">
+            <h2 data-i18n="renal.title" class="text-base font-semibold text-white">Suite Renal · KDIGO / CKD-EPI</h2>
+            <p data-i18n="renal.description" class="text-xs text-slate-400">TFGe CKD-EPI 2021, classificação KDIGO 2024 de DRC e estadiamento KDIGO 2012 de LRA.</p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- eGFR -->
+            <section class="space-y-3 border-t border-slate-800 pt-4">
+              <h3 data-i18n="renal.egfrTitle" class="text-sm font-semibold text-teal-300">TFGe · CKD-EPI 2021</h3>
+
+              <form id="renal-egfr-form" class="space-y-3">
+
+                <div>
+                  <label data-i18n="renal.age" for="renal-egfr-age" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Idade (anos)</label>
+                  <input id="renal-egfr-age" type="number" min="18" max="120" step="1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                </div>
+
+                <div>
+                  <label data-i18n="renal.sex" for="renal-egfr-sex" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Sexo usado pela equação</label>
+                  <select id="renal-egfr-sex" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                    <option value="female" data-i18n="renal.female">Feminino</option>
+                    <option value="male" data-i18n="renal.male">Masculino</option>
+                  </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label data-i18n="renal.creatinine" for="renal-egfr-cr" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Creatinina sérica</label>
+                    <input id="renal-egfr-cr" type="number" min="0.001" step="0.01" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+
+                  <div>
+                    <label data-i18n="renal.unit" for="renal-egfr-unit" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Unidade</label>
+                    <select id="renal-egfr-unit" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                      <option value="mg/dL">mg/dL</option>
+                      <option value="umol/L">µmol/L</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button type="submit" data-i18n="renal.calculateEgfr" class="w-full bg-teal-600 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular TFGe</button>
+              </form>
+
+              <div id="renal-egfr-result" aria-live="polite" class="hidden p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+            </section>
+
+
+            <!-- CKD -->
+            <section class="space-y-3 border-t border-slate-800 pt-4">
+              <h3 data-i18n="renal.ckdTitle" class="text-sm font-semibold text-emerald-400">DRC · KDIGO 2024</h3>
+
+              <form id="renal-ckd-form" class="space-y-3">
+
+                <div>
+                  <label data-i18n="renal.egfrValue" for="renal-ckd-egfr" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">TFGe (mL/min/1,73 m²)</label>
+                  <input id="renal-ckd-egfr" type="number" min="0" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label data-i18n="renal.acrOptional" for="renal-ckd-acr" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">RAC urinária · opcional</label>
+                    <input id="renal-ckd-acr" type="number" min="0" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+
+                  <div>
+                    <label data-i18n="renal.unit" for="renal-ckd-acr-unit" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Unidade</label>
+                    <select id="renal-ckd-acr-unit" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                      <option value="mg/g">mg/g</option>
+                      <option value="mg/mmol">mg/mmol</option>
+                    </select>
+                  </div>
+                </div>
+
+                <label class="flex items-start gap-2 text-xs text-slate-300">
+                  <input id="renal-ckd-chronicity" type="checkbox" class="mt-1">
+                  <span data-i18n="renal.chronicity">Anormalidade renal presente por pelo menos 3 meses</span>
+                </label>
+
+                <label class="flex items-start gap-2 text-xs text-slate-300">
+                  <input id="renal-ckd-other-marker" type="checkbox" class="mt-1">
+                  <span data-i18n="renal.otherMarker">Há outro marcador de dano renal</span>
+                </label>
+
+                <button type="submit" data-i18n="renal.classifyCkd" class="w-full bg-emerald-600 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Classificar G/A e avaliar critérios de DRC</button>
+              </form>
+
+              <div id="renal-ckd-result" aria-live="polite" class="hidden p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+            </section>
+
+
+            <!-- AKI -->
+            <section class="space-y-3 border-t border-slate-800 pt-4">
+              <h3 data-i18n="renal.akiTitle" class="text-sm font-semibold text-amber-300">LRA · KDIGO 2012</h3>
+
+              <form id="renal-aki-form" class="space-y-3">
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label data-i18n="renal.currentCr" for="renal-aki-current" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Creatinina atual · opcional</label>
+                    <input id="renal-aki-current" type="number" min="0.001" step="0.01" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+
+                  <div>
+                    <label data-i18n="renal.unit" for="renal-aki-current-unit" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Unidade</label>
+                    <select id="renal-aki-current-unit" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                      <option value="mg/dL">mg/dL</option>
+                      <option value="umol/L">µmol/L</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label data-i18n="renal.baselineCr" for="renal-aki-baseline" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Creatinina basal · opcional</label>
+                    <input id="renal-aki-baseline" type="number" min="0.001" step="0.01" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+
+                  <div>
+                    <label data-i18n="renal.unit" for="renal-aki-baseline-unit" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Unidade</label>
+                    <select id="renal-aki-baseline-unit" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                      <option value="mg/dL">mg/dL</option>
+                      <option value="umol/L">µmol/L</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label data-i18n="renal.intervalHours" for="renal-aki-interval" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Intervalo basal→atual (horas)</label>
+                  <input id="renal-aki-interval" type="number" min="0" step="1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label data-i18n="renal.weight" for="renal-aki-weight" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Peso (kg) para diurese</label>
+                    <input id="renal-aki-weight" type="number" min="0.1" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+
+                  <div>
+                    <label data-i18n="renal.urine" for="renal-aki-urine" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Diurese total (mL)</label>
+                    <input id="renal-aki-urine" type="number" min="0" step="1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label data-i18n="renal.urineHours" for="renal-aki-urine-hours" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Período da diurese (horas)</label>
+                    <input id="renal-aki-urine-hours" type="number" min="0.1" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+
+                  <div>
+                    <label data-i18n="renal.anuriaHours" for="renal-aki-anuria" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Duração da anúria (horas)</label>
+                    <input id="renal-aki-anuria" type="number" min="0" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+                </div>
+
+                <label class="flex items-start gap-2 text-xs text-slate-300">
+                  <input id="renal-aki-krt" type="checkbox" class="mt-1">
+                  <span data-i18n="renal.krt">Terapia renal substitutiva iniciada</span>
+                </label>
+
+                <button type="submit" data-i18n="renal.stageAki" class="w-full bg-amber-600 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Avaliar / estadiar LRA</button>
+              </form>
+
+              <div id="renal-aki-result" aria-live="polite" class="hidden p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
+            </section>
+
+          </div>
+
+          <p data-i18n="renal.source" class="text-[10px] text-slate-500 border-t border-slate-800 pt-3">Fontes: CKD-EPI 2021 / National Kidney Foundation; KDIGO CKD 2024; KDIGO AKI 2012.</p>
+
+        </div>
+
         <!-- Naegele & McDonald -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <h2 class="text-base font-semibold text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-pink-500"></span>Obstetrícia</h2>

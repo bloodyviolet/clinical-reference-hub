@@ -137,7 +137,7 @@ assert(manifest.icons.length >= 2);
 assert(manifest.icons.every((icon) => icon.src.startsWith('/assets/icons/')));
 assert(manifest.icons.every((icon) => !icon.src.includes('://')));
 const sw = fs.readFileSync('sw.js', 'utf8');
-assert(sw.includes("clinical-reference-v9-v2-clinical-expansion"));
+assert(sw.includes("clinical-reference-v10-v2-renal-suite"));
 assert(sw.includes('/assets/offline/sae.json'));
 assert(sw.includes('/assets/offline/policies.json'));
 assert(sw.includes("cache: 'reload'"));
@@ -172,7 +172,7 @@ assert(appScript.includes('PT-BR:'));
 assert(appScript.includes('EN-GB:'));
 
 assert(
-  sw.includes('clinical-reference-v9-v2-clinical-expansion')
+  sw.includes('clinical-reference-v10-v2-renal-suite')
 );
 
 console.log(
