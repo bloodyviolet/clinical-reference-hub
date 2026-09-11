@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "feature": "metabolic_brazil_harmonization",
+  "clinical_review_date": "2026-09-11",
+  "implementation_status": "context_integration_complete",
+  "brazil_applicability_status": "complementary_brazil_guidance",
+  "base_calculation_policy": {
+    "general_anion_gap_change_required": false,
+    "albumin_correction_change_required": false,
+    "general_osmolality_change_required": false,
+    "corrected_sodium_change_required": false,
+    "winter_formula_change_required": false,
+    "delta_ratio_change_required": false,
+    "methanol_context_may_replace_general_formulas": false
+  },
+  "current_generic_engine": {
+    "anion_gap_formula": "Na - (Cl + HCO3), potassium excluded",
+    "calculated_osmolality_formula": "2*Na + glucose/18 + BUN/2.8",
+    "calculated_osmolality_input_convention": "sodium in mEq/L; glucose and BUN in mg/dL",
+    "automatic_primary_disorder_inference": false,
+    "methanol_poisoning_inference": false
+  },
+  "federal_sources": {
+    "ministry_joint_note_376_2025": {
+      "authority": "Ministério da Saúde / SVSA / SAES / SECTICS",
+      "document": "Nota Técnica Conjunta nº 376/2025-SVSA/SAES/SECTICS/MS",
+      "updated": "2025-10-09",
+      "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/notas-tecnicas/2025/nota-tecnica-conjunta-no-376-2025-svsa-saes-sectics-ms.pdf/view",
+      "normative_relationship": "Explicitly replaces Ministry Notes 360 and 365.",
+      "findings": [
+        "Methanol assessment includes arterial blood gas, electrolytes, serum osmolality and calculation of osmolar and anion gaps.",
+        "Its clinical confirmation workflow includes metabolic acidosis with arterial pH <7.3, bicarbonate <20 mEq/L and osmolar gap >10 mOsm/L, and/or specific methanol laboratory confirmation.",
+        "The note identifies the Ministry methanol management flowchart as a complementary clinical instrument."
+      ]
+    },
+    "ministry_saes_methanol_flowchart": {
+      "authority": "Ministério da Saúde / SAES",
+      "title": "Fluxograma: Manejo da intoxicação por metanol pelo consumo de bebidas alcoólicas adulteradas",
+      "updated": "2025-10-04",
+      "url": "https://www.gov.br/saude/pt-br/composicao/saes/publicacoes/fluxograma-metanol.pdf/view",
+      "scope": "Methanol poisoning / toxicology only",
+      "formula_table": {
+        "anion_gap": {
+          "formula": "(Na + K) - (HCO3 + Cl)",
+          "input_unit": "mmol/L",
+          "potassium_included": true
+        },
+        "osmolar_gap": {
+          "formula": "measured osmolality - calculated osmolality",
+          "requires_measured_osmolality": true
+        },
+        "calculated_osmolality": {
+          "formula": "(glucose + urea + (1.86 * sodium)) / 0.93",
+          "input_unit": "mmol/L",
+          "uses_urea_not_bun": true
+        }
+      },
+      "diagnostic_context": {
+        "anion_gap_increased_gt_meq_l": 12,
+        "osmolar_gap_suspect_gt_mosm_kg": 10,
+        "osmolar_gap_strongly_suggestive_gt_mosm_kg": 25,
+        "normal_osmolar_gap_excludes_late_poisoning": false
+      },
+      "severity_context": {
+        "icu_poor_prognosis_ph_lt": 7.2,
+        "icu_poor_prognosis_ag_gte_meq_l": 28,
+        "hemodialysis_ag_gt_mmol_l": 24
+      }
+    },
+    "anvisa_surveillance_freshness": {
+      "authority": "ANVISA",
+      "document": "Nota Técnica 38/2025 — intoxicações por metanol",
+      "last_modified": "2026-04-09",
+      "scope": "Epidemiological surveillance / ports and airports",
+      "clinical_formula_authority": false,
+      "finding": "Corroborates the relevance of metabolic acidosis and osmolar-gap findings but does not replace the Ministry/SAES clinical formula workflow."
+    }
+  },
+  "verified_context_conflicts": [
+    {
+      "id": "MET-AG-K-01",
+      "severity": "critical",
+      "finding": "The Ministry methanol workflow includes potassium in its toxicology anion-gap formula, while the general application anion gap deliberately excludes potassium.",
+      "software_rule": "Never replace the generic anion-gap formula. The potassium-inclusive calculation may exist only inside an explicitly selected Ministry methanol/toxicology context."
+    },
+    {
+      "id": "MET-OSM-UNIT-02",
+      "severity": "critical",
+      "finding": "The Ministry calculated-osmolality table uses a mmol/L convention and urea, while the generic application formula accepts glucose and BUN in mg/dL.",
+      "software_rule": "Never substitute BUN for urea or reuse mg/dL values in the Ministry formula without explicit validated conversion. Keep the toxicology calculation isolated from the generic formula."
+    },
+    {
+      "id": "MET-GO-MEASURED-03",
+      "severity": "critical",
+      "finding": "Osmolar gap requires measured serum osmolality.",
+      "software_rule": "A Ministry methanol osmolar-gap calculation must fail closed unless measured osmolality is explicitly supplied."
+    },
+    {
+      "id": "MET-DX-CONTEXT-04",
+      "severity": "critical",
+      "finding": "Gap thresholds are embedded in a methanol clinical workflow and are not stand-alone diagnostic proof.",
+      "software_rule": "Never infer or diagnose methanol poisoning from an anion gap or osmolar gap alone. Require explicit toxicology context and retain history/clinical/laboratory limitations."
+    }
+  ],
+  "bh5b_implementation_rules": [
+    "Preserve the existing generic anion gap Na-(Cl+HCO3) without potassium.",
+    "Preserve the existing generic calculated osmolality 2Na+glucose/18+BUN/2.8.",
+    "Preserve albumin correction, corrected sodium, Winter and delta-ratio mathematics unchanged.",
+    "Add Ministry methanol calculations only as an explicitly selected toxicology context.",
+    "Never automatically select methanol/toxicology context from chemistry values.",
+    "Require an explicit potassium value for the Ministry potassium-inclusive anion gap.",
+    "Require measured osmolality for osmolar gap.",
+    "Keep urea and BUN semantically distinct.",
+    "Do not silently mix mmol/L and mg/dL input conventions.",
+    "Do not infer methanol poisoning from gap values alone.",
+    "Expose source-specific diagnostic/prognostic thresholds as contextual guidance, not universal metabolic thresholds.",
+    "Keep PT-BR and EN-GB complete and available offline."
+  ],
+  "final_release_recheck_required": true,
+  "bh5b_core_status": "pass",
+  "bh5b_ui_status": "pass",
+  "harmonization_implementation_complete": true,
+  "final_brazil_review_status": "pass"
+}

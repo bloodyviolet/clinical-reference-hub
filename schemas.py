@@ -851,6 +851,99 @@ class MetabolicToolkitResponse(BaseModel):
     interpretation_en: str
 
 # ---------------------------------------------------------------------------
+# v2 Item 5B — Brazil Ministry methanol/toxicology context.
+# ---------------------------------------------------------------------------
+
+class BrazilMethanolInput(BaseModel):
+    explicit_methanol_context: Literal[True]
+
+    sodium_mmol_l: float = Field(
+        gt=0,
+    )
+
+    potassium_mmol_l: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    chloride_mmol_l: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    bicarbonate_mmol_l: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    glucose_mmol_l: float | None = Field(
+        default=None,
+        ge=0,
+    )
+
+    urea_mmol_l: float | None = Field(
+        default=None,
+        ge=0,
+    )
+
+    measured_osmolality_mosm_kg: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+
+class BrazilMethanolResponse(BaseModel):
+    tool: Literal["brazil_methanol_context"]
+
+    explicit_methanol_context: Literal[True]
+
+    sodium_mmol_l: float
+    potassium_mmol_l: float | None
+    chloride_mmol_l: float | None
+    bicarbonate_mmol_l: float | None
+
+    glucose_mmol_l: float | None
+    urea_mmol_l: float | None
+
+    measured_osmolality_mosm_kg: float | None
+
+    ministry_anion_gap_mmol_l: float | None
+    ministry_anion_gap_formula: str
+    ministry_anion_gap_potassium_included: Literal[True]
+
+    anion_gap_gt_12: bool | None
+
+    ministry_calculated_osmolality_mosm_kg: float | None
+    ministry_calculated_osmolality_formula: str
+
+    ministry_osmolality_input_unit: Literal["mmol/L"]
+    ministry_osmolality_uses_urea_not_bun: Literal[True]
+
+    osmolar_gap_mosm_kg: float | None
+    osmolar_gap_formula: str
+    osmolar_gap_calculation_applied: bool
+
+    osmolar_gap_gt_10: bool | None
+    osmolar_gap_gt_25: bool | None
+
+    normal_osmolar_gap_excludes_late_poisoning: Literal[False]
+
+    methanol_diagnosis_applied: Literal[False]
+    automatic_toxicology_context_inference_applied: Literal[False]
+
+    thresholds_contextual_only: Literal[True]
+
+    urea_bun_substitution_applied: Literal[False]
+    unit_domain_mixed: Literal[False]
+
+    validity_notes_pt: list[str]
+    validity_notes_en: list[str]
+
+    interpretation_pt: str
+    interpretation_en: str
+
+
+# ---------------------------------------------------------------------------
 # v2 Item 6 — WHO paediatric growth + Brazil SISVAN interpretation.
 # ---------------------------------------------------------------------------
 

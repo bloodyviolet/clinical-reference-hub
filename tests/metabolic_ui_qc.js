@@ -56,6 +56,36 @@ assert(
   )
 );
 
+assert(
+  html.includes(
+    'id="methanol-form"'
+  )
+);
+
+assert(
+  html.includes(
+    'id="methanol-context-confirmed"'
+  )
+);
+
+assert(
+  html.includes(
+    'id="methanol-result"'
+  )
+);
+
+assert(
+  html.includes(
+    'id="methanol-urea"'
+  )
+);
+
+assert(
+  html.includes(
+    'id="methanol-measured-osm"'
+  )
+);
+
 
 for (const key of [
   'metabolic.title',
@@ -64,7 +94,15 @@ for (const key of [
   'metabolic.gateWarning',
   'metabolic.winter',
   'metabolic.delta',
-  'metabolic.offline'
+  'metabolic.offline',
+  'methanol.title',
+  'methanol.explicit',
+  'methanol.glucose',
+  'methanol.urea',
+  'methanol.measuredOsm',
+  'methanol.noDiagnosis',
+  'methanol.unitWarning',
+  'methanol.offline'
 ]) {
   assert(
     i18nSource.includes(
@@ -77,7 +115,7 @@ for (const key of [
 
 assert(
   swSource.includes(
-    'clinical-reference-v19-v2-brazil-oxygenation'
+    'clinical-reference-v20-v2-brazil-methanol'
   )
 );
 
@@ -324,7 +362,43 @@ const event = {
           'Enter valid metabolic values.',
 
         'metabolic.agPair':
-          'Chloride and bicarbonate must be supplied together.'
+          'Chloride and bicarbonate must be supplied together.',
+
+        'methanol.result':
+          'Results · Brazilian methanol context',
+
+        'methanol.ministryAg':
+          'Ministry-workflow anion gap',
+
+        'methanol.calculatedOsm':
+          'Ministry-workflow calculated osmolality',
+
+        'methanol.osmolarGap':
+          'Osmolar gap',
+
+        'methanol.thresholds':
+          'Contextual workflow thresholds',
+
+        'methanol.yes':
+          'Yes',
+
+        'methanol.no':
+          'No',
+
+        'methanol.validity':
+          'Safety / limitations',
+
+        'methanol.noDiagnosis':
+          'These results do not independently diagnose methanol poisoning.',
+
+        'methanol.unitWarning':
+          'Do not reuse mg/dL glucose or BUN from the general toolkit: this context requires glucose and urea explicitly in mmol/L.',
+
+        'methanol.contextRequired':
+          'Explicitly confirm the clinical context of suspected methanol poisoning.',
+
+        'methanol.offline':
+          'Toxicology result calculated locally while offline.'
       };
 
       return messages[key]
@@ -416,8 +490,145 @@ const event = {
   );
 
 
+  // Separate Ministry methanol UI must remain explicitly gated.
+  const methanolContext =
+    set(
+      'methanol-context-confirmed'
+    );
+
+  methanolContext.checked = true;
+
+  set(
+    'methanol-na',
+    '140'
+  );
+
+  set(
+    'methanol-k',
+    '4'
+  );
+
+  set(
+    'methanol-cl',
+    '104'
+  );
+
+  set(
+    'methanol-hco3',
+    '20'
+  );
+
+  set(
+    'methanol-glucose',
+    '5'
+  );
+
+  set(
+    'methanol-urea',
+    '5'
+  );
+
+  set(
+    'methanol-measured-osm',
+    '305'
+  );
+
+  const methanolResult =
+    set(
+      'methanol-result'
+    );
+
+
+  await calculateBrazilMethanolTool(
+    event
+  );
+
+
+  assert.strictEqual(
+    lastMethanolResult
+      .ministry_anion_gap_mmol_l,
+    20
+  );
+
+  assert.strictEqual(
+    lastMethanolResult
+      .ministry_osmolality_uses_urea_not_bun,
+    true
+  );
+
+  assert.strictEqual(
+    lastMethanolResult
+      .methanol_diagnosis_applied,
+    false
+  );
+
+  assert.strictEqual(
+    lastMethanolResult
+      .automatic_toxicology_context_inference_applied,
+    false
+  );
+
+  assert(
+    methanolResult.innerHTML
+      .includes(
+        '20.00 mmol/L'
+      )
+  );
+
+  assert(
+    methanolResult.innerHTML
+      .includes(
+        '290.75 mOsm/kg'
+      )
+  );
+
+  assert(
+    methanolResult.innerHTML
+      .includes(
+        '14.25 mOsm/kg'
+      )
+  );
+
+  assert(
+    methanolResult.innerHTML
+      .includes(
+        'urea is not BUN'
+      )
+  );
+
+  assert(
+    methanolResult.innerHTML
+      .includes(
+        'do not independently diagnose methanol poisoning'
+      )
+  );
+
+  assert(
+    methanolResult.innerHTML
+      .includes(
+        'Toxicology result calculated locally while offline.'
+      )
+  );
+
+
+  methanolContext.checked = false;
+
+
+  await calculateBrazilMethanolTool(
+    event
+  );
+
+
+  assert(
+    methanolResult.innerHTML
+      .includes(
+        'Explicitly confirm the clinical context of suspected methanol poisoning.'
+      )
+  );
+
+
   console.log(
-    'metabolic_ui_qc: bilingual API-first/offline metabolic UI PASS'
+    'metabolic_ui_qc: bilingual API-first/offline metabolic + methanol UI PASS'
   );
 
 })().catch(

@@ -781,4 +781,63 @@ METABOLIC_METADATA = {
         date(2026, 9, 11),
     "offline_capable":
         True,
+
+    "brazil_applicability_status":
+        "complementary_brazil_guidance",
+
+    "brazil_review_date":
+        date(2026, 9, 11),
+
+    "brazil_authority": (
+        "Ministério da Saúde / SVSA / SAES / SECTICS"
+    ),
+
+    "brazil_source_title": (
+        "Nota Técnica Conjunta nº 376/2025 + "
+        "Fluxograma SAES de intoxicação por metanol"
+    ),
+
+    "brazil_source_url": (
+        "https://www.gov.br/saude/pt-br/"
+        "composicao/saes/publicacoes/"
+        "fluxograma-metanol.pdf/view"
+    ),
+
+    "brazil_document_or_portaria":
+        "Nota Técnica Conjunta nº 376/2025",
+
+    "brazil_scope_pt": (
+        "O painel metabólico geral permanece inalterado. "
+        "O fluxo brasileiro de intoxicação por metanol é "
+        "implementado em ferramenta separada e explicitamente "
+        "selecionada."
+    ),
+
+    "brazil_scope_en": (
+        "The general metabolic toolkit remains unchanged. "
+        "The Brazilian methanol-poisoning workflow is "
+        "implemented as a separate explicitly selected tool."
+    ),
+
+    "brazil_differs_from_international":
+        True,
+
+    "brazil_difference_notes_pt": (
+        "O contexto federal de metanol usa ânion gap com "
+        "potássio e uma convenção própria de osmolalidade em "
+        "mmol/L. Essas fórmulas não substituem AG, "
+        "osmolalidade, Winter, delta ratio ou sódio corrigido "
+        "do painel geral."
+    ),
+
+    "brazil_difference_notes_en": (
+        "The federal methanol context uses a potassium-inclusive "
+        "anion gap and its own mmol/L osmolality convention. "
+        "Those formulae do not replace the general toolkit's "
+        "anion gap, osmolality, Winter, delta ratio or corrected "
+        "sodium calculations."
+    ),
+
+    "final_brazil_review_status":
+        "pass",
 }

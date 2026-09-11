@@ -215,26 +215,62 @@ Status: PASS.
 
 ## Item 5 — Acid-base / metabolic
 
-The Ministry's 2025 methanol pathway is clinically important but
-context-specific.
+BH5A reverified the Brazilian methanol/toxicology source set.
 
-It defines a toxicology workflow with:
+The current federal clinical provenance is:
 
-- anion gap including potassium;
-- protocol-specific calculated osmolality;
-- osmolar gap;
-- methanol-specific diagnostic/prognostic thresholds.
+- Nota Técnica Conjunta nº 376/2025-SVSA/SAES/SECTICS/MS, which
+  explicitly replaced Ministry Notes 360 and 365;
+- the complementary Ministry/SAES methanol management flowchart.
 
-Those formulas must not silently replace the general metabolic
-calculator.
+The federal workflow is context-specific and must not replace the
+general metabolic calculator.
+
+Verified differences include:
+
+- the general application AG excludes potassium;
+- the Ministry methanol AG includes potassium;
+- the general application calculated osmolality uses glucose and BUN
+  in mg/dL;
+- the Ministry toxicology table uses an explicitly different mmol/L
+  convention and urea;
+- osmolar gap requires measured osmolality;
+- methanol gap thresholds are contextual diagnostic/escalation
+  guidance and are not universal metabolic thresholds.
 
 Disposition:
 
-- preserve the existing general acid-base toolkit;
-- add a separately identified Ministry methanol/toxic-alcohol context;
-- require measured osmolality for osmolar-gap calculation;
-- preserve source/version provenance;
-- do not infer methanol poisoning from a calculated gap alone.
+- preserve every current general metabolic formula unchanged;
+- create a separately selected Ministry methanol/toxicology context;
+- never infer toxicology context automatically;
+- never silently substitute BUN for urea;
+- never silently mix mmol/L and mg/dL formula domains;
+- require measured osmolality for osmolar gap;
+- never infer methanol poisoning from gaps alone;
+- expose federal thresholds as contextual guidance only.
+
+BH5 implementation remains pending.
+
+BH5 final disposition:
+
+- the general metabolic calculator remains numerically unchanged;
+- generic anion gap remains potassium-free;
+- generic calculated osmolality continues to use glucose and BUN in
+  mg/dL;
+- the Ministry methanol workflow is implemented as a separate,
+  explicitly selected toxicology contract;
+- potassium-inclusive toxicology anion gap is isolated from the
+  general calculator;
+- methanol calculated osmolality has dedicated glucose and urea
+  mmol/L fields;
+- urea is never silently treated as BUN;
+- measured osmolality is required for osmolar gap;
+- exact GO 10 and 25 do not satisfy strict >10 / >25 flags;
+- gap values never diagnose methanol poisoning automatically;
+- the toxicology context is never inferred from laboratory values;
+- PT-BR, EN-GB, API, browser and offline behavior are integrated.
+
+Status: PASS.
 
 ## Item 6 — WHO/SISVAN growth
 

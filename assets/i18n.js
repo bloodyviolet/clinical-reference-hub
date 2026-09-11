@@ -437,6 +437,96 @@
       'metabolic.source':
         'AG = Na−(Cl+HCO₃) · AG corrigido = AG+2,5×(4−albumina) · Osm = 2Na+glicose/18+BUN/2,8 · Na corrigido: fator 1,6.',
 
+      'methanol.title':
+        'Brasil/SUS · contexto de intoxicação por metanol',
+
+      'methanol.description':
+        'Fluxo toxicológico federal separado do painel metabólico geral. As fórmulas abaixo somente são usadas após seleção explícita deste contexto.',
+
+      'methanol.explicit':
+        'Confirmo que estou avaliando explicitamente um contexto clínico de suspeita de intoxicação por metanol',
+
+      'methanol.explicitHelp':
+        'Não marque com base apenas em ânion gap ou gap osmolar. O aplicativo não infere intoxicação por metanol a partir dos valores laboratoriais.',
+
+      'methanol.sodium':
+        'Sódio (mmol/L)',
+
+      'methanol.potassium':
+        'Potássio (mmol/L) · opcional',
+
+      'methanol.chloride':
+        'Cloreto (mmol/L) · opcional',
+
+      'methanol.bicarbonate':
+        'Bicarbonato / HCO₃⁻ (mmol/L) · opcional',
+
+      'methanol.glucose':
+        'Glicose (mmol/L) · opcional',
+
+      'methanol.urea':
+        'Ureia (mmol/L) · opcional · NÃO BUN',
+
+      'methanol.measuredOsm':
+        'Osmolalidade medida (mOsm/kg) · opcional',
+
+      'methanol.calculate':
+        'Calcular contexto toxicológico',
+
+      'methanol.result':
+        'Resultados · contexto brasileiro de metanol',
+
+      'methanol.ministryAg':
+        'Ânion gap do fluxo MS',
+
+      'methanol.calculatedOsm':
+        'Osmolalidade calculada do fluxo MS',
+
+      'methanol.osmolarGap':
+        'Gap osmolar',
+
+      'methanol.thresholds':
+        'Limires contextuais do fluxo',
+
+      'methanol.yes':
+        'Sim',
+
+      'methanol.no':
+        'Não',
+
+      'methanol.validity':
+        'Segurança / limitações',
+
+      'methanol.noDiagnosis':
+        'Estes resultados não diagnosticam intoxicação por metanol isoladamente.',
+
+      'methanol.unitWarning':
+        'Não reutilize glicose em mg/dL ou BUN do painel geral: este contexto exige glicose e ureia explicitamente em mmol/L.',
+
+      'methanol.contextRequired':
+        'Confirme explicitamente o contexto clínico de suspeita de intoxicação por metanol.',
+
+      'methanol.invalid':
+        'Informe valores toxicológicos válidos nas unidades indicadas.',
+
+      'methanol.agPair':
+        'Potássio, cloreto e bicarbonato devem ser informados conjuntamente para o ânion gap do fluxo de metanol.',
+
+      'methanol.osmPair':
+        'Glicose e ureia, ambas em mmol/L, devem ser informadas conjuntamente.',
+
+      'methanol.measuredNeedsOsm':
+        'O gap osmolar exige glicose e ureia em mmol/L além da osmolalidade medida.',
+
+      'methanol.noPath':
+        'Informe o conjunto completo do ânion gap e/ou glicose + ureia para realizar um cálculo toxicológico.',
+
+      'methanol.offline':
+        'Resultado toxicológico calculado localmente em modo offline.',
+
+      'methanol.source':
+        'Fonte: Ministério da Saúde · Nota Técnica Conjunta nº 376/2025 + Fluxograma SAES de manejo da intoxicação por metanol.',
+
       'growth.title':
         'Crescimento pediátrico · WHO / SISVAN',
 
@@ -993,6 +1083,96 @@
 
       'metabolic.source':
         'AG = Na−(Cl+HCO₃) · corrected AG = AG+2.5×(4−albumin) · Osm = 2Na+glucose/18+BUN/2.8 · corrected Na: 1.6 factor.',
+
+      'methanol.title':
+        'Brazil SUS · methanol poisoning context',
+
+      'methanol.description':
+        'Federal toxicology workflow kept separate from the general metabolic toolkit. The formulae below are used only after this context is explicitly selected.',
+
+      'methanol.explicit':
+        'I explicitly confirm that I am assessing a clinical context of suspected methanol poisoning',
+
+      'methanol.explicitHelp':
+        'Do not select this from anion-gap or osmolar-gap values alone. The application does not infer methanol poisoning from laboratory values.',
+
+      'methanol.sodium':
+        'Sodium (mmol/L)',
+
+      'methanol.potassium':
+        'Potassium (mmol/L) · optional',
+
+      'methanol.chloride':
+        'Chloride (mmol/L) · optional',
+
+      'methanol.bicarbonate':
+        'Bicarbonate / HCO₃⁻ (mmol/L) · optional',
+
+      'methanol.glucose':
+        'Glucose (mmol/L) · optional',
+
+      'methanol.urea':
+        'Urea (mmol/L) · optional · NOT BUN',
+
+      'methanol.measuredOsm':
+        'Measured osmolality (mOsm/kg) · optional',
+
+      'methanol.calculate':
+        'Calculate toxicology context',
+
+      'methanol.result':
+        'Results · Brazilian methanol context',
+
+      'methanol.ministryAg':
+        'Ministry-workflow anion gap',
+
+      'methanol.calculatedOsm':
+        'Ministry-workflow calculated osmolality',
+
+      'methanol.osmolarGap':
+        'Osmolar gap',
+
+      'methanol.thresholds':
+        'Contextual workflow thresholds',
+
+      'methanol.yes':
+        'Yes',
+
+      'methanol.no':
+        'No',
+
+      'methanol.validity':
+        'Safety / limitations',
+
+      'methanol.noDiagnosis':
+        'These results do not independently diagnose methanol poisoning.',
+
+      'methanol.unitWarning':
+        'Do not reuse mg/dL glucose or BUN from the general toolkit: this context requires glucose and urea explicitly in mmol/L.',
+
+      'methanol.contextRequired':
+        'Explicitly confirm the clinical context of suspected methanol poisoning.',
+
+      'methanol.invalid':
+        'Enter valid toxicology values in the stated units.',
+
+      'methanol.agPair':
+        'Potassium, chloride and bicarbonate must be supplied together for the methanol-workflow anion gap.',
+
+      'methanol.osmPair':
+        'Glucose and urea, both in mmol/L, must be supplied together.',
+
+      'methanol.measuredNeedsOsm':
+        'Osmolar gap requires glucose and urea in mmol/L in addition to measured osmolality.',
+
+      'methanol.noPath':
+        'Provide the complete anion-gap set and/or glucose + urea to perform a toxicology calculation.',
+
+      'methanol.offline':
+        'Toxicology result calculated locally while offline.',
+
+      'methanol.source':
+        'Source: Brazilian Ministry of Health · Joint Technical Note 376/2025 + SAES methanol-poisoning management flowchart.',
 
       'growth.title':
         'Paediatric growth · WHO / SISVAN',

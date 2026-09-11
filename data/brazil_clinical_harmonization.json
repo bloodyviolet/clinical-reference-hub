@@ -323,8 +323,8 @@
       "brazil_applicability_status": "complementary_brazil_guidance",
       "national_sus_mandate_identified": false,
       "brazil_differs_from_international_numeric_rules": true,
-      "remediation_required": true,
-      "remediation_priority": "high",
+      "remediation_required": false,
+      "remediation_priority": "none",
       "brazil_authorities": [
         "Ministério da Saúde",
         "SAES"
@@ -342,15 +342,78 @@
         }
       ],
       "required_actions": [
-        "Do not alter the existing general anion-gap or osmolality formulas.",
-        "Add a clearly separated Brazil Ministry methanol/toxic-alcohol context or mode.",
-        "Never apply the methanol formula automatically to general metabolic assessment.",
-        "Require measured osmolality when calculating an osmolar gap.",
-        "Preserve explicit source/version provenance for the Ministry toxicology pathway."
+        "Do not alter the existing general anion-gap, osmolality, albumin-correction, corrected-sodium, Winter or delta-ratio formulas.",
+        "Add a clearly separated Ministry methanol/toxicology context rather than modifying the general calculator.",
+        "Never select or apply methanol/toxicology context automatically from chemistry values.",
+        "Require explicit potassium for the Ministry potassium-inclusive anion gap.",
+        "Require measured osmolality for osmolar-gap calculation.",
+        "Keep urea and BUN semantically distinct and enforce explicit units/conversions.",
+        "Do not infer methanol poisoning from gap values alone.",
+        "Keep Ministry diagnostic/prognostic thresholds context-specific rather than universal.",
+        "Preserve exact federal source/version provenance.",
+        "Repeat Ministry/SAES/ANVISA/CIATox source freshness review during final v2.0 qualification."
       ],
-      "scope_pt": "O Ministério possui fórmulas específicas para intoxicação por metanol; são contexto toxicológico e não substituem as fórmulas metabólicas gerais.",
-      "scope_en": "The Ministry specifies formulas for methanol poisoning; these are toxicology-specific and do not replace the general metabolic formulas.",
-      "final_brazil_review_status": "remediation_required"
+      "scope_pt": "O fluxo federal para intoxicação por metanol possui fórmulas e limiares toxicológicos próprios. Eles devem ser implementados somente em contexto explicitamente selecionado e não substituem o painel metabólico geral.",
+      "scope_en": "The federal methanol-poisoning workflow contains its own toxicology formulae and thresholds. They must be exposed only in an explicitly selected context and do not replace the general metabolic toolkit.",
+      "final_brazil_review_status": "pass",
+      "source_review_verified": true,
+      "base_calculations_change_required": false,
+      "contextual_formula_variant_identified": true,
+      "methanol_context_must_be_explicit": true,
+      "measured_osmolality_required_for_osmolar_gap": true,
+      "generic_anion_gap_includes_potassium": false,
+      "ministry_methanol_anion_gap_includes_potassium": true,
+      "unit_domain_conflict_verified": true,
+      "current_federal_sources": [
+        {
+          "authority": "Ministério da Saúde / SVSA / SAES / SECTICS",
+          "document": "Nota Técnica Conjunta nº 376/2025-SVSA/SAES/SECTICS/MS",
+          "relationship": "Replaces Ministry Notes 360 and 365.",
+          "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/notas-tecnicas/2025/nota-tecnica-conjunta-no-376-2025-svsa-saes-sectics-ms.pdf/view"
+        },
+        {
+          "authority": "Ministério da Saúde / SAES",
+          "document": "Fluxograma: Manejo da intoxicação por metanol pelo consumo de bebidas alcoólicas adulteradas",
+          "relationship": "Complementary federal clinical workflow.",
+          "url": "https://www.gov.br/saude/pt-br/composicao/saes/publicacoes/fluxograma-metanol.pdf/view"
+        }
+      ],
+      "verified_context_conflicts": [
+        "MET-AG-K-01",
+        "MET-OSM-UNIT-02",
+        "MET-GO-MEASURED-03",
+        "MET-DX-CONTEXT-04"
+      ],
+      "bh5b_core_status": "pass",
+      "bh5b_ui_status": "pass",
+      "generic_engine_change_required": false,
+      "separate_methanol_contract_implemented": true,
+      "automatic_methanol_context_inference": false,
+      "urea_bun_substitution_allowed": false,
+      "mixed_unit_domain_allowed": false,
+      "bh5b_core_completed": [
+        "Generic metabolic engine retained unchanged.",
+        "Separate Brazil Ministry methanol calculation contract implemented.",
+        "Explicit methanol context is mandatory.",
+        "Potassium-inclusive Ministry anion gap implemented only in the toxicology contract.",
+        "Ministry osmolality uses explicit glucose and urea mmol/L inputs.",
+        "Measured osmolality is required before an osmolar gap can be calculated.",
+        "Strict GO >10 and >25 contextual flags implemented.",
+        "Gap values never apply a methanol diagnosis.",
+        "Python/API/browser parity implemented."
+      ],
+      "remediation_completed": [
+        "Generic metabolic calculations remain unchanged.",
+        "Brazil Ministry methanol workflow implemented as a separate calculation contract.",
+        "Explicit methanol clinical-context confirmation is required.",
+        "Generic anion gap remains potassium-free.",
+        "Ministry methanol anion gap includes potassium only inside the separate toxicology contract.",
+        "Methanol calculated osmolality uses explicit glucose and urea mmol/L fields that are not shared with the generic mg/dL/BUN inputs.",
+        "Measured osmolality is required for osmolar gap.",
+        "Strict >10 and >25 osmolar-gap context flags are preserved.",
+        "Gap values never apply an automatic methanol diagnosis or infer the toxicology context.",
+        "PT-BR, EN-GB, API, browser and offline presentation are integrated."
+      ]
     },
     {
       "item": 6,

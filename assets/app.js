@@ -3107,6 +3107,602 @@ async function calculateMetabolicTool(
 
 
 
+let lastMethanolResult = null;
+let lastMethanolSource = null;
+
+
+function renderBrazilMethanolResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'methanol-result'
+    );
+
+
+  if (!res || !result) {
+    return;
+  }
+
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+
+  const values = [];
+
+
+  if (
+    result.ministry_anion_gap_mmol_l
+    !== null
+  ) {
+    values.push([
+      globalThis.ClinicalI18n
+        ?.t?.('methanol.ministryAg')
+      || clinicalText(
+        'Ânion gap do fluxo MS',
+        'Ministry-workflow anion gap'
+      ),
+
+      `${
+        result
+          .ministry_anion_gap_mmol_l
+          .toFixed(2)
+      } mmol/L`
+    ]);
+  }
+
+
+  if (
+    result
+      .ministry_calculated_osmolality_mosm_kg
+    !== null
+  ) {
+    values.push([
+      globalThis.ClinicalI18n
+        ?.t?.('methanol.calculatedOsm')
+      || clinicalText(
+        'Osmolalidade calculada do fluxo MS',
+        'Ministry-workflow calculated osmolality'
+      ),
+
+      `${
+        result
+          .ministry_calculated_osmolality_mosm_kg
+          .toFixed(2)
+      } mOsm/kg`
+    ]);
+  }
+
+
+  if (
+    result.osmolar_gap_mosm_kg
+    !== null
+  ) {
+    values.push([
+      globalThis.ClinicalI18n
+        ?.t?.('methanol.osmolarGap')
+      || clinicalText(
+        'Gap osmolar',
+        'Osmolar gap'
+      ),
+
+      `${
+        result
+          .osmolar_gap_mosm_kg
+          .toFixed(2)
+      } mOsm/kg`
+    ]);
+  }
+
+
+  const yesText =
+    globalThis.ClinicalI18n
+      ?.t?.('methanol.yes')
+    || clinicalText(
+      'Sim',
+      'Yes'
+    );
+
+
+  const noText =
+    globalThis.ClinicalI18n
+      ?.t?.('methanol.no')
+    || clinicalText(
+      'Não',
+      'No'
+    );
+
+
+  const thresholdRows = [];
+
+
+  if (
+    result.anion_gap_gt_12
+    !== null
+  ) {
+    thresholdRows.push([
+      'AG > 12',
+      result.anion_gap_gt_12
+        ? yesText
+        : noText
+    ]);
+  }
+
+
+  if (
+    result.osmolar_gap_gt_10
+    !== null
+  ) {
+    thresholdRows.push([
+      'GO > 10',
+      result.osmolar_gap_gt_10
+        ? yesText
+        : noText
+    ]);
+  }
+
+
+  if (
+    result.osmolar_gap_gt_25
+    !== null
+  ) {
+    thresholdRows.push([
+      'GO > 25',
+      result.osmolar_gap_gt_25
+        ? yesText
+        : noText
+    ]);
+  }
+
+
+  const validity =
+    result[
+      `validity_notes_${suffix}`
+    ] || [];
+
+
+  const interpretation =
+    result[
+      `interpretation_${suffix}`
+    ];
+
+
+  const offlineNotice =
+    source === 'offline'
+      ? `
+        <p class="text-[11px] text-amber-300 mt-3">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('methanol.offline')
+            || clinicalText(
+              'Resultado toxicológico calculado localmente em modo offline.',
+              'Toxicology result calculated locally while offline.'
+            )
+          )}
+        </p>
+      `
+      : '';
+
+
+  res.classList.remove(
+    'hidden'
+  );
+
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-rose-300 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('methanol.result')
+        || clinicalText(
+          'Resultados · contexto brasileiro de metanol',
+          'Results · Brazilian methanol context'
+        )
+      )}
+    </p>
+
+    <div class="rounded-lg border border-rose-800/50 bg-rose-950/20 p-3 mt-3 space-y-1">
+      <p class="text-[11px] text-rose-200">
+        ${escapeHtml(
+          globalThis.ClinicalI18n
+            ?.t?.('methanol.noDiagnosis')
+          || clinicalText(
+            'Estes resultados não diagnosticam intoxicação por metanol isoladamente.',
+            'These results do not independently diagnose methanol poisoning.'
+          )
+        )}
+      </p>
+
+      <p class="text-[11px] text-amber-200">
+        ${escapeHtml(
+          globalThis.ClinicalI18n
+            ?.t?.('methanol.unitWarning')
+          || clinicalText(
+            'Este contexto usa glicose e ureia em mmol/L; ureia não é BUN.',
+            'This context uses glucose and urea in mmol/L; urea is not BUN.'
+          )
+        )}
+      </p>
+    </div>
+
+    ${
+      values.length
+        ? `
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+            ${values.map(
+              ([label, value]) => `
+                <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+                  <p class="text-[10px] text-slate-400">
+                    ${escapeHtml(label)}
+                  </p>
+
+                  <p class="text-lg font-bold text-rose-300 mt-1">
+                    ${escapeHtml(value)}
+                  </p>
+                </div>
+              `
+            ).join('')}
+          </div>
+        `
+        : ''
+    }
+
+    ${
+      thresholdRows.length
+        ? `
+          <div class="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3 mt-4">
+
+            <p class="text-[10px] font-semibold text-amber-300 uppercase">
+              ${escapeHtml(
+                globalThis.ClinicalI18n
+                  ?.t?.('methanol.thresholds')
+                || clinicalText(
+                  'Limiares contextuais do fluxo',
+                  'Contextual workflow thresholds'
+                )
+              )}
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-2">
+              ${thresholdRows.map(
+                ([label, value]) => `
+                  <div class="rounded bg-slate-950/70 p-2">
+                    <p class="text-[10px] text-slate-500">
+                      ${escapeHtml(label)}
+                    </p>
+                    <p class="text-sm font-semibold text-slate-200">
+                      ${escapeHtml(value)}
+                    </p>
+                  </div>
+                `
+              ).join('')}
+            </div>
+
+          </div>
+        `
+        : ''
+    }
+
+    ${
+      validity.length
+        ? `
+          <div class="rounded-lg border border-slate-800 bg-slate-900 p-3 mt-4">
+
+            <p class="text-[10px] font-semibold text-slate-400 uppercase">
+              ${escapeHtml(
+                globalThis.ClinicalI18n
+                  ?.t?.('methanol.validity')
+                || clinicalText(
+                  'Segurança / limitações',
+                  'Safety / limitations'
+                )
+              )}
+            </p>
+
+            <ul class="mt-2 space-y-1">
+              ${validity.map(
+                note => `
+                  <li class="text-[11px] text-slate-300">
+                    • ${escapeHtml(note)}
+                  </li>
+                `
+              ).join('')}
+            </ul>
+
+          </div>
+        `
+        : ''
+    }
+
+    <p class="text-[11px] text-slate-400 mt-4">
+      ${escapeHtml(
+        interpretation
+      )}
+    </p>
+
+    ${offlineNotice}
+  `;
+}
+
+
+async function calculateBrazilMethanolTool(
+  event
+) {
+  event.preventDefault();
+
+
+  const explicitContext =
+    document.getElementById(
+      'methanol-context-confirmed'
+    ).checked;
+
+
+  if (!explicitContext) {
+    return showError(
+      'methanol-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('methanol.contextRequired')
+      || clinicalText(
+        'Confirme explicitamente o contexto clínico de suspeita de intoxicação por metanol.',
+        'Explicitly confirm the clinical context of suspected methanol poisoning.'
+      )
+    );
+  }
+
+
+  const sodium =
+    Number.parseFloat(
+      document.getElementById(
+        'methanol-na'
+      ).value
+    );
+
+
+  const potassium =
+    nullableClinicalNumber(
+      'methanol-k'
+    );
+
+
+  const chloride =
+    nullableClinicalNumber(
+      'methanol-cl'
+    );
+
+
+  const bicarbonate =
+    nullableClinicalNumber(
+      'methanol-hco3'
+    );
+
+
+  const glucose =
+    nullableClinicalNumber(
+      'methanol-glucose'
+    );
+
+
+  const urea =
+    nullableClinicalNumber(
+      'methanol-urea'
+    );
+
+
+  const measuredOsmolality =
+    nullableClinicalNumber(
+      'methanol-measured-osm'
+    );
+
+
+  if (
+    !Number.isFinite(sodium)
+    || sodium <= 0
+  ) {
+    return showError(
+      'methanol-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('methanol.invalid')
+      || clinicalText(
+        'Informe valores toxicológicos válidos nas unidades indicadas.',
+        'Enter valid toxicology values in the stated units.'
+      )
+    );
+  }
+
+
+  const agValues = [
+    potassium,
+    chloride,
+    bicarbonate
+  ];
+
+
+  const agCount =
+    agValues.filter(
+      value => value !== null
+    ).length;
+
+
+  if (
+    agCount !== 0
+    && agCount !== 3
+  ) {
+    return showError(
+      'methanol-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('methanol.agPair')
+      || clinicalText(
+        'Potássio, cloreto e bicarbonato devem ser informados conjuntamente.',
+        'Potassium, chloride and bicarbonate must be supplied together.'
+      )
+    );
+  }
+
+
+  if (
+    (glucose === null)
+    !== (urea === null)
+  ) {
+    return showError(
+      'methanol-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('methanol.osmPair')
+      || clinicalText(
+        'Glicose e ureia devem ser informadas conjuntamente.',
+        'Glucose and urea must be supplied together.'
+      )
+    );
+  }
+
+
+  if (
+    measuredOsmolality !== null
+    && glucose === null
+  ) {
+    return showError(
+      'methanol-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('methanol.measuredNeedsOsm')
+      || clinicalText(
+        'O gap osmolar exige glicose e ureia além da osmolalidade medida.',
+        'Osmolar gap requires glucose and urea in addition to measured osmolality.'
+      )
+    );
+  }
+
+
+  if (
+    agCount === 0
+    && glucose === null
+  ) {
+    return showError(
+      'methanol-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('methanol.noPath')
+      || clinicalText(
+        'Informe o conjunto do ânion gap e/ou glicose + ureia.',
+        'Provide the anion-gap set and/or glucose + urea.'
+      )
+    );
+  }
+
+
+  const positiveValues = [
+    potassium,
+    chloride,
+    bicarbonate,
+    measuredOsmolality
+  ];
+
+
+  if (
+    positiveValues.some(
+      value =>
+        value !== null
+        && (
+          !Number.isFinite(value)
+          || value <= 0
+        )
+    )
+    || (
+      glucose !== null
+      && (
+        !Number.isFinite(glucose)
+        || glucose < 0
+      )
+    )
+    || (
+      urea !== null
+      && (
+        !Number.isFinite(urea)
+        || urea < 0
+      )
+    )
+  ) {
+    return showError(
+      'methanol-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('methanol.invalid')
+      || clinicalText(
+        'Valores toxicológicos inválidos.',
+        'Invalid toxicology values.'
+      )
+    );
+  }
+
+
+  const payload = {
+    explicit_methanol_context:
+      true,
+
+    sodium_mmol_l:
+      sodium,
+
+    potassium_mmol_l:
+      potassium,
+
+    chloride_mmol_l:
+      chloride,
+
+    bicarbonate_mmol_l:
+      bicarbonate,
+
+    glucose_mmol_l:
+      glucose,
+
+    urea_mmol_l:
+      urea,
+
+    measured_osmolality_mosm_kg:
+      measuredOsmolality
+  };
+
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/brazil-methanol',
+      payload,
+      globalThis.ClinicalTools
+        .calculateBrazilMethanolContext
+    );
+
+
+    lastMethanolResult =
+      result;
+
+    lastMethanolSource =
+      source;
+
+
+    renderBrazilMethanolResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'methanol-result',
+      error.message
+    );
+  }
+}
+
+
+
 let lastGrowthResult = null;
 let lastGrowthSource = null;
 
@@ -3751,6 +4347,7 @@ function wireUiEvents() {
     'hemodynamics-form': calculateHemodynamicsTool,
     'oxygenation-form': calculateOxygenationTool,
     'metabolic-form': calculateMetabolicTool,
+    'methanol-form': calculateBrazilMethanolTool,
     'growth-form': calculateGrowthTool,
     'drip-form': calculateDrip,
     'meds-form': calculateMeds,
@@ -3846,6 +4443,14 @@ globalThis.addEventListener?.(
       renderMetabolicResult(
         lastMetabolicResult,
         lastMetabolicSource
+      );
+    }
+
+
+    if (lastMethanolResult) {
+      renderBrazilMethanolResult(
+        lastMethanolResult,
+        lastMethanolSource
       );
     }
 

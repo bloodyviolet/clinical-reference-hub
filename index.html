@@ -384,6 +384,80 @@
             <p data-i18n="metabolic.source" class="text-[10px] text-slate-500">AG = Na−(Cl+HCO₃) · AG corrigido = AG+2,5×(4−albumina) · Osm = 2Na+glicose/18+BUN/2,8 · Na corrigido: fator 1,6.</p>
           </div>
 
+          <section id="methanol-context-card" class="border-t border-rose-900/60 pt-5 space-y-4">
+
+            <div class="rounded-xl border border-rose-800/60 bg-rose-950/20 p-4 space-y-2">
+              <h3 data-i18n="methanol.title" class="text-sm font-semibold text-rose-300">Brasil/SUS · contexto de intoxicação por metanol</h3>
+              <p data-i18n="methanol.description" class="text-[11px] text-slate-300">Fluxo toxicológico federal separado do painel metabólico geral. As fórmulas abaixo somente são usadas após seleção explícita deste contexto.</p>
+            </div>
+
+            <form id="methanol-form" class="space-y-4">
+
+              <div class="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 space-y-2">
+
+                <label class="flex items-start gap-3 text-sm text-amber-100">
+                  <input id="methanol-context-confirmed" type="checkbox" class="mt-1">
+                  <span data-i18n="methanol.explicit">Confirmo que estou avaliando explicitamente um contexto clínico de suspeita de intoxicação por metanol</span>
+                </label>
+
+                <p data-i18n="methanol.explicitHelp" class="text-[11px] text-amber-300">Não marque com base apenas em ânion gap ou gap osmolar. O aplicativo não infere intoxicação por metanol a partir dos valores laboratoriais.</p>
+
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+
+                <div>
+                  <label data-i18n="methanol.sodium" for="methanol-na" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Sódio (mmol/L)</label>
+                  <input id="methanol-na" type="number" min="0.1" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                </div>
+
+                <div>
+                  <label data-i18n="methanol.potassium" for="methanol-k" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Potássio (mmol/L) · opcional</label>
+                  <input id="methanol-k" type="number" min="0.1" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                </div>
+
+                <div>
+                  <label data-i18n="methanol.chloride" for="methanol-cl" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Cloreto (mmol/L) · opcional</label>
+                  <input id="methanol-cl" type="number" min="0.1" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                </div>
+
+                <div>
+                  <label data-i18n="methanol.bicarbonate" for="methanol-hco3" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Bicarbonato / HCO₃⁻ (mmol/L) · opcional</label>
+                  <input id="methanol-hco3" type="number" min="0.1" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                </div>
+
+                <div>
+                  <label data-i18n="methanol.glucose" for="methanol-glucose" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Glicose (mmol/L) · opcional</label>
+                  <input id="methanol-glucose" type="number" min="0" step="0.01" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                </div>
+
+                <div>
+                  <label data-i18n="methanol.urea" for="methanol-urea" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Ureia (mmol/L) · opcional · NÃO BUN</label>
+                  <input id="methanol-urea" type="number" min="0" step="0.01" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                </div>
+
+                <div class="sm:col-span-2">
+                  <label data-i18n="methanol.measuredOsm" for="methanol-measured-osm" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Osmolalidade medida (mOsm/kg) · opcional</label>
+                  <input id="methanol-measured-osm" type="number" min="0.1" step="0.01" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                </div>
+
+              </div>
+
+              <div class="rounded-xl border border-rose-900/50 bg-slate-950/50 p-3 space-y-1">
+                <p data-i18n="methanol.unitWarning" class="text-[11px] text-rose-300">Não reutilize glicose em mg/dL ou BUN do painel geral: este contexto exige glicose e ureia explicitamente em mmol/L.</p>
+                <p data-i18n="methanol.noDiagnosis" class="text-[11px] text-amber-300">Estes resultados não diagnosticam intoxicação por metanol isoladamente.</p>
+              </div>
+
+              <button type="submit" data-i18n="methanol.calculate" class="w-full bg-rose-700 hover:bg-rose-600 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular contexto toxicológico</button>
+
+            </form>
+
+            <div id="methanol-result" aria-live="polite" class="hidden rounded-xl border border-rose-900/50 bg-slate-950/60 p-4"></div>
+
+            <p data-i18n="methanol.source" class="text-[10px] text-slate-500">Fonte: Ministério da Saúde · Nota Técnica Conjunta nº 376/2025 + Fluxograma SAES de manejo da intoxicação por metanol.</p>
+
+          </section>
+
         </div>
 
         <!-- Oxygenation -->

@@ -2922,6 +2922,389 @@
   }
 
 
+
+
+  function calculateBrazilMethanolContext(
+    input
+  ) {
+    const explicitContext =
+      input.explicit_methanol_context
+      === true;
+
+    const sodium =
+      input.sodium_mmol_l;
+
+    const potassium =
+      input.potassium_mmol_l;
+
+    const chloride =
+      input.chloride_mmol_l;
+
+    const bicarbonate =
+      input.bicarbonate_mmol_l;
+
+    const glucose =
+      input.glucose_mmol_l;
+
+    const urea =
+      input.urea_mmol_l;
+
+    const measuredOsmolality =
+      input.measured_osmolality_mosm_kg;
+
+
+    if (!explicitContext) {
+      throw new Error(
+        'methanol_context_not_confirmed'
+      );
+    }
+
+
+    if (
+      !Number.isFinite(sodium)
+      || sodium <= 0
+    ) {
+      throw new Error(
+        'invalid_methanol_sodium'
+      );
+    }
+
+
+    const agValues = [
+      potassium,
+      chloride,
+      bicarbonate
+    ];
+
+    const agCount =
+      agValues.filter(
+        value =>
+          value !== null
+          && value !== undefined
+      ).length;
+
+
+    if (
+      agCount !== 0
+      && agCount !== 3
+    ) {
+      throw new Error(
+        'methanol_ag_inputs_required_together'
+      );
+    }
+
+
+    if (
+      agCount === 3
+      && agValues.some(
+        value =>
+          !Number.isFinite(value)
+          || value <= 0
+      )
+    ) {
+      throw new Error(
+        'invalid_methanol_ag_input'
+      );
+    }
+
+
+    const hasGlucose =
+      glucose !== null
+      && glucose !== undefined;
+
+    const hasUrea =
+      urea !== null
+      && urea !== undefined;
+
+
+    if (
+      hasGlucose !== hasUrea
+    ) {
+      throw new Error(
+        'methanol_glucose_urea_required_together'
+      );
+    }
+
+
+    if (
+      hasGlucose
+      && (
+        !Number.isFinite(glucose)
+        || glucose < 0
+        || !Number.isFinite(urea)
+        || urea < 0
+      )
+    ) {
+      throw new Error(
+        'invalid_methanol_osmolality_input'
+      );
+    }
+
+
+    const hasMeasured =
+      measuredOsmolality !== null
+      && measuredOsmolality !== undefined;
+
+
+    if (
+      hasMeasured
+      && (
+        !Number.isFinite(
+          measuredOsmolality
+        )
+        || measuredOsmolality <= 0
+      )
+    ) {
+      throw new Error(
+        'invalid_measured_osmolality'
+      );
+    }
+
+
+    if (
+      hasMeasured
+      && !hasGlucose
+    ) {
+      throw new Error(
+        'measured_osmolality_requires_methanol_osmolality_inputs'
+      );
+    }
+
+
+    if (
+      agCount === 0
+      && !hasGlucose
+    ) {
+      throw new Error(
+        'methanol_calculation_input_required'
+      );
+    }
+
+
+    let anionGap = null;
+
+
+    if (agCount === 3) {
+      anionGap =
+        sodium
+        + potassium
+        - bicarbonate
+        - chloride;
+    }
+
+
+    let calculatedOsmolality = null;
+
+
+    if (hasGlucose) {
+      calculatedOsmolality =
+        (
+          glucose
+          + urea
+          + 1.86 * sodium
+        )
+        / 0.93;
+    }
+
+
+    let osmolarGap = null;
+
+
+    if (
+      hasMeasured
+      && calculatedOsmolality !== null
+    ) {
+      osmolarGap =
+        measuredOsmolality
+        - calculatedOsmolality;
+    }
+
+
+    const agGt12 =
+      anionGap === null
+        ? null
+        : metabolicStrictlyAbove(
+            anionGap,
+            12
+          );
+
+
+    const osmGt10 =
+      osmolarGap === null
+        ? null
+        : metabolicStrictlyAbove(
+            osmolarGap,
+            10
+          );
+
+
+    const osmGt25 =
+      osmolarGap === null
+        ? null
+        : metabolicStrictlyAbove(
+            osmolarGap,
+            25
+          );
+
+
+    const validityPt = [
+      'Contexto toxicológico de metanol foi selecionado explicitamente; este cálculo não substitui o painel metabólico geral.',
+      'A fórmula toxicológica do ânion gap inclui potássio.',
+      'A osmolalidade calculada deste contexto usa glicose e ureia em mmol/L; ureia não é BUN.',
+      'Gap osmolar só é calculado quando a osmolalidade medida é informada.',
+      'Os limiares de gap são orientação contextual e não estabelecem diagnóstico isoladamente.',
+      'Gap osmolar normal não exclui intoxicação por metanol em apresentação tardia.'
+    ];
+
+
+    const validityEn = [
+      'Methanol toxicology context was explicitly selected; this calculation does not replace the general metabolic toolkit.',
+      'The toxicology anion-gap formula includes potassium.',
+      'Calculated osmolality in this context uses glucose and urea in mmol/L; urea is not BUN.',
+      'Osmolar gap is calculated only when measured osmolality is explicitly supplied.',
+      'Gap thresholds are contextual guidance and do not independently establish a diagnosis.',
+      'A normal osmolar gap does not exclude late methanol poisoning.'
+    ];
+
+
+    return {
+      tool:
+        'brazil_methanol_context',
+
+      explicit_methanol_context:
+        true,
+
+      sodium_mmol_l:
+        Math.round(
+          sodium * 100
+        ) / 100,
+
+      potassium_mmol_l:
+        agCount === 3
+          ? Math.round(
+              potassium * 100
+            ) / 100
+          : null,
+
+      chloride_mmol_l:
+        agCount === 3
+          ? Math.round(
+              chloride * 100
+            ) / 100
+          : null,
+
+      bicarbonate_mmol_l:
+        agCount === 3
+          ? Math.round(
+              bicarbonate * 100
+            ) / 100
+          : null,
+
+      glucose_mmol_l:
+        hasGlucose
+          ? Math.round(
+              glucose * 100
+            ) / 100
+          : null,
+
+      urea_mmol_l:
+        hasUrea
+          ? Math.round(
+              urea * 100
+            ) / 100
+          : null,
+
+      measured_osmolality_mosm_kg:
+        hasMeasured
+          ? Math.round(
+              measuredOsmolality * 100
+            ) / 100
+          : null,
+
+      ministry_anion_gap_mmol_l:
+        anionGap === null
+          ? null
+          : Math.round(
+              anionGap * 100
+            ) / 100,
+
+      ministry_anion_gap_formula:
+        '(Na + K) - (HCO3 + Cl)',
+
+      ministry_anion_gap_potassium_included:
+        true,
+
+      anion_gap_gt_12:
+        agGt12,
+
+      ministry_calculated_osmolality_mosm_kg:
+        calculatedOsmolality === null
+          ? null
+          : Math.round(
+              calculatedOsmolality * 100
+            ) / 100,
+
+      ministry_calculated_osmolality_formula:
+        '(glucose + urea + (1.86 * sodium)) / 0.93',
+
+      ministry_osmolality_input_unit:
+        'mmol/L',
+
+      ministry_osmolality_uses_urea_not_bun:
+        true,
+
+      osmolar_gap_mosm_kg:
+        osmolarGap === null
+          ? null
+          : Math.round(
+              osmolarGap * 100
+            ) / 100,
+
+      osmolar_gap_formula:
+        'measured osmolality - Ministry calculated osmolality',
+
+      osmolar_gap_calculation_applied:
+        osmolarGap !== null,
+
+      osmolar_gap_gt_10:
+        osmGt10,
+
+      osmolar_gap_gt_25:
+        osmGt25,
+
+      normal_osmolar_gap_excludes_late_poisoning:
+        false,
+
+      methanol_diagnosis_applied:
+        false,
+
+      automatic_toxicology_context_inference_applied:
+        false,
+
+      thresholds_contextual_only:
+        true,
+
+      urea_bun_substitution_applied:
+        false,
+
+      unit_domain_mixed:
+        false,
+
+      validity_notes_pt:
+        validityPt,
+
+      validity_notes_en:
+        validityEn,
+
+      interpretation_pt:
+        'Resultados do contexto brasileiro de intoxicação por metanol são apoio ao fluxo clínico do Ministério da Saúde. História, quadro clínico, tempo de exposição, gasometria, exames diretos quando disponíveis e discussão com CIATox permanecem necessários.',
+
+      interpretation_en:
+        'Results from the Brazilian methanol-poisoning context support the Ministry of Health clinical workflow. Exposure history, clinical findings, timing, blood gas data, direct testing when available and CIATox consultation remain relevant.'
+    };
+  }
+
+
   globalThis.ClinicalTools =
     Object.freeze({
       calculateNews2,
@@ -2931,6 +3314,7 @@
       calculateKdigoAki,
       calculateHemodynamics,
       calculateOxygenation,
-      calculateMetabolicToolkit
+      calculateMetabolicToolkit,
+      calculateBrazilMethanolContext
     });
 })();

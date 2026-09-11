@@ -95,7 +95,7 @@ for (const key of [
 
 assert(
   swSource.includes(
-    'clinical-reference-v19-v2-brazil-oxygenation'
+    'clinical-reference-v20-v2-brazil-methanol'
   )
 );
 

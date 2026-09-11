@@ -33,6 +33,10 @@ from clinical_tools.metabolic import (
     METABOLIC_METADATA,
     calculate_metabolic_toolkit,
 )
+from clinical_tools.methanol import (
+    METHANOL_METADATA,
+    calculate_brazil_methanol_context,
+)
 from clinical_tools.growth import (
     GROWTH_METADATA,
     calculate_who_growth,
@@ -883,6 +887,43 @@ def api_calculate_metabolic(
             paco2_mm_hg=payload.paco2_mm_hg,
             metabolic_acidosis_confirmed=(
                 payload.metabolic_acidosis_confirmed
+            ),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/brazil-methanol/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_brazil_methanol_metadata():
+    return METHANOL_METADATA
+
+
+@api_v1.post(
+    "/tools/brazil-methanol",
+    response_model=schemas.BrazilMethanolResponse,
+)
+def api_calculate_brazil_methanol(
+    payload: schemas.BrazilMethanolInput,
+):
+    try:
+        return calculate_brazil_methanol_context(
+            explicit_methanol_context=(
+                payload.explicit_methanol_context
+            ),
+            sodium_mmol_l=payload.sodium_mmol_l,
+            potassium_mmol_l=payload.potassium_mmol_l,
+            chloride_mmol_l=payload.chloride_mmol_l,
+            bicarbonate_mmol_l=payload.bicarbonate_mmol_l,
+            glucose_mmol_l=payload.glucose_mmol_l,
+            urea_mmol_l=payload.urea_mmol_l,
+            measured_osmolality_mosm_kg=(
+                payload.measured_osmolality_mosm_kg
             ),
         )
     except ValueError as exc:

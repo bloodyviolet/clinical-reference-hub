@@ -447,3 +447,55 @@ def test_metabolic_metadata_contract():
         payload["offline_capable"]
         is True
     )
+
+
+def test_metabolic_metadata_exposes_brazil_methanol_separation():
+    response = client.get(
+        "/api/v1/tools/acid-base-metabolic/meta"
+    )
+
+    assert response.status_code == 200
+
+    payload = response.json()
+
+    assert (
+        payload[
+            "brazil_applicability_status"
+        ]
+        == "complementary_brazil_guidance"
+    )
+
+    assert (
+        payload[
+            "brazil_document_or_portaria"
+        ]
+        == "Nota Técnica Conjunta nº 376/2025"
+    )
+
+    assert (
+        payload[
+            "brazil_differs_from_international"
+        ]
+        is True
+    )
+
+    assert (
+        payload[
+            "final_brazil_review_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        "separate"
+        in payload[
+            "brazil_scope_en"
+        ].lower()
+    )
+
+    assert (
+        "não substituem"
+        in payload[
+            "brazil_difference_notes_pt"
+        ]
+    )

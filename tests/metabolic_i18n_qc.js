@@ -181,3 +181,228 @@ assert.throws(
 console.log(
   'metabolic_i18n_qc: AG/osmolality/corrected-Na/Winter/delta parity PASS'
 );
+
+
+assert.strictEqual(
+  typeof ClinicalTools
+    .calculateBrazilMethanolContext,
+  'function'
+);
+
+
+assert.throws(
+  () =>
+    ClinicalTools
+      .calculateBrazilMethanolContext({
+        explicit_methanol_context:
+          false,
+        sodium_mmol_l:
+          140,
+        potassium_mmol_l:
+          4,
+        chloride_mmol_l:
+          104,
+        bicarbonate_mmol_l:
+          20
+      }),
+
+  /methanol_context_not_confirmed/
+);
+
+
+const methanolAg =
+  ClinicalTools
+    .calculateBrazilMethanolContext({
+      explicit_methanol_context:
+        true,
+      sodium_mmol_l:
+        140,
+      potassium_mmol_l:
+        4,
+      chloride_mmol_l:
+        104,
+      bicarbonate_mmol_l:
+        20
+    });
+
+
+assert.strictEqual(
+  methanolAg
+    .ministry_anion_gap_mmol_l,
+  20
+);
+
+assert.strictEqual(
+  methanolAg
+    .ministry_anion_gap_potassium_included,
+  true
+);
+
+assert.strictEqual(
+  methanolAg
+    .anion_gap_gt_12,
+  true
+);
+
+assert.strictEqual(
+  methanolAg
+    .methanol_diagnosis_applied,
+  false
+);
+
+
+const calculatedMethanolOsm =
+  (
+    5
+    + 5
+    + 1.86 * 140
+  )
+  / 0.93;
+
+
+const methanolGap =
+  ClinicalTools
+    .calculateBrazilMethanolContext({
+      explicit_methanol_context:
+        true,
+      sodium_mmol_l:
+        140,
+      potassium_mmol_l:
+        null,
+      chloride_mmol_l:
+        null,
+      bicarbonate_mmol_l:
+        null,
+      glucose_mmol_l:
+        5,
+      urea_mmol_l:
+        5,
+      measured_osmolality_mosm_kg:
+        calculatedMethanolOsm + 14
+    });
+
+
+assert.strictEqual(
+  methanolGap
+    .osmolar_gap_mosm_kg,
+  14
+);
+
+assert.strictEqual(
+  methanolGap
+    .osmolar_gap_gt_10,
+  true
+);
+
+assert.strictEqual(
+  methanolGap
+    .osmolar_gap_gt_25,
+  false
+);
+
+assert.strictEqual(
+  methanolGap
+    .ministry_osmolality_uses_urea_not_bun,
+  true
+);
+
+assert.strictEqual(
+  methanolGap
+    .urea_bun_substitution_applied,
+  false
+);
+
+assert.strictEqual(
+  methanolGap
+    .unit_domain_mixed,
+  false
+);
+
+
+const methanolExact10 =
+  ClinicalTools
+    .calculateBrazilMethanolContext({
+      explicit_methanol_context:
+        true,
+      sodium_mmol_l:
+        140,
+      potassium_mmol_l:
+        null,
+      chloride_mmol_l:
+        null,
+      bicarbonate_mmol_l:
+        null,
+      glucose_mmol_l:
+        5,
+      urea_mmol_l:
+        5,
+      measured_osmolality_mosm_kg:
+        calculatedMethanolOsm + 10
+    });
+
+
+assert.strictEqual(
+  methanolExact10
+    .osmolar_gap_gt_10,
+  false
+);
+
+
+const methanolExact25 =
+  ClinicalTools
+    .calculateBrazilMethanolContext({
+      explicit_methanol_context:
+        true,
+      sodium_mmol_l:
+        140,
+      potassium_mmol_l:
+        null,
+      chloride_mmol_l:
+        null,
+      bicarbonate_mmol_l:
+        null,
+      glucose_mmol_l:
+        5,
+      urea_mmol_l:
+        5,
+      measured_osmolality_mosm_kg:
+        calculatedMethanolOsm + 25
+    });
+
+
+assert.strictEqual(
+  methanolExact25
+    .osmolar_gap_gt_25,
+  false
+);
+
+
+assert.throws(
+  () =>
+    ClinicalTools
+      .calculateBrazilMethanolContext({
+        explicit_methanol_context:
+          true,
+        sodium_mmol_l:
+          140,
+        potassium_mmol_l:
+          null,
+        chloride_mmol_l:
+          null,
+        bicarbonate_mmol_l:
+          null,
+        glucose_mmol_l:
+          null,
+        urea_mmol_l:
+          null,
+        measured_osmolality_mosm_kg:
+          300
+      }),
+
+  /measured_osmolality_requires_methanol_osmolality_inputs/
+);
+
+
+console.log(
+  'metabolic_i18n_qc: Brazil methanol context parity PASS'
+);

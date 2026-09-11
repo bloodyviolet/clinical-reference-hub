@@ -297,6 +297,69 @@ def test_context_specific_rules_cannot_become_universal():
         == "complementary_brazil_guidance"
     )
 
+    assert (
+        metabolic[
+            "remediation_required"
+        ]
+        is False
+    )
+
+    assert (
+        metabolic[
+            "remediation_priority"
+        ]
+        == "none"
+    )
+
+    assert (
+        metabolic[
+            "bh5b_core_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        metabolic[
+            "bh5b_ui_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        metabolic[
+            "generic_engine_change_required"
+        ]
+        is False
+    )
+
+    assert (
+        metabolic[
+            "automatic_methanol_context_inference"
+        ]
+        is False
+    )
+
+    assert (
+        metabolic[
+            "urea_bun_substitution_allowed"
+        ]
+        is False
+    )
+
+    assert (
+        metabolic[
+            "mixed_unit_domain_allowed"
+        ]
+        is False
+    )
+
+    assert (
+        metabolic[
+            "final_brazil_review_status"
+        ]
+        == "pass"
+    )
+
     assert any(
         "universal"
         in action.lower()
