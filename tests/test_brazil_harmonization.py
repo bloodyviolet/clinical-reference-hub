@@ -477,7 +477,7 @@ def test_growth_is_already_harmonized():
     )
 
 
-def test_item7_is_blocked_until_brazil_review():
+def test_item7_brazil_source_review_precedes_implementation():
     data = audit()
 
     item7 = data[
@@ -490,7 +490,28 @@ def test_item7_is_blocked_until_brazil_review():
         item7[
             "implementation_state"
         ]
-        == "blocked_pending_brazil_review"
+        == "source_review_complete_implementation_pending"
+    )
+
+    assert (
+        item7[
+            "brazil_applicability_status"
+        ]
+        == "national_standard"
+    )
+
+    assert (
+        item7[
+            "national_steadi_adoption_identified"
+        ]
+        is False
+    )
+
+    assert (
+        item7[
+            "synthetic_cross_instrument_score_allowed"
+        ]
+        is False
     )
 
     assert (

@@ -527,6 +527,234 @@
       'methanol.source':
         'Fonte: Ministério da Saúde · Nota Técnica Conjunta nº 376/2025 + Fluxograma SAES de manejo da intoxicação por metanol.',
 
+      "falls.title":
+        "Brasil · prevenção de quedas · Caderneta 2026",
+
+      "falls.description":
+        "Check-up nacional de 12 perguntas para pessoas idosas. Qualquer resposta SIM orienta avaliação. A contagem de respostas positivas não é um escore ponderado de risco.",
+
+      "falls.age":
+        "Idade (anos)",
+
+      "falls.instruction":
+        "Responda SIM ou NÃO a todos os 12 itens. Os instrumentos Caderneta e IVCF-20 permanecem independentes.",
+
+      "falls.select":
+        "Selecione...",
+
+      "falls.yes":
+        "Sim",
+
+      "falls.no":
+        "Não",
+
+      "falls.calculate":
+        "Avaliar check-up de quedas",
+
+      "falls.resultTitle":
+        "Resultado · check-up de quedas",
+
+      "falls.positiveCount":
+        "Respostas positivas",
+
+      "falls.assessmentYes":
+        "Há resposta positiva: realizar/orientar avaliação.",
+
+      "falls.assessmentNo":
+        "Nenhuma resposta positiva registrada.",
+
+      "falls.noScore":
+        "Este check-up não gera escore ponderado e não importa pontuação STEADI/NCOA.",
+
+      "falls.offline":
+        "Resultado calculado localmente em modo offline.",
+
+      "falls.source":
+        "Fonte nacional: Ministério da Saúde · Caderneta Brasileira da Pessoa Idosa 2026.",
+
+      "falls.item.fall_previous_year":
+        "Caiu no último ano.",
+
+      "falls.item.cane_or_walker_recommended":
+        "Foi recomendado usar bengala ou andador para se locomover com segurança.",
+
+      "falls.item.unsteady_while_walking":
+        "Sente-se instável ao caminhar.",
+
+      "falls.item.uses_furniture_for_support":
+        "Apoia-se nos móveis ao caminhar dentro de casa.",
+
+      "falls.item.concern_about_falling":
+        "Tem preocupação ou medo de cair.",
+
+      "falls.item.needs_hands_to_rise_from_chair":
+        "Precisa usar as mãos para se levantar de uma cadeira.",
+
+      "falls.item.difficulty_stepping_onto_curb":
+        "Tem dificuldade para subir em uma calçada ou degrau.",
+
+      "falls.item.toilet_urgency":
+        "Precisa correr ao banheiro por urgência urinária ou intestinal.",
+
+      "falls.item.reduced_foot_sensation":
+        "Perdeu parte da sensibilidade nos pés.",
+
+      "falls.item.medication_dizziness_or_fatigue":
+        "Usa medicamento que causa tontura, sonolência ou cansaço.",
+
+      "falls.item.sleep_or_mood_medication":
+        "Usa medicamento para dormir ou melhorar o humor.",
+
+      "falls.item.sadness_or_depressed_mood":
+        "Sente-se triste ou deprimido(a).",
+
+      "ivcf.title":
+        "IVCF-20 · vulnerabilidade clínico-funcional",
+
+      "ivcf.description":
+        "Instrumento brasileiro para pessoas com 60 anos ou mais. Classifica vulnerabilidade clínico-funcional de 0 a 40 pontos; não é um escore isolado de risco de quedas.",
+
+      "ivcf.age":
+        "Idade (anos)",
+
+      "ivcf.instruction":
+        "O IVCF-20 deve ser preenchido integralmente em uma mesma avaliação. Responda SIM ou NÃO a todos os itens antes de calcular.",
+
+      "ivcf.calculate":
+        "Calcular IVCF-20",
+
+      "ivcf.resultTitle":
+        "Resultado · IVCF-20",
+
+      "ivcf.total":
+        "Pontuação total",
+
+      "ivcf.classification":
+        "Vulnerabilidade clínico-funcional",
+
+      "ivcf.reapply":
+        "Reaplicação mínima",
+
+      "ivcf.reapply12":
+        "Pelo menos a cada 12 meses.",
+
+      "ivcf.reapply6":
+        "Pelo menos a cada 6 meses.",
+
+      "ivcf.sentinel":
+        "Evento sentinela, incluindo queda, indica nova avaliação independentemente da pontuação.",
+
+      "ivcf.noFallsScore":
+        "O IVCF-20 não deve ser apresentado como escore isolado de risco de quedas e não deve ser somado ao check-up da Caderneta.",
+
+      "ivcf.gaitNotTug":
+        "O item de marcha de 4 metros >5 segundos pertence ao IVCF-20 e NÃO é Timed Up and Go (TUG).",
+
+      "ivcf.alteredDomains":
+        "Dimensões com pontuação",
+
+      "ivcf.offline":
+        "IVCF-20 calculado localmente em modo offline.",
+
+      "ivcf.source":
+        "Fontes nacionais: Caderneta Brasileira da Pessoa Idosa 2026 + Nota Informativa nº 1/2026-COPID/DGCI/SAPS/MS.",
+
+      "ivcf.domain.perception":
+        "Autopercepção da saúde",
+
+      "ivcf.domain.adl":
+        "Atividades de vida diária",
+
+      "ivcf.domain.cognition":
+        "Cognição",
+
+      "ivcf.domain.mood":
+        "Humor",
+
+      "ivcf.domain.mobility":
+        "Mobilidade",
+
+      "ivcf.domain.continence":
+        "Continência",
+
+      "ivcf.domain.communication":
+        "Comunicação · visão e audição",
+
+      "ivcf.domain.comorbidity":
+        "Comorbidades múltiplas",
+
+      "ivcf.item.self_rated_health_regular_or_poor":
+        "Considera sua saúde regular ou ruim.",
+
+      "ivcf.item.stopped_shopping_due_health":
+        "Por causa da saúde ou condição física, deixou de fazer compras.",
+
+      "ivcf.item.stopped_managing_money_due_health":
+        "Por causa da saúde ou condição física, deixou de controlar o próprio dinheiro.",
+
+      "ivcf.item.stopped_housework_due_health":
+        "Por causa da saúde ou condição física, deixou de realizar pequenos trabalhos domésticos.",
+
+      "ivcf.item.stopped_bathing_due_health":
+        "Por causa da saúde ou condição física, deixou de tomar banho sozinho(a).",
+
+      "ivcf.item.forgetfulness_noted_by_others":
+        "Familiares ou amigos relatam que está ficando esquecido(a).",
+
+      "ivcf.item.worsening_forgetfulness":
+        "O esquecimento está piorando nos últimos meses.",
+
+      "ivcf.item.forgetfulness_impairs_daily_activity":
+        "O esquecimento está impedindo a realização de alguma atividade cotidiana.",
+
+      "ivcf.item.depressed_or_hopeless_last_month":
+        "No último mês, sentiu desânimo, tristeza ou desesperança.",
+
+      "ivcf.item.anhedonia_last_month":
+        "No último mês, perdeu o interesse ou prazer em atividades de que costumava gostar.",
+
+      "ivcf.item.unable_raise_arms_above_shoulders":
+        "Não consegue elevar os braços acima do nível dos ombros.",
+
+      "ivcf.item.unable_handle_small_objects":
+        "Não consegue manusear ou segurar pequenos objetos.",
+
+      "ivcf.item.unintentional_weight_loss_criterion":
+        "Perda de peso não intencional: 4,5 kg ou 5% no último ano, 6 kg nos últimos 6 meses ou 3 kg no último mês.",
+
+      "ivcf.item.bmi_lt_22":
+        "IMC inferior a 22 kg/m².",
+
+      "ivcf.item.calf_circumference_lt_31_cm":
+        "Circunferência da panturrilha inferior a 31 cm.",
+
+      "ivcf.item.gait_4m_gt_5_seconds":
+        "Tempo para caminhar 4 metros superior a 5 segundos.",
+
+      "ivcf.item.walking_difficulty_impairs_daily_activity":
+        "Dificuldade para caminhar que prejudica a realização de atividades cotidianas.",
+
+      "ivcf.item.two_or_more_falls_last_year":
+        "Duas ou mais quedas no último ano.",
+
+      "ivcf.item.urinary_or_fecal_incontinence":
+        "Perda involuntária de urina ou fezes.",
+
+      "ivcf.item.vision_impairs_daily_activity":
+        "Problema de visão que dificulta a realização de atividades cotidianas.",
+
+      "ivcf.item.hearing_impairs_daily_activity":
+        "Problema de audição que dificulta a realização de atividades cotidianas.",
+
+      "ivcf.item.five_or_more_chronic_conditions":
+        "Cinco ou mais doenças crônicas.",
+
+      "ivcf.item.five_or_more_daily_medications":
+        "Uso regular de cinco ou mais medicamentos por dia.",
+
+      "ivcf.item.hospitalized_last_six_months":
+        "Internação hospitalar nos últimos 6 meses.",
+
       'growth.title':
         'Crescimento pediátrico · WHO / SISVAN',
 
@@ -1173,6 +1401,234 @@
 
       'methanol.source':
         'Source: Brazilian Ministry of Health · Joint Technical Note 376/2025 + SAES methanol-poisoning management flowchart.',
+
+      "falls.title":
+        "Brazil · falls prevention · 2026 Caderneta",
+
+      "falls.description":
+        "National 12-question check-up for older people. Any YES response indicates assessment. The number of positive responses is not a weighted risk score.",
+
+      "falls.age":
+        "Age (years)",
+
+      "falls.instruction":
+        "Answer YES or NO to all 12 items. The Caderneta and IVCF-20 remain independent instruments.",
+
+      "falls.select":
+        "Select...",
+
+      "falls.yes":
+        "Yes",
+
+      "falls.no":
+        "No",
+
+      "falls.calculate":
+        "Assess falls check-up",
+
+      "falls.resultTitle":
+        "Result · falls check-up",
+
+      "falls.positiveCount":
+        "Positive responses",
+
+      "falls.assessmentYes":
+        "At least one positive response: assessment is indicated.",
+
+      "falls.assessmentNo":
+        "No positive response was recorded.",
+
+      "falls.noScore":
+        "This check-up does not produce a weighted score and does not import STEADI/NCOA scoring.",
+
+      "falls.offline":
+        "Result calculated locally while offline.",
+
+      "falls.source":
+        "National source: Brazilian Ministry of Health · Brazilian Older Person Caderneta 2026.",
+
+      "falls.item.fall_previous_year":
+        "Had a fall during the previous year.",
+
+      "falls.item.cane_or_walker_recommended":
+        "Was advised to use a cane or walker to move around safely.",
+
+      "falls.item.unsteady_while_walking":
+        "Feels unsteady while walking.",
+
+      "falls.item.uses_furniture_for_support":
+        "Uses furniture for support when walking at home.",
+
+      "falls.item.concern_about_falling":
+        "Is concerned or afraid about falling.",
+
+      "falls.item.needs_hands_to_rise_from_chair":
+        "Needs to use the hands to rise from a chair.",
+
+      "falls.item.difficulty_stepping_onto_curb":
+        "Has difficulty stepping onto a kerb or step.",
+
+      "falls.item.toilet_urgency":
+        "Needs to rush to the toilet because of urinary or bowel urgency.",
+
+      "falls.item.reduced_foot_sensation":
+        "Has reduced sensation in the feet.",
+
+      "falls.item.medication_dizziness_or_fatigue":
+        "Uses medication that causes dizziness, drowsiness or fatigue.",
+
+      "falls.item.sleep_or_mood_medication":
+        "Uses medication for sleep or mood.",
+
+      "falls.item.sadness_or_depressed_mood":
+        "Feels sad or depressed.",
+
+      "ivcf.title":
+        "IVCF-20 · clinical-functional vulnerability",
+
+      "ivcf.description":
+        "Brazilian instrument for people aged 60 years or over. It classifies clinical-functional vulnerability from 0 to 40 and is not a standalone falls-risk score.",
+
+      "ivcf.age":
+        "Age (years)",
+
+      "ivcf.instruction":
+        "The IVCF-20 should be completed in full during one assessment. Answer YES or NO to every item before calculating.",
+
+      "ivcf.calculate":
+        "Calculate IVCF-20",
+
+      "ivcf.resultTitle":
+        "Result · IVCF-20",
+
+      "ivcf.total":
+        "Total score",
+
+      "ivcf.classification":
+        "Clinical-functional vulnerability",
+
+      "ivcf.reapply":
+        "Minimum reapplication",
+
+      "ivcf.reapply12":
+        "At least every 12 months.",
+
+      "ivcf.reapply6":
+        "At least every 6 months.",
+
+      "ivcf.sentinel":
+        "A sentinel event, including a fall, indicates reassessment irrespective of the score.",
+
+      "ivcf.noFallsScore":
+        "IVCF-20 must not be presented as a standalone falls-risk score and must not be added to the Caderneta check-up.",
+
+      "ivcf.gaitNotTug":
+        "The IVCF-20 4-metre gait item >5 seconds is NOT the Timed Up and Go (TUG).",
+
+      "ivcf.alteredDomains":
+        "Scoring dimensions",
+
+      "ivcf.offline":
+        "IVCF-20 calculated locally while offline.",
+
+      "ivcf.source":
+        "National sources: Brazilian Older Person Caderneta 2026 + Informative Note 1/2026-COPID/DGCI/SAPS/MS.",
+
+      "ivcf.domain.perception":
+        "Self-rated health",
+
+      "ivcf.domain.adl":
+        "Activities of daily living",
+
+      "ivcf.domain.cognition":
+        "Cognition",
+
+      "ivcf.domain.mood":
+        "Mood",
+
+      "ivcf.domain.mobility":
+        "Mobility",
+
+      "ivcf.domain.continence":
+        "Continence",
+
+      "ivcf.domain.communication":
+        "Communication · vision and hearing",
+
+      "ivcf.domain.comorbidity":
+        "Multiple comorbidities",
+
+      "ivcf.item.self_rated_health_regular_or_poor":
+        "Rates own health as fair or poor.",
+
+      "ivcf.item.stopped_shopping_due_health":
+        "Because of health or physical condition, stopped shopping.",
+
+      "ivcf.item.stopped_managing_money_due_health":
+        "Because of health or physical condition, stopped managing own money.",
+
+      "ivcf.item.stopped_housework_due_health":
+        "Because of health or physical condition, stopped doing small household tasks.",
+
+      "ivcf.item.stopped_bathing_due_health":
+        "Because of health or physical condition, stopped bathing independently.",
+
+      "ivcf.item.forgetfulness_noted_by_others":
+        "Family or friends report increasing forgetfulness.",
+
+      "ivcf.item.worsening_forgetfulness":
+        "Forgetfulness has worsened over recent months.",
+
+      "ivcf.item.forgetfulness_impairs_daily_activity":
+        "Forgetfulness is preventing performance of an everyday activity.",
+
+      "ivcf.item.depressed_or_hopeless_last_month":
+        "During the last month, felt low, sad or hopeless.",
+
+      "ivcf.item.anhedonia_last_month":
+        "During the last month, lost interest or pleasure in activities normally enjoyed.",
+
+      "ivcf.item.unable_raise_arms_above_shoulders":
+        "Cannot raise the arms above shoulder level.",
+
+      "ivcf.item.unable_handle_small_objects":
+        "Cannot handle or hold small objects.",
+
+      "ivcf.item.unintentional_weight_loss_criterion":
+        "Unintentional weight loss: 4.5 kg or 5% during the previous year, 6 kg during the previous 6 months, or 3 kg during the previous month.",
+
+      "ivcf.item.bmi_lt_22":
+        "BMI below 22 kg/m².",
+
+      "ivcf.item.calf_circumference_lt_31_cm":
+        "Calf circumference below 31 cm.",
+
+      "ivcf.item.gait_4m_gt_5_seconds":
+        "Takes more than 5 seconds to walk 4 metres.",
+
+      "ivcf.item.walking_difficulty_impairs_daily_activity":
+        "Walking difficulty interferes with everyday activities.",
+
+      "ivcf.item.two_or_more_falls_last_year":
+        "Two or more falls during the previous year.",
+
+      "ivcf.item.urinary_or_fecal_incontinence":
+        "Involuntary loss of urine or faeces.",
+
+      "ivcf.item.vision_impairs_daily_activity":
+        "Vision problem interferes with everyday activities.",
+
+      "ivcf.item.hearing_impairs_daily_activity":
+        "Hearing problem interferes with everyday activities.",
+
+      "ivcf.item.five_or_more_chronic_conditions":
+        "Five or more chronic conditions.",
+
+      "ivcf.item.five_or_more_daily_medications":
+        "Regular use of five or more medicines per day.",
+
+      "ivcf.item.hospitalized_last_six_months":
+        "Hospital admission during the previous 6 months.",
 
       'growth.title':
         'Paediatric growth · WHO / SISVAN',

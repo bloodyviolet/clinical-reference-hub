@@ -451,8 +451,21 @@
   "future_items": {
     "7": {
       "feature": "Falls / function",
-      "implementation_state": "blocked_pending_brazil_review",
-      "minimum_brazil_scope": "Ministry older-person functional assessment / IVCF-20 plus complementary STEADI review"
+      "implementation_state": "source_review_complete_implementation_pending",
+      "brazil_applicability_status": "national_standard",
+      "source_review_date": "2026-09-11",
+      "primary_brazil_layer": "Caderneta Brasileira da Pessoa Idosa 2026 + IVCF-20 / e-SUS APS",
+      "complementary_layer": "CDC STEADI TUG + 30-Second Chair Stand + 4-Stage Balance + orthostatic BP",
+      "national_steadi_adoption_identified": false,
+      "synthetic_cross_instrument_score_allowed": false,
+      "source_dossier": "data/clinical-sources/falls_function_brazil_2026.json",
+      "implementation_rules": [
+        "Implement the national Brazilian layer before complementary STEADI tools.",
+        "Keep Caderneta, IVCF-20 and each STEADI assessment as separate instruments.",
+        "Do not import weighted STEADI scoring into the Brazilian Caderneta falls check-up.",
+        "Do not label STEADI TUG, Chair Stand or 4-Stage cutoffs as national SUS cutoffs.",
+        "Do not merge instrument outputs into a synthetic falls score."
+      ]
     },
     "8": {
       "feature": "Brazil 2026 PNI vaccination engine",

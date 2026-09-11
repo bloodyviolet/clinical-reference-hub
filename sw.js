@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clinical-reference-v20-v2-brazil-methanol';
+const CACHE_NAME = 'clinical-reference-v21-v2-brazil-falls-function';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [

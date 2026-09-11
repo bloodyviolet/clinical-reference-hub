@@ -4279,6 +4279,746 @@ async function calculateGrowthTool(
 }
 
 
+const CADERNETA_FALLS_UI_FIELDS = [
+  'fall_previous_year',
+  'cane_or_walker_recommended',
+  'unsteady_while_walking',
+  'uses_furniture_for_support',
+  'concern_about_falling',
+  'needs_hands_to_rise_from_chair',
+  'difficulty_stepping_onto_curb',
+  'toilet_urgency',
+  'reduced_foot_sensation',
+  'medication_dizziness_or_fatigue',
+  'sleep_or_mood_medication',
+  'sadness_or_depressed_mood'
+];
+
+
+const IVCF20_UI_FIELDS = [
+  'self_rated_health_regular_or_poor',
+  'stopped_shopping_due_health',
+  'stopped_managing_money_due_health',
+  'stopped_housework_due_health',
+  'stopped_bathing_due_health',
+  'forgetfulness_noted_by_others',
+  'worsening_forgetfulness',
+  'forgetfulness_impairs_daily_activity',
+  'depressed_or_hopeless_last_month',
+  'anhedonia_last_month',
+  'unable_raise_arms_above_shoulders',
+  'unable_handle_small_objects',
+  'unintentional_weight_loss_criterion',
+  'bmi_lt_22',
+  'calf_circumference_lt_31_cm',
+  'gait_4m_gt_5_seconds',
+  'walking_difficulty_impairs_daily_activity',
+  'two_or_more_falls_last_year',
+  'urinary_or_fecal_incontinence',
+  'vision_impairs_daily_activity',
+  'hearing_impairs_daily_activity',
+  'five_or_more_chronic_conditions',
+  'five_or_more_daily_medications',
+  'hospitalized_last_six_months'
+];
+
+
+function olderPersonAgeFromInput(
+  id
+) {
+  const raw =
+    document.getElementById(
+      id
+    )?.value;
+
+  if (
+    raw === ''
+    || raw === null
+    || raw === undefined
+  ) {
+    return null;
+  }
+
+  const age =
+    Number(raw);
+
+  if (
+    !Number.isInteger(age)
+    || age < 60
+  ) {
+    return null;
+  }
+
+  return age;
+}
+
+
+function booleanSelectPayload(
+  prefix,
+  fields
+) {
+  const payload = {};
+
+  for (const field of fields) {
+    const id =
+      `${prefix}-${field.replace(/_/g, '-')}`;
+
+    const value =
+      document.getElementById(
+        id
+      )?.value;
+
+    if (
+      value !== 'true'
+      && value !== 'false'
+    ) {
+      return null;
+    }
+
+    payload[field] =
+      value === 'true';
+  }
+
+  return payload;
+}
+
+
+let lastCadernetaFallsResult = null;
+let lastCadernetaFallsSource = null;
+
+
+function renderCadernetaFallsResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'caderneta-falls-result'
+    );
+
+  if (!res || !result) {
+    return;
+  }
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+  const assessmentText =
+    result.assessment_indicated
+      ? (
+          globalThis.ClinicalI18n
+            ?.t?.('falls.assessmentYes')
+          || clinicalText(
+            'Há resposta positiva: realizar/orientar avaliação.',
+            'At least one positive response: assessment is indicated.'
+          )
+        )
+      : (
+          globalThis.ClinicalI18n
+            ?.t?.('falls.assessmentNo')
+          || clinicalText(
+            'Nenhuma resposta positiva registrada.',
+            'No positive response was recorded.'
+          )
+        );
+
+  const positiveLabels =
+    result
+      .positive_items
+      .map(
+        key =>
+          globalThis.ClinicalI18n
+            ?.t?.(
+              `falls.item.${key}`
+            )
+          || key
+      );
+
+  const positiveBlock =
+    positiveLabels.length
+      ? `
+        <div class="rounded-lg border border-slate-800 bg-slate-900 p-3 mt-3">
+          <ul class="space-y-1">
+            ${
+              positiveLabels
+                .map(
+                  label => `
+                    <li class="text-[11px] text-slate-300">
+                      • ${escapeHtml(label)}
+                    </li>
+                  `
+                )
+                .join('')
+            }
+          </ul>
+        </div>
+      `
+      : '';
+
+  const offlineBlock =
+    source === 'offline'
+      ? `
+        <p class="text-[11px] text-amber-300 mt-3">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('falls.offline')
+            || clinicalText(
+              'Resultado calculado localmente em modo offline.',
+              'Result calculated locally while offline.'
+            )
+          )}
+        </p>
+      `
+      : '';
+
+  res.classList.remove(
+    'hidden'
+  );
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-teal-300 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('falls.resultTitle')
+        || clinicalText(
+          'Resultado · check-up de quedas',
+          'Result · falls check-up'
+        )
+      )}
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+      <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+        <p class="text-[10px] text-slate-400">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('falls.positiveCount')
+            || clinicalText(
+              'Respostas positivas',
+              'Positive responses'
+            )
+          )}
+        </p>
+
+        <p class="text-2xl font-bold text-teal-300 mt-1">
+          ${escapeHtml(
+            result.positive_items_count
+          )}/12
+        </p>
+      </div>
+
+      <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+        <p class="text-sm font-semibold text-white">
+          ${escapeHtml(
+            assessmentText
+          )}
+        </p>
+      </div>
+    </div>
+
+    ${positiveBlock}
+
+    <p class="text-[11px] text-amber-300 mt-3">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('falls.noScore')
+        || clinicalText(
+          'Este check-up não gera escore ponderado e não importa pontuação STEADI/NCOA.',
+          'This check-up does not produce a weighted score and does not import STEADI/NCOA scoring.'
+        )
+      )}
+    </p>
+
+    <p class="text-[11px] text-slate-400 mt-3">
+      ${escapeHtml(
+        result[
+          `interpretation_${suffix}`
+        ]
+      )}
+    </p>
+
+    ${offlineBlock}
+  `;
+}
+
+
+async function calculateCadernetaFallsTool(
+  event
+) {
+  event.preventDefault();
+
+  const age =
+    olderPersonAgeFromInput(
+      'caderneta-falls-age'
+    );
+
+  const responses =
+    booleanSelectPayload(
+      'caderneta-falls',
+      CADERNETA_FALLS_UI_FIELDS
+    );
+
+  if (
+    age === null
+    || responses === null
+  ) {
+    return showError(
+      'caderneta-falls-result',
+      clinicalText(
+        'Informe idade de 60 anos ou mais e responda SIM ou NÃO a todos os 12 itens.',
+        'Enter an age of 60 years or over and answer YES or NO to all 12 items.'
+      )
+    );
+  }
+
+  const payload = {
+    age_years:
+      age,
+
+    ...responses
+  };
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/brazil-caderneta-falls',
+      payload,
+      globalThis
+        .ClinicalTools
+        .calculateCadernetaFallsCheckup
+    );
+
+    lastCadernetaFallsResult =
+      result;
+
+    lastCadernetaFallsSource =
+      source;
+
+    renderCadernetaFallsResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'caderneta-falls-result',
+      error.message
+    );
+  }
+}
+
+
+let lastIvcf20Result = null;
+let lastIvcf20Source = null;
+
+
+function ivcfDimensionLabel(
+  name
+) {
+  const labels = {
+    age:
+      [
+        'Idade',
+        'Age'
+      ],
+
+    health_perception:
+      [
+        'Autopercepção da saúde',
+        'Self-rated health'
+      ],
+
+    instrumental_adl:
+      [
+        'AVD instrumentais',
+        'Instrumental ADL'
+      ],
+
+    basic_adl:
+      [
+        'AVD básica · banho',
+        'Basic ADL · bathing'
+      ],
+
+    cognition:
+      [
+        'Cognição',
+        'Cognition'
+      ],
+
+    mood:
+      [
+        'Humor',
+        'Mood'
+      ],
+
+    upper_limb_mobility:
+      [
+        'Mobilidade de membros superiores',
+        'Upper-limb mobility'
+      ],
+
+    aerobic_muscular_capacity:
+      [
+        'Capacidade aeróbica/muscular',
+        'Aerobic/muscular capacity'
+      ],
+
+    gait:
+      [
+        'Marcha e quedas',
+        'Gait and falls'
+      ],
+
+    continence:
+      [
+        'Continência',
+        'Continence'
+      ],
+
+    vision:
+      [
+        'Visão',
+        'Vision'
+      ],
+
+    hearing:
+      [
+        'Audição',
+        'Hearing'
+      ],
+
+    multiple_comorbidities:
+      [
+        'Comorbidades múltiplas',
+        'Multiple comorbidities'
+      ]
+  };
+
+  const label =
+    labels[name];
+
+  if (!label) {
+    return name;
+  }
+
+  return clinicalText(
+    label[0],
+    label[1]
+  );
+}
+
+
+function renderIvcf20Result(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'ivcf20-result'
+    );
+
+  if (!res || !result) {
+    return;
+  }
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+  const classification =
+    result[
+      `classification_${suffix}`
+    ];
+
+  const reapplication =
+    result
+      .reapplication_months_minimum
+      === 12
+      ? (
+          globalThis.ClinicalI18n
+            ?.t?.('ivcf.reapply12')
+          || clinicalText(
+            'Pelo menos a cada 12 meses.',
+            'At least every 12 months.'
+          )
+        )
+      : (
+          globalThis.ClinicalI18n
+            ?.t?.('ivcf.reapply6')
+          || clinicalText(
+            'Pelo menos a cada 6 meses.',
+            'At least every 6 months.'
+          )
+        );
+
+  const dimensionRows =
+    result
+      .altered_dimensions
+      .map(
+        key => `
+          <div class="rounded bg-slate-950/70 p-2">
+            <p class="text-[10px] text-slate-500">
+              ${escapeHtml(
+                ivcfDimensionLabel(
+                  key
+                )
+              )}
+            </p>
+
+            <p class="text-sm font-semibold text-slate-200">
+              ${escapeHtml(
+                result
+                  .dimension_scores[
+                    key
+                  ]
+              )}
+            </p>
+          </div>
+        `
+      )
+      .join('');
+
+  const dimensionsBlock =
+    dimensionRows
+      ? `
+        <div class="rounded-lg border border-slate-800 bg-slate-900 p-3 mt-4">
+          <p class="text-[10px] font-semibold text-slate-400 uppercase">
+            ${escapeHtml(
+              globalThis.ClinicalI18n
+                ?.t?.('ivcf.alteredDomains')
+              || clinicalText(
+                'Dimensões com pontuação',
+                'Scoring dimensions'
+              )
+            )}
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
+            ${dimensionRows}
+          </div>
+        </div>
+      `
+      : '';
+
+  const offlineBlock =
+    source === 'offline'
+      ? `
+        <p class="text-[11px] text-amber-300 mt-3">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('ivcf.offline')
+            || clinicalText(
+              'IVCF-20 calculado localmente em modo offline.',
+              'IVCF-20 calculated locally while offline.'
+            )
+          )}
+        </p>
+      `
+      : '';
+
+  res.classList.remove(
+    'hidden'
+  );
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-cyan-300 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('ivcf.resultTitle')
+        || clinicalText(
+          'Resultado · IVCF-20',
+          'Result · IVCF-20'
+        )
+      )}
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
+
+      <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+        <p class="text-[10px] text-slate-400">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('ivcf.total')
+            || clinicalText(
+              'Pontuação total',
+              'Total score'
+            )
+          )}
+        </p>
+
+        <p class="text-2xl font-bold text-cyan-300 mt-1">
+          ${escapeHtml(
+            result.total_score
+          )}/40
+        </p>
+      </div>
+
+      <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+        <p class="text-[10px] text-slate-400">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('ivcf.classification')
+            || clinicalText(
+              'Vulnerabilidade clínico-funcional',
+              'Clinical-functional vulnerability'
+            )
+          )}
+        </p>
+
+        <p class="text-sm font-semibold text-white mt-1">
+          ${escapeHtml(
+            classification
+          )}
+        </p>
+      </div>
+
+      <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+        <p class="text-[10px] text-slate-400">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('ivcf.reapply')
+            || clinicalText(
+              'Reaplicação mínima',
+              'Minimum reapplication'
+            )
+          )}
+        </p>
+
+        <p class="text-sm font-semibold text-white mt-1">
+          ${escapeHtml(
+            reapplication
+          )}
+        </p>
+      </div>
+
+    </div>
+
+    ${dimensionsBlock}
+
+    <div class="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3 mt-4 space-y-2">
+
+      <p class="text-[11px] text-amber-200">
+        ${escapeHtml(
+          globalThis.ClinicalI18n
+            ?.t?.('ivcf.noFallsScore')
+          || clinicalText(
+            'O IVCF-20 não deve ser apresentado como escore isolado de risco de quedas e não deve ser somado ao check-up da Caderneta.',
+            'IVCF-20 must not be presented as a standalone falls-risk score and must not be added to the Caderneta check-up.'
+          )
+        )}
+      </p>
+
+      <p class="text-[11px] text-amber-200">
+        ${escapeHtml(
+          globalThis.ClinicalI18n
+            ?.t?.('ivcf.gaitNotTug')
+          || clinicalText(
+            'O item de marcha de 4 metros >5 segundos pertence ao IVCF-20 e NÃO é Timed Up and Go (TUG).',
+            'The IVCF-20 4-metre gait item >5 seconds is NOT the Timed Up and Go (TUG).'
+          )
+        )}
+      </p>
+
+      <p class="text-[11px] text-cyan-200">
+        ${escapeHtml(
+          globalThis.ClinicalI18n
+            ?.t?.('ivcf.sentinel')
+          || clinicalText(
+            'Evento sentinela, incluindo queda, indica nova avaliação independentemente da pontuação.',
+            'A sentinel event, including a fall, indicates reassessment irrespective of the score.'
+          )
+        )}
+      </p>
+
+    </div>
+
+    <p class="text-[11px] text-slate-400 mt-3">
+      ${escapeHtml(
+        result[
+          `interpretation_${suffix}`
+        ]
+      )}
+    </p>
+
+    ${offlineBlock}
+  `;
+}
+
+
+async function calculateIvcf20Tool(
+  event
+) {
+  event.preventDefault();
+
+  const age =
+    olderPersonAgeFromInput(
+      'ivcf20-age'
+    );
+
+  const responses =
+    booleanSelectPayload(
+      'ivcf20',
+      IVCF20_UI_FIELDS
+    );
+
+  if (
+    age === null
+    || responses === null
+  ) {
+    return showError(
+      'ivcf20-result',
+      clinicalText(
+        'Informe idade de 60 anos ou mais e responda SIM ou NÃO a todos os itens do IVCF-20.',
+        'Enter an age of 60 years or over and answer YES or NO to every IVCF-20 item.'
+      )
+    );
+  }
+
+  const payload = {
+    age_years:
+      age,
+
+    ...responses
+  };
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/ivcf20',
+      payload,
+      globalThis
+        .ClinicalTools
+        .calculateIvcf20
+    );
+
+    lastIvcf20Result =
+      result;
+
+    lastIvcf20Source =
+      source;
+
+    renderIvcf20Result(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'ivcf20-result',
+      error.message
+    );
+  }
+}
+
+
 function scoreGlasgow() {
   const ids = ['glasgow-e', 'glasgow-v', 'glasgow-m'];
   const values = ids.map((id) => document.getElementById(id).value);
@@ -4348,6 +5088,8 @@ function wireUiEvents() {
     'oxygenation-form': calculateOxygenationTool,
     'metabolic-form': calculateMetabolicTool,
     'methanol-form': calculateBrazilMethanolTool,
+    'caderneta-falls-form': calculateCadernetaFallsTool,
+    'ivcf20-form': calculateIvcf20Tool,
     'growth-form': calculateGrowthTool,
     'drip-form': calculateDrip,
     'meds-form': calculateMeds,
@@ -4451,6 +5193,22 @@ globalThis.addEventListener?.(
       renderBrazilMethanolResult(
         lastMethanolResult,
         lastMethanolSource
+      );
+    }
+
+
+    if (lastCadernetaFallsResult) {
+      renderCadernetaFallsResult(
+        lastCadernetaFallsResult,
+        lastCadernetaFallsSource
+      );
+    }
+
+
+    if (lastIvcf20Result) {
+      renderIvcf20Result(
+        lastIvcf20Result,
+        lastIvcf20Source
       );
     }
 

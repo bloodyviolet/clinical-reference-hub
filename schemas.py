@@ -1077,3 +1077,252 @@ class GrowthResponse(BaseModel):
     warnings_en: list[str]
 
     provenance: GrowthProvenance
+
+
+# ---------------------------------------------------------------------------
+# v2 Item 7 — Brazil falls / clinical-functional vulnerability.
+# ---------------------------------------------------------------------------
+
+CadernetaFallsItemKey = Literal[
+    "fall_previous_year",
+    "cane_or_walker_recommended",
+    "unsteady_while_walking",
+    "uses_furniture_for_support",
+    "concern_about_falling",
+    "needs_hands_to_rise_from_chair",
+    "difficulty_stepping_onto_curb",
+    "toilet_urgency",
+    "reduced_foot_sensation",
+    "medication_dizziness_or_fatigue",
+    "sleep_or_mood_medication",
+    "sadness_or_depressed_mood",
+]
+
+
+class CadernetaFallsInput(BaseModel):
+    age_years: int = Field(
+        ge=60,
+    )
+
+    fall_previous_year: bool
+    cane_or_walker_recommended: bool
+    unsteady_while_walking: bool
+    uses_furniture_for_support: bool
+    concern_about_falling: bool
+    needs_hands_to_rise_from_chair: bool
+    difficulty_stepping_onto_curb: bool
+    toilet_urgency: bool
+    reduced_foot_sensation: bool
+    medication_dizziness_or_fatigue: bool
+    sleep_or_mood_medication: bool
+    sadness_or_depressed_mood: bool
+
+
+class CadernetaFallsResponse(BaseModel):
+    tool: Literal[
+        "brazil_caderneta_falls_checkup_2026"
+    ]
+
+    age_years: int = Field(
+        ge=60,
+    )
+
+    positive_items_count: int = Field(
+        ge=0,
+        le=12,
+    )
+
+    positive_items: list[
+        CadernetaFallsItemKey
+    ]
+
+    assessment_indicated: bool
+
+    any_yes_rule_applied: Literal[True]
+
+    weighted_score_applied: Literal[False]
+
+    foreign_weighted_score_imported: Literal[False]
+
+    fall_risk_classification_applied: Literal[False]
+
+    automatic_ivcf_inference_applied: Literal[False]
+
+    synthetic_cross_instrument_score_applied: Literal[False]
+
+    interpretation_pt: str
+    interpretation_en: str
+
+
+IVCF20DimensionKey = Literal[
+    "age",
+    "health_perception",
+    "instrumental_adl",
+    "basic_adl",
+    "cognition",
+    "mood",
+    "upper_limb_mobility",
+    "aerobic_muscular_capacity",
+    "gait",
+    "continence",
+    "vision",
+    "hearing",
+    "multiple_comorbidities",
+]
+
+
+class IVCF20Input(BaseModel):
+    age_years: int = Field(
+        ge=60,
+    )
+
+    self_rated_health_regular_or_poor: bool
+
+    stopped_shopping_due_health: bool
+    stopped_managing_money_due_health: bool
+    stopped_housework_due_health: bool
+
+    stopped_bathing_due_health: bool
+
+    forgetfulness_noted_by_others: bool
+    worsening_forgetfulness: bool
+    forgetfulness_impairs_daily_activity: bool
+
+    depressed_or_hopeless_last_month: bool
+    anhedonia_last_month: bool
+
+    unable_raise_arms_above_shoulders: bool
+    unable_handle_small_objects: bool
+
+    unintentional_weight_loss_criterion: bool
+    bmi_lt_22: bool
+    calf_circumference_lt_31_cm: bool
+    gait_4m_gt_5_seconds: bool
+
+    walking_difficulty_impairs_daily_activity: bool
+    two_or_more_falls_last_year: bool
+
+    urinary_or_fecal_incontinence: bool
+    vision_impairs_daily_activity: bool
+    hearing_impairs_daily_activity: bool
+
+    five_or_more_chronic_conditions: bool
+    five_or_more_daily_medications: bool
+    hospitalized_last_six_months: bool
+
+
+class IVCF20DimensionScores(BaseModel):
+    age: int = Field(
+        ge=0,
+        le=3,
+    )
+
+    health_perception: int = Field(
+        ge=0,
+        le=1,
+    )
+
+    instrumental_adl: int = Field(
+        ge=0,
+        le=4,
+    )
+
+    basic_adl: int = Field(
+        ge=0,
+        le=6,
+    )
+
+    cognition: int = Field(
+        ge=0,
+        le=4,
+    )
+
+    mood: int = Field(
+        ge=0,
+        le=4,
+    )
+
+    upper_limb_mobility: int = Field(
+        ge=0,
+        le=2,
+    )
+
+    aerobic_muscular_capacity: int = Field(
+        ge=0,
+        le=2,
+    )
+
+    gait: int = Field(
+        ge=0,
+        le=4,
+    )
+
+    continence: int = Field(
+        ge=0,
+        le=2,
+    )
+
+    vision: int = Field(
+        ge=0,
+        le=2,
+    )
+
+    hearing: int = Field(
+        ge=0,
+        le=2,
+    )
+
+    multiple_comorbidities: int = Field(
+        ge=0,
+        le=4,
+    )
+
+
+class IVCF20Response(BaseModel):
+    tool: Literal["ivcf20"]
+
+    age_years: int = Field(
+        ge=60,
+    )
+
+    total_score: int = Field(
+        ge=0,
+        le=40,
+    )
+
+    classification_code: Literal[
+        "low",
+        "moderate",
+        "high",
+    ]
+
+    classification_pt: str
+    classification_en: str
+
+    dimension_scores: IVCF20DimensionScores
+
+    altered_dimensions: list[
+        IVCF20DimensionKey
+    ]
+
+    reapplication_months_minimum: Literal[
+        6,
+        12,
+    ]
+
+    reapply_after_sentinel_event: Literal[True]
+
+    complete_assessment_required: Literal[True]
+
+    gait_4m_gt_5_seconds: bool
+
+    gait_4m_is_tug: Literal[False]
+
+    fall_risk_classification_applied: Literal[False]
+
+    automatic_caderneta_inference_applied: Literal[False]
+
+    synthetic_cross_instrument_score_applied: Literal[False]
+
+    interpretation_pt: str
+    interpretation_en: str

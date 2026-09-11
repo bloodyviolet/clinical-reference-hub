@@ -220,6 +220,930 @@
           <div id="crcl-result" aria-live="polite" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
         
+
+        <!-- Brazil 2026 Falls / Function -->
+        <div
+          id="falls-function-card"
+          class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-8"
+        >
+
+          <section
+            id="caderneta-falls-section"
+            class="space-y-4"
+          >
+            <div class="space-y-1">
+              <h2
+                data-i18n="falls.title"
+                class="text-base font-semibold text-white"
+              >Brasil · prevenção de quedas · Caderneta 2026</h2>
+
+              <p
+                data-i18n="falls.description"
+                class="text-xs text-slate-400"
+              >Check-up nacional de 12 perguntas para pessoas idosas. Qualquer resposta SIM orienta avaliação. A contagem de respostas positivas não é um escore ponderado de risco.</p>
+            </div>
+
+            <div class="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4">
+              <p
+                data-i18n="falls.instruction"
+                class="text-xs text-amber-200"
+              >Responda SIM ou NÃO a todos os 12 itens. Os instrumentos Caderneta e IVCF-20 permanecem independentes.</p>
+            </div>
+
+            <form
+              id="caderneta-falls-form"
+              class="space-y-4 border-t border-slate-800 pt-4"
+            >
+              <div class="max-w-xs">
+                <label
+                  for="caderneta-falls-age"
+                  data-i18n="falls.age"
+                  class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                >Idade (anos)</label>
+
+                <input
+                  id="caderneta-falls-age"
+                  type="number"
+                  min="60"
+                  step="1"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="caderneta-falls-fall-previous-year"
+                  data-i18n="falls.item.fall_previous_year"
+                  class="block text-xs text-slate-200"
+                >Caiu no último ano.</label>
+
+                <select
+                  id="caderneta-falls-fall-previous-year"
+                  data-falls-field="fall_previous_year"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="caderneta-falls-cane-or-walker-recommended"
+                  data-i18n="falls.item.cane_or_walker_recommended"
+                  class="block text-xs text-slate-200"
+                >Foi recomendado usar bengala ou andador para se locomover com segurança.</label>
+
+                <select
+                  id="caderneta-falls-cane-or-walker-recommended"
+                  data-falls-field="cane_or_walker_recommended"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="caderneta-falls-unsteady-while-walking"
+                  data-i18n="falls.item.unsteady_while_walking"
+                  class="block text-xs text-slate-200"
+                >Sente-se instável ao caminhar.</label>
+
+                <select
+                  id="caderneta-falls-unsteady-while-walking"
+                  data-falls-field="unsteady_while_walking"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="caderneta-falls-uses-furniture-for-support"
+                  data-i18n="falls.item.uses_furniture_for_support"
+                  class="block text-xs text-slate-200"
+                >Apoia-se nos móveis ao caminhar dentro de casa.</label>
+
+                <select
+                  id="caderneta-falls-uses-furniture-for-support"
+                  data-falls-field="uses_furniture_for_support"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="caderneta-falls-concern-about-falling"
+                  data-i18n="falls.item.concern_about_falling"
+                  class="block text-xs text-slate-200"
+                >Tem preocupação ou medo de cair.</label>
+
+                <select
+                  id="caderneta-falls-concern-about-falling"
+                  data-falls-field="concern_about_falling"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="caderneta-falls-needs-hands-to-rise-from-chair"
+                  data-i18n="falls.item.needs_hands_to_rise_from_chair"
+                  class="block text-xs text-slate-200"
+                >Precisa usar as mãos para se levantar de uma cadeira.</label>
+
+                <select
+                  id="caderneta-falls-needs-hands-to-rise-from-chair"
+                  data-falls-field="needs_hands_to_rise_from_chair"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="caderneta-falls-difficulty-stepping-onto-curb"
+                  data-i18n="falls.item.difficulty_stepping_onto_curb"
+                  class="block text-xs text-slate-200"
+                >Tem dificuldade para subir em uma calçada ou degrau.</label>
+
+                <select
+                  id="caderneta-falls-difficulty-stepping-onto-curb"
+                  data-falls-field="difficulty_stepping_onto_curb"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="caderneta-falls-toilet-urgency"
+                  data-i18n="falls.item.toilet_urgency"
+                  class="block text-xs text-slate-200"
+                >Precisa correr ao banheiro por urgência urinária ou intestinal.</label>
+
+                <select
+                  id="caderneta-falls-toilet-urgency"
+                  data-falls-field="toilet_urgency"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="caderneta-falls-reduced-foot-sensation"
+                  data-i18n="falls.item.reduced_foot_sensation"
+                  class="block text-xs text-slate-200"
+                >Perdeu parte da sensibilidade nos pés.</label>
+
+                <select
+                  id="caderneta-falls-reduced-foot-sensation"
+                  data-falls-field="reduced_foot_sensation"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="caderneta-falls-medication-dizziness-or-fatigue"
+                  data-i18n="falls.item.medication_dizziness_or_fatigue"
+                  class="block text-xs text-slate-200"
+                >Usa medicamento que causa tontura, sonolência ou cansaço.</label>
+
+                <select
+                  id="caderneta-falls-medication-dizziness-or-fatigue"
+                  data-falls-field="medication_dizziness_or_fatigue"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="caderneta-falls-sleep-or-mood-medication"
+                  data-i18n="falls.item.sleep_or_mood_medication"
+                  class="block text-xs text-slate-200"
+                >Usa medicamento para dormir ou melhorar o humor.</label>
+
+                <select
+                  id="caderneta-falls-sleep-or-mood-medication"
+                  data-falls-field="sleep_or_mood_medication"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="caderneta-falls-sadness-or-depressed-mood"
+                  data-i18n="falls.item.sadness_or_depressed_mood"
+                  class="block text-xs text-slate-200"
+                >Sente-se triste ou deprimido(a).</label>
+
+                <select
+                  id="caderneta-falls-sadness-or-depressed-mood"
+                  data-falls-field="sadness_or_depressed_mood"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+              </div>
+
+              <button
+                type="submit"
+                data-i18n="falls.calculate"
+                class="w-full bg-teal-600 hover:bg-teal-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition"
+              >Avaliar check-up de quedas</button>
+            </form>
+
+            <div
+              id="caderneta-falls-result"
+              aria-live="polite"
+              class="hidden rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+            ></div>
+
+            <p
+              data-i18n="falls.noScore"
+              class="text-[11px] text-amber-300"
+            >Este check-up não gera escore ponderado e não importa pontuação STEADI/NCOA.</p>
+
+            <p
+              data-i18n="falls.source"
+              class="text-[10px] text-slate-500"
+            >Fonte nacional: Ministério da Saúde · Caderneta Brasileira da Pessoa Idosa 2026.</p>
+          </section>
+
+
+          <section
+            id="ivcf20-section"
+            class="space-y-4 border-t border-slate-700 pt-8"
+          >
+            <div class="space-y-1">
+              <h2
+                data-i18n="ivcf.title"
+                class="text-base font-semibold text-white"
+              >IVCF-20 · vulnerabilidade clínico-funcional</h2>
+
+              <p
+                data-i18n="ivcf.description"
+                class="text-xs text-slate-400"
+              >Instrumento brasileiro para pessoas com 60 anos ou mais. Classifica vulnerabilidade clínico-funcional de 0 a 40 pontos; não é um escore isolado de risco de quedas.</p>
+            </div>
+
+            <div class="rounded-xl border border-cyan-500/30 bg-cyan-500/5 p-4 space-y-2">
+              <p
+                data-i18n="ivcf.instruction"
+                class="text-xs text-cyan-100"
+              >O IVCF-20 deve ser preenchido integralmente em uma mesma avaliação. Responda SIM ou NÃO a todos os itens antes de calcular.</p>
+
+              <p
+                data-i18n="ivcf.gaitNotTug"
+                class="text-[11px] text-amber-300"
+              >O item de marcha de 4 metros >5 segundos pertence ao IVCF-20 e NÃO é Timed Up and Go (TUG).</p>
+
+              <p
+                data-i18n="ivcf.noFallsScore"
+                class="text-[11px] text-amber-300"
+              >O IVCF-20 não deve ser apresentado como escore isolado de risco de quedas e não deve ser somado ao check-up da Caderneta.</p>
+            </div>
+
+            <form
+              id="ivcf20-form"
+              class="space-y-4 border-t border-slate-800 pt-4"
+            >
+              <div class="max-w-xs">
+                <label
+                  for="ivcf20-age"
+                  data-i18n="ivcf.age"
+                  class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                >Idade (anos)</label>
+
+                <input
+                  id="ivcf20-age"
+                  type="number"
+                  min="60"
+                  step="1"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+              </div>
+
+
+            <fieldset class="space-y-3 rounded-xl border border-slate-800 p-4">
+              <legend
+                data-i18n="ivcf.domain.perception"
+                class="px-2 text-xs font-semibold uppercase tracking-wide text-teal-300"
+              >Autopercepção da saúde</legend>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-self-rated-health-regular-or-poor"
+                  data-i18n="ivcf.item.self_rated_health_regular_or_poor"
+                  class="block text-xs text-slate-200"
+                >Considera sua saúde regular ou ruim.</label>
+
+                <select
+                  id="ivcf20-self-rated-health-regular-or-poor"
+                  data-ivcf-field="self_rated_health_regular_or_poor"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="space-y-3 rounded-xl border border-slate-800 p-4">
+              <legend
+                data-i18n="ivcf.domain.adl"
+                class="px-2 text-xs font-semibold uppercase tracking-wide text-teal-300"
+              >Atividades de vida diária</legend>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-stopped-shopping-due-health"
+                  data-i18n="ivcf.item.stopped_shopping_due_health"
+                  class="block text-xs text-slate-200"
+                >Por causa da saúde ou condição física, deixou de fazer compras.</label>
+
+                <select
+                  id="ivcf20-stopped-shopping-due-health"
+                  data-ivcf-field="stopped_shopping_due_health"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-stopped-managing-money-due-health"
+                  data-i18n="ivcf.item.stopped_managing_money_due_health"
+                  class="block text-xs text-slate-200"
+                >Por causa da saúde ou condição física, deixou de controlar o próprio dinheiro.</label>
+
+                <select
+                  id="ivcf20-stopped-managing-money-due-health"
+                  data-ivcf-field="stopped_managing_money_due_health"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-stopped-housework-due-health"
+                  data-i18n="ivcf.item.stopped_housework_due_health"
+                  class="block text-xs text-slate-200"
+                >Por causa da saúde ou condição física, deixou de realizar pequenos trabalhos domésticos.</label>
+
+                <select
+                  id="ivcf20-stopped-housework-due-health"
+                  data-ivcf-field="stopped_housework_due_health"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-stopped-bathing-due-health"
+                  data-i18n="ivcf.item.stopped_bathing_due_health"
+                  class="block text-xs text-slate-200"
+                >Por causa da saúde ou condição física, deixou de tomar banho sozinho(a).</label>
+
+                <select
+                  id="ivcf20-stopped-bathing-due-health"
+                  data-ivcf-field="stopped_bathing_due_health"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="space-y-3 rounded-xl border border-slate-800 p-4">
+              <legend
+                data-i18n="ivcf.domain.cognition"
+                class="px-2 text-xs font-semibold uppercase tracking-wide text-teal-300"
+              >Cognição</legend>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-forgetfulness-noted-by-others"
+                  data-i18n="ivcf.item.forgetfulness_noted_by_others"
+                  class="block text-xs text-slate-200"
+                >Familiares ou amigos relatam que está ficando esquecido(a).</label>
+
+                <select
+                  id="ivcf20-forgetfulness-noted-by-others"
+                  data-ivcf-field="forgetfulness_noted_by_others"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-worsening-forgetfulness"
+                  data-i18n="ivcf.item.worsening_forgetfulness"
+                  class="block text-xs text-slate-200"
+                >O esquecimento está piorando nos últimos meses.</label>
+
+                <select
+                  id="ivcf20-worsening-forgetfulness"
+                  data-ivcf-field="worsening_forgetfulness"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-forgetfulness-impairs-daily-activity"
+                  data-i18n="ivcf.item.forgetfulness_impairs_daily_activity"
+                  class="block text-xs text-slate-200"
+                >O esquecimento está impedindo a realização de alguma atividade cotidiana.</label>
+
+                <select
+                  id="ivcf20-forgetfulness-impairs-daily-activity"
+                  data-ivcf-field="forgetfulness_impairs_daily_activity"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="space-y-3 rounded-xl border border-slate-800 p-4">
+              <legend
+                data-i18n="ivcf.domain.mood"
+                class="px-2 text-xs font-semibold uppercase tracking-wide text-teal-300"
+              >Humor</legend>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-depressed-or-hopeless-last-month"
+                  data-i18n="ivcf.item.depressed_or_hopeless_last_month"
+                  class="block text-xs text-slate-200"
+                >No último mês, sentiu desânimo, tristeza ou desesperança.</label>
+
+                <select
+                  id="ivcf20-depressed-or-hopeless-last-month"
+                  data-ivcf-field="depressed_or_hopeless_last_month"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-anhedonia-last-month"
+                  data-i18n="ivcf.item.anhedonia_last_month"
+                  class="block text-xs text-slate-200"
+                >No último mês, perdeu o interesse ou prazer em atividades de que costumava gostar.</label>
+
+                <select
+                  id="ivcf20-anhedonia-last-month"
+                  data-ivcf-field="anhedonia_last_month"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="space-y-3 rounded-xl border border-slate-800 p-4">
+              <legend
+                data-i18n="ivcf.domain.mobility"
+                class="px-2 text-xs font-semibold uppercase tracking-wide text-teal-300"
+              >Mobilidade</legend>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-unable-raise-arms-above-shoulders"
+                  data-i18n="ivcf.item.unable_raise_arms_above_shoulders"
+                  class="block text-xs text-slate-200"
+                >Não consegue elevar os braços acima do nível dos ombros.</label>
+
+                <select
+                  id="ivcf20-unable-raise-arms-above-shoulders"
+                  data-ivcf-field="unable_raise_arms_above_shoulders"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-unable-handle-small-objects"
+                  data-i18n="ivcf.item.unable_handle_small_objects"
+                  class="block text-xs text-slate-200"
+                >Não consegue manusear ou segurar pequenos objetos.</label>
+
+                <select
+                  id="ivcf20-unable-handle-small-objects"
+                  data-ivcf-field="unable_handle_small_objects"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-unintentional-weight-loss-criterion"
+                  data-i18n="ivcf.item.unintentional_weight_loss_criterion"
+                  class="block text-xs text-slate-200"
+                >Perda de peso não intencional: 4,5 kg ou 5% no último ano, 6 kg nos últimos 6 meses ou 3 kg no último mês.</label>
+
+                <select
+                  id="ivcf20-unintentional-weight-loss-criterion"
+                  data-ivcf-field="unintentional_weight_loss_criterion"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-bmi-lt-22"
+                  data-i18n="ivcf.item.bmi_lt_22"
+                  class="block text-xs text-slate-200"
+                >IMC inferior a 22 kg/m².</label>
+
+                <select
+                  id="ivcf20-bmi-lt-22"
+                  data-ivcf-field="bmi_lt_22"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-calf-circumference-lt-31-cm"
+                  data-i18n="ivcf.item.calf_circumference_lt_31_cm"
+                  class="block text-xs text-slate-200"
+                >Circunferência da panturrilha inferior a 31 cm.</label>
+
+                <select
+                  id="ivcf20-calf-circumference-lt-31-cm"
+                  data-ivcf-field="calf_circumference_lt_31_cm"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-gait-4m-gt-5-seconds"
+                  data-i18n="ivcf.item.gait_4m_gt_5_seconds"
+                  class="block text-xs text-slate-200"
+                >Tempo para caminhar 4 metros superior a 5 segundos.</label>
+
+                <select
+                  id="ivcf20-gait-4m-gt-5-seconds"
+                  data-ivcf-field="gait_4m_gt_5_seconds"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-walking-difficulty-impairs-daily-activity"
+                  data-i18n="ivcf.item.walking_difficulty_impairs_daily_activity"
+                  class="block text-xs text-slate-200"
+                >Dificuldade para caminhar que prejudica a realização de atividades cotidianas.</label>
+
+                <select
+                  id="ivcf20-walking-difficulty-impairs-daily-activity"
+                  data-ivcf-field="walking_difficulty_impairs_daily_activity"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-two-or-more-falls-last-year"
+                  data-i18n="ivcf.item.two_or_more_falls_last_year"
+                  class="block text-xs text-slate-200"
+                >Duas ou mais quedas no último ano.</label>
+
+                <select
+                  id="ivcf20-two-or-more-falls-last-year"
+                  data-ivcf-field="two_or_more_falls_last_year"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="space-y-3 rounded-xl border border-slate-800 p-4">
+              <legend
+                data-i18n="ivcf.domain.continence"
+                class="px-2 text-xs font-semibold uppercase tracking-wide text-teal-300"
+              >Continência</legend>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-urinary-or-fecal-incontinence"
+                  data-i18n="ivcf.item.urinary_or_fecal_incontinence"
+                  class="block text-xs text-slate-200"
+                >Perda involuntária de urina ou fezes.</label>
+
+                <select
+                  id="ivcf20-urinary-or-fecal-incontinence"
+                  data-ivcf-field="urinary_or_fecal_incontinence"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="space-y-3 rounded-xl border border-slate-800 p-4">
+              <legend
+                data-i18n="ivcf.domain.communication"
+                class="px-2 text-xs font-semibold uppercase tracking-wide text-teal-300"
+              >Comunicação · visão e audição</legend>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-vision-impairs-daily-activity"
+                  data-i18n="ivcf.item.vision_impairs_daily_activity"
+                  class="block text-xs text-slate-200"
+                >Problema de visão que dificulta a realização de atividades cotidianas.</label>
+
+                <select
+                  id="ivcf20-vision-impairs-daily-activity"
+                  data-ivcf-field="vision_impairs_daily_activity"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-hearing-impairs-daily-activity"
+                  data-i18n="ivcf.item.hearing_impairs_daily_activity"
+                  class="block text-xs text-slate-200"
+                >Problema de audição que dificulta a realização de atividades cotidianas.</label>
+
+                <select
+                  id="ivcf20-hearing-impairs-daily-activity"
+                  data-ivcf-field="hearing_impairs_daily_activity"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="space-y-3 rounded-xl border border-slate-800 p-4">
+              <legend
+                data-i18n="ivcf.domain.comorbidity"
+                class="px-2 text-xs font-semibold uppercase tracking-wide text-teal-300"
+              >Comorbidades múltiplas</legend>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-five-or-more-chronic-conditions"
+                  data-i18n="ivcf.item.five_or_more_chronic_conditions"
+                  class="block text-xs text-slate-200"
+                >Cinco ou mais doenças crônicas.</label>
+
+                <select
+                  id="ivcf20-five-or-more-chronic-conditions"
+                  data-ivcf-field="five_or_more_chronic_conditions"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-five-or-more-daily-medications"
+                  data-i18n="ivcf.item.five_or_more_daily_medications"
+                  class="block text-xs text-slate-200"
+                >Uso regular de cinco ou mais medicamentos por dia.</label>
+
+                <select
+                  id="ivcf20-five-or-more-daily-medications"
+                  data-ivcf-field="five_or_more_daily_medications"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+
+              <div class="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
+                <label
+                  for="ivcf20-hospitalized-last-six-months"
+                  data-i18n="ivcf.item.hospitalized_last_six_months"
+                  class="block text-xs text-slate-200"
+                >Internação hospitalar nos últimos 6 meses.</label>
+
+                <select
+                  id="ivcf20-hospitalized-last-six-months"
+                  data-ivcf-field="hospitalized_last_six_months"
+                  required
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="" data-i18n="falls.select">Selecione...</option>
+                  <option value="false" data-i18n="falls.no">Não</option>
+                  <option value="true" data-i18n="falls.yes">Sim</option>
+                </select>
+              </div>
+              </div>
+            </fieldset>
+
+              <button
+                type="submit"
+                data-i18n="ivcf.calculate"
+                class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition"
+              >Calcular IVCF-20</button>
+            </form>
+
+            <div
+              id="ivcf20-result"
+              aria-live="polite"
+              class="hidden rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+            ></div>
+
+            <p
+              data-i18n="ivcf.sentinel"
+              class="text-[11px] text-cyan-200"
+            >Evento sentinela, incluindo queda, indica nova avaliação independentemente da pontuação.</p>
+
+            <p
+              data-i18n="ivcf.source"
+              class="text-[10px] text-slate-500"
+            >Fontes nacionais: Caderneta Brasileira da Pessoa Idosa 2026 + Nota Informativa nº 1/2026-COPID/DGCI/SAPS/MS.</p>
+          </section>
+
+        </div>
+
         <!-- WHO / SISVAN Paediatric Growth -->
         <div id="growth-card" class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
 

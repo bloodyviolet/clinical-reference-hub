@@ -3305,6 +3305,547 @@
   }
 
 
+
+  const CADERNETA_FALLS_ITEM_KEYS = [
+    'fall_previous_year',
+    'cane_or_walker_recommended',
+    'unsteady_while_walking',
+    'uses_furniture_for_support',
+    'concern_about_falling',
+    'needs_hands_to_rise_from_chair',
+    'difficulty_stepping_onto_curb',
+    'toilet_urgency',
+    'reduced_foot_sensation',
+    'medication_dizziness_or_fatigue',
+    'sleep_or_mood_medication',
+    'sadness_or_depressed_mood'
+  ];
+
+
+  const IVCF20_BOOLEAN_KEYS = [
+    'self_rated_health_regular_or_poor',
+    'stopped_shopping_due_health',
+    'stopped_managing_money_due_health',
+    'stopped_housework_due_health',
+    'stopped_bathing_due_health',
+    'forgetfulness_noted_by_others',
+    'worsening_forgetfulness',
+    'forgetfulness_impairs_daily_activity',
+    'depressed_or_hopeless_last_month',
+    'anhedonia_last_month',
+    'unable_raise_arms_above_shoulders',
+    'unable_handle_small_objects',
+    'unintentional_weight_loss_criterion',
+    'bmi_lt_22',
+    'calf_circumference_lt_31_cm',
+    'gait_4m_gt_5_seconds',
+    'walking_difficulty_impairs_daily_activity',
+    'two_or_more_falls_last_year',
+    'urinary_or_fecal_incontinence',
+    'vision_impairs_daily_activity',
+    'hearing_impairs_daily_activity',
+    'five_or_more_chronic_conditions',
+    'five_or_more_daily_medications',
+    'hospitalized_last_six_months'
+  ];
+
+
+  function validateOlderPersonAge(
+    ageYears
+  ) {
+    if (
+      !Number.isInteger(ageYears)
+      || ageYears < 60
+    ) {
+      throw new Error(
+        'age_years_must_be_60_or_greater'
+      );
+    }
+  }
+
+
+  function requireBooleanFields(
+    input,
+    fields,
+    errorCode
+  ) {
+    if (
+      fields.some(
+        field =>
+          typeof input[field]
+          !== 'boolean'
+      )
+    ) {
+      throw new Error(
+        errorCode
+      );
+    }
+  }
+
+
+  function calculateCadernetaFallsCheckup(
+    input
+  ) {
+    const ageYears =
+      input.age_years;
+
+    validateOlderPersonAge(
+      ageYears
+    );
+
+    requireBooleanFields(
+      input,
+      CADERNETA_FALLS_ITEM_KEYS,
+      'incomplete_caderneta_falls_assessment'
+    );
+
+    const positiveItems =
+      CADERNETA_FALLS_ITEM_KEYS
+        .filter(
+          key => input[key]
+        );
+
+    const assessmentIndicated =
+      positiveItems.length > 0;
+
+    return {
+      tool:
+        'brazil_caderneta_falls_checkup_2026',
+
+      age_years:
+        ageYears,
+
+      positive_items_count:
+        positiveItems.length,
+
+      positive_items:
+        positiveItems,
+
+      assessment_indicated:
+        assessmentIndicated,
+
+      any_yes_rule_applied:
+        true,
+
+      weighted_score_applied:
+        false,
+
+      foreign_weighted_score_imported:
+        false,
+
+      fall_risk_classification_applied:
+        false,
+
+      automatic_ivcf_inference_applied:
+        false,
+
+      synthetic_cross_instrument_score_applied:
+        false,
+
+      interpretation_pt:
+        assessmentIndicated
+          ? (
+              'Há pelo menos uma resposta positiva; '
+              + 'a Caderneta orienta avaliação.'
+            )
+          : (
+              'Nenhuma resposta positiva foi registrada '
+              + 'neste check-up. O instrumento não produz '
+              + 'escore ponderado de risco.'
+            ),
+
+      interpretation_en:
+        assessmentIndicated
+          ? (
+              'At least one positive response is present; '
+              + 'the Brazilian Caderneta indicates assessment.'
+            )
+          : (
+              'No positive response was recorded in this '
+              + 'check-up. The instrument does not produce '
+              + 'a weighted risk score.'
+            )
+    };
+  }
+
+
+  function calculateIvcf20(
+    input
+  ) {
+    const ageYears =
+      input.age_years;
+
+    validateOlderPersonAge(
+      ageYears
+    );
+
+    requireBooleanFields(
+      input,
+      IVCF20_BOOLEAN_KEYS,
+      'incomplete_ivcf20_assessment'
+    );
+
+    let ageScore = 0;
+
+    if (ageYears >= 85) {
+      ageScore = 3;
+    } else if (ageYears >= 75) {
+      ageScore = 1;
+    }
+
+
+    const healthPerceptionScore =
+      input
+        .self_rated_health_regular_or_poor
+        ? 1
+        : 0;
+
+
+    const instrumentalAdlPositive =
+      (
+        input.stopped_shopping_due_health
+        || input.stopped_managing_money_due_health
+        || input.stopped_housework_due_health
+      );
+
+    const instrumentalAdlScore =
+      instrumentalAdlPositive
+        ? 4
+        : 0;
+
+
+    const basicAdlScore =
+      input.stopped_bathing_due_health
+        ? 6
+        : 0;
+
+
+    const cognitionScore =
+      (
+        (
+          input.forgetfulness_noted_by_others
+            ? 1
+            : 0
+        )
+        + (
+          input.worsening_forgetfulness
+            ? 1
+            : 0
+        )
+        + (
+          input.forgetfulness_impairs_daily_activity
+            ? 2
+            : 0
+        )
+      );
+
+
+    const moodScore =
+      (
+        (
+          input.depressed_or_hopeless_last_month
+            ? 2
+            : 0
+        )
+        + (
+          input.anhedonia_last_month
+            ? 2
+            : 0
+        )
+      );
+
+
+    const upperLimbScore =
+      (
+        (
+          input.unable_raise_arms_above_shoulders
+            ? 1
+            : 0
+        )
+        + (
+          input.unable_handle_small_objects
+            ? 1
+            : 0
+        )
+      );
+
+
+    const aerobicMuscularPositive =
+      (
+        input.unintentional_weight_loss_criterion
+        || input.bmi_lt_22
+        || input.calf_circumference_lt_31_cm
+        || input.gait_4m_gt_5_seconds
+      );
+
+    const aerobicMuscularScore =
+      aerobicMuscularPositive
+        ? 2
+        : 0;
+
+
+    const gaitScore =
+      (
+        (
+          input.walking_difficulty_impairs_daily_activity
+            ? 2
+            : 0
+        )
+        + (
+          input.two_or_more_falls_last_year
+            ? 2
+            : 0
+        )
+      );
+
+
+    const continenceScore =
+      input.urinary_or_fecal_incontinence
+        ? 2
+        : 0;
+
+
+    const visionScore =
+      input.vision_impairs_daily_activity
+        ? 2
+        : 0;
+
+
+    const hearingScore =
+      input.hearing_impairs_daily_activity
+        ? 2
+        : 0;
+
+
+    const multipleComorbidityPositive =
+      (
+        input.five_or_more_chronic_conditions
+        || input.five_or_more_daily_medications
+        || input.hospitalized_last_six_months
+      );
+
+    const multipleComorbidityScore =
+      multipleComorbidityPositive
+        ? 4
+        : 0;
+
+
+    const dimensionScores = {
+      age:
+        ageScore,
+
+      health_perception:
+        healthPerceptionScore,
+
+      instrumental_adl:
+        instrumentalAdlScore,
+
+      basic_adl:
+        basicAdlScore,
+
+      cognition:
+        cognitionScore,
+
+      mood:
+        moodScore,
+
+      upper_limb_mobility:
+        upperLimbScore,
+
+      aerobic_muscular_capacity:
+        aerobicMuscularScore,
+
+      gait:
+        gaitScore,
+
+      continence:
+        continenceScore,
+
+      vision:
+        visionScore,
+
+      hearing:
+        hearingScore,
+
+      multiple_comorbidities:
+        multipleComorbidityScore
+    };
+
+
+    const totalScore =
+      Object
+        .values(
+          dimensionScores
+        )
+        .reduce(
+          (
+            total,
+            value
+          ) =>
+            total + value,
+          0
+        );
+
+
+    let classificationCode;
+    let classificationPt;
+    let classificationEn;
+    let reapplicationMonths;
+
+
+    if (totalScore <= 6) {
+      classificationCode =
+        'low';
+
+      classificationPt =
+        (
+          'Baixo risco de vulnerabilidade '
+          + 'clínico-funcional'
+        );
+
+      classificationEn =
+        (
+          'Low clinical-functional '
+          + 'vulnerability risk'
+        );
+
+      reapplicationMonths =
+        12;
+
+    } else if (totalScore <= 14) {
+      classificationCode =
+        'moderate';
+
+      classificationPt =
+        (
+          'Moderado risco de vulnerabilidade '
+          + 'clínico-funcional'
+        );
+
+      classificationEn =
+        (
+          'Moderate clinical-functional '
+          + 'vulnerability risk'
+        );
+
+      reapplicationMonths =
+        6;
+
+    } else {
+      classificationCode =
+        'high';
+
+      classificationPt =
+        (
+          'Alto risco de vulnerabilidade '
+          + 'clínico-funcional'
+        );
+
+      classificationEn =
+        (
+          'High clinical-functional '
+          + 'vulnerability risk'
+        );
+
+      reapplicationMonths =
+        6;
+    }
+
+
+    const alteredDimensions =
+      Object
+        .entries(
+          dimensionScores
+        )
+        .filter(
+          (
+            [
+              _,
+              value
+            ]
+          ) =>
+            value > 0
+        )
+        .map(
+          (
+            [
+              key
+            ]
+          ) =>
+            key
+        );
+
+
+    return {
+      tool:
+        'ivcf20',
+
+      age_years:
+        ageYears,
+
+      total_score:
+        totalScore,
+
+      classification_code:
+        classificationCode,
+
+      classification_pt:
+        classificationPt,
+
+      classification_en:
+        classificationEn,
+
+      dimension_scores:
+        dimensionScores,
+
+      altered_dimensions:
+        alteredDimensions,
+
+      reapplication_months_minimum:
+        reapplicationMonths,
+
+      reapply_after_sentinel_event:
+        true,
+
+      complete_assessment_required:
+        true,
+
+      gait_4m_gt_5_seconds:
+        input.gait_4m_gt_5_seconds,
+
+      gait_4m_is_tug:
+        false,
+
+      fall_risk_classification_applied:
+        false,
+
+      automatic_caderneta_inference_applied:
+        false,
+
+      synthetic_cross_instrument_score_applied:
+        false,
+
+      interpretation_pt:
+        (
+          `IVCF-20: ${totalScore}/40 — `
+          + `${classificationPt}. `
+          + 'O resultado orienta a avaliação '
+          + 'clínico-funcional e não constitui '
+          + 'escore isolado de risco de quedas.'
+        ),
+
+      interpretation_en:
+        (
+          `IVCF-20: ${totalScore}/40 — `
+          + `${classificationEn}. `
+          + 'The result supports clinical-functional '
+          + 'assessment and is not a standalone '
+          + 'falls-risk score.'
+        )
+    };
+  }
+
+
   globalThis.ClinicalTools =
     Object.freeze({
       calculateNews2,
@@ -3315,6 +3856,8 @@
       calculateHemodynamics,
       calculateOxygenation,
       calculateMetabolicToolkit,
-      calculateBrazilMethanolContext
+      calculateBrazilMethanolContext,
+      calculateCadernetaFallsCheckup,
+      calculateIvcf20
     });
 })();

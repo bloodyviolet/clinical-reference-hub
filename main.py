@@ -41,6 +41,12 @@ from clinical_tools.growth import (
     GROWTH_METADATA,
     calculate_who_growth,
 )
+from clinical_tools.falls_function import (
+    CADERNETA_FALLS_METADATA,
+    IVCF20_METADATA,
+    calculate_caderneta_falls_checkup,
+    calculate_ivcf20,
+)
 from config import load_settings
 from observability import RateLimitMiddleware, RequestContextMiddleware, configure_logging
 from scripts.clinical_content import file_hash, validate_release_content
@@ -963,6 +969,166 @@ def api_calculate_who_growth(
                 payload.head_circumference_cm
             ),
             oedema=payload.oedema,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/brazil-caderneta-falls/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_caderneta_falls_metadata():
+    return CADERNETA_FALLS_METADATA
+
+
+@api_v1.post(
+    "/tools/brazil-caderneta-falls",
+    response_model=schemas.CadernetaFallsResponse,
+)
+def api_calculate_caderneta_falls(
+    payload: schemas.CadernetaFallsInput,
+):
+    try:
+        return calculate_caderneta_falls_checkup(
+            age_years=payload.age_years,
+            fall_previous_year=(
+                payload.fall_previous_year
+            ),
+            cane_or_walker_recommended=(
+                payload.cane_or_walker_recommended
+            ),
+            unsteady_while_walking=(
+                payload.unsteady_while_walking
+            ),
+            uses_furniture_for_support=(
+                payload.uses_furniture_for_support
+            ),
+            concern_about_falling=(
+                payload.concern_about_falling
+            ),
+            needs_hands_to_rise_from_chair=(
+                payload.needs_hands_to_rise_from_chair
+            ),
+            difficulty_stepping_onto_curb=(
+                payload.difficulty_stepping_onto_curb
+            ),
+            toilet_urgency=(
+                payload.toilet_urgency
+            ),
+            reduced_foot_sensation=(
+                payload.reduced_foot_sensation
+            ),
+            medication_dizziness_or_fatigue=(
+                payload.medication_dizziness_or_fatigue
+            ),
+            sleep_or_mood_medication=(
+                payload.sleep_or_mood_medication
+            ),
+            sadness_or_depressed_mood=(
+                payload.sadness_or_depressed_mood
+            ),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/ivcf20/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_ivcf20_metadata():
+    return IVCF20_METADATA
+
+
+@api_v1.post(
+    "/tools/ivcf20",
+    response_model=schemas.IVCF20Response,
+)
+def api_calculate_ivcf20(
+    payload: schemas.IVCF20Input,
+):
+    try:
+        return calculate_ivcf20(
+            age_years=payload.age_years,
+            self_rated_health_regular_or_poor=(
+                payload.self_rated_health_regular_or_poor
+            ),
+            stopped_shopping_due_health=(
+                payload.stopped_shopping_due_health
+            ),
+            stopped_managing_money_due_health=(
+                payload.stopped_managing_money_due_health
+            ),
+            stopped_housework_due_health=(
+                payload.stopped_housework_due_health
+            ),
+            stopped_bathing_due_health=(
+                payload.stopped_bathing_due_health
+            ),
+            forgetfulness_noted_by_others=(
+                payload.forgetfulness_noted_by_others
+            ),
+            worsening_forgetfulness=(
+                payload.worsening_forgetfulness
+            ),
+            forgetfulness_impairs_daily_activity=(
+                payload.forgetfulness_impairs_daily_activity
+            ),
+            depressed_or_hopeless_last_month=(
+                payload.depressed_or_hopeless_last_month
+            ),
+            anhedonia_last_month=(
+                payload.anhedonia_last_month
+            ),
+            unable_raise_arms_above_shoulders=(
+                payload.unable_raise_arms_above_shoulders
+            ),
+            unable_handle_small_objects=(
+                payload.unable_handle_small_objects
+            ),
+            unintentional_weight_loss_criterion=(
+                payload.unintentional_weight_loss_criterion
+            ),
+            bmi_lt_22=(
+                payload.bmi_lt_22
+            ),
+            calf_circumference_lt_31_cm=(
+                payload.calf_circumference_lt_31_cm
+            ),
+            gait_4m_gt_5_seconds=(
+                payload.gait_4m_gt_5_seconds
+            ),
+            walking_difficulty_impairs_daily_activity=(
+                payload.walking_difficulty_impairs_daily_activity
+            ),
+            two_or_more_falls_last_year=(
+                payload.two_or_more_falls_last_year
+            ),
+            urinary_or_fecal_incontinence=(
+                payload.urinary_or_fecal_incontinence
+            ),
+            vision_impairs_daily_activity=(
+                payload.vision_impairs_daily_activity
+            ),
+            hearing_impairs_daily_activity=(
+                payload.hearing_impairs_daily_activity
+            ),
+            five_or_more_chronic_conditions=(
+                payload.five_or_more_chronic_conditions
+            ),
+            five_or_more_daily_medications=(
+                payload.five_or_more_daily_medications
+            ),
+            hospitalized_last_six_months=(
+                payload.hospitalized_last_six_months
+            ),
         )
     except ValueError as exc:
         raise HTTPException(

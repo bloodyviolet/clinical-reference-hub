@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "item": 7,
+  "feature": "falls_function_brazil_first",
+  "clinical_review_date": "2026-09-11",
+  "implementation_status": "source_review_complete_implementation_pending",
+  "brazil_applicability_status": "national_standard",
+  "national_sus_mandate_identified": true,
+  "national_mandate_scope": "Brazilian APS older-person multidimensional assessment / IVCF-20; this does not make the complementary CDC STEADI tests national SUS tests.",
+  "primary_brazil_framework": {
+    "caderneta_2026": {
+      "authority": "Ministério da Saúde / SAPS",
+      "title": "Caderneta Brasileira da Pessoa Idosa",
+      "year": 2026,
+      "published": "2026-06-19",
+      "url": "https://www.gov.br/saude/pt-br/composicao/saps/publicacoes/cadernetas-e-cartoes/caderneta-brasileira-da-pessoa-idosa/view",
+      "source_type": "national_standard",
+      "older_person_age_years": 60,
+      "falls_checklist": {
+        "item_count": 12,
+        "response_format": "yes_no",
+        "numeric_weighting_in_current_caderneta": false,
+        "action_rule": "seek assessment if any item is answered yes",
+        "adaptation_note": "The Caderneta states that the falls check-up is translated/adapted from CDC National Center for Injury Prevention and Control and NCOA.",
+        "domains": [
+          "fall in the previous year",
+          "cane or walker recommendation",
+          "unsteadiness while walking",
+          "using furniture for support",
+          "concern about falling",
+          "need to use hands to rise from a chair",
+          "difficulty stepping onto a curb",
+          "urgency when going to the toilet",
+          "reduced foot sensation",
+          "medication-associated dizziness or fatigue",
+          "sleep or mood medication",
+          "sadness or depressed mood"
+        ],
+        "software_rule": "Do not import a weighted STEADI/NCOA score into the Brazilian Caderneta checklist. Preserve the current national yes/no and any-yes assessment rule."
+      },
+      "clinical_record": {
+        "records_mobility_gait": true,
+        "records_ivcf20": true,
+        "blood_pressure_positions": [
+          "lying",
+          "sitting",
+          "standing"
+        ],
+        "explicit_current_orthostatic_numeric_cutoff": false
+      }
+    },
+    "ivcf20": {
+      "authority": "Ministério da Saúde / SAPS",
+      "national_digital_integration": [
+        "e-SUS APS PEC",
+        "e-SUS Território"
+      ],
+      "note_2026": {
+        "document": "Nota Informativa nº 1/2026-COPID/DGCI/SAPS/MS",
+        "published": "2026-08-25",
+        "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/estudos-e-notas-informativas/2026/nota-informativa-no-1-2026-copid-dgci-saps-ms.pdf/view"
+      },
+      "population": {
+        "age_years_gte": 60,
+        "aps_application_rule": "apply to all older persons followed by APS"
+      },
+      "risk_categories": {
+        "low": "0-6",
+        "moderate": "7-14",
+        "high": "15-40"
+      },
+      "minimum_reapplication": {
+        "score_0_6_months": 12,
+        "score_gt_6_months": 6,
+        "sentinel_event_requires_reassessment": true
+      },
+      "falls_as_sentinel_event": true,
+      "mobility_components_relevant_to_item7": {
+        "four_meter_gait": {
+          "finding": "time greater than 5 seconds",
+          "role": "one IVCF-20 mobility/capacity condition; not a TUG substitute"
+        },
+        "walking_difficulty_limiting_daily_activity": true,
+        "two_or_more_falls_previous_year": true
+      }
+    }
+  },
+  "requested_item7_tests_brazil_review": {
+    "timed_up_and_go": {
+      "generic_national_sus_cutoff_identified": false,
+      "brazil_role": "complementary_international_assessment"
+    },
+    "thirty_second_chair_stand": {
+      "generic_national_sus_cutoff_identified": false,
+      "brazil_role": "complementary_international_assessment"
+    },
+    "four_stage_balance": {
+      "generic_national_sus_cutoff_identified": false,
+      "brazil_role": "complementary_international_assessment"
+    },
+    "orthostatic_blood_pressure": {
+      "current_caderneta_records_postures": true,
+      "current_caderneta_postures": [
+        "lying",
+        "sitting",
+        "standing"
+      ],
+      "current_caderneta_explicit_numeric_cutoff": false,
+      "brazil_role": "Brazilian current record context plus clearly labelled complementary STEADI measurement/interpretation protocol"
+    }
+  },
+  "complementary_steadi": {
+    "authority": "US CDC / STEADI",
+    "status": "complementary_international_guidance",
+    "current_resource_page": "https://www.cdc.gov/steadi/hcp/clinical-resources/index.html",
+    "tug": {
+      "purpose": "mobility",
+      "distance_m": 3,
+      "risk_if_seconds_gte": 12,
+      "walking_aid_allowed": true,
+      "source": "https://www.cdc.gov/steadi/media/pdfs/STEADI-Assessment-TUG-508.pdf"
+    },
+    "chair_stand_30s": {
+      "purpose": "leg strength and endurance",
+      "arms_used_to_stand_rule": "stop and record zero",
+      "below_average_if_repetitions_lt": {
+        "60-64": {
+          "men": 14,
+          "women": 12
+        },
+        "65-69": {
+          "men": 12,
+          "women": 11
+        },
+        "70-74": {
+          "men": 12,
+          "women": 10
+        },
+        "75-79": {
+          "men": 11,
+          "women": 10
+        },
+        "80-84": {
+          "men": 10,
+          "women": 9
+        },
+        "85-89": {
+          "men": 8,
+          "women": 8
+        },
+        "90-94": {
+          "men": 7,
+          "women": 4
+        }
+      },
+      "source": "https://www.cdc.gov/steadi/media/pdfs/STEADI-Assessment-30Sec-508.pdf"
+    },
+    "four_stage_balance": {
+      "purpose": "static balance",
+      "progression_seconds": 10,
+      "increased_fall_risk_if_tandem_seconds_lt": 10,
+      "assistive_device_during_test": false,
+      "source": "https://www.cdc.gov/steadi/media/pdfs/STEADI-Assessment-4Stage-508.pdf"
+    },
+    "orthostatic_blood_pressure": {
+      "supine_rest_minutes": 5,
+      "standing_measurement_minutes": [
+        1,
+        3
+      ],
+      "abnormal_if_systolic_drop_mm_hg_gte": 20,
+      "abnormal_if_diastolic_drop_mm_hg_gte": 10,
+      "abnormal_if_lightheaded_or_dizzy": true,
+      "source": "https://www.cdc.gov/steadi/media/pdfs/STEADI-Assessment-MeasuringBP-508.pdf"
+    }
+  },
+  "verified_source_boundaries": [
+    {
+      "id": "FALLS-CHECKLIST-SCORE-01",
+      "severity": "critical",
+      "finding": "The 2026 Brazilian Caderneta presents its 12-item falls check-up as yes/no and directs assessment after any yes response.",
+      "software_rule": "Do not reconstruct or import a weighted STEADI/NCOA score into the Brazilian Caderneta layer."
+    },
+    {
+      "id": "FALLS-IVCF-TUG-02",
+      "severity": "critical",
+      "finding": "IVCF-20 includes a 4-m gait condition and fall-history questions; these are not the Timed Up and Go test.",
+      "software_rule": "Keep IVCF-20 mobility findings and TUG as distinct instruments."
+    },
+    {
+      "id": "FALLS-BP-PROTOCOL-03",
+      "severity": "high",
+      "finding": "The current 2026 Caderneta records blood pressure lying, sitting and standing but does not itself specify the detailed STEADI 5-minute / 1-minute / 3-minute protocol.",
+      "software_rule": "Do not label the full STEADI orthostatic protocol as a 2026 Caderneta/SUS rule."
+    },
+    {
+      "id": "FALLS-STEADI-NATIONAL-04",
+      "severity": "high",
+      "finding": "No current generic federal Brazilian TUG, 30-second Chair Stand or 4-Stage Balance cutoff was identified in the authoritative corpus reviewed.",
+      "software_rule": "Expose STEADI thresholds as complementary international guidance, not as national SUS thresholds."
+    }
+  ],
+  "bh7b_architecture": {
+    "brazil_primary_layer": [
+      "Caderneta Brasileira da Pessoa Idosa 2026 falls check-up",
+      "IVCF-20 functional vulnerability assessment",
+      "IVCF-20 mobility/falls components",
+      "Brazilian environmental/falls-prevention context"
+    ],
+    "complementary_layer": [
+      "CDC STEADI Timed Up and Go",
+      "CDC STEADI 30-Second Chair Stand",
+      "CDC STEADI 4-Stage Balance",
+      "CDC STEADI orthostatic blood pressure assessment"
+    ],
+    "rules": [
+      "Brazilian national layer must appear before or clearly above complementary STEADI tools.",
+      "Do not automatically infer falls risk across different instruments.",
+      "Do not merge IVCF-20, the Caderneta falls check-up and STEADI into one synthetic score.",
+      "Preserve each instrument's own population, procedure, thresholds and source provenance.",
+      "PT-BR is primary; EN-GB is complete informative translation for Brazilian content.",
+      "All assessment paths must remain available offline."
+    ]
+  },
+  "negative_finding_policy": "A national cutoff is marked not identified only for the authoritative federal corpus reviewed on 2026-09-11; this is not a claim that no Brazilian study or local protocol exists.",
+  "final_release_recheck_required": true
+}
