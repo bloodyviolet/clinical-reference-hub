@@ -49,6 +49,25 @@ KDIGO_AKI_URL = (
 )
 
 
+SBN_SBPC_EGFR_URL = (
+    "https://www.scielo.br/j/jbn/"
+    "a/s8GPHkHPbCKLTk8GBqWdzTK/?lang=pt"
+)
+
+BRAZIL_PCDT_CKD_URL = (
+    "https://www.gov.br/conitec/pt-br/midias/"
+    "protocolos/pcdt-de-estrategias-para-atenuar-a-"
+    "progressao-da-doenca-renal-cronica"
+)
+
+BRAZIL_AKI_LINE_URL = (
+    "https://linhasdecuidado.saude.gov.br/portal/"
+    "doenca-renal-cronica-%28DRC%29-em-adultos/"
+    "unidade-de-pronto-atendimento/"
+    "sinais-alerta-agudizacao-complicacao/"
+)
+
+
 
 # Clinical cut-points must not change because of binary floating-point
 # representation (for example, 1.2 - 0.9 is slightly below 0.3 in
@@ -282,6 +301,313 @@ def calculate_egfr_ckd_epi_2021(
     }
 
 
+def classify_brazil_pcdt_ckd_context(
+    *,
+    egfr_ml_min_1_73m2: float,
+    acr: float | None = None,
+    acr_unit: ACRUnit = "mg/g",
+    chronicity_at_least_3_months: bool = False,
+    other_kidney_damage_marker: bool = False,
+    on_dialysis: bool = False,
+) -> dict:
+    """Return national SUS PCDT CKD policy/staging context.
+
+    This function deliberately does NOT implement the PCDT's printed
+    race-containing eGFR equation. The supplied eGFR is interpreted
+    against the national PCDT staging framework.
+    """
+
+    if egfr_ml_min_1_73m2 < 0:
+        raise ValueError(
+            "eGFR cannot be negative."
+        )
+
+    if acr is not None and acr < 0:
+        raise ValueError(
+            "ACR cannot be negative."
+        )
+
+    albuminuria_marker = False
+
+    if acr is not None:
+        international_acr_code = (
+            albuminuria_category(
+                acr,
+                acr_unit,
+            )[0]
+        )
+
+        albuminuria_marker = (
+            international_acr_code
+            in {"A2", "A3"}
+        )
+
+    kidney_damage_marker = (
+        albuminuria_marker
+        or other_kidney_damage_marker
+    )
+
+    pcdt_acr_category = None
+    pcdt_acr_evaluable = False
+    pcdt_acr_ambiguous_300 = False
+
+    if acr is None:
+        pcdt_acr_note_pt = (
+            "RAC não informada; categoria A do PCDT "
+            "não avaliada."
+        )
+
+        pcdt_acr_note_en = (
+            "ACR not supplied; PCDT A category "
+            "not assessed."
+        )
+
+    elif acr_unit != "mg/g":
+        pcdt_acr_note_pt = (
+            "A tabela nacional auditada do PCDT foi "
+            "transcrita em mg/g. A categoria A do PCDT "
+            "não é convertida automaticamente a partir "
+            "de mg/mmol."
+        )
+
+        pcdt_acr_note_en = (
+            "The audited national PCDT table is expressed "
+            "in mg/g. The PCDT A category is not "
+            "automatically converted from mg/mmol."
+        )
+
+    elif math.isclose(
+        acr,
+        300.0,
+        rel_tol=0.0,
+        abs_tol=_FLOAT_ABS_TOL,
+    ):
+        pcdt_acr_ambiguous_300 = True
+
+        pcdt_acr_note_pt = (
+            "O PCDT vigente apresenta A2 como 30–299 mg/g "
+            "e A3 como >300 mg/g, deixando exatamente "
+            "300 mg/g textualmente sem categoria. "
+            "O sistema não infere uma categoria nacional."
+        )
+
+        pcdt_acr_note_en = (
+            "The current PCDT renders A2 as 30–299 mg/g "
+            "and A3 as >300 mg/g, leaving exactly "
+            "300 mg/g textually unassigned. "
+            "No national category is inferred."
+        )
+
+    else:
+        pcdt_acr_evaluable = True
+
+        if acr < 30:
+            pcdt_acr_category = "A1"
+
+        elif acr < 300:
+            pcdt_acr_category = "A2"
+
+        else:
+            pcdt_acr_category = "A3"
+
+        pcdt_acr_note_pt = (
+            "Categoria RAC conforme a tabela nacional "
+            "do PCDT vigente."
+        )
+
+        pcdt_acr_note_en = (
+            "ACR category according to the current "
+            "national PCDT table."
+        )
+
+    stage = None
+    stage_requires_damage_marker = False
+
+    if egfr_ml_min_1_73m2 < 15:
+        stage = (
+            "5D"
+            if on_dialysis
+            else "5"
+        )
+
+    elif egfr_ml_min_1_73m2 < 30:
+        stage = "4"
+
+    elif egfr_ml_min_1_73m2 < 45:
+        stage = "3B"
+
+    elif egfr_ml_min_1_73m2 < 60:
+        stage = "3A"
+
+    elif egfr_ml_min_1_73m2 < 90:
+        stage_requires_damage_marker = True
+
+        if kidney_damage_marker:
+            stage = "2"
+
+    else:
+        stage_requires_damage_marker = True
+
+        if kidney_damage_marker:
+            stage = "1"
+
+    stage_labels = {
+        "1": (
+            "Estágio 1",
+            "Stage 1",
+        ),
+        "2": (
+            "Estágio 2",
+            "Stage 2",
+        ),
+        "3A": (
+            "Estágio 3A",
+            "Stage 3A",
+        ),
+        "3B": (
+            "Estágio 3B",
+            "Stage 3B",
+        ),
+        "4": (
+            "Estágio 4",
+            "Stage 4",
+        ),
+        "5": (
+            "Estágio 5",
+            "Stage 5",
+        ),
+        "5D": (
+            "Estágio 5D · em diálise",
+            "Stage 5D · on dialysis",
+        ),
+    }
+
+    if stage is None:
+        stage_label_pt = None
+        stage_label_en = None
+
+        stage_note_pt = (
+            "Para TFGe ≥60 mL/min/1,73 m², o PCDT "
+            "exige marcador de dano renal para atribuir "
+            "estágio 1 ou 2; nenhum marcador suficiente "
+            "foi informado."
+        )
+
+        stage_note_en = (
+            "For eGFR ≥60 mL/min/1.73 m², the PCDT "
+            "requires a kidney-damage marker to assign "
+            "stage 1 or 2; no sufficient marker was supplied."
+        )
+
+    else:
+        (
+            stage_label_pt,
+            stage_label_en,
+        ) = stage_labels[stage]
+
+        stage_note_pt = (
+            "Estágio contextual conforme o PCDT nacional. "
+            "Não representa recálculo da TFGe pela equação "
+            "impressa no PCDT."
+        )
+
+        stage_note_en = (
+            "Contextual stage according to the national PCDT. "
+            "This does not recalculate eGFR using the equation "
+            "printed in the PCDT."
+        )
+
+    abnormality_present = (
+        egfr_ml_min_1_73m2 < 60
+        or kidney_damage_marker
+    )
+
+    if (
+        abnormality_present
+        and chronicity_at_least_3_months
+    ):
+        status_code = "criteria_met"
+
+        status_pt = (
+            "Os dados fornecidos são compatíveis com os "
+            "critérios de DRC do PCDT quanto à anormalidade "
+            "renal e à cronicidade informada."
+        )
+
+        status_en = (
+            "The supplied data are compatible with the PCDT "
+            "CKD criteria regarding kidney abnormality and "
+            "reported chronicity."
+        )
+
+    elif abnormality_present:
+        status_code = (
+            "chronicity_not_established"
+        )
+
+        status_pt = (
+            "Há anormalidade renal compatível, mas a "
+            "cronicidade mínima de 3 meses não foi confirmada."
+        )
+
+        status_en = (
+            "A compatible kidney abnormality is present, but "
+            "the minimum 3-month chronicity has not been confirmed."
+        )
+
+    else:
+        status_code = (
+            "criteria_not_met_by_supplied_data"
+        )
+
+        status_pt = (
+            "Os dados fornecidos não estabelecem DRC pelo "
+            "PCDT nacional."
+        )
+
+        status_en = (
+            "The supplied data do not establish CKD under "
+            "the national PCDT."
+        )
+
+    return {
+        "pcdt_stage": stage,
+        "pcdt_stage_label_pt": stage_label_pt,
+        "pcdt_stage_label_en": stage_label_en,
+        "pcdt_stage_requires_damage_marker":
+            stage_requires_damage_marker,
+        "pcdt_stage_note_pt": stage_note_pt,
+        "pcdt_stage_note_en": stage_note_en,
+        "kidney_damage_marker_present":
+            kidney_damage_marker,
+        "pcdt_acr_category":
+            pcdt_acr_category,
+        "pcdt_acr_category_evaluable":
+            pcdt_acr_evaluable,
+        "pcdt_acr_exact_300_ambiguous":
+            pcdt_acr_ambiguous_300,
+        "pcdt_acr_note_pt":
+            pcdt_acr_note_pt,
+        "pcdt_acr_note_en":
+            pcdt_acr_note_en,
+        "pcdt_ckd_status_code":
+            status_code,
+        "pcdt_ckd_status_pt":
+            status_pt,
+        "pcdt_ckd_status_en":
+            status_en,
+        "pcdt_equation_calculation_applied":
+            False,
+        "pcdt_equation_status":
+            "not_implemented_due_verified_source_conflict",
+        "race_or_ancestry_input_used":
+            False,
+        "source_version": (
+            "PCDT DRC 2024; annex updated 2025-02-07"
+        ),
+    }
+
+
 def classify_ckd(
     *,
     egfr_ml_min_1_73m2: float,
@@ -289,6 +615,7 @@ def classify_ckd(
     acr_unit: ACRUnit = "mg/g",
     chronicity_at_least_3_months: bool = False,
     other_kidney_damage_marker: bool = False,
+    on_dialysis: bool = False,
 ) -> dict:
     """Classify G/A and assess CKD definition from supplied data."""
 
@@ -390,6 +717,20 @@ def classify_ckd(
         else g_category_code
     )
 
+    brazil_pcdt_context = (
+        classify_brazil_pcdt_ckd_context(
+            egfr_ml_min_1_73m2=
+                egfr_ml_min_1_73m2,
+            acr=acr,
+            acr_unit=acr_unit,
+            chronicity_at_least_3_months=
+                chronicity_at_least_3_months,
+            other_kidney_damage_marker=
+                other_kidney_damage_marker,
+            on_dialysis=on_dialysis,
+        )
+    )
+
     return {
         "tool": "ckd_classification",
         "gfr_category": g_category_code,
@@ -407,6 +748,10 @@ def classify_ckd(
             chronicity_at_least_3_months,
         "other_kidney_damage_marker":
             other_kidney_damage_marker,
+        "on_dialysis":
+            on_dialysis,
+        "brazil_pcdt_context":
+            brazil_pcdt_context,
         "ckd_status_code":
             status_code,
         "ckd_status_pt":
@@ -919,8 +1264,45 @@ EGFR_METADATA = {
         "Mathematical implementation and locally authored "
         "explanations referencing the published equation."
     ),
-    "clinical_review_date": date(2026, 9, 10),
+    "clinical_review_date": date(2026, 9, 11),
     "offline_capable": True,
+    "brazil_applicability_status":
+        "complementary_brazil_guidance",
+    "brazil_review_date":
+        date(2026, 9, 11),
+    "brazil_authority":
+        "SBN / SBPC-ML",
+    "brazil_source_title": (
+        "Estimativa da taxa de filtração glomerular "
+        "na prática clínica: posicionamento consensual "
+        "SBN/SBPC-ML (2024; errata 2025)"
+    ),
+    "brazil_source_url":
+        SBN_SBPC_EGFR_URL,
+    "brazil_document_or_portaria":
+        None,
+    "brazil_scope_pt": (
+        "O posicionamento brasileiro recomenda CKD-EPI 2021 "
+        "sem correção por raça para adultos."
+    ),
+    "brazil_scope_en": (
+        "The Brazilian consensus recommends race-free CKD-EPI "
+        "2021 for adults."
+    ),
+    "brazil_differs_from_international":
+        False,
+    "brazil_difference_notes_pt": (
+        "A implementação já usa o expoente -1,200 corrigido "
+        "pela errata brasileira de 2025. O PCDT nacional "
+        "é apresentado separadamente como contexto de política."
+    ),
+    "brazil_difference_notes_en": (
+        "The implementation already uses the -1.200 exponent "
+        "corrected by the 2025 Brazilian erratum. The national "
+        "PCDT is exposed separately as policy context."
+    ),
+    "final_brazil_review_status":
+        "pass",
 }
 
 
@@ -1013,8 +1395,47 @@ CKD_METADATA = {
         "Categories implemented as structured logic with "
         "locally authored explanations; consult the full guideline."
     ),
-    "clinical_review_date": date(2026, 9, 10),
+    "clinical_review_date": date(2026, 9, 11),
     "offline_capable": True,
+    "brazil_applicability_status":
+        "national_variant",
+    "brazil_review_date":
+        date(2026, 9, 11),
+    "brazil_authority":
+        "Ministério da Saúde / SAES / SECTICS / CONITEC",
+    "brazil_source_title": (
+        "PCDT das Estratégias para Atenuar a Progressão "
+        "da Doença Renal Crônica"
+    ),
+    "brazil_source_url":
+        BRAZIL_PCDT_CKD_URL,
+    "brazil_document_or_portaria":
+        "Portaria Conjunta SAES/SECTICS nº 11/2024",
+    "brazil_scope_pt": (
+        "Contexto nacional SUS de diagnóstico/estadiamento "
+        "de DRC apresentado separadamente da classificação "
+        "internacional KDIGO 2024."
+    ),
+    "brazil_scope_en": (
+        "National SUS CKD diagnosis/staging context exposed "
+        "separately from the international KDIGO 2024 "
+        "classification."
+    ),
+    "brazil_differs_from_international":
+        True,
+    "brazil_difference_notes_pt": (
+        "A equação impressa no PCDT não é executada devido a "
+        "conflitos verificados de notação/limites e ao uso de "
+        "coeficiente de raça; apenas o contexto de política "
+        "e estadiamento é aplicado."
+    ),
+    "brazil_difference_notes_en": (
+        "The equation printed in the PCDT is not executed because "
+        "of verified notation/boundary conflicts and its race "
+        "coefficient; only policy/staging context is applied."
+    ),
+    "final_brazil_review_status":
+        "pass",
 }
 
 
@@ -1109,6 +1530,40 @@ AKI_METADATA = {
         "Criteria implemented as structured logic with locally "
         "authored explanations; consult the full guideline."
     ),
-    "clinical_review_date": date(2026, 9, 10),
+    "clinical_review_date": date(2026, 9, 11),
     "offline_capable": True,
+    "brazil_applicability_status":
+        "complementary_brazil_guidance",
+    "brazil_review_date":
+        date(2026, 9, 11),
+    "brazil_authority":
+        "Ministério da Saúde / SAPS",
+    "brazil_source_title": (
+        "Linha de Cuidado da Doença Renal Crônica em adultos — "
+        "lesão renal aguda"
+    ),
+    "brazil_source_url":
+        BRAZIL_AKI_LINE_URL,
+    "brazil_document_or_portaria":
+        None,
+    "brazil_scope_pt": (
+        "A Linha de Cuidado do Ministério orienta aplicação "
+        "da classificação KDIGO 2012 quando houver dados."
+    ),
+    "brazil_scope_en": (
+        "The Ministry care pathway directs use of KDIGO 2012 "
+        "classification when data are available."
+    ),
+    "brazil_differs_from_international":
+        False,
+    "brazil_difference_notes_pt": (
+        "Não é necessário segundo algoritmo brasileiro; "
+        "a matemática KDIGO 2012 existente é mantida."
+    ),
+    "brazil_difference_notes_en": (
+        "No second Brazilian algorithm is required; the existing "
+        "KDIGO 2012 mathematics are retained."
+    ),
+    "final_brazil_review_status":
+        "pass",
 }

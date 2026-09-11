@@ -475,8 +475,8 @@
         <div id="renal-suite-card" class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
 
           <div class="space-y-1">
-            <h2 data-i18n="renal.title" class="text-base font-semibold text-white">Suite Renal · KDIGO / CKD-EPI</h2>
-            <p data-i18n="renal.description" class="text-xs text-slate-400">TFGe CKD-EPI 2021, classificação KDIGO 2024 de DRC e estadiamento KDIGO 2012 de LRA.</p>
+            <h2 data-i18n="renal.title" class="text-base font-semibold text-white">Suite Renal · KDIGO / CKD-EPI / SUS</h2>
+            <p data-i18n="renal.description" class="text-xs text-slate-400">TFGe CKD-EPI 2021, classificação internacional KDIGO, contexto nacional SUS/PCDT e estadiamento KDIGO 2012 de LRA.</p>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -524,7 +524,7 @@
 
             <!-- CKD -->
             <section class="space-y-3 border-t border-slate-800 pt-4">
-              <h3 data-i18n="renal.ckdTitle" class="text-sm font-semibold text-emerald-400">DRC · KDIGO 2024</h3>
+              <h3 data-i18n="renal.ckdTitle" class="text-sm font-semibold text-emerald-400">DRC · KDIGO 2024 + SUS PCDT</h3>
 
               <form id="renal-ckd-form" class="space-y-3">
 
@@ -556,6 +556,11 @@
                 <label class="flex items-start gap-2 text-xs text-slate-300">
                   <input id="renal-ckd-other-marker" type="checkbox" class="mt-1">
                   <span data-i18n="renal.otherMarker">Há outro marcador de dano renal</span>
+                </label>
+
+                <label class="flex items-start gap-2 text-xs text-slate-300">
+                  <input id="renal-ckd-dialysis" type="checkbox" class="mt-1">
+                  <span data-i18n="renal.onDialysis">Paciente em diálise para contexto de estágio 5D do PCDT</span>
                 </label>
 
                 <button type="submit" data-i18n="renal.classifyCkd" class="w-full bg-emerald-600 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Classificar G/A e avaliar critérios de DRC</button>
@@ -643,7 +648,10 @@
 
           </div>
 
-          <p data-i18n="renal.source" class="text-[10px] text-slate-500 border-t border-slate-800 pt-3">Fontes: CKD-EPI 2021 / National Kidney Foundation; KDIGO CKD 2024; KDIGO AKI 2012.</p>
+          <div class="border-t border-slate-800 pt-3 space-y-1">
+            <p data-i18n="renal.source" class="text-[10px] text-slate-500">Fontes: CKD-EPI 2021 / NKF; SBN/SBPC-ML 2024 + errata 2025; KDIGO CKD 2024; PCDT DRC MS 2024/2025; KDIGO AKI 2012 + Ministério da Saúde.</p>
+            <p data-i18n="renal.pcdtNotice" class="text-[10px] text-amber-300">Brasil/SUS: o PCDT nacional é exibido como contexto de política e estadiamento. Sua equação impressa não é usada para recalcular a TFGe.</p>
+          </div>
 
         </div>
 

@@ -79,8 +79,8 @@
       "brazil_applicability_status": "national_variant",
       "national_sus_mandate_identified": true,
       "brazil_differs_from_international_numeric_rules": true,
-      "remediation_required": true,
-      "remediation_priority": "critical",
+      "remediation_required": false,
+      "remediation_priority": "none",
       "brazil_authorities": [
         "Ministério da Saúde",
         "SAES",
@@ -110,16 +110,54 @@
         }
       ],
       "required_actions": [
-        "Retain CKD-EPI 2021/KDIGO 2024 as the current international view.",
-        "Add a separately labelled Brazil SUS PCDT view rather than replacing the international calculation.",
-        "Reproduce the exact PCDT CKD-EPI equation only after independent transcription QC of the official table.",
-        "Expose PCDT CKD stage and ACR interpretation as brazil_sus provenance.",
-        "Record that the current AKI engine is aligned with Brazilian Ministry use of KDIGO 2012; no separate numerical AKI engine is required unless a later national source changes it.",
-        "Never silently infer or substitute demographic coefficients required by an older equation."
+        "Maintain CKD-EPI 2021 race-free as the default clinical calculation unless authoritative current guidance changes.",
+        "Keep the national SUS PCDT visibly separated from international KDIGO classification.",
+        "Do not execute the printed PCDT equation until its verified source conflicts are authoritatively resolved.",
+        "Never infer race or ancestry.",
+        "Recheck PCDT, SBN/SBPC-ML and Ministry AKI sources during final v2.0 qualification."
       ],
       "scope_pt": "Há divergência entre o PCDT nacional vigente e a referência internacional mais recente usada pelo aplicativo; ambas devem ser explicitadas.",
       "scope_en": "The current national SUS PCDT differs from the newer international reference used by the app; both must be exposed explicitly.",
-      "final_brazil_review_status": "remediation_required"
+      "final_brazil_review_status": "pass",
+      "source_conflict_verified": true,
+      "implementation_blocked": false,
+      "additional_brazil_sources": [
+        {
+          "authority": "Sociedade Brasileira de Nefrologia / Sociedade Brasileira de Patologia Clínica e Medicina Laboratorial",
+          "title": "Estimativa da taxa de filtração glomerular na prática clínica: posicionamento consensual",
+          "year": 2024,
+          "doi": "10.1590/2175-8239-JBN-2023-0193pt",
+          "key_position": "Prefer CKD-EPI 2021 without race for adult eGFR."
+        }
+      ],
+      "verified_pcdt_conflicts": [
+        "PCDT-EQ-AGE-01",
+        "PCDT-EQ-CREAT-02",
+        "PCDT-RAC-300-03",
+        "PCDT-RACE-SBN-04"
+      ],
+      "bh2b_core_status": "pass",
+      "bh2b_ui_status": "pass",
+      "bh2b_core_completed": [
+        "CKD-EPI 2021 race-free retained as default clinical calculation.",
+        "SBN/SBPC-ML 2024 consensus and 2025 erratum added as Brazilian provenance.",
+        "National SUS PCDT staging context implemented without executing the ambiguous race-based equation.",
+        "Exact PCDT ACR 300 mg/g ambiguity fails closed.",
+        "KDIGO-2012 AKI retains one numerical engine with Brazil Ministry provenance.",
+        "Python/API/browser parity added."
+      ],
+      "literal_pcdt_equation_implementation_blocked": true,
+      "literal_pcdt_equation_block_reason": "The current national PCDT prints a 2009/race-dependent CKD-EPI table with notation/boundary conflicts relative to its cited Levey 2009 equation, while the 2024 SBN/SBPC-ML consensus recommends CKD-EPI 2021 without race.",
+      "remediation_completed": [
+        "CKD-EPI 2021 race-free retained as the default clinical calculation.",
+        "SBN/SBPC-ML 2024 consensus and 2025 erratum integrated as Brazilian clinical provenance.",
+        "National SUS PCDT staging/policy context exposed separately from international KDIGO 2024.",
+        "Literal execution of the ambiguous race-containing PCDT equation remains blocked.",
+        "Exact PCDT 300 mg/g category ambiguity fails closed.",
+        "No race or ancestry input is used or inferred.",
+        "KDIGO-2012 AKI engine retains identical mathematics with explicit Brazilian Ministry provenance.",
+        "PT-BR, EN-GB, API, browser and offline presentation are integrated."
+      ]
     },
     {
       "item": 3,

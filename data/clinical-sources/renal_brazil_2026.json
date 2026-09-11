@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "feature": "renal_brazil_harmonization",
+  "clinical_review_date": "2026-09-11",
+  "implementation_status": "safe_context_implemented_literal_equation_blocked",
+  "core_finding": {
+    "pt": "O PCDT nacional do SUS e o posicionamento clínico atual SBN/SBPC-ML não utilizam a mesma geração da equação CKD-EPI. A divergência deve ser explicitada.",
+    "en": "The national SUS PCDT and the current SBN/SBPC-ML clinical position do not use the same CKD-EPI generation. The divergence must be explicit."
+  },
+  "national_sus_pcdt": {
+    "authority": "Ministério da Saúde / SAES / SECTICS / CONITEC",
+    "title": "PCDT das Estratégias para Atenuar a Progressão da Doença Renal Crônica",
+    "portaria": "Portaria Conjunta SAES/SECTICS nº 11, de 16/09/2024",
+    "publication_date": "2024-09-26",
+    "current_annex_update": "2025-02-07",
+    "national_character": true,
+    "must_be_used_by_sus_managers": true,
+    "url": "https://www.gov.br/conitec/pt-br/midias/protocolos/pcdt-de-estrategias-para-atenuar-a-progressao-da-doenca-renal-cronica",
+    "pcdt_recommendation": "Use serum-creatinine-based CKD-EPI to estimate GFR.",
+    "pcdt_cited_equation_source": "Levey AS et al. Ann Intern Med. 2009;150:604-612.",
+    "printed_formula_transcription": {
+      "expression_as_rendered": "TFG = A × ((Creatinina / B)^C) × Idade^0,993",
+      "A": {
+        "black_female": 166,
+        "black_male": 163,
+        "non_black_female": 144,
+        "non_black_male": 141
+      },
+      "B": {
+        "female": 0.7,
+        "male": 0.9
+      },
+      "C_as_rendered": {
+        "creatinine_gt_0_7": -1.209,
+        "creatinine_le_0_7_female": -0.329,
+        "creatinine_le_0_7_male": -0.411
+      }
+    },
+    "gfr_stage_table": [
+      {
+        "stage": "1",
+        "egfr": ">=90",
+        "requires_kidney_damage_marker": true
+      },
+      {
+        "stage": "2",
+        "egfr": "60-89",
+        "requires_kidney_damage_marker": true
+      },
+      {
+        "stage": "3A",
+        "egfr": "45-59",
+        "requires_kidney_damage_marker": false
+      },
+      {
+        "stage": "3B",
+        "egfr": "30-44",
+        "requires_kidney_damage_marker": false
+      },
+      {
+        "stage": "4",
+        "egfr": "15-29",
+        "requires_kidney_damage_marker": false
+      },
+      {
+        "stage": "5",
+        "egfr": "<15",
+        "requires_kidney_damage_marker": false
+      },
+      {
+        "stage": "5D",
+        "egfr": "<15 with dialysis",
+        "requires_kidney_damage_marker": false
+      }
+    ],
+    "acr_table_as_rendered": [
+      {
+        "category": "A1",
+        "mg_g": "<30",
+        "label_pt": "Normal a leve"
+      },
+      {
+        "category": "A2",
+        "mg_g": "30-299",
+        "label_pt": "Moderada"
+      },
+      {
+        "category": "A3",
+        "mg_g": ">300",
+        "label_pt": "Grave"
+      }
+    ],
+    "ckd_definition": {
+      "chronicity_months_minimum": 3,
+      "egfr_below_60_is_marker": true,
+      "egfr_ge_60_requires_kidney_damage_marker": true,
+      "albuminuria_marker_mg_g": ">=30"
+    }
+  },
+  "brazilian_specialty_consensus": {
+    "authorities": [
+      "Sociedade Brasileira de Nefrologia (SBN)",
+      "Sociedade Brasileira de Patologia Clínica/Medicina Laboratorial (SBPC/ML)"
+    ],
+    "title": "Estimativa da taxa de filtração glomerular na prática clínica: posicionamento consensual SBN e SBPC/ML",
+    "publication_year": 2024,
+    "doi": "10.1590/2175-8239-JBN-2023-0193pt",
+    "url": "https://www.scielo.br/j/jbn/a/s8GPHkHPbCKLTk8GBqWdzTK/?lang=pt",
+    "adult_preferred_equations": [
+      "CKD-EPI 2021 creatinine",
+      "CKD-EPI 2021 creatinine + cystatin C",
+      "CKD-EPI 2012 cystatin C"
+    ],
+    "race_correction_position": "Do not use race correction in preferred adult eGFR equations.",
+    "clinical_significance": "The consensus states that race correction can overestimate kidney function and delay diagnosis, dialysis/transplant-related care and other decisions.",
+    "erratum": {
+      "publication_year": 2025,
+      "doi": "10.1590/2175-8239-JBN-2023-0193eren",
+      "url": "https://www.scielo.br/scielo.php?pid=S0101-28002025000205001&script=sci_arttext",
+      "correction": "Corrected the CKD-EPI 2021 max(creatinine/k,1) exponent from +1.200 to -1.200.",
+      "current_engine_alignment": "Clinical Reference Hub already uses -1.200 and therefore matches the corrected equation."
+    }
+  },
+  "reference_equation_qc": {
+    "reference": "2009 CKD-EPI creatinine equation",
+    "authoritative_verification_source": "NIDDK previous adult eGFR equations",
+    "expression": "141 × min(SCr/k,1)^alpha × max(SCr/k,1)^-1.209 × 0.993^Age × 1.018(if female) × 1.159(if Black)",
+    "k": {
+      "female": 0.7,
+      "male": 0.9
+    },
+    "alpha": {
+      "female": -0.329,
+      "male": -0.411
+    },
+    "high_creatinine_transition": {
+      "female_mg_dl": 0.7,
+      "male_mg_dl": 0.9
+    },
+    "ckd_epi_2021_brazil_erratum_alignment": {
+      "correct_exponent": -1.2,
+      "current_engine_matches": true
+    }
+  },
+  "verified_source_conflicts": [
+    {
+      "id": "PCDT-EQ-AGE-01",
+      "severity": "critical",
+      "pcdt_rendering": "Idade^0,993",
+      "cited_2009_equation": "0.993^Age",
+      "software_rule": "Do not implement the literal PCDT rendering."
+    },
+    {
+      "id": "PCDT-EQ-CREAT-02",
+      "severity": "critical",
+      "pcdt_rendering": "C switches at creatinine >0.7 mg/dL",
+      "cited_2009_equation": "Switch is sex-specific: >0.7 mg/dL female, >0.9 mg/dL male.",
+      "software_rule": "Do not implement a universal 0.7 mg/dL switch."
+    },
+    {
+      "id": "PCDT-RAC-300-03",
+      "severity": "moderate",
+      "pcdt_rendering": "A2 30-299 mg/g; A3 >300 mg/g",
+      "ambiguity": "Exactly 300 mg/g is not textually assigned.",
+      "current_app_rule": "A2 includes 300 mg/g; A3 begins above 300 mg/g.",
+      "software_rule": "Do not change the current exact-300 boundary until policy reconciliation is documented."
+    },
+    {
+      "id": "PCDT-RACE-SBN-04",
+      "severity": "critical",
+      "pcdt_position": "2009 CKD-EPI table includes race-dependent A constants.",
+      "sbn_sbpc_position": "Prefer CKD-EPI 2021 without race correction.",
+      "software_rule": "Never silently replace the existing race-free CKD-EPI 2021 calculation with a race-based equation."
+    }
+  ],
+  "aki_brazil_alignment": {
+    "ministry_source": "Linha de Cuidado da Doença Renal Crônica em adultos",
+    "source_authority": "Ministério da Saúde / SAPS",
+    "uses_kdigo_2012": true,
+    "current_engine_basis": "KDIGO 2012",
+    "numeric_remediation_required": false,
+    "metadata_remediation_required": true
+  },
+  "bh2b_implementation_rules": [
+    "Preserve CKD-EPI 2021 race-free as the current clinical/default equation.",
+    "Identify CKD-EPI 2021 as aligned with the 2024 SBN/SBPC-ML Brazilian consensus.",
+    "Expose the national SUS PCDT separately as policy context rather than silently replacing the default.",
+    "Do not implement the PCDT equation literally while its displayed formula conflicts with its cited source.",
+    "Do not ask the application to infer race from phenotype, name, geography or any other proxy.",
+    "Preserve international KDIGO 2024 G/A classification and provide the SUS PCDT staging view separately.",
+    "Preserve current AKI calculations and add explicit Brazil Ministry/KDIGO-2012 provenance.",
+    "Keep all Brazil/international distinctions bilingual and available offline."
+  ],
+  "bh2b_gate": "pass_safe_context_integration",
+  "harmonization_implementation_complete": true,
+  "literal_pcdt_equation_implementation_blocked": true
+}

@@ -700,6 +700,336 @@
   }
 
 
+  function classifyBrazilPcdtCkdContext(
+    input
+  ) {
+    const egfr =
+      input.egfr_ml_min_1_73m2;
+
+    const acr =
+      input.acr ?? null;
+
+    const acrUnit =
+      input.acr_unit ?? 'mg/g';
+
+    const chronicity =
+      Boolean(
+        input.chronicity_at_least_3_months
+      );
+
+    const otherMarker =
+      Boolean(
+        input.other_kidney_damage_marker
+      );
+
+    const onDialysis =
+      Boolean(
+        input.on_dialysis
+      );
+
+
+    if (
+      !Number.isFinite(egfr)
+      || egfr < 0
+    ) {
+      throw new Error(
+        'invalid_egfr'
+      );
+    }
+
+
+    if (
+      acr !== null
+      && (
+        !Number.isFinite(acr)
+        || acr < 0
+      )
+    ) {
+      throw new Error(
+        'invalid_acr'
+      );
+    }
+
+
+    let albuminuriaMarker = false;
+
+
+    if (acr !== null) {
+      const internationalAcr =
+        albuminuriaCategory(
+          acr,
+          acrUnit
+        );
+
+      albuminuriaMarker =
+        internationalAcr.code === 'A2'
+        || internationalAcr.code === 'A3';
+    }
+
+
+    const kidneyDamageMarker =
+      albuminuriaMarker
+      || otherMarker;
+
+
+    let pcdtAcrCategory = null;
+    let pcdtAcrEvaluable = false;
+    let pcdtAcrAmbiguous300 = false;
+    let pcdtAcrNotePt;
+    let pcdtAcrNoteEn;
+
+
+    if (acr === null) {
+      pcdtAcrNotePt =
+        'RAC não informada; categoria A do PCDT não avaliada.';
+
+      pcdtAcrNoteEn =
+        'ACR not supplied; PCDT A category not assessed.';
+
+    } else if (acrUnit !== 'mg/g') {
+      pcdtAcrNotePt =
+        'A tabela nacional auditada do PCDT foi transcrita em mg/g. A categoria A do PCDT não é convertida automaticamente a partir de mg/mmol.';
+
+      pcdtAcrNoteEn =
+        'The audited national PCDT table is expressed in mg/g. The PCDT A category is not automatically converted from mg/mmol.';
+
+    } else if (
+      Math.abs(
+        acr - 300
+      ) <= RENAL_FLOAT_ABS_TOL
+    ) {
+      pcdtAcrAmbiguous300 = true;
+
+      pcdtAcrNotePt =
+        'O PCDT vigente apresenta A2 como 30–299 mg/g e A3 como >300 mg/g, deixando exatamente 300 mg/g textualmente sem categoria. O sistema não infere uma categoria nacional.';
+
+      pcdtAcrNoteEn =
+        'The current PCDT renders A2 as 30–299 mg/g and A3 as >300 mg/g, leaving exactly 300 mg/g textually unassigned. No national category is inferred.';
+
+    } else {
+      pcdtAcrEvaluable = true;
+
+      if (acr < 30) {
+        pcdtAcrCategory = 'A1';
+
+      } else if (acr < 300) {
+        pcdtAcrCategory = 'A2';
+
+      } else {
+        pcdtAcrCategory = 'A3';
+      }
+
+      pcdtAcrNotePt =
+        'Categoria RAC conforme a tabela nacional do PCDT vigente.';
+
+      pcdtAcrNoteEn =
+        'ACR category according to the current national PCDT table.';
+    }
+
+
+    let stage = null;
+    let stageRequiresDamageMarker = false;
+
+
+    if (egfr < 15) {
+      stage =
+        onDialysis
+          ? '5D'
+          : '5';
+
+    } else if (egfr < 30) {
+      stage = '4';
+
+    } else if (egfr < 45) {
+      stage = '3B';
+
+    } else if (egfr < 60) {
+      stage = '3A';
+
+    } else if (egfr < 90) {
+      stageRequiresDamageMarker = true;
+
+      if (kidneyDamageMarker) {
+        stage = '2';
+      }
+
+    } else {
+      stageRequiresDamageMarker = true;
+
+      if (kidneyDamageMarker) {
+        stage = '1';
+      }
+    }
+
+
+    const stageLabels = {
+      '1': {
+        pt: 'Estágio 1',
+        en: 'Stage 1'
+      },
+      '2': {
+        pt: 'Estágio 2',
+        en: 'Stage 2'
+      },
+      '3A': {
+        pt: 'Estágio 3A',
+        en: 'Stage 3A'
+      },
+      '3B': {
+        pt: 'Estágio 3B',
+        en: 'Stage 3B'
+      },
+      '4': {
+        pt: 'Estágio 4',
+        en: 'Stage 4'
+      },
+      '5': {
+        pt: 'Estágio 5',
+        en: 'Stage 5'
+      },
+      '5D': {
+        pt: 'Estágio 5D · em diálise',
+        en: 'Stage 5D · on dialysis'
+      }
+    };
+
+
+    let stageLabelPt = null;
+    let stageLabelEn = null;
+    let stageNotePt;
+    let stageNoteEn;
+
+
+    if (stage === null) {
+      stageNotePt =
+        'Para TFGe ≥60 mL/min/1,73 m², o PCDT exige marcador de dano renal para atribuir estágio 1 ou 2; nenhum marcador suficiente foi informado.';
+
+      stageNoteEn =
+        'For eGFR ≥60 mL/min/1.73 m², the PCDT requires a kidney-damage marker to assign stage 1 or 2; no sufficient marker was supplied.';
+
+    } else {
+      stageLabelPt =
+        stageLabels[stage].pt;
+
+      stageLabelEn =
+        stageLabels[stage].en;
+
+      stageNotePt =
+        'Estágio contextual conforme o PCDT nacional. Não representa recálculo da TFGe pela equação impressa no PCDT.';
+
+      stageNoteEn =
+        'Contextual stage according to the national PCDT. This does not recalculate eGFR using the equation printed in the PCDT.';
+    }
+
+
+    const abnormalityPresent =
+      egfr < 60
+      || kidneyDamageMarker;
+
+
+    let statusCode;
+    let statusPt;
+    let statusEn;
+
+
+    if (
+      abnormalityPresent
+      && chronicity
+    ) {
+      statusCode =
+        'criteria_met';
+
+      statusPt =
+        'Os dados fornecidos são compatíveis com os critérios de DRC do PCDT quanto à anormalidade renal e à cronicidade informada.';
+
+      statusEn =
+        'The supplied data are compatible with the PCDT CKD criteria regarding kidney abnormality and reported chronicity.';
+
+    } else if (
+      abnormalityPresent
+    ) {
+      statusCode =
+        'chronicity_not_established';
+
+      statusPt =
+        'Há anormalidade renal compatível, mas a cronicidade mínima de 3 meses não foi confirmada.';
+
+      statusEn =
+        'A compatible kidney abnormality is present, but the minimum 3-month chronicity has not been confirmed.';
+
+    } else {
+      statusCode =
+        'criteria_not_met_by_supplied_data';
+
+      statusPt =
+        'Os dados fornecidos não estabelecem DRC pelo PCDT nacional.';
+
+      statusEn =
+        'The supplied data do not establish CKD under the national PCDT.';
+    }
+
+
+    return {
+      pcdt_stage:
+        stage,
+
+      pcdt_stage_label_pt:
+        stageLabelPt,
+
+      pcdt_stage_label_en:
+        stageLabelEn,
+
+      pcdt_stage_requires_damage_marker:
+        stageRequiresDamageMarker,
+
+      pcdt_stage_note_pt:
+        stageNotePt,
+
+      pcdt_stage_note_en:
+        stageNoteEn,
+
+      kidney_damage_marker_present:
+        kidneyDamageMarker,
+
+      pcdt_acr_category:
+        pcdtAcrCategory,
+
+      pcdt_acr_category_evaluable:
+        pcdtAcrEvaluable,
+
+      pcdt_acr_exact_300_ambiguous:
+        pcdtAcrAmbiguous300,
+
+      pcdt_acr_note_pt:
+        pcdtAcrNotePt,
+
+      pcdt_acr_note_en:
+        pcdtAcrNoteEn,
+
+      pcdt_ckd_status_code:
+        statusCode,
+
+      pcdt_ckd_status_pt:
+        statusPt,
+
+      pcdt_ckd_status_en:
+        statusEn,
+
+      pcdt_equation_calculation_applied:
+        false,
+
+      pcdt_equation_status:
+        'not_implemented_due_verified_source_conflict',
+
+      race_or_ancestry_input_used:
+        false,
+
+      source_version:
+        'PCDT DRC 2024; annex updated 2025-02-07'
+    };
+  }
+
+
   function classifyCkd(
     input
   ) {
@@ -708,7 +1038,8 @@
       acr = null,
       acr_unit = 'mg/g',
       chronicity_at_least_3_months = false,
-      other_kidney_damage_marker = false
+      other_kidney_damage_marker = false,
+      on_dialysis = false
     } = input;
 
 
@@ -806,6 +1137,17 @@
     }
 
 
+    const brazilPcdtContext =
+      classifyBrazilPcdtCkdContext({
+        egfr_ml_min_1_73m2,
+        acr,
+        acr_unit,
+        chronicity_at_least_3_months,
+        other_kidney_damage_marker,
+        on_dialysis
+      });
+
+
     return {
       tool:
         'ckd_classification',
@@ -842,6 +1184,14 @@
         Boolean(
           other_kidney_damage_marker
         ),
+
+      on_dialysis:
+        Boolean(
+          on_dialysis
+        ),
+
+      brazil_pcdt_context:
+        brazilPcdtContext,
 
       ckd_status_code:
         statusCode,
@@ -2387,6 +2737,7 @@
     Object.freeze({
       calculateNews2,
       calculateEgfrCkdEpi2021,
+      classifyBrazilPcdtCkdContext,
       classifyCkd,
       calculateKdigoAki,
       calculateHemodynamics,

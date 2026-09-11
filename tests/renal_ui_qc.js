@@ -44,6 +44,7 @@ for (const id of [
   'renal-aki-form',
   'renal-egfr-result',
   'renal-ckd-result',
+  'renal-ckd-dialysis',
   'renal-aki-result'
 ]) {
   assert(
@@ -60,6 +61,12 @@ for (const key of [
   'renal.egfrTitle',
   'renal.ckdTitle',
   'renal.akiTitle',
+  'renal.onDialysis',
+  'renal.internationalTitle',
+  'renal.brazilTitle',
+  'renal.pcdtEquationBlocked',
+  'renal.egfrBrazilAlignment',
+  'renal.akiBrazilAlignment',
   'renal.offline'
 ]) {
   assert(
@@ -73,7 +80,7 @@ for (const key of [
 
 assert(
   swSource.includes(
-    'clinical-reference-v16-v2-brazil-news2'
+    'clinical-reference-v17-v2-brazil-renal'
   )
 );
 
@@ -265,6 +272,13 @@ const event = {
 
   marker.checked = false;
 
+  const dialysis =
+    set(
+      'renal-ckd-dialysis'
+    );
+
+  dialysis.checked = false;
+
   const ckdResult =
     set(
       'renal-ckd-result'
@@ -285,6 +299,66 @@ const event = {
     ckdResult.innerHTML
       .includes(
         'atendem à definição de DRC'
+      )
+  );
+
+  assert(
+    ckdResult.innerHTML
+      .includes(
+        'Brasil · SUS PCDT'
+      )
+  );
+
+  assert(
+    ckdResult.innerHTML
+      .includes(
+        'Estágio 3B'
+      )
+  );
+
+  assert(
+    ckdResult.innerHTML
+      .includes(
+        'não é executada'
+      )
+  );
+
+
+  // Exact 300 mg/g PCDT ambiguity + dialysis 5D context.
+  elements.get(
+    'renal-ckd-egfr'
+  ).value = '14.9';
+
+  elements.get(
+    'renal-ckd-acr'
+  ).value = '300';
+
+  dialysis.checked = true;
+
+
+  await calculateCkdTool(
+    event
+  );
+
+
+  assert(
+    ckdResult.innerHTML
+      .includes(
+        'Estágio 5D'
+      )
+  );
+
+  assert(
+    ckdResult.innerHTML
+      .includes(
+        '300 mg/g'
+      )
+  );
+
+  assert(
+    ckdResult.innerHTML
+      .includes(
+        'textualmente sem categoria'
       )
   );
 
@@ -408,6 +482,20 @@ const event = {
     ckdResult.innerHTML
       .includes(
         'meet the CKD definition'
+      )
+  );
+
+  assert(
+    ckdResult.innerHTML
+      .includes(
+        'Stage 5D'
+      )
+  );
+
+  assert(
+    ckdResult.innerHTML
+      .includes(
+        '300 mg/g'
       )
   );
 

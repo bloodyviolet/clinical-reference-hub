@@ -742,6 +742,9 @@ def api_classify_ckd(
             other_kidney_damage_marker=(
                 payload.other_kidney_damage_marker
             ),
+            on_dialysis=(
+                payload.on_dialysis
+            ),
         )
     except ValueError as exc:
         raise HTTPException(

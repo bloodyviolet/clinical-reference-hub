@@ -432,6 +432,60 @@ class CKDClassificationInput(BaseModel):
 
     chronicity_at_least_3_months: bool = False
     other_kidney_damage_marker: bool = False
+    on_dialysis: bool = False
+
+
+class BrazilPCDTCKDContext(BaseModel):
+    pcdt_stage: Literal[
+        "1",
+        "2",
+        "3A",
+        "3B",
+        "4",
+        "5",
+        "5D",
+    ] | None
+
+    pcdt_stage_label_pt: str | None
+    pcdt_stage_label_en: str | None
+
+    pcdt_stage_requires_damage_marker: bool
+
+    pcdt_stage_note_pt: str
+    pcdt_stage_note_en: str
+
+    kidney_damage_marker_present: bool
+
+    pcdt_acr_category: Literal[
+        "A1",
+        "A2",
+        "A3",
+    ] | None
+
+    pcdt_acr_category_evaluable: bool
+    pcdt_acr_exact_300_ambiguous: bool
+
+    pcdt_acr_note_pt: str
+    pcdt_acr_note_en: str
+
+    pcdt_ckd_status_code: Literal[
+        "criteria_met",
+        "chronicity_not_established",
+        "criteria_not_met_by_supplied_data",
+    ]
+
+    pcdt_ckd_status_pt: str
+    pcdt_ckd_status_en: str
+
+    pcdt_equation_calculation_applied: Literal[False]
+
+    pcdt_equation_status: Literal[
+        "not_implemented_due_verified_source_conflict"
+    ]
+
+    race_or_ancestry_input_used: Literal[False]
+
+    source_version: str
 
 
 class CKDClassificationResponse(BaseModel):
@@ -462,6 +516,9 @@ class CKDClassificationResponse(BaseModel):
 
     chronicity_at_least_3_months: bool
     other_kidney_damage_marker: bool
+    on_dialysis: bool
+
+    brazil_pcdt_context: BrazilPCDTCKDContext
 
     ckd_status_code: Literal[
         "criteria_met",

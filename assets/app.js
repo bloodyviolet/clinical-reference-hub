@@ -1203,6 +1203,17 @@ function renderEgfrResult(
       )}
     </p>
 
+    <p class="text-[10px] text-cyan-300 mt-3">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('renal.egfrBrazilAlignment')
+        || clinicalText(
+          'Brasil: CKD-EPI 2021 sem coeficiente de raça está alinhada ao consenso SBN/SBPC-ML 2024; a errata brasileira de 2025 confirma o expoente -1,200 já implementado.',
+          'Brazil: race-free CKD-EPI 2021 aligns with the 2024 SBN/SBPC-ML consensus; the 2025 Brazilian erratum confirms the -1.200 exponent already implemented.'
+        )
+      )}
+    </p>
+
     ${renalOfflineNotice(source)}
   `;
 }
@@ -1343,27 +1354,197 @@ function renderCkdResult(
     ];
 
 
+  const br =
+    result.brazil_pcdt_context
+    || null;
+
+
+  const brStage =
+    br?.pcdt_stage
+      ? (
+          br[
+            `pcdt_stage_label_${suffix}`
+          ]
+          || br.pcdt_stage
+        )
+      : clinicalText(
+          'Estágio não atribuído',
+          'Stage not assigned'
+        );
+
+
+  const brAcr =
+    br?.pcdt_acr_category
+    || '—';
+
+
+  const brStatus =
+    br?.[
+      `pcdt_ckd_status_${suffix}`
+    ]
+    || '';
+
+
+  const brStageNote =
+    br?.[
+      `pcdt_stage_note_${suffix}`
+    ]
+    || '';
+
+
+  const brAcrNote =
+    br?.[
+      `pcdt_acr_note_${suffix}`
+    ]
+    || '';
+
+
+  const internationalTitle =
+    globalThis.ClinicalI18n
+      ?.t?.('renal.internationalTitle')
+    || clinicalText(
+      'Internacional · KDIGO 2024',
+      'International · KDIGO 2024'
+    );
+
+
+  const brazilTitle =
+    globalThis.ClinicalI18n
+      ?.t?.('renal.brazilTitle')
+    || clinicalText(
+      'Brasil · SUS PCDT DRC 2024/2025',
+      'Brazil · SUS CKD PCDT 2024/2025'
+    );
+
+
+  const pcdtStageLabel =
+    globalThis.ClinicalI18n
+      ?.t?.('renal.pcdtStage')
+    || clinicalText(
+      'Estágio SUS PCDT',
+      'SUS PCDT stage'
+    );
+
+
+  const pcdtAcrLabel =
+    globalThis.ClinicalI18n
+      ?.t?.('renal.pcdtAcr')
+    || clinicalText(
+      'RAC SUS PCDT',
+      'SUS PCDT ACR'
+    );
+
+
+  const equationBlocked =
+    globalThis.ClinicalI18n
+      ?.t?.('renal.pcdtEquationBlocked')
+    || clinicalText(
+      'A equação impressa no PCDT não é executada por conflitos de fonte verificados; nenhum dado de raça ou ancestralidade é usado.',
+      'The equation printed in the PCDT is not executed because of verified source conflicts; no race or ancestry input is used.'
+    );
+
+
   res.classList.remove('hidden');
 
 
   res.innerHTML = `
-    <p class="text-[10px] font-semibold text-slate-400 uppercase">
-      KDIGO G/A
-    </p>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
 
-    <p class="text-2xl font-bold text-emerald-400 mt-1">
-      ${escapeHtml(
-        result.ga_classification
-      )}
-    </p>
+      <div class="rounded-xl border border-emerald-900/60 bg-slate-950/60 p-3">
+        <p class="text-[10px] font-semibold text-emerald-300 uppercase">
+          ${escapeHtml(
+            internationalTitle
+          )}
+        </p>
 
-    <p class="text-sm text-white mt-1">
-      ${escapeHtml(status)}
-    </p>
+        <p class="text-2xl font-bold text-emerald-400 mt-1">
+          ${escapeHtml(
+            result.ga_classification
+          )}
+        </p>
 
-    <p class="text-[11px] text-slate-400 mt-2">
-      ${escapeHtml(note)}
-    </p>
+        <p class="text-sm text-white mt-1">
+          ${escapeHtml(status)}
+        </p>
+
+        <p class="text-[11px] text-slate-400 mt-2">
+          ${escapeHtml(note)}
+        </p>
+      </div>
+
+      <div class="rounded-xl border border-cyan-900/60 bg-slate-950/60 p-3">
+        <p class="text-[10px] font-semibold text-cyan-300 uppercase">
+          ${escapeHtml(
+            brazilTitle
+          )}
+        </p>
+
+        <p class="text-lg font-bold text-cyan-300 mt-1">
+          ${escapeHtml(
+            pcdtStageLabel
+          )}:
+          ${escapeHtml(
+            brStage
+          )}
+        </p>
+
+        <p class="text-xs text-white mt-1">
+          ${escapeHtml(
+            pcdtAcrLabel
+          )}:
+          ${escapeHtml(
+            brAcr
+          )}
+        </p>
+
+        ${
+          brStatus
+            ? `
+              <p class="text-sm text-white mt-2">
+                ${escapeHtml(
+                  brStatus
+                )}
+              </p>
+            `
+            : ''
+        }
+
+        ${
+          brStageNote
+            ? `
+              <p class="text-[11px] text-slate-400 mt-2">
+                ${escapeHtml(
+                  brStageNote
+                )}
+              </p>
+            `
+            : ''
+        }
+
+        ${
+          brAcrNote
+            ? `
+              <p class="${
+                br?.pcdt_acr_exact_300_ambiguous
+                  ? 'text-[11px] text-amber-300 mt-2'
+                  : 'text-[11px] text-slate-400 mt-2'
+              }">
+                ${escapeHtml(
+                  brAcrNote
+                )}
+              </p>
+            `
+            : ''
+        }
+
+        <p class="text-[10px] text-amber-300 mt-3">
+          ${escapeHtml(
+            equationBlocked
+          )}
+        </p>
+      </div>
+
+    </div>
 
     ${renalOfflineNotice(source)}
   `;
@@ -1428,6 +1609,11 @@ async function calculateCkdTool(event) {
     other_kidney_damage_marker:
       document.getElementById(
         'renal-ckd-other-marker'
+      ).checked,
+
+    on_dialysis:
+      document.getElementById(
+        'renal-ckd-dialysis'
       ).checked
   };
 
@@ -1560,6 +1746,17 @@ function renderAkiResult(
 
     <p class="text-[11px] text-slate-400 mt-3">
       ${escapeHtml(interpretation)}
+    </p>
+
+    <p class="text-[10px] text-cyan-300 mt-3">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('renal.akiBrazilAlignment')
+        || clinicalText(
+          'Brasil: a Linha de Cuidado do Ministério da Saúde utiliza a classificação KDIGO 2012; não há segundo algoritmo numérico brasileiro.',
+          'Brazil: the Ministry of Health care pathway uses KDIGO 2012 classification; there is no second Brazilian numerical algorithm.'
+        )
+      )}
     </p>
 
     ${renalOfflineNotice(source)}

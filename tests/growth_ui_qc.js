@@ -82,7 +82,7 @@ for (const key of [
 
 assert(
   swSource.includes(
-    'clinical-reference-v16-v2-brazil-news2'
+    'clinical-reference-v17-v2-brazil-renal'
   )
 );
 

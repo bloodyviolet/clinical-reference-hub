@@ -133,7 +133,7 @@ def test_news2_validated_brazilian_harmonization_is_complete():
     )
 
 
-def test_renal_is_critical_national_variant():
+def test_renal_national_variant_harmonization_is_complete():
     item = next(
         value
         for value in audit()["items"]
@@ -163,10 +163,56 @@ def test_renal_is_critical_national_variant():
 
     assert (
         item[
+            "remediation_required"
+        ]
+        is False
+    )
+
+    assert (
+        item[
             "remediation_priority"
         ]
-        == "critical"
+        == "none"
     )
+
+    assert (
+        item[
+            "final_brazil_review_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        item[
+            "bh2b_core_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        item[
+            "bh2b_ui_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        item[
+            "implementation_blocked"
+        ]
+        is False
+    )
+
+    assert (
+        item[
+            "literal_pcdt_equation_implementation_blocked"
+        ]
+        is True
+    )
+
+    assert item[
+        "remediation_completed"
+    ]
 
     assert any(
         "11/2024"

@@ -341,3 +341,99 @@ assert.throws(
 console.log(
   'renal_i18n_qc: optional-creatinine AKI paths PASS'
 );
+
+
+assert.strictEqual(
+  typeof ClinicalTools
+    .classifyBrazilPcdtCkdContext,
+  'function'
+);
+
+
+const brazilStage1 =
+  ClinicalTools
+    .classifyBrazilPcdtCkdContext({
+      egfr_ml_min_1_73m2: 95,
+      acr: 100,
+      acr_unit: 'mg/g',
+      chronicity_at_least_3_months: true,
+      other_kidney_damage_marker: false,
+      on_dialysis: false
+    });
+
+
+assert.strictEqual(
+  brazilStage1.pcdt_stage,
+  '1'
+);
+
+
+const brazilExact300 =
+  ClinicalTools
+    .classifyCkd({
+      egfr_ml_min_1_73m2: 50,
+      acr: 300,
+      acr_unit: 'mg/g',
+      chronicity_at_least_3_months: true,
+      other_kidney_damage_marker: false,
+      on_dialysis: false
+    });
+
+
+assert.strictEqual(
+  brazilExact300.albuminuria_category,
+  'A2'
+);
+
+assert.strictEqual(
+  brazilExact300
+    .brazil_pcdt_context
+    .pcdt_acr_category,
+  null
+);
+
+assert.strictEqual(
+  brazilExact300
+    .brazil_pcdt_context
+    .pcdt_acr_exact_300_ambiguous,
+  true
+);
+
+
+const brazil5d =
+  ClinicalTools
+    .classifyCkd({
+      egfr_ml_min_1_73m2: 14.9,
+      acr: null,
+      acr_unit: 'mg/g',
+      chronicity_at_least_3_months: true,
+      other_kidney_damage_marker: false,
+      on_dialysis: true
+    });
+
+
+assert.strictEqual(
+  brazil5d
+    .brazil_pcdt_context
+    .pcdt_stage,
+  '5D'
+);
+
+assert.strictEqual(
+  brazil5d
+    .brazil_pcdt_context
+    .pcdt_equation_calculation_applied,
+  false
+);
+
+assert.strictEqual(
+  brazil5d
+    .brazil_pcdt_context
+    .race_or_ancestry_input_used,
+  false
+);
+
+
+console.log(
+  'renal_i18n_qc: Brazil PCDT safe-context parity PASS'
+);

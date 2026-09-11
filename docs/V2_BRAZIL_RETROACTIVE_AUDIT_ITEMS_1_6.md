@@ -7,7 +7,7 @@ Review date: 2026-09-11
 | Item | Feature | Brazil status | Remediation |
 |---|---|---|---|
 | 1 | NEWS2 | Validated Brazilian adaptation | PASS |
-| 2 | Renal | National SUS variant | Critical |
+| 2 | Renal | National SUS variant + Brazilian consensus | PASS |
 | 3 | Hemodynamics | Context-specific Brazilian guidance | Required |
 | 4 | Oxygenation | No national generic variant identified | Metadata/source update |
 | 5 | Acid-base/metabolic | Context-specific national toxicology guidance | Required |
@@ -60,6 +60,20 @@ The current application instead uses:
 
 These must coexist rather than one silently replacing the other.
 
+BH2A independently identified an additional Brazilian source conflict:
+
+- the 2024 SBN/SBPC-ML consensus preferentially recommends CKD-EPI
+  2021 without race for adults;
+- the current national PCDT still displays the 2009 race-containing
+  constants;
+- the PCDT formula rendering has notation/branch discrepancies relative
+  to its cited Levey 2009 equation;
+- its RAC table text leaves exactly 300 mg/g ambiguous.
+
+For this reason, a literal race-based PCDT calculator is blocked.
+CKD-EPI 2021 remains the intended default calculation and the national
+PCDT will be exposed as a separate SUS policy/staging context.
+
 The Ministry's DRC line of care also explicitly applies KDIGO 2012 to
 acute kidney injury, supporting the current AKI numerical basis.
 
@@ -69,6 +83,20 @@ Disposition:
 - brazil_sus = add current PCDT view;
 - do not silently infer demographic coefficients;
 - independently QC the official PCDT formula before coding.
+
+BH2 final disposition:
+
+- CKD-EPI 2021 race-free remains the default calculation;
+- SBN/SBPC-ML Brazilian provenance and the 2025 erratum are integrated;
+- the national SUS PCDT is exposed as a separate policy/staging layer;
+- the printed PCDT race-containing equation is not executed;
+- race/ancestry is neither requested nor inferred;
+- the exact 300 mg/g PCDT boundary ambiguity fails closed;
+- KDIGO-2012 AKI mathematics are unchanged and now carry explicit
+  Ministry of Health provenance;
+- PT-BR, EN-GB, API, browser and offline behavior are integrated.
+
+Status: PASS.
 
 ## Item 3 — Hemodynamics
 

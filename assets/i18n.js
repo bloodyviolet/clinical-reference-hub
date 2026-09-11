@@ -111,10 +111,10 @@
         'Preencha todos os parâmetros NEWS2 com valores válidos.',
 
       'renal.title':
-        'Suite Renal · KDIGO / CKD-EPI',
+        'Suite Renal · KDIGO / CKD-EPI / SUS',
 
       'renal.description':
-        'TFGe CKD-EPI 2021, classificação KDIGO 2024 de DRC e estadiamento KDIGO 2012 de LRA.',
+        'TFGe CKD-EPI 2021, classificação internacional KDIGO, contexto nacional SUS/PCDT e estadiamento KDIGO 2012 de LRA.',
 
       'renal.egfrTitle':
         'TFGe · CKD-EPI 2021',
@@ -141,7 +141,7 @@
         'Calcular TFGe',
 
       'renal.ckdTitle':
-        'DRC · KDIGO 2024',
+        'DRC · KDIGO 2024 + SUS PCDT',
 
       'renal.egfrValue':
         'TFGe (mL/min/1,73 m²)',
@@ -210,7 +210,34 @@
         'Para avaliar diurese, informe conjuntamente peso, volume urinário e duração.',
 
       'renal.source':
-        'Fontes: CKD-EPI 2021 / National Kidney Foundation; KDIGO CKD 2024; KDIGO AKI 2012.',
+        'Fontes: CKD-EPI 2021 / NKF; SBN/SBPC-ML 2024 + errata 2025; KDIGO CKD 2024; PCDT DRC MS 2024/2025; KDIGO AKI 2012 + Ministério da Saúde.',
+
+      'renal.egfrBrazilAlignment':
+        'Brasil: CKD-EPI 2021 sem coeficiente de raça está alinhada ao consenso SBN/SBPC-ML 2024; a errata brasileira de 2025 confirma o expoente -1,200 já implementado.',
+
+      'renal.internationalTitle':
+        'Internacional · KDIGO 2024',
+
+      'renal.brazilTitle':
+        'Brasil · SUS PCDT DRC 2024/2025',
+
+      'renal.onDialysis':
+        'Paciente em diálise para contexto de estágio 5D do PCDT',
+
+      'renal.pcdtStage':
+        'Estágio SUS PCDT',
+
+      'renal.pcdtAcr':
+        'RAC SUS PCDT',
+
+      'renal.pcdtEquationBlocked':
+        'A equação impressa no PCDT não é executada por conflitos de fonte verificados; nenhum dado de raça ou ancestralidade é usado.',
+
+      'renal.pcdtNotice':
+        'Brasil/SUS: o PCDT nacional é exibido como contexto de política e estadiamento. Sua equação impressa não é usada para recalcular a TFGe.',
+
+      'renal.akiBrazilAlignment':
+        'Brasil: a Linha de Cuidado do Ministério da Saúde utiliza a classificação KDIGO 2012; não há segundo algoritmo numérico brasileiro.',
 
       'hemo.title':
         'Hemodinâmica · PAM / Pressão de Pulso / SI / MSI',
@@ -614,10 +641,10 @@
         'Complete all NEWS2 parameters with valid values.',
 
       'renal.title':
-        'Renal Suite · KDIGO / CKD-EPI',
+        'Renal Suite · KDIGO / CKD-EPI / SUS',
 
       'renal.description':
-        'CKD-EPI 2021 eGFR, KDIGO 2024 CKD classification and KDIGO 2012 AKI staging.',
+        'CKD-EPI 2021 eGFR, international KDIGO classification, national SUS/PCDT context and KDIGO 2012 AKI staging.',
 
       'renal.egfrTitle':
         'eGFR · CKD-EPI 2021',
@@ -644,7 +671,7 @@
         'Calculate eGFR',
 
       'renal.ckdTitle':
-        'CKD · KDIGO 2024',
+        'CKD · KDIGO 2024 + SUS PCDT',
 
       'renal.egfrValue':
         'eGFR (mL/min/1.73 m²)',
@@ -713,7 +740,34 @@
         'To assess urine output, provide weight, urine volume and duration together.',
 
       'renal.source':
-        'Sources: CKD-EPI 2021 / National Kidney Foundation; KDIGO CKD 2024; KDIGO AKI 2012.',
+        'Sources: CKD-EPI 2021 / NKF; SBN/SBPC-ML 2024 + 2025 erratum; KDIGO CKD 2024; Brazilian Ministry CKD PCDT 2024/2025; KDIGO AKI 2012 + Ministry of Health.',
+
+      'renal.egfrBrazilAlignment':
+        'Brazil: race-free CKD-EPI 2021 aligns with the 2024 SBN/SBPC-ML consensus; the 2025 Brazilian erratum confirms the -1.200 exponent already implemented.',
+
+      'renal.internationalTitle':
+        'International · KDIGO 2024',
+
+      'renal.brazilTitle':
+        'Brazil · SUS CKD PCDT 2024/2025',
+
+      'renal.onDialysis':
+        'Patient is on dialysis for PCDT stage-5D context',
+
+      'renal.pcdtStage':
+        'SUS PCDT stage',
+
+      'renal.pcdtAcr':
+        'SUS PCDT ACR',
+
+      'renal.pcdtEquationBlocked':
+        'The equation printed in the PCDT is not executed because of verified source conflicts; no race or ancestry input is used.',
+
+      'renal.pcdtNotice':
+        'Brazil/SUS: the national PCDT is shown as policy and staging context. Its printed equation is not used to recalculate eGFR.',
+
+      'renal.akiBrazilAlignment':
+        'Brazil: the Ministry of Health care pathway uses KDIGO 2012 classification; there is no second Brazilian numerical algorithm.',
 
       'hemo.title':
         'Haemodynamics · MAP / Pulse Pressure / SI / MSI',
