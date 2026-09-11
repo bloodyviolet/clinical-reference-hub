@@ -610,3 +610,109 @@ class OxygenationResponse(BaseModel):
 
     fio2_note_pt: str
     fio2_note_en: str
+
+
+# ---------------------------------------------------------------------------
+# v2 Item 5 — acid-base / metabolic toolkit.
+# ---------------------------------------------------------------------------
+
+class MetabolicToolkitInput(BaseModel):
+    sodium_meq_l: float = Field(gt=0)
+
+    chloride_meq_l: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    bicarbonate_meq_l: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    albumin_g_dl: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    glucose_mg_dl: float | None = Field(
+        default=None,
+        ge=0,
+    )
+
+    bun_mg_dl: float | None = Field(
+        default=None,
+        ge=0,
+    )
+
+    paco2_mm_hg: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    metabolic_acidosis_confirmed: bool = False
+
+
+class MetabolicToolkitResponse(BaseModel):
+    tool: Literal["acid_base_metabolic"]
+
+    sodium_meq_l: float
+    chloride_meq_l: float | None
+    bicarbonate_meq_l: float | None
+    albumin_g_dl: float | None
+    glucose_mg_dl: float | None
+    bun_mg_dl: float | None
+    paco2_mm_hg: float | None
+
+    anion_gap_meq_l: float | None
+    albumin_corrected_anion_gap_meq_l: float | None
+
+    anion_gap_formula: str
+    albumin_correction_formula: str
+    albumin_correction_applied: bool
+
+    calculated_osmolality_mosm_kg: float | None
+    osmolality_formula: str
+
+    corrected_sodium_meq_l: float | None
+    corrected_sodium_delta_meq_l: float | None
+    corrected_sodium_method: str | None
+
+    metabolic_acidosis_confirmed: bool
+
+    winter_analysis_applied: bool
+    winter_expected_paco2_mm_hg: float | None
+    winter_lower_mm_hg: float | None
+    winter_upper_mm_hg: float | None
+
+    winter_compensation_status: Literal[
+        "within_expected",
+        "paco2_above_expected",
+        "paco2_below_expected",
+    ] | None
+
+    winter_interpretation_pt: str | None
+    winter_interpretation_en: str | None
+
+    delta_analysis_applied: bool
+
+    delta_ag_basis: Literal[
+        "albumin_corrected",
+        "uncorrected",
+    ] | None
+
+    delta_ratio: float | None
+
+    delta_interpretation_code: Literal[
+        "suggests_additional_nagma",
+        "compatible_with_predominant_hagma",
+        "suggests_additional_metabolic_alkalosis",
+    ] | None
+
+    delta_interpretation_pt: str | None
+    delta_interpretation_en: str | None
+
+    validity_notes_pt: list[str]
+    validity_notes_en: list[str]
+
+    interpretation_pt: str
+    interpretation_en: str

@@ -1712,6 +1712,677 @@
   }
 
 
+
+  const METABOLIC_FLOAT_ABS_TOL =
+    1e-9;
+
+
+  function metabolicStrictlyAbove(
+    value,
+    threshold
+  ) {
+    return (
+      value > threshold
+      && Math.abs(
+        value - threshold
+      ) > METABOLIC_FLOAT_ABS_TOL
+    );
+  }
+
+
+  function metabolicStrictlyBelow(
+    value,
+    threshold
+  ) {
+    return (
+      value < threshold
+      && Math.abs(
+        value - threshold
+      ) > METABOLIC_FLOAT_ABS_TOL
+    );
+  }
+
+
+  function calculateMetabolicToolkit(
+    input
+  ) {
+    const sodium =
+      input.sodium_meq_l;
+
+    const chloride =
+      input.chloride_meq_l;
+
+    const bicarbonate =
+      input.bicarbonate_meq_l;
+
+    const albumin =
+      input.albumin_g_dl;
+
+    const glucose =
+      input.glucose_mg_dl;
+
+    const bun =
+      input.bun_mg_dl;
+
+    const paco2 =
+      input.paco2_mm_hg;
+
+    const confirmed =
+      Boolean(
+        input.metabolic_acidosis_confirmed
+      );
+
+
+    if (
+      !Number.isFinite(sodium)
+      || sodium <= 0
+    ) {
+      throw new Error(
+        'invalid_sodium'
+      );
+    }
+
+
+    const hasChloride =
+      chloride !== null
+      && chloride !== undefined;
+
+    const hasBicarbonate =
+      bicarbonate !== null
+      && bicarbonate !== undefined;
+
+
+    if (
+      hasChloride
+      !== hasBicarbonate
+    ) {
+      throw new Error(
+        'chloride_bicarbonate_required_together'
+      );
+    }
+
+
+    if (
+      hasChloride
+      && (
+        !Number.isFinite(chloride)
+        || chloride <= 0
+      )
+    ) {
+      throw new Error(
+        'invalid_chloride'
+      );
+    }
+
+
+    if (
+      hasBicarbonate
+      && (
+        !Number.isFinite(bicarbonate)
+        || bicarbonate <= 0
+      )
+    ) {
+      throw new Error(
+        'invalid_bicarbonate'
+      );
+    }
+
+
+    const hasAlbumin =
+      albumin !== null
+      && albumin !== undefined;
+
+
+    if (hasAlbumin) {
+      if (
+        !Number.isFinite(albumin)
+        || albumin <= 0
+      ) {
+        throw new Error(
+          'invalid_albumin'
+        );
+      }
+
+      if (!hasChloride) {
+        throw new Error(
+          'albumin_requires_anion_gap_inputs'
+        );
+      }
+    }
+
+
+    const hasGlucose =
+      glucose !== null
+      && glucose !== undefined;
+
+
+    if (
+      hasGlucose
+      && (
+        !Number.isFinite(glucose)
+        || glucose < 0
+      )
+    ) {
+      throw new Error(
+        'invalid_glucose'
+      );
+    }
+
+
+    const hasBun =
+      bun !== null
+      && bun !== undefined;
+
+
+    if (hasBun) {
+      if (
+        !Number.isFinite(bun)
+        || bun < 0
+      ) {
+        throw new Error(
+          'invalid_bun'
+        );
+      }
+
+      if (!hasGlucose) {
+        throw new Error(
+          'bun_requires_glucose'
+        );
+      }
+    }
+
+
+    const hasPaco2 =
+      paco2 !== null
+      && paco2 !== undefined;
+
+
+    if (
+      hasPaco2
+      && (
+        !Number.isFinite(paco2)
+        || paco2 <= 0
+      )
+    ) {
+      throw new Error(
+        'invalid_paco2'
+      );
+    }
+
+
+    if (
+      !hasChloride
+      && !hasGlucose
+    ) {
+      throw new Error(
+        'metabolic_calculation_input_required'
+      );
+    }
+
+
+    let anionGap = null;
+    let correctedAg = null;
+
+
+    if (hasChloride) {
+      anionGap =
+        sodium
+        - chloride
+        - bicarbonate;
+
+
+      if (hasAlbumin) {
+        correctedAg =
+          anionGap
+          + 2.5
+          * (
+            4.0
+            - albumin
+          );
+      }
+    }
+
+
+    let correctedSodium = null;
+    let sodiumDelta = null;
+
+
+    if (hasGlucose) {
+      const excess =
+        Math.max(
+          glucose - 100,
+          0
+        );
+
+      sodiumDelta =
+        1.6
+        * excess
+        / 100;
+
+      correctedSodium =
+        sodium
+        + sodiumDelta;
+    }
+
+
+    let osmolality = null;
+
+
+    if (
+      hasGlucose
+      && hasBun
+    ) {
+      osmolality =
+        2 * sodium
+        + glucose / 18
+        + bun / 2.8;
+    }
+
+
+    const metabolicAcidosisGate =
+      confirmed
+      && hasBicarbonate
+      && metabolicStrictlyBelow(
+        bicarbonate,
+        24
+      );
+
+
+    let winterExpected = null;
+    let winterLower = null;
+    let winterUpper = null;
+    let winterStatus = null;
+    let winterPt = null;
+    let winterEn = null;
+
+
+    if (metabolicAcidosisGate) {
+      winterExpected =
+        1.5 * bicarbonate
+        + 8;
+
+      winterLower =
+        winterExpected - 2;
+
+      winterUpper =
+        winterExpected + 2;
+
+
+      if (hasPaco2) {
+        if (
+          metabolicStrictlyAbove(
+            paco2,
+            winterUpper
+          )
+        ) {
+          winterStatus =
+            'paco2_above_expected';
+
+          winterPt =
+            'PaCO2 acima da faixa esperada pela fórmula de Winter; isso sugere componente adicional de acidose respiratória.';
+
+          winterEn =
+            'PaCO2 is above the Winter expected range; this suggests an additional respiratory acidosis component.';
+
+        } else if (
+          metabolicStrictlyBelow(
+            paco2,
+            winterLower
+          )
+        ) {
+          winterStatus =
+            'paco2_below_expected';
+
+          winterPt =
+            'PaCO2 abaixo da faixa esperada pela fórmula de Winter; isso sugere componente adicional de alcalose respiratória.';
+
+          winterEn =
+            'PaCO2 is below the Winter expected range; this suggests an additional respiratory alkalosis component.';
+
+        } else {
+          winterStatus =
+            'within_expected';
+
+          winterPt =
+            'PaCO2 dentro da faixa esperada pela fórmula de Winter para compensação respiratória.';
+
+          winterEn =
+            'PaCO2 is within the Winter expected range for respiratory compensation.';
+        }
+      }
+    }
+
+
+    const agForDelta =
+      correctedAg !== null
+        ? correctedAg
+        : anionGap;
+
+
+    let deltaRatio = null;
+    let deltaApplied = false;
+    let deltaBasis = null;
+    let deltaCode = null;
+    let deltaPt = null;
+    let deltaEn = null;
+
+
+    const deltaGate =
+      metabolicAcidosisGate
+      && agForDelta !== null
+      && metabolicStrictlyAbove(
+        agForDelta,
+        12
+      );
+
+
+    if (deltaGate) {
+      const denominator =
+        24 - bicarbonate;
+
+
+      if (
+        metabolicStrictlyAbove(
+          denominator,
+          0
+        )
+      ) {
+        deltaRatio =
+          (
+            agForDelta - 12
+          )
+          / denominator;
+
+        deltaApplied = true;
+
+        deltaBasis =
+          correctedAg !== null
+            ? 'albumin_corrected'
+            : 'uncorrected';
+
+
+        if (
+          metabolicStrictlyBelow(
+            deltaRatio,
+            1
+          )
+        ) {
+          deltaCode =
+            'suggests_additional_nagma';
+
+          deltaPt =
+            'Delta ratio <1 sugere componente adicional de acidose metabólica com ânion gap normal.';
+
+          deltaEn =
+            'Delta ratio <1 suggests an additional normal-anion-gap metabolic acidosis.';
+
+        } else if (
+          metabolicStrictlyAbove(
+            deltaRatio,
+            2
+          )
+        ) {
+          deltaCode =
+            'suggests_additional_metabolic_alkalosis';
+
+          deltaPt =
+            'Delta ratio >2 sugere alcalose metabólica adicional ou bicarbonato basal previamente elevado.';
+
+          deltaEn =
+            'Delta ratio >2 suggests additional metabolic alkalosis or a previously elevated baseline bicarbonate.';
+
+        } else {
+          deltaCode =
+            'compatible_with_predominant_hagma';
+
+          deltaPt =
+            'Delta ratio entre 1 e 2 é compatível com acidose metabólica de ânion gap elevado predominante, sem excluir outros processos.';
+
+          deltaEn =
+            'A delta ratio between 1 and 2 is compatible with predominant high-anion-gap metabolic acidosis, without excluding other processes.';
+        }
+      }
+    }
+
+
+    const validityPt = [];
+    const validityEn = [];
+
+
+    if (!confirmed) {
+      validityPt.push(
+        'Compensação pela fórmula de Winter e delta ratio não foram interpretados porque acidose metabólica não foi confirmada explicitamente.'
+      );
+
+      validityEn.push(
+        'Winter compensation and delta-ratio interpretation were not applied because metabolic acidosis was not explicitly confirmed.'
+      );
+
+    } else if (
+      !metabolicAcidosisGate
+    ) {
+      validityPt.push(
+        'A análise de compensação/delta não foi aplicada porque o bicarbonato informado não estava abaixo de 24 mEq/L ou estava ausente.'
+      );
+
+      validityEn.push(
+        'Compensation/delta analysis was not applied because the supplied bicarbonate was not below 24 mEq/L or was unavailable.'
+      );
+
+    } else if (
+      !deltaApplied
+    ) {
+      validityPt.push(
+        'O delta ratio não foi aplicado porque o ânion gap utilizado não excedeu 12 mEq/L.'
+      );
+
+      validityEn.push(
+        'The delta ratio was not applied because the selected anion gap did not exceed 12 mEq/L.'
+      );
+    }
+
+
+    if (
+      !hasAlbumin
+      && anionGap !== null
+    ) {
+      validityPt.push(
+        'Ânion gap não corrigido por albumina; valores de referência também dependem do método/laboratório.'
+      );
+
+      validityEn.push(
+        'Anion gap was not albumin-corrected; reference intervals also depend on laboratory methodology.'
+      );
+    }
+
+
+    if (hasGlucose) {
+      validityPt.push(
+        'Sódio corrigido usa a convenção de +1,6 mEq/L por 100 mg/dL de glicose acima de 100 mg/dL.'
+      );
+
+      validityEn.push(
+        'Corrected sodium uses the +1.6 mEq/L per 100 mg/dL glucose above 100 mg/dL convention.'
+      );
+    }
+
+
+    return {
+      tool:
+        'acid_base_metabolic',
+
+      sodium_meq_l:
+        Math.round(
+          sodium * 10
+        ) / 10,
+
+      chloride_meq_l:
+        hasChloride
+          ? Math.round(
+              chloride * 10
+            ) / 10
+          : null,
+
+      bicarbonate_meq_l:
+        hasBicarbonate
+          ? Math.round(
+              bicarbonate * 10
+            ) / 10
+          : null,
+
+      albumin_g_dl:
+        hasAlbumin
+          ? Math.round(
+              albumin * 100
+            ) / 100
+          : null,
+
+      glucose_mg_dl:
+        hasGlucose
+          ? Math.round(
+              glucose * 10
+            ) / 10
+          : null,
+
+      bun_mg_dl:
+        hasBun
+          ? Math.round(
+              bun * 10
+            ) / 10
+          : null,
+
+      paco2_mm_hg:
+        hasPaco2
+          ? Math.round(
+              paco2 * 10
+            ) / 10
+          : null,
+
+      anion_gap_meq_l:
+        anionGap === null
+          ? null
+          : Math.round(
+              anionGap * 10
+            ) / 10,
+
+      albumin_corrected_anion_gap_meq_l:
+        correctedAg === null
+          ? null
+          : Math.round(
+              correctedAg * 10
+            ) / 10,
+
+      anion_gap_formula:
+        'Na - (Cl + HCO3), potassium excluded',
+
+      albumin_correction_formula:
+        'AG + 2.5 * (4 - albumin[g/dL])',
+
+      albumin_correction_applied:
+        correctedAg !== null,
+
+      calculated_osmolality_mosm_kg:
+        osmolality === null
+          ? null
+          : Math.round(
+              osmolality * 10
+            ) / 10,
+
+      osmolality_formula:
+        '2*Na + glucose/18 + BUN/2.8',
+
+      corrected_sodium_meq_l:
+        correctedSodium === null
+          ? null
+          : Math.round(
+              correctedSodium * 10
+            ) / 10,
+
+      corrected_sodium_delta_meq_l:
+        sodiumDelta === null
+          ? null
+          : Math.round(
+              sodiumDelta * 10
+            ) / 10,
+
+      corrected_sodium_method:
+        hasGlucose
+          ? 'Na + 1.6*((glucose-100)/100), for glucose above 100 mg/dL'
+          : null,
+
+      metabolic_acidosis_confirmed:
+        confirmed,
+
+      winter_analysis_applied:
+        metabolicAcidosisGate,
+
+      winter_expected_paco2_mm_hg:
+        winterExpected === null
+          ? null
+          : Math.round(
+              winterExpected * 10
+            ) / 10,
+
+      winter_lower_mm_hg:
+        winterLower === null
+          ? null
+          : Math.round(
+              winterLower * 10
+            ) / 10,
+
+      winter_upper_mm_hg:
+        winterUpper === null
+          ? null
+          : Math.round(
+              winterUpper * 10
+            ) / 10,
+
+      winter_compensation_status:
+        winterStatus,
+
+      winter_interpretation_pt:
+        winterPt,
+
+      winter_interpretation_en:
+        winterEn,
+
+      delta_analysis_applied:
+        deltaApplied,
+
+      delta_ag_basis:
+        deltaBasis,
+
+      delta_ratio:
+        deltaRatio === null
+          ? null
+          : Math.round(
+              deltaRatio * 100
+            ) / 100,
+
+      delta_interpretation_code:
+        deltaCode,
+
+      delta_interpretation_pt:
+        deltaPt,
+
+      delta_interpretation_en:
+        deltaEn,
+
+      validity_notes_pt:
+        validityPt,
+
+      validity_notes_en:
+        validityEn,
+
+      interpretation_pt:
+        'Resultados matemáticos de apoio à avaliação metabólica/ácido-base. Devem ser integrados ao pH, gasometria, contexto clínico, método laboratorial e tendências seriadas.',
+
+      interpretation_en:
+        'Mathematical results supporting metabolic/acid-base assessment. They must be integrated with pH, blood gas data, clinical context, laboratory methodology and serial trends.'
+    };
+  }
+
+
   globalThis.ClinicalTools =
     Object.freeze({
       calculateNews2,
@@ -1719,6 +2390,7 @@
       classifyCkd,
       calculateKdigoAki,
       calculateHemodynamics,
-      calculateOxygenation
+      calculateOxygenation,
+      calculateMetabolicToolkit
     });
 })();

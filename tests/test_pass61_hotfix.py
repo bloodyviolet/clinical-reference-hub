@@ -69,7 +69,7 @@ def test_offline_bundles_are_complete_and_match_database():
 
 def test_service_worker_precaches_offline_data_and_local_icons():
     sw = (ROOT / "sw.js").read_text(encoding="utf-8")
-    assert "clinical-reference-v12-v2-oxygenation" in sw
+    assert "clinical-reference-v13-v2-metabolic" in sw
     for path in (
         "/assets/offline/sae.json",
         "/assets/offline/policies.json",

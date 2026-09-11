@@ -300,7 +300,88 @@
         'A FiO₂ deve ser conhecida; o sistema não a estima a partir do fluxo ou do dispositivo.',
 
       'oxygen.source':
-        'P/F = PaO₂ / FiO₂ em fração · S/F = SpO₂ / FiO₂ em fração.'
+        'P/F = PaO₂ / FiO₂ em fração · S/F = SpO₂ / FiO₂ em fração.',
+
+      'metabolic.title':
+        'Ácido-base e metabolismo',
+
+      'metabolic.description':
+        'Ânion gap, correção por albumina, osmolalidade calculada, sódio corrigido, Winter e delta ratio com gates explícitos de validade.',
+
+      'metabolic.sodium':
+        'Sódio (mEq/L)',
+
+      'metabolic.chloride':
+        'Cloreto (mEq/L) · opcional',
+
+      'metabolic.bicarbonate':
+        'Bicarbonato / HCO₃⁻ (mEq/L) · opcional',
+
+      'metabolic.albumin':
+        'Albumina (g/dL) · opcional',
+
+      'metabolic.glucose':
+        'Glicose (mg/dL) · opcional',
+
+      'metabolic.bun':
+        'BUN (mg/dL) · opcional',
+
+      'metabolic.paco2':
+        'PaCO₂ (mmHg) · opcional',
+
+      'metabolic.confirmed':
+        'Acidose metabólica foi confirmada clinicamente/gasometricamente',
+
+      'metabolic.gateWarning':
+        'Marque esta opção somente quando acidose metabólica já tiver sido estabelecida. O sistema não infere o distúrbio primário a partir destes valores.',
+
+      'metabolic.calculate':
+        'Calcular painel metabólico',
+
+      'metabolic.result':
+        'Resultados calculados',
+
+      'metabolic.ag':
+        'Ânion gap',
+
+      'metabolic.correctedAg':
+        'Ânion gap corrigido por albumina',
+
+      'metabolic.osmolality':
+        'Osmolalidade calculada',
+
+      'metabolic.correctedNa':
+        'Sódio corrigido',
+
+      'metabolic.winter':
+        'Compensação de Winter',
+
+      'metabolic.delta':
+        'Delta ratio',
+
+      'metabolic.validity':
+        'Validade / limitações',
+
+      'metabolic.offline':
+        'Resultado calculado localmente em modo offline.',
+
+      'metabolic.invalid':
+        'Informe um sódio válido e dados suficientes para pelo menos um cálculo metabólico.',
+
+      'metabolic.agPair':
+        'Cloreto e bicarbonato devem ser informados conjuntamente.',
+
+      'metabolic.albuminNeedsAg':
+        'A correção por albumina exige cloreto e bicarbonato.',
+
+      'metabolic.bunNeedsGlucose':
+        'O cálculo de osmolalidade exige glicose quando BUN é informado.',
+
+      'metabolic.noPath':
+        'Informe cloreto + bicarbonato e/ou glicose para realizar pelo menos um cálculo.',
+
+      'metabolic.source':
+        'AG = Na−(Cl+HCO₃) · AG corrigido = AG+2,5×(4−albumina) · Osm = 2Na+glicose/18+BUN/2,8 · Na corrigido: fator 1,6.'
     },
 
     'en-GB': {
@@ -593,7 +674,88 @@
         'FiO₂ must be known; the system does not estimate it from flow rate or delivery-device type.',
 
       'oxygen.source':
-        'P/F = PaO₂ / FiO₂ fraction · S/F = SpO₂ / FiO₂ fraction.'
+        'P/F = PaO₂ / FiO₂ fraction · S/F = SpO₂ / FiO₂ fraction.',
+
+      'metabolic.title':
+        'Acid-base and metabolic toolkit',
+
+      'metabolic.description':
+        'Anion gap, albumin correction, calculated osmolality, corrected sodium, Winter compensation and delta ratio with explicit validity gates.',
+
+      'metabolic.sodium':
+        'Sodium (mEq/L)',
+
+      'metabolic.chloride':
+        'Chloride (mEq/L) · optional',
+
+      'metabolic.bicarbonate':
+        'Bicarbonate / HCO₃⁻ (mEq/L) · optional',
+
+      'metabolic.albumin':
+        'Albumin (g/dL) · optional',
+
+      'metabolic.glucose':
+        'Glucose (mg/dL) · optional',
+
+      'metabolic.bun':
+        'BUN (mg/dL) · optional',
+
+      'metabolic.paco2':
+        'PaCO₂ (mmHg) · optional',
+
+      'metabolic.confirmed':
+        'Metabolic acidosis has been clinically/blood-gas confirmed',
+
+      'metabolic.gateWarning':
+        'Select this only when metabolic acidosis has already been established. The system does not infer the primary disorder from these values.',
+
+      'metabolic.calculate':
+        'Calculate metabolic panel',
+
+      'metabolic.result':
+        'Calculated results',
+
+      'metabolic.ag':
+        'Anion gap',
+
+      'metabolic.correctedAg':
+        'Albumin-corrected anion gap',
+
+      'metabolic.osmolality':
+        'Calculated osmolality',
+
+      'metabolic.correctedNa':
+        'Corrected sodium',
+
+      'metabolic.winter':
+        'Winter compensation',
+
+      'metabolic.delta':
+        'Delta ratio',
+
+      'metabolic.validity':
+        'Validity / limitations',
+
+      'metabolic.offline':
+        'Result calculated locally while offline.',
+
+      'metabolic.invalid':
+        'Enter a valid sodium value and sufficient data for at least one metabolic calculation.',
+
+      'metabolic.agPair':
+        'Chloride and bicarbonate must be supplied together.',
+
+      'metabolic.albuminNeedsAg':
+        'Albumin correction requires chloride and bicarbonate.',
+
+      'metabolic.bunNeedsGlucose':
+        'Calculated osmolality requires glucose when BUN is supplied.',
+
+      'metabolic.noPath':
+        'Provide chloride + bicarbonate and/or glucose to perform at least one calculation.',
+
+      'metabolic.source':
+        'AG = Na−(Cl+HCO₃) · corrected AG = AG+2.5×(4−albumin) · Osm = 2Na+glucose/18+BUN/2.8 · corrected Na: 1.6 factor.'
     }
   };
 

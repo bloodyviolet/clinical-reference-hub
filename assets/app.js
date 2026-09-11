@@ -2224,6 +2224,559 @@ async function calculateOxygenationTool(
 }
 
 
+
+let lastMetabolicResult = null;
+let lastMetabolicSource = null;
+
+
+function renderMetabolicResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'metabolic-result'
+    );
+
+  if (!res || !result) {
+    return;
+  }
+
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+
+  const values = [];
+
+
+  if (
+    result.anion_gap_meq_l
+    !== null
+  ) {
+    values.push([
+      globalThis.ClinicalI18n
+        ?.t?.('metabolic.ag')
+      || clinicalText(
+        'Ânion gap',
+        'Anion gap'
+      ),
+
+      `${result.anion_gap_meq_l.toFixed(1)} mEq/L`
+    ]);
+  }
+
+
+  if (
+    result.albumin_corrected_anion_gap_meq_l
+    !== null
+  ) {
+    values.push([
+      globalThis.ClinicalI18n
+        ?.t?.('metabolic.correctedAg')
+      || clinicalText(
+        'Ânion gap corrigido',
+        'Albumin-corrected anion gap'
+      ),
+
+      `${result.albumin_corrected_anion_gap_meq_l.toFixed(1)} mEq/L`
+    ]);
+  }
+
+
+  if (
+    result.calculated_osmolality_mosm_kg
+    !== null
+  ) {
+    values.push([
+      globalThis.ClinicalI18n
+        ?.t?.('metabolic.osmolality')
+      || clinicalText(
+        'Osmolalidade calculada',
+        'Calculated osmolality'
+      ),
+
+      `${result.calculated_osmolality_mosm_kg.toFixed(1)} mOsm/kg`
+    ]);
+  }
+
+
+  if (
+    result.corrected_sodium_meq_l
+    !== null
+  ) {
+    values.push([
+      globalThis.ClinicalI18n
+        ?.t?.('metabolic.correctedNa')
+      || clinicalText(
+        'Sódio corrigido',
+        'Corrected sodium'
+      ),
+
+      `${result.corrected_sodium_meq_l.toFixed(1)} mEq/L`
+    ]);
+  }
+
+
+  const winterInterpretation =
+    result[
+      `winter_interpretation_${suffix}`
+    ];
+
+
+  const deltaInterpretation =
+    result[
+      `delta_interpretation_${suffix}`
+    ];
+
+
+  const validityNotes =
+    result[
+      `validity_notes_${suffix}`
+    ] || [];
+
+
+  const interpretation =
+    result[
+      `interpretation_${suffix}`
+    ];
+
+
+  const winterBlock =
+    result.winter_analysis_applied
+      ? `
+        <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+          <p class="text-[10px] font-semibold text-slate-400 uppercase">
+            ${escapeHtml(
+              globalThis.ClinicalI18n
+                ?.t?.('metabolic.winter')
+              || clinicalText(
+                'Compensação de Winter',
+                'Winter compensation'
+              )
+            )}
+          </p>
+
+          <p class="text-lg font-bold text-cyan-300 mt-1">
+            ${escapeHtml(
+              result.winter_expected_paco2_mm_hg.toFixed(1)
+            )}
+            mmHg
+            <span class="text-xs font-normal text-slate-400">
+              (${escapeHtml(
+                result.winter_lower_mm_hg.toFixed(1)
+              )}–${escapeHtml(
+                result.winter_upper_mm_hg.toFixed(1)
+              )})
+            </span>
+          </p>
+
+          ${
+            winterInterpretation
+              ? `
+                <p class="text-[11px] text-slate-300 mt-2">
+                  ${escapeHtml(
+                    winterInterpretation
+                  )}
+                </p>
+              `
+              : ''
+          }
+        </div>
+      `
+      : '';
+
+
+  const deltaBlock =
+    result.delta_analysis_applied
+      ? `
+        <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+          <p class="text-[10px] font-semibold text-slate-400 uppercase">
+            ${escapeHtml(
+              globalThis.ClinicalI18n
+                ?.t?.('metabolic.delta')
+              || 'Delta ratio'
+            )}
+          </p>
+
+          <p class="text-lg font-bold text-fuchsia-300 mt-1">
+            ${escapeHtml(
+              result.delta_ratio.toFixed(2)
+            )}
+          </p>
+
+          ${
+            deltaInterpretation
+              ? `
+                <p class="text-[11px] text-slate-300 mt-2">
+                  ${escapeHtml(
+                    deltaInterpretation
+                  )}
+                </p>
+              `
+              : ''
+          }
+        </div>
+      `
+      : '';
+
+
+  const validityBlock =
+    validityNotes.length
+      ? `
+        <div class="mt-4 rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
+          <p class="text-[10px] font-semibold text-amber-300 uppercase">
+            ${escapeHtml(
+              globalThis.ClinicalI18n
+                ?.t?.('metabolic.validity')
+              || clinicalText(
+                'Validade / limitações',
+                'Validity / limitations'
+              )
+            )}
+          </p>
+
+          <ul class="mt-2 space-y-1">
+            ${validityNotes.map(
+              note => `
+                <li class="text-[11px] text-slate-300">
+                  • ${escapeHtml(note)}
+                </li>
+              `
+            ).join('')}
+          </ul>
+        </div>
+      `
+      : '';
+
+
+  const offlineNotice =
+    source === 'offline'
+      ? `
+        <p class="text-[11px] text-amber-300 mt-3">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('metabolic.offline')
+            || clinicalText(
+              'Resultado calculado localmente em modo offline.',
+              'Result calculated locally while offline.'
+            )
+          )}
+        </p>
+      `
+      : '';
+
+
+  res.classList.remove(
+    'hidden'
+  );
+
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('metabolic.result')
+        || clinicalText(
+          'Resultados calculados',
+          'Calculated results'
+        )
+      )}
+    </p>
+
+    ${
+      values.length
+        ? `
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-3">
+            ${values.map(
+              ([label, value]) => `
+                <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+                  <p class="text-[10px] text-slate-400">
+                    ${escapeHtml(label)}
+                  </p>
+
+                  <p class="text-lg font-bold text-purple-300 mt-1">
+                    ${escapeHtml(value)}
+                  </p>
+                </div>
+              `
+            ).join('')}
+          </div>
+        `
+        : ''
+    }
+
+    ${
+      winterBlock
+      || deltaBlock
+        ? `
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
+            ${winterBlock}
+            ${deltaBlock}
+          </div>
+        `
+        : ''
+    }
+
+    ${validityBlock}
+
+    <p class="text-[11px] text-slate-400 mt-4">
+      ${escapeHtml(interpretation)}
+    </p>
+
+    ${offlineNotice}
+  `;
+}
+
+
+async function calculateMetabolicTool(
+  event
+) {
+  event.preventDefault();
+
+
+  const sodium =
+    Number.parseFloat(
+      document.getElementById(
+        'metabolic-na'
+      ).value
+    );
+
+
+  const chloride =
+    nullableClinicalNumber(
+      'metabolic-cl'
+    );
+
+
+  const bicarbonate =
+    nullableClinicalNumber(
+      'metabolic-hco3'
+    );
+
+
+  const albumin =
+    nullableClinicalNumber(
+      'metabolic-albumin'
+    );
+
+
+  const glucose =
+    nullableClinicalNumber(
+      'metabolic-glucose'
+    );
+
+
+  const bun =
+    nullableClinicalNumber(
+      'metabolic-bun'
+    );
+
+
+  const paco2 =
+    nullableClinicalNumber(
+      'metabolic-paco2'
+    );
+
+
+  const confirmed =
+    document.getElementById(
+      'metabolic-acidosis-confirmed'
+    ).checked;
+
+
+  if (
+    !Number.isFinite(sodium)
+    || sodium <= 0
+  ) {
+    return showError(
+      'metabolic-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('metabolic.invalid')
+      || clinicalText(
+        'Informe um sódio válido.',
+        'Enter a valid sodium value.'
+      )
+    );
+  }
+
+
+  if (
+    (chloride === null)
+    !== (bicarbonate === null)
+  ) {
+    return showError(
+      'metabolic-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('metabolic.agPair')
+      || clinicalText(
+        'Cloreto e bicarbonato devem ser informados conjuntamente.',
+        'Chloride and bicarbonate must be supplied together.'
+      )
+    );
+  }
+
+
+  if (
+    albumin !== null
+    && chloride === null
+  ) {
+    return showError(
+      'metabolic-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('metabolic.albuminNeedsAg')
+      || clinicalText(
+        'A correção por albumina exige cloreto e bicarbonato.',
+        'Albumin correction requires chloride and bicarbonate.'
+      )
+    );
+  }
+
+
+  if (
+    bun !== null
+    && glucose === null
+  ) {
+    return showError(
+      'metabolic-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('metabolic.bunNeedsGlucose')
+      || clinicalText(
+        'BUN exige glicose para cálculo de osmolalidade.',
+        'BUN requires glucose for calculated osmolality.'
+      )
+    );
+  }
+
+
+  if (
+    chloride === null
+    && glucose === null
+  ) {
+    return showError(
+      'metabolic-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('metabolic.noPath')
+      || clinicalText(
+        'Informe cloreto+bicarbonato e/ou glicose.',
+        'Provide chloride+bicarbonate and/or glucose.'
+      )
+    );
+  }
+
+
+  const optionalPositive = [
+    chloride,
+    bicarbonate,
+    albumin,
+    paco2
+  ];
+
+
+  if (
+    optionalPositive.some(
+      value =>
+        value !== null
+        && (
+          !Number.isFinite(value)
+          || value <= 0
+        )
+    )
+    || (
+      glucose !== null
+      && (
+        !Number.isFinite(glucose)
+        || glucose < 0
+      )
+    )
+    || (
+      bun !== null
+      && (
+        !Number.isFinite(bun)
+        || bun < 0
+      )
+    )
+  ) {
+    return showError(
+      'metabolic-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('metabolic.invalid')
+      || clinicalText(
+        'Valores metabólicos inválidos.',
+        'Invalid metabolic values.'
+      )
+    );
+  }
+
+
+  const payload = {
+    sodium_meq_l:
+      sodium,
+
+    chloride_meq_l:
+      chloride,
+
+    bicarbonate_meq_l:
+      bicarbonate,
+
+    albumin_g_dl:
+      albumin,
+
+    glucose_mg_dl:
+      glucose,
+
+    bun_mg_dl:
+      bun,
+
+    paco2_mm_hg:
+      paco2,
+
+    metabolic_acidosis_confirmed:
+      confirmed
+  };
+
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/acid-base-metabolic',
+      payload,
+      globalThis.ClinicalTools
+        .calculateMetabolicToolkit
+    );
+
+
+    lastMetabolicResult =
+      result;
+
+    lastMetabolicSource =
+      source;
+
+
+    renderMetabolicResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'metabolic-result',
+      error.message
+    );
+  }
+}
+
+
 function scoreGlasgow() {
   const ids = ['glasgow-e', 'glasgow-v', 'glasgow-m'];
   const values = ids.map((id) => document.getElementById(id).value);
@@ -2291,6 +2844,7 @@ function wireUiEvents() {
     'renal-aki-form': calculateAkiTool,
     'hemodynamics-form': calculateHemodynamicsTool,
     'oxygenation-form': calculateOxygenationTool,
+    'metabolic-form': calculateMetabolicTool,
     'drip-form': calculateDrip,
     'meds-form': calculateMeds,
     'bmi-form': calculateBMI,
@@ -2377,6 +2931,14 @@ globalThis.addEventListener?.(
       renderOxygenationResult(
         lastOxygenationResult,
         lastOxygenationSource
+      );
+    }
+
+
+    if (lastMetabolicResult) {
+      renderMetabolicResult(
+        lastMetabolicResult,
+        lastMetabolicSource
       );
     }
   }

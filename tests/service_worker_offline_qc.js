@@ -91,7 +91,7 @@ async function dispatch(url, mode = 'cors') {
   assert(html.includes('offline'));
 
   assert(swSource.includes("cache: 'reload'"), 'precache must force HTTP-cache revalidation');
-  assert(swSource.includes("clinical-reference-v12-v2-oxygenation"));
+  assert(swSource.includes("clinical-reference-v13-v2-metabolic"));
   assert(swSource.includes("offlineSaeSearch"));
   assert(swSource.includes("offlinePolicy"));
 

@@ -1,0 +1,96 @@
+[
+  {
+    "name": "normal_ag_osmolality",
+    "input": {
+      "sodium_meq_l": 140,
+      "chloride_meq_l": 104,
+      "bicarbonate_meq_l": 24,
+      "albumin_g_dl": 4,
+      "glucose_mg_dl": 90,
+      "bun_mg_dl": 14,
+      "paco2_mm_hg": null,
+      "metabolic_acidosis_confirmed": false
+    },
+    "anion_gap": 12.0,
+    "corrected_anion_gap": 12.0,
+    "osmolality": 290.0,
+    "corrected_sodium": 140.0,
+    "delta_ratio": null
+  },
+  {
+    "name": "hypoalbumin_correction",
+    "input": {
+      "sodium_meq_l": 140,
+      "chloride_meq_l": 106,
+      "bicarbonate_meq_l": 24,
+      "albumin_g_dl": 2,
+      "glucose_mg_dl": null,
+      "bun_mg_dl": null,
+      "paco2_mm_hg": null,
+      "metabolic_acidosis_confirmed": false
+    },
+    "anion_gap": 10.0,
+    "corrected_anion_gap": 15.0,
+    "osmolality": null,
+    "corrected_sodium": null,
+    "delta_ratio": null
+  },
+  {
+    "name": "hyperglycemia_corrected_sodium",
+    "input": {
+      "sodium_meq_l": 130,
+      "chloride_meq_l": null,
+      "bicarbonate_meq_l": null,
+      "albumin_g_dl": null,
+      "glucose_mg_dl": 500,
+      "bun_mg_dl": 28,
+      "paco2_mm_hg": null,
+      "metabolic_acidosis_confirmed": false
+    },
+    "anion_gap": null,
+    "corrected_anion_gap": null,
+    "osmolality": 297.8,
+    "corrected_sodium": 136.4,
+    "delta_ratio": null
+  },
+  {
+    "name": "winter_and_delta_pure_hagma",
+    "input": {
+      "sodium_meq_l": 140,
+      "chloride_meq_l": 104,
+      "bicarbonate_meq_l": 16,
+      "albumin_g_dl": 4,
+      "glucose_mg_dl": null,
+      "bun_mg_dl": null,
+      "paco2_mm_hg": 32,
+      "metabolic_acidosis_confirmed": true
+    },
+    "anion_gap": 20.0,
+    "corrected_anion_gap": 20.0,
+    "osmolality": null,
+    "corrected_sodium": null,
+    "delta_ratio": 1.0,
+    "winter_expected": 32.0,
+    "winter_status": "within_expected"
+  },
+  {
+    "name": "winter_high_paco2",
+    "input": {
+      "sodium_meq_l": 140,
+      "chloride_meq_l": 104,
+      "bicarbonate_meq_l": 16,
+      "albumin_g_dl": null,
+      "glucose_mg_dl": null,
+      "bun_mg_dl": null,
+      "paco2_mm_hg": 38,
+      "metabolic_acidosis_confirmed": true
+    },
+    "anion_gap": 20.0,
+    "corrected_anion_gap": null,
+    "osmolality": null,
+    "corrected_sodium": null,
+    "delta_ratio": 1.0,
+    "winter_expected": 32.0,
+    "winter_status": "paco2_above_expected"
+  }
+]

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clinical-reference-v12-v2-oxygenation';
+const CACHE_NAME = 'clinical-reference-v13-v2-metabolic';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [

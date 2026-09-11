@@ -29,6 +29,10 @@ from clinical_tools.oxygenation import (
     OXYGENATION_METADATA,
     calculate_oxygenation,
 )
+from clinical_tools.metabolic import (
+    METABOLIC_METADATA,
+    calculate_metabolic_toolkit,
+)
 from config import load_settings
 from observability import RateLimitMiddleware, RequestContextMiddleware, configure_logging
 from scripts.clinical_content import file_hash, validate_release_content
@@ -823,6 +827,41 @@ def api_calculate_oxygenation(
             fio2_percent=payload.fio2_percent,
             pao2_mm_hg=payload.pao2_mm_hg,
             spo2_percent=payload.spo2_percent,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/acid-base-metabolic/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_metabolic_metadata():
+    return METABOLIC_METADATA
+
+
+@api_v1.post(
+    "/tools/acid-base-metabolic",
+    response_model=schemas.MetabolicToolkitResponse,
+)
+def api_calculate_metabolic(
+    payload: schemas.MetabolicToolkitInput,
+):
+    try:
+        return calculate_metabolic_toolkit(
+            sodium_meq_l=payload.sodium_meq_l,
+            chloride_meq_l=payload.chloride_meq_l,
+            bicarbonate_meq_l=payload.bicarbonate_meq_l,
+            albumin_g_dl=payload.albumin_g_dl,
+            glucose_mg_dl=payload.glucose_mg_dl,
+            bun_mg_dl=payload.bun_mg_dl,
+            paco2_mm_hg=payload.paco2_mm_hg,
+            metabolic_acidosis_confirmed=(
+                payload.metabolic_acidosis_confirmed
+            ),
         )
     except ValueError as exc:
         raise HTTPException(

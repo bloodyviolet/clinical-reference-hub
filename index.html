@@ -220,6 +220,78 @@
           <div id="crcl-result" aria-live="polite" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
         
+        <!-- Acid-base / Metabolic -->
+        <div id="metabolic-card" class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+
+          <div class="space-y-1">
+            <h2 data-i18n="metabolic.title" class="text-base font-semibold text-white">Ácido-base e metabolismo</h2>
+            <p data-i18n="metabolic.description" class="text-xs text-slate-400">Ânion gap, correção por albumina, osmolalidade calculada, sódio corrigido, Winter e delta ratio com gates explícitos de validade.</p>
+          </div>
+
+          <form id="metabolic-form" class="space-y-4 border-t border-slate-800 pt-4">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+
+              <div>
+                <label data-i18n="metabolic.sodium" for="metabolic-na" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Sódio (mEq/L)</label>
+                <input id="metabolic-na" type="number" min="0.1" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="metabolic.chloride" for="metabolic-cl" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Cloreto (mEq/L) · opcional</label>
+                <input id="metabolic-cl" type="number" min="0.1" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="metabolic.bicarbonate" for="metabolic-hco3" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Bicarbonato / HCO₃⁻ (mEq/L) · opcional</label>
+                <input id="metabolic-hco3" type="number" min="0.1" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="metabolic.albumin" for="metabolic-albumin" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Albumina (g/dL) · opcional</label>
+                <input id="metabolic-albumin" type="number" min="0.1" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="metabolic.glucose" for="metabolic-glucose" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Glicose (mg/dL) · opcional</label>
+                <input id="metabolic-glucose" type="number" min="0" step="1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="metabolic.bun" for="metabolic-bun" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">BUN (mg/dL) · opcional</label>
+                <input id="metabolic-bun" type="number" min="0" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="metabolic.paco2" for="metabolic-paco2" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">PaCO₂ (mmHg) · opcional</label>
+                <input id="metabolic-paco2" type="number" min="0.1" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+            </div>
+
+            <div class="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 space-y-2">
+
+              <label class="flex items-start gap-3 text-sm text-amber-100">
+                <input id="metabolic-acidosis-confirmed" type="checkbox" class="mt-1">
+                <span data-i18n="metabolic.confirmed">Acidose metabólica foi confirmada clinicamente/gasometricamente</span>
+              </label>
+
+              <p data-i18n="metabolic.gateWarning" class="text-[11px] text-amber-300">Marque esta opção somente quando acidose metabólica já tiver sido estabelecida. O sistema não infere o distúrbio primário a partir destes valores.</p>
+
+            </div>
+
+            <button type="submit" data-i18n="metabolic.calculate" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular painel metabólico</button>
+
+          </form>
+
+          <div id="metabolic-result" aria-live="polite" class="hidden rounded-xl border border-slate-800 bg-slate-950/60 p-4"></div>
+
+          <div class="border-t border-slate-800 pt-3">
+            <p data-i18n="metabolic.source" class="text-[10px] text-slate-500">AG = Na−(Cl+HCO₃) · AG corrigido = AG+2,5×(4−albumina) · Osm = 2Na+glicose/18+BUN/2,8 · Na corrigido: fator 1,6.</p>
+          </div>
+
+        </div>
+
         <!-- Oxygenation -->
         <div id="oxygenation-card" class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
 
