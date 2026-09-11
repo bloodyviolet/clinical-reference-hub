@@ -276,3 +276,65 @@ def test_oxygenation_metadata_contract():
         payload["offline_capable"]
         is True
     )
+
+
+def test_oxygenation_metadata_exposes_brazil_review():
+    response = client.get(
+        "/api/v1/tools/oxygenation/meta"
+    )
+
+    assert response.status_code == 200
+
+    payload = response.json()
+
+    assert (
+        payload[
+            "brazil_applicability_status"
+        ]
+        == "no_national_variant_identified"
+    )
+
+    assert (
+        payload[
+            "brazil_review_date"
+        ]
+        == "2026-09-11"
+    )
+
+    assert (
+        payload[
+            "brazil_document_or_portaria"
+        ]
+        == (
+            "Nota Técnica nº "
+            "11/2026-CGCOVID/DEDT/SVSA/MS"
+        )
+    )
+
+    assert (
+        payload[
+            "brazil_differs_from_international"
+        ]
+        is False
+    )
+
+    assert (
+        payload[
+            "final_brazil_review_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        "SRAG"
+        in payload[
+            "brazil_difference_notes_pt"
+        ]
+    )
+
+    assert (
+        "Global ARDS"
+        in payload[
+            "brazil_difference_notes_en"
+        ]
+    )

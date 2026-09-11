@@ -335,6 +335,55 @@ def test_oxygenation_records_no_generic_national_variant():
         is False
     )
 
+    assert (
+        item[
+            "remediation_required"
+        ]
+        is False
+    )
+
+    assert (
+        item[
+            "remediation_priority"
+        ]
+        == "none"
+    )
+
+    assert (
+        item[
+            "base_calculations_change_required"
+        ]
+        is False
+    )
+
+    assert (
+        item[
+            "formal_sus_global_ards_adoption_identified"
+        ]
+        is False
+    )
+
+    assert (
+        item[
+            "bh4b_metadata_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        item[
+            "bh4b_visible_provenance_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        item[
+            "final_brazil_review_status"
+        ]
+        == "pass"
+    )
+
 
 def test_growth_is_already_harmonized():
     item = next(

@@ -9,7 +9,7 @@ Review date: 2026-09-11
 | 1 | NEWS2 | Validated Brazilian adaptation | PASS |
 | 2 | Renal | National SUS variant + Brazilian consensus | PASS |
 | 3 | Hemodynamics | Context-specific Brazilian guidance | PASS |
-| 4 | Oxygenation | No national generic variant identified | Metadata/source update |
+| 4 | Oxygenation | No generic national calculation variant identified | PASS |
 | 5 | Acid-base/metabolic | Context-specific national toxicology guidance | Required |
 | 6 | WHO/SISVAN growth | National standard integrated | PASS |
 
@@ -151,19 +151,67 @@ Status: PASS.
 
 ## Item 4 — Oxygenation
 
-The audit identified current Ministry respiratory-severity guidance,
-including SpO2-based severity criteria, but did not identify a current
-national general-purpose Brazilian replacement for P/F or S/F
-calculation.
+BH4A refreshed the Brazilian source review through 2026-09-11.
+
+The prior audit relied on the 2024 integrated respiratory-surveillance
+guide. That provenance is now superseded for surveillance purposes by:
+
+**Nota Técnica nº 11/2026-CGCOVID/DEDT/SVSA/MS**, published
+2026-08-19.
+
+The current national SRAG surveillance definition includes room-air
+SpO2 <=94% among deterioration criteria for hospitalised cases meeting
+the syndrome definition.
+
+This is an epidemiological surveillance criterion.
+
+It is **not**:
+
+- a replacement P/F formula;
+- a replacement S/F formula;
+- an ARDS severity classification; or
+- evidence that P/F or S/F mathematics should change.
+
+The current CONITEC protocol catalog was also reviewed. No general
+national Brazilian replacement calculation for P/F or S/F was
+identified in the audited authoritative corpus.
+
+This audit likewise did not identify an explicit national SUS statement
+formally adopting the 2023 Global ARDS Definition.
 
 Disposition:
 
-- retain current P/F and S/F formulas;
-- retain prohibition on automatic ARDS diagnosis/staging;
-- record Brazil audit metadata;
-- do not state that the Global ARDS Definition 2023 is formally adopted
-  by SUS unless a national source explicitly establishes that;
-- repeat the search at final release freeze.
+- retain P/F and S/F mathematics unchanged;
+- retain explicit FiO2 input;
+- retain the rule against automatic ARDS diagnosis/staging;
+- retain the SpO2 >97% S/F caution;
+- replace superseded Brazilian surveillance provenance with the 2026
+  Ministry source;
+- clearly separate national SRAG surveillance criteria from the
+  international Global ARDS reference;
+- do not claim formal SUS adoption of Global ARDS without an explicit
+  national source;
+- repeat the source review at final v2 release freeze.
+
+BH4 metadata remediation remains pending.
+
+BH4 final disposition:
+
+- P/F and S/F mathematics remain unchanged;
+- FiO2 remains explicitly supplied and is not inferred from oxygen
+  flow or device labels;
+- ARDS diagnosis/severity is not automatically generated;
+- the SpO2 >97% S/F caution remains unchanged;
+- Brazilian provenance now uses the current Ministry/SVSA Nota Técnica
+  nº 11/2026;
+- the current SRAG room-air SpO2 <=94% surveillance criterion is
+  explicitly separated from P/F, S/F and ARDS classification;
+- Global ARDS 2023 remains an international reference;
+- this audit did not identify an explicit formal SUS adoption statement
+  making Global ARDS the generic national definition;
+- PT-BR and EN-GB provenance are exposed in the interface.
+
+Status: PASS.
 
 ## Item 5 — Acid-base / metabolic
 

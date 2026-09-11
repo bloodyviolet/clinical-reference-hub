@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clinical-reference-v18-v2-brazil-hemodynamics';
+const CACHE_NAME = 'clinical-reference-v19-v2-brazil-oxygenation';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [

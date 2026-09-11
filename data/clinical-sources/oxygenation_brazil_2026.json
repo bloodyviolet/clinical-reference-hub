@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "feature": "oxygenation_brazil_harmonization",
+  "clinical_review_date": "2026-09-11",
+  "implementation_status": "metadata_integration_complete",
+  "brazil_applicability_status": "no_national_variant_identified",
+  "national_generic_pf_variant_identified": false,
+  "national_generic_sf_variant_identified": false,
+  "formal_sus_global_ards_adoption_identified": false,
+  "base_calculation_policy": {
+    "pf_formula_change_required": false,
+    "sf_formula_change_required": false,
+    "fio2_input_contract_change_required": false,
+    "ards_auto_classification_allowed": false,
+    "sf_spo2_97_caution_change_required": false
+  },
+  "international_reference": {
+    "title": "A New Global Definition of Acute Respiratory Distress Syndrome",
+    "doi": "10.1164/rccm.202303-0558WS",
+    "pubmed": "https://pubmed.ncbi.nlm.nih.gov/37487152/",
+    "key_rules": [
+      "P/F = PaO2 divided by FiO2 fraction.",
+      "The Global ARDS definition uses P/F <=300 mmHg as one hypoxaemia criterion.",
+      "The Global ARDS definition permits S/F <=315 when SpO2 <=97%.",
+      "The oxygenation ratio alone is insufficient to establish ARDS because the definition contains additional criteria."
+    ]
+  },
+  "current_brazil_respiratory_surveillance": {
+    "authority": "Ministério da Saúde / SVSA",
+    "document": "Nota Técnica nº 11/2026-CGCOVID/DEDT/SVSA/MS",
+    "publication_date": "2026-08-19",
+    "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/notas-tecnicas/2026/nota-tecnica-no-11-2026-cgcovid.pdf/view",
+    "scope": "National respiratory-virus epidemiological surveillance",
+    "supersedes": "Prior recommendations in the 2024 integrated Covid-19/influenza/other respiratory-virus surveillance guide and other previously applicable surveillance documents.",
+    "current_srag_definition_finding": "The national SRAG surveillance case definition includes dyspnoea, tachypnoea and/or room-air SpO2 <=94% as deterioration criteria in a hospitalised patient with influenza-like syndrome.",
+    "oxygenation_engine_implication": "This is a respiratory-surveillance case definition, not a replacement P/F or S/F formula and not a generic ARDS oxygenation definition."
+  },
+  "conitec_review": {
+    "authority": "CONITEC / Ministério da Saúde",
+    "catalog_url": "https://www.gov.br/conitec/pt-br/assuntos/avaliacao-de-tecnologias-em-saude/protocolos-clinicos-e-diretrizes-terapeuticas/pcdt",
+    "catalog_review_date": "2026-09-11",
+    "catalog_freshness": "Official PCDT catalog reviewed after its 2026-09-09 update.",
+    "finding": "No general national P/F or S/F replacement calculation and no explicit formal SUS adoption statement for the 2023 Global ARDS definition were identified in the authoritative corpus reviewed for this audit."
+  },
+  "historical_or_context_specific_brazil_evidence": {
+    "status": "not_a_generic_national_variant",
+    "finding": "Brazilian disease-specific and institutional documents may use P/F values in respiratory management pathways. Such use does not change the mathematical P/F ratio and must not be promoted to a generic national oxygenation calculator standard."
+  },
+  "source_search_scope": [
+    "Ministério da Saúde / SVSA",
+    "CONITEC",
+    "Brazilian federal respiratory guidance",
+    "SBPT",
+    "AMIB"
+  ],
+  "negative_finding_policy": "no_national_variant_identified means no generic national variant was identified in the authoritative source corpus reviewed on the stated date; it is not a claim that no Brazilian publication can exist.",
+  "bh4b_implementation_rules": [
+    "Preserve P/F mathematics unchanged.",
+    "Preserve S/F mathematics unchanged.",
+    "Preserve explicit FiO2 entry; do not infer FiO2 from oxygen flow or device labels.",
+    "Preserve ards_classification_applied=false.",
+    "Preserve the SpO2 >97% S/F caution and the Global ARDS applicability gate.",
+    "Add Brazil applicability/source-freshness metadata.",
+    "State explicitly that formal SUS adoption of the Global ARDS definition was not identified.",
+    "Do not reinterpret the national SRAG surveillance SpO2 <=94% criterion as an ARDS threshold.",
+    "Keep Brazilian surveillance context distinct from the international Global ARDS reference.",
+    "Repeat the Ministry/CONITEC/SBPT/AMIB source review at the final v2.0 release freeze."
+  ],
+  "final_release_recheck_required": true,
+  "harmonization_implementation_complete": true,
+  "bh4b_metadata_status": "pass",
+  "bh4b_visible_provenance_status": "pass",
+  "final_brazil_review_status": "pass"
+}

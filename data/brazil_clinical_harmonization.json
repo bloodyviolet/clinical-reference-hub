@@ -250,32 +250,71 @@
       "brazil_applicability_status": "no_national_variant_identified",
       "national_sus_mandate_identified": false,
       "brazil_differs_from_international_numeric_rules": false,
-      "remediation_required": true,
-      "remediation_priority": "low",
+      "remediation_required": false,
+      "remediation_priority": "none",
       "brazil_authorities": [
         "Ministério da Saúde"
       ],
       "brazil_sources": [
         {
-          "title": "Guia de Vigilância Integrada da COVID-19, Influenza e Outros Vírus Respiratórios",
-          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/c/covid-19/publicacoes-tecnicas/guias-e-planos/guia-vigilancia-integrada-da-covid-19-influenza-e-outros-virus-respiratorios-de-importancia-em-saude-publica",
-          "source_type": "national_complementary_guidance",
+          "title": "Nota Técnica nº 11/2026-CGCOVID/DEDT/SVSA/MS",
+          "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/notas-tecnicas/2026/nota-tecnica-no-11-2026-cgcovid.pdf/view",
+          "source_type": "national_surveillance_guidance",
           "key_findings": [
-            "Current Brazilian respiratory guidance uses SpO2 and clinical severity criteria for respiratory infection surveillance.",
-            "The audited national sources did not identify a general Brazilian replacement formula for P/F or S/F ratios."
+            "Supersedes prior 2024 integrated respiratory-surveillance recommendations.",
+            "Current national SRAG surveillance definition includes room-air SpO2 <=94% among deterioration criteria.",
+            "The SRAG surveillance criterion is not a replacement P/F or S/F formula."
+          ]
+        },
+        {
+          "title": "CONITEC current PCDT catalog",
+          "url": "https://www.gov.br/conitec/pt-br/assuntos/avaliacao-de-tecnologias-em-saude/protocolos-clinicos-e-diretrizes-terapeuticas/pcdt",
+          "source_type": "national_protocol_catalog_review",
+          "key_findings": [
+            "No general national P/F or S/F replacement calculation was identified in the audited current corpus.",
+            "No explicit formal SUS adoption statement for the Global ARDS Definition was identified in this audit."
           ]
         }
       ],
       "required_actions": [
         "Keep P/F and S/F mathematics unchanged.",
-        "Record the Brazilian applicability audit in tool metadata.",
-        "Do not claim that the 2023 Global ARDS definition has been formally adopted by SUS without an explicit national source.",
-        "Retain the current rule against automatically diagnosing or staging ARDS from the ratios.",
-        "Repeat the Ministry/CONITEC/SBPT/AMIB source check during final v2 release qualification."
+        "Keep explicit FiO2 input and do not infer FiO2 from flow or device labels.",
+        "Preserve ards_classification_applied=false.",
+        "Preserve the SpO2 >97% S/F caution and Global ARDS applicability gate.",
+        "Replace the superseded respiratory-surveillance provenance with the current Ministry 2026 source.",
+        "Keep Brazilian SRAG surveillance criteria distinct from the international Global ARDS definition.",
+        "Do not claim formal SUS adoption of Global ARDS without an explicit national source.",
+        "Repeat Ministry/CONITEC/SBPT/AMIB review during final v2.0 qualification."
       ],
-      "scope_pt": "Nenhuma variante nacional geral de cálculo P/F ou S/F foi identificada no corpus oficial auditado.",
-      "scope_en": "No general national Brazilian P/F or S/F calculation variant was identified in the audited official corpus.",
-      "final_brazil_review_status": "metadata_remediation_required"
+      "scope_pt": "Nenhuma variante nacional geral de cálculo P/F ou S/F foi identificada no corpus oficial auditado. A atual definição nacional de vigilância de SRAG usa SpO2 em ar ambiente, mas não substitui as relações P/F ou S/F.",
+      "scope_en": "No general national Brazilian P/F or S/F calculation variant was identified in the audited official corpus. The current national SRAG surveillance definition uses room-air SpO2 but does not replace P/F or S/F ratios.",
+      "final_brazil_review_status": "pass",
+      "source_review_verified": true,
+      "base_calculations_change_required": false,
+      "formal_sus_global_ards_adoption_identified": false,
+      "current_brazil_respiratory_source": {
+        "authority": "Ministério da Saúde / SVSA",
+        "document": "Nota Técnica nº 11/2026-CGCOVID/DEDT/SVSA/MS",
+        "publication_date": "2026-08-19",
+        "supersedes_previous_surveillance_guidance": true,
+        "srag_spo2_room_air_threshold_percent": 94,
+        "srag_threshold_is_ards_definition": false,
+        "srag_threshold_changes_pf_sf_math": false
+      },
+      "bh4b_metadata_status": "pass",
+      "bh4b_visible_provenance_status": "pass",
+      "remediation_completed": [
+        "P/F and S/F mathematics retained unchanged.",
+        "Explicit FiO2 input contract retained unchanged.",
+        "ards_classification_applied remains false.",
+        "SpO2 >97% S/F caution and Global ARDS applicability gate retained unchanged.",
+        "Brazil metadata updated to current Ministry/SVSA Nota Técnica nº 11/2026.",
+        "Superseded 2024 respiratory-surveillance provenance removed from the current Brazil interpretation.",
+        "Current SRAG room-air SpO2 <=94% criterion is visibly identified as epidemiological surveillance only.",
+        "Brazilian SRAG surveillance and international Global ARDS 2023 are presented as distinct source contexts.",
+        "Formal SUS adoption of Global ARDS was not claimed because no explicit national adoption source was identified in this audit.",
+        "PT-BR and EN-GB provenance presentation integrated."
+      ]
     },
     {
       "item": 5,

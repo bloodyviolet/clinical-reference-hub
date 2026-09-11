@@ -50,6 +50,18 @@ assert(
   )
 );
 
+assert(
+  html.includes(
+    'data-i18n="oxygen.brazilSurveillance"'
+  )
+);
+
+assert(
+  html.includes(
+    'data-i18n="oxygen.globalArdsStatus"'
+  )
+);
+
 
 for (const key of [
   'oxygen.title',
@@ -57,6 +69,8 @@ for (const key of [
   'oxygen.pao2',
   'oxygen.spo2',
   'oxygen.noArdsDiagnosis',
+  'oxygen.brazilSurveillance',
+  'oxygen.globalArdsStatus',
   'oxygen.offline'
 ]) {
   assert(
@@ -70,7 +84,7 @@ for (const key of [
 
 assert(
   swSource.includes(
-    'clinical-reference-v18-v2-brazil-hemodynamics'
+    'clinical-reference-v19-v2-brazil-oxygenation'
   )
 );
 

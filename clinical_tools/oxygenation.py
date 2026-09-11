@@ -26,6 +26,19 @@ PULSE_OX_SOURCE_URL = (
 )
 
 
+BRAZIL_RESPIRATORY_SURVEILLANCE_URL = (
+    "https://www.gov.br/saude/pt-br/"
+    "centrais-de-conteudo/publicacoes/notas-tecnicas/"
+    "2026/nota-tecnica-no-11-2026-cgcovid.pdf/view"
+)
+
+BRAZIL_CONITEC_PCDT_CATALOG_URL = (
+    "https://www.gov.br/conitec/pt-br/assuntos/"
+    "avaliacao-de-tecnologias-em-saude/"
+    "protocolos-clinicos-e-diretrizes-terapeuticas/pcdt"
+)
+
+
 def calculate_oxygenation(
     *,
     fio2_percent: float,
@@ -318,4 +331,63 @@ OXYGENATION_METADATA = {
         date(2026, 9, 11),
     "offline_capable":
         True,
+
+    "brazil_applicability_status":
+        "no_national_variant_identified",
+
+    "brazil_review_date":
+        date(2026, 9, 11),
+
+    "brazil_authority":
+        "Ministério da Saúde / SVSA; CONITEC",
+
+    "brazil_source_title": (
+        "Nota Técnica nº 11/2026-CGCOVID/DEDT/SVSA/MS "
+        "e revisão do catálogo oficial de PCDT da CONITEC"
+    ),
+
+    "brazil_source_url":
+        BRAZIL_RESPIRATORY_SURVEILLANCE_URL,
+
+    "brazil_document_or_portaria":
+        "Nota Técnica nº 11/2026-CGCOVID/DEDT/SVSA/MS",
+
+    "brazil_scope_pt": (
+        "A fonte nacional vigente trata de vigilância de vírus "
+        "respiratórios e definição de caso de SRAG. Nenhuma "
+        "variante nacional geral de cálculo P/F ou S/F foi "
+        "identificada no corpus oficial auditado."
+    ),
+
+    "brazil_scope_en": (
+        "The current national source addresses respiratory-virus "
+        "surveillance and the SRAG case definition. No general "
+        "Brazilian national P/F or S/F calculation variant was "
+        "identified in the audited official corpus."
+    ),
+
+    "brazil_differs_from_international":
+        False,
+
+    "brazil_difference_notes_pt": (
+        "A definição nacional de vigilância de SRAG inclui "
+        "SpO2 <=94% em ar ambiente entre critérios de piora, "
+        "mas esse limiar epidemiológico não substitui P/F ou "
+        "S/F e não é aplicado como diagnóstico/classificação "
+        "de SDRA. Não foi identificada adoção formal pelo SUS "
+        "da definição Global ARDS 2023 como definição nacional "
+        "genérica."
+    ),
+
+    "brazil_difference_notes_en": (
+        "The national SRAG surveillance definition includes "
+        "room-air SpO2 <=94% among deterioration criteria, but "
+        "this epidemiological threshold does not replace P/F or "
+        "S/F and is not applied as ARDS diagnosis/classification. "
+        "Formal SUS adoption of the 2023 Global ARDS definition "
+        "as a generic national definition was not identified."
+    ),
+
+    "final_brazil_review_status":
+        "pass",
 }

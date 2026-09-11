@@ -350,6 +350,12 @@
       'oxygen.source':
         'P/F = PaO₂ / FiO₂ em fração · S/F = SpO₂ / FiO₂ em fração.',
 
+      'oxygen.brazilSurveillance':
+        'Brasil: a Nota Técnica MS/SVSA nº 11/2026 usa SpO₂ ≤94% em ar ambiente na definição de vigilância de SRAG. Esse critério epidemiológico não substitui P/F ou S/F e não é usado aqui para diagnosticar ou classificar SDRA.',
+
+      'oxygen.globalArdsStatus':
+        'Referência internacional: Global ARDS 2023. A revisão brasileira de 2026 não identificou adoção formal pelo SUS dessa definição como definição nacional genérica.',
+
       'metabolic.title':
         'Ácido-base e metabolismo',
 
@@ -900,6 +906,12 @@
 
       'oxygen.source':
         'P/F = PaO₂ / FiO₂ fraction · S/F = SpO₂ / FiO₂ fraction.',
+
+      'oxygen.brazilSurveillance':
+        'Brazil: Ministry/SVSA Technical Note 11/2026 uses room-air SpO₂ ≤94% in the SRAG surveillance case definition. This epidemiological criterion does not replace P/F or S/F and is not used here to diagnose or classify ARDS.',
+
+      'oxygen.globalArdsStatus':
+        'International reference: Global ARDS 2023. The 2026 Brazilian review did not identify formal SUS adoption of this definition as the generic national definition.',
 
       'metabolic.title':
         'Acid-base and metabolic toolkit',
