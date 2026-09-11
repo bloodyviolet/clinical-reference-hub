@@ -40,24 +40,24 @@ const swSource =
 
 assert(
   html.includes(
-    'id="hemodynamics-form"'
+    'id="oxygenation-form"'
   )
 );
 
 assert(
   html.includes(
-    'id="hemodynamics-result"'
+    'id="oxygenation-result"'
   )
 );
 
 
 for (const key of [
-  'hemo.title',
-  'hemo.sbp',
-  'hemo.dbp',
-  'hemo.hr',
-  'hemo.noThreshold',
-  'hemo.offline'
+  'oxygen.title',
+  'oxygen.fio2',
+  'oxygen.pao2',
+  'oxygen.spo2',
+  'oxygen.noArdsDiagnosis',
+  'oxygen.offline'
 ]) {
   assert(
     i18nSource.includes(
@@ -142,8 +142,7 @@ global.navigator = {};
 global.URL = URL;
 
 
-// Simulate loss of network so the UI must fall back to
-// the local ClinicalTools implementation.
+// Force API-first calculation down the local/offline path.
 global.fetch = async () => {
   throw new TypeError(
     'Failed to fetch'
@@ -176,49 +175,39 @@ const event = {
 
 (async () => {
   set(
-    'hemo-sbp',
-    '120'
+    'oxygen-fio2',
+    '40'
   );
 
   set(
-    'hemo-dbp',
+    'oxygen-pao2',
     '80'
   );
 
   set(
-    'hemo-hr',
-    '60'
+    'oxygen-spo2',
+    '95'
   );
 
   const result =
     set(
-      'hemodynamics-result'
+      'oxygenation-result'
     );
 
 
-  await calculateHemodynamicsTool(
+  await calculateOxygenationTool(
     event
   );
 
 
   assert(
     result.innerHTML
-      .includes('40.0 mmHg')
+      .includes('200.0')
   );
 
   assert(
     result.innerHTML
-      .includes('93.3 mmHg')
-  );
-
-  assert(
-    result.innerHTML
-      .includes('0.500')
-  );
-
-  assert(
-    result.innerHTML
-      .includes('0.643')
+      .includes('237.5')
   );
 
   assert(
@@ -228,9 +217,15 @@ const event = {
       )
   );
 
+  assert(
+    result.innerHTML
+      .includes(
+        'não estabelecem diagnóstico'
+      )
+  );
 
-  // Language switch must re-render an existing result,
-  // not require a new calculation.
+
+  // Re-render the existing result in EN-GB.
   globalThis.ClinicalI18n = {
     getLanguage() {
       return 'en-GB';
@@ -238,17 +233,23 @@ const event = {
 
     t(key) {
       const messages = {
-        'hemo.result':
-          'Calculated indices',
+        'oxygen.result':
+          'Calculated ratios',
 
-        'hemo.pp':
-          'Pulse pressure',
+        'oxygen.pf':
+          'P/F ratio',
 
-        'hemo.map':
-          'Mean arterial pressure',
+        'oxygen.sf':
+          'S/F ratio',
 
-        'hemo.offline':
-          'Result calculated locally while offline.'
+        'oxygen.sfCaution':
+          'S/F ratio interpretation caution',
+
+        'oxygen.offline':
+          'Result calculated locally while offline.',
+
+        'oxygen.invalid':
+          'Enter FiO₂ between 21% and 100% and at least one valid PaO₂ or SpO₂ value.'
       };
 
       return messages[key]
@@ -257,23 +258,23 @@ const event = {
   };
 
 
-  renderHemodynamicsResult(
-    lastHemodynamicsResult,
-    lastHemodynamicsSource
+  renderOxygenationResult(
+    lastOxygenationResult,
+    lastOxygenationSource
   );
 
 
   assert(
     result.innerHTML
       .includes(
-        'These indices are adjuncts'
+        'P/F and S/F ratios quantify oxygenation'
       )
   );
 
   assert(
     result.innerHTML
       .includes(
-        'Calculated MAP is an approximation'
+        'When used in the Global ARDS definition'
       )
   );
 
@@ -285,17 +286,82 @@ const event = {
   );
 
 
-  // Reversed SBP/DBP must fail before calculation.
+  // SpO2 >97% is still mathematically calculated,
+  // but must display the explicit S/F caution.
   elements.get(
-    'hemo-sbp'
-  ).value = '70';
+    'oxygen-pao2'
+  ).value = '';
 
   elements.get(
-    'hemo-dbp'
-  ).value = '80';
+    'oxygen-spo2'
+  ).value = '98';
 
 
-  await calculateHemodynamicsTool(
+  await calculateOxygenationTool(
+    event
+  );
+
+
+  assert(
+    result.innerHTML
+      .includes('245.0')
+  );
+
+  assert(
+    result.innerHTML
+      .includes(
+        'SpO2 above 97%'
+      )
+  );
+
+  assert(
+    lastOxygenationResult
+      .global_ards_sf_threshold_applicable
+    === false
+  );
+
+
+  // PaO2-only path.
+  elements.get(
+    'oxygen-fio2'
+  ).value = '50';
+
+  elements.get(
+    'oxygen-pao2'
+  ).value = '75';
+
+  elements.get(
+    'oxygen-spo2'
+  ).value = '';
+
+
+  await calculateOxygenationTool(
+    event
+  );
+
+
+  assert(
+    result.innerHTML
+      .includes('150.0')
+  );
+
+  assert.strictEqual(
+    lastOxygenationResult.sf_ratio,
+    null
+  );
+
+
+  // No PaO2 and no SpO2 must fail closed before calculation.
+  elements.get(
+    'oxygen-pao2'
+  ).value = '';
+
+  elements.get(
+    'oxygen-spo2'
+  ).value = '';
+
+
+  await calculateOxygenationTool(
     event
   );
 
@@ -303,17 +369,13 @@ const event = {
   assert(
     result.innerHTML
       .includes(
-        'hemo.invalid'
-      )
-    || result.innerHTML
-      .includes(
-        'Enter valid'
+        'Enter FiO₂ between 21% and 100%'
       )
   );
 
 
   console.log(
-    'hemodynamics_ui_qc: bilingual API-first/offline UI PASS'
+    'oxygenation_ui_qc: bilingual API-first/offline P/F + S/F UI PASS'
   );
 
 })().catch(

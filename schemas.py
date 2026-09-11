@@ -558,3 +558,55 @@ class HemodynamicsResponse(BaseModel):
 
     map_note_pt: str
     map_note_en: str
+
+
+# ---------------------------------------------------------------------------
+# v2 Item 4 — oxygenation P/F and S/F ratios.
+# ---------------------------------------------------------------------------
+
+class OxygenationInput(BaseModel):
+    fio2_percent: float = Field(
+        ge=21,
+        le=100,
+    )
+
+    pao2_mm_hg: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    spo2_percent: float | None = Field(
+        default=None,
+        ge=1,
+        le=100,
+    )
+
+
+class OxygenationResponse(BaseModel):
+    tool: Literal["oxygenation_ratios"]
+
+    fio2_percent: float
+    fio2_fraction: float
+
+    pao2_mm_hg: float | None
+    spo2_percent: float | None
+
+    pf_ratio_mm_hg: float | None
+    sf_ratio: float | None
+
+    pf_method: str
+    sf_method: str
+
+    ards_classification_applied: Literal[False]
+
+    sf_spo2_above_97_caution: bool | None
+    global_ards_sf_threshold_applicable: bool | None
+
+    interpretation_pt: str
+    interpretation_en: str
+
+    sf_note_pt: str | None
+    sf_note_en: str | None
+
+    fio2_note_pt: str
+    fio2_note_en: str

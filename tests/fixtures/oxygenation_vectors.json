@@ -1,0 +1,62 @@
+[
+  {
+    "name": "both_room_air",
+    "input": {
+      "fio2_percent": 21,
+      "pao2_mm_hg": 100,
+      "spo2_percent": 97
+    },
+    "pf_ratio": 476.2,
+    "sf_ratio": 461.9,
+    "sf_caution": false,
+    "sf_threshold_applicable": true
+  },
+  {
+    "name": "both_fio2_40",
+    "input": {
+      "fio2_percent": 40,
+      "pao2_mm_hg": 80,
+      "spo2_percent": 95
+    },
+    "pf_ratio": 200.0,
+    "sf_ratio": 237.5,
+    "sf_caution": false,
+    "sf_threshold_applicable": true
+  },
+  {
+    "name": "pao2_only",
+    "input": {
+      "fio2_percent": 50,
+      "pao2_mm_hg": 75,
+      "spo2_percent": null
+    },
+    "pf_ratio": 150.0,
+    "sf_ratio": null,
+    "sf_caution": null,
+    "sf_threshold_applicable": null
+  },
+  {
+    "name": "spo2_only",
+    "input": {
+      "fio2_percent": 50,
+      "pao2_mm_hg": null,
+      "spo2_percent": 90
+    },
+    "pf_ratio": null,
+    "sf_ratio": 180.0,
+    "sf_caution": false,
+    "sf_threshold_applicable": true
+  },
+  {
+    "name": "spo2_above_97",
+    "input": {
+      "fio2_percent": 50,
+      "pao2_mm_hg": null,
+      "spo2_percent": 98
+    },
+    "pf_ratio": null,
+    "sf_ratio": 196.0,
+    "sf_caution": true,
+    "sf_threshold_applicable": false
+  }
+]

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clinical-reference-v11-v2-hemodynamics';
+const CACHE_NAME = 'clinical-reference-v12-v2-oxygenation';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [

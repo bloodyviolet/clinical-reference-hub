@@ -25,6 +25,10 @@ from clinical_tools.hemodynamics import (
     HEMODYNAMICS_METADATA,
     calculate_hemodynamics,
 )
+from clinical_tools.oxygenation import (
+    OXYGENATION_METADATA,
+    calculate_oxygenation,
+)
 from config import load_settings
 from observability import RateLimitMiddleware, RequestContextMiddleware, configure_logging
 from scripts.clinical_content import file_hash, validate_release_content
@@ -791,6 +795,34 @@ def api_calculate_hemodynamics(
             systolic_bp=payload.systolic_bp,
             diastolic_bp=payload.diastolic_bp,
             heart_rate=payload.heart_rate,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/oxygenation/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_oxygenation_metadata():
+    return OXYGENATION_METADATA
+
+
+@api_v1.post(
+    "/tools/oxygenation",
+    response_model=schemas.OxygenationResponse,
+)
+def api_calculate_oxygenation(
+    payload: schemas.OxygenationInput,
+):
+    try:
+        return calculate_oxygenation(
+            fio2_percent=payload.fio2_percent,
+            pao2_mm_hg=payload.pao2_mm_hg,
+            spo2_percent=payload.spo2_percent,
         )
     except ValueError as exc:
         raise HTTPException(

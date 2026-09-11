@@ -74,7 +74,7 @@ for (const token of [
 
 assert(
   sw.includes(
-    'clinical-reference-v11-v2-hemodynamics'
+    'clinical-reference-v12-v2-oxygenation'
   ),
   'service-worker cache version not bumped'
 );

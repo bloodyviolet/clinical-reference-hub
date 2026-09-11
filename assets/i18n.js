@@ -255,7 +255,52 @@
         'Nenhum ponto de corte universal de SI/MSI foi aplicado.',
 
       'hemo.source':
-        'Fórmulas: PAM ≈ PAD + ⅓(PAS−PAD); PP = PAS−PAD; SI = FC/PAS; MSI = FC/PAM.'
+        'Fórmulas: PAM ≈ PAD + ⅓(PAS−PAD); PP = PAS−PAD; SI = FC/PAS; MSI = FC/PAM.',
+
+      'oxygen.title':
+        'Oxigenação · Relações P/F e S/F',
+
+      'oxygen.description':
+        'Cálculo das relações PaO₂/FiO₂ e SpO₂/FiO₂ com FiO₂ explicitamente informada.',
+
+      'oxygen.fio2':
+        'FiO₂ (%)',
+
+      'oxygen.pao2':
+        'PaO₂ (mmHg) · opcional',
+
+      'oxygen.spo2':
+        'SpO₂ (%) · opcional',
+
+      'oxygen.calculate':
+        'Calcular relações de oxigenação',
+
+      'oxygen.result':
+        'Relações calculadas',
+
+      'oxygen.pf':
+        'Relação P/F',
+
+      'oxygen.sf':
+        'Relação S/F',
+
+      'oxygen.offline':
+        'Resultado calculado localmente em modo offline.',
+
+      'oxygen.invalid':
+        'Informe FiO₂ entre 21% e 100% e pelo menos PaO₂ ou SpO₂ válida.',
+
+      'oxygen.sfCaution':
+        'Atenção à interpretação da relação S/F',
+
+      'oxygen.noArdsDiagnosis':
+        'A relação isolada não estabelece diagnóstico nem gravidade de SDRA.',
+
+      'oxygen.fio2Explicit':
+        'A FiO₂ deve ser conhecida; o sistema não a estima a partir do fluxo ou do dispositivo.',
+
+      'oxygen.source':
+        'P/F = PaO₂ / FiO₂ em fração · S/F = SpO₂ / FiO₂ em fração.'
     },
 
     'en-GB': {
@@ -503,7 +548,52 @@
         'No universal SI/MSI cut-off has been applied.',
 
       'hemo.source':
-        'Formulae: MAP ≈ DBP + ⅓(SBP−DBP); PP = SBP−DBP; SI = HR/SBP; MSI = HR/MAP.'
+        'Formulae: MAP ≈ DBP + ⅓(SBP−DBP); PP = SBP−DBP; SI = HR/SBP; MSI = HR/MAP.',
+
+      'oxygen.title':
+        'Oxygenation · P/F and S/F Ratios',
+
+      'oxygen.description':
+        'Calculation of PaO₂/FiO₂ and SpO₂/FiO₂ ratios using explicitly supplied FiO₂.',
+
+      'oxygen.fio2':
+        'FiO₂ (%)',
+
+      'oxygen.pao2':
+        'PaO₂ (mmHg) · optional',
+
+      'oxygen.spo2':
+        'SpO₂ (%) · optional',
+
+      'oxygen.calculate':
+        'Calculate oxygenation ratios',
+
+      'oxygen.result':
+        'Calculated ratios',
+
+      'oxygen.pf':
+        'P/F ratio',
+
+      'oxygen.sf':
+        'S/F ratio',
+
+      'oxygen.offline':
+        'Result calculated locally while offline.',
+
+      'oxygen.invalid':
+        'Enter FiO₂ between 21% and 100% and at least one valid PaO₂ or SpO₂ value.',
+
+      'oxygen.sfCaution':
+        'S/F ratio interpretation caution',
+
+      'oxygen.noArdsDiagnosis':
+        'The ratio alone does not establish an ARDS diagnosis or severity.',
+
+      'oxygen.fio2Explicit':
+        'FiO₂ must be known; the system does not estimate it from flow rate or delivery-device type.',
+
+      'oxygen.source':
+        'P/F = PaO₂ / FiO₂ fraction · S/F = SpO₂ / FiO₂ fraction.'
     }
   };
 

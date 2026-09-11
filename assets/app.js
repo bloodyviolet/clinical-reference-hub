@@ -1950,6 +1950,280 @@ async function calculateHemodynamicsTool(
 }
 
 
+
+let lastOxygenationResult = null;
+let lastOxygenationSource = null;
+
+
+function renderOxygenationResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'oxygenation-result'
+    );
+
+  if (!res || !result) {
+    return;
+  }
+
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+
+  const interpretation =
+    result[
+      `interpretation_${suffix}`
+    ];
+
+
+  const sfNote =
+    result[
+      `sf_note_${suffix}`
+    ];
+
+
+  const fio2Note =
+    result[
+      `fio2_note_${suffix}`
+    ];
+
+
+  const ratios = [];
+
+
+  if (
+    result.pf_ratio_mm_hg
+    !== null
+  ) {
+    ratios.push([
+      globalThis.ClinicalI18n
+        ?.t?.('oxygen.pf')
+      || clinicalText(
+        'Relação P/F',
+        'P/F ratio'
+      ),
+
+      result.pf_ratio_mm_hg
+        .toFixed(1)
+    ]);
+  }
+
+
+  if (
+    result.sf_ratio
+    !== null
+  ) {
+    ratios.push([
+      globalThis.ClinicalI18n
+        ?.t?.('oxygen.sf')
+      || clinicalText(
+        'Relação S/F',
+        'S/F ratio'
+      ),
+
+      result.sf_ratio
+        .toFixed(1)
+    ]);
+  }
+
+
+  const offlineNotice =
+    source === 'offline'
+      ? `
+        <p class="text-[11px] text-amber-300 mt-3">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('oxygen.offline')
+            || clinicalText(
+              'Resultado calculado localmente em modo offline.',
+              'Result calculated locally while offline.'
+            )
+          )}
+        </p>
+      `
+      : '';
+
+
+  const sfCaution =
+    sfNote
+      ? `
+        <div class="mt-3 rounded-lg border border-slate-800 bg-slate-900 p-3">
+          <p class="text-[10px] font-semibold text-amber-300 uppercase">
+            ${escapeHtml(
+              globalThis.ClinicalI18n
+                ?.t?.('oxygen.sfCaution')
+              || clinicalText(
+                'Atenção à interpretação da relação S/F',
+                'S/F ratio interpretation caution'
+              )
+            )}
+          </p>
+
+          <p class="text-[11px] text-slate-300 mt-1">
+            ${escapeHtml(sfNote)}
+          </p>
+        </div>
+      `
+      : '';
+
+
+  res.classList.remove(
+    'hidden'
+  );
+
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('oxygen.result')
+        || clinicalText(
+          'Relações calculadas',
+          'Calculated ratios'
+        )
+      )}
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+      ${ratios.map(
+        ([label, value]) => `
+          <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+            <p class="text-[10px] text-slate-400">
+              ${escapeHtml(label)}
+            </p>
+
+            <p class="text-2xl font-bold text-sky-400 mt-1">
+              ${escapeHtml(value)}
+            </p>
+          </div>
+        `
+      ).join('')}
+    </div>
+
+    <p class="text-[11px] text-slate-300 mt-4">
+      ${escapeHtml(interpretation)}
+    </p>
+
+    ${sfCaution}
+
+    <p class="text-[11px] text-slate-500 mt-3">
+      ${escapeHtml(fio2Note)}
+    </p>
+
+    ${offlineNotice}
+  `;
+}
+
+
+async function calculateOxygenationTool(
+  event
+) {
+  event.preventDefault();
+
+
+  const fio2 =
+    Number.parseFloat(
+      document.getElementById(
+        'oxygen-fio2'
+      ).value
+    );
+
+
+  const pao2 =
+    nullableClinicalNumber(
+      'oxygen-pao2'
+    );
+
+
+  const spo2 =
+    nullableClinicalNumber(
+      'oxygen-spo2'
+    );
+
+
+  if (
+    !Number.isFinite(fio2)
+    || fio2 < 21
+    || fio2 > 100
+    || (
+      pao2 === null
+      && spo2 === null
+    )
+    || (
+      pao2 !== null
+      && pao2 <= 0
+    )
+    || (
+      spo2 !== null
+      && (
+        spo2 < 1
+        || spo2 > 100
+      )
+    )
+  ) {
+    return showError(
+      'oxygenation-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('oxygen.invalid')
+      || clinicalText(
+        'Informe FiO₂ e pelo menos PaO₂ ou SpO₂ válidas.',
+        'Enter FiO₂ and at least one valid PaO₂ or SpO₂ value.'
+      )
+    );
+  }
+
+
+  const payload = {
+    fio2_percent:
+      fio2,
+
+    pao2_mm_hg:
+      pao2,
+
+    spo2_percent:
+      spo2
+  };
+
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/oxygenation',
+      payload,
+      globalThis.ClinicalTools
+        .calculateOxygenation
+    );
+
+
+    lastOxygenationResult =
+      result;
+
+    lastOxygenationSource =
+      source;
+
+
+    renderOxygenationResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'oxygenation-result',
+      error.message
+    );
+  }
+}
+
+
 function scoreGlasgow() {
   const ids = ['glasgow-e', 'glasgow-v', 'glasgow-m'];
   const values = ids.map((id) => document.getElementById(id).value);
@@ -2016,6 +2290,7 @@ function wireUiEvents() {
     'renal-ckd-form': calculateCkdTool,
     'renal-aki-form': calculateAkiTool,
     'hemodynamics-form': calculateHemodynamicsTool,
+    'oxygenation-form': calculateOxygenationTool,
     'drip-form': calculateDrip,
     'meds-form': calculateMeds,
     'bmi-form': calculateBMI,
@@ -2094,6 +2369,14 @@ globalThis.addEventListener?.(
       renderHemodynamicsResult(
         lastHemodynamicsResult,
         lastHemodynamicsSource
+      );
+    }
+
+
+    if (lastOxygenationResult) {
+      renderOxygenationResult(
+        lastOxygenationResult,
+        lastOxygenationSource
       );
     }
   }

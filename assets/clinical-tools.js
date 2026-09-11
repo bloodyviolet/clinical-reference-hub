@@ -1526,12 +1526,199 @@
   }
 
 
+
+  function calculateOxygenation(
+    input
+  ) {
+    const fio2Percent =
+      input.fio2_percent;
+
+    const pao2 =
+      input.pao2_mm_hg;
+
+    const spo2 =
+      input.spo2_percent;
+
+
+    if (
+      !Number.isFinite(fio2Percent)
+      || fio2Percent < 21
+      || fio2Percent > 100
+    ) {
+      throw new Error(
+        'invalid_fio2'
+      );
+    }
+
+
+    const hasPao2 =
+      pao2 !== null
+      && pao2 !== undefined;
+
+
+    const hasSpo2 =
+      spo2 !== null
+      && spo2 !== undefined;
+
+
+    if (
+      !hasPao2
+      && !hasSpo2
+    ) {
+      throw new Error(
+        'oxygenation_measurement_required'
+      );
+    }
+
+
+    if (
+      hasPao2
+      && (
+        !Number.isFinite(pao2)
+        || pao2 <= 0
+      )
+    ) {
+      throw new Error(
+        'invalid_pao2'
+      );
+    }
+
+
+    if (
+      hasSpo2
+      && (
+        !Number.isFinite(spo2)
+        || spo2 < 1
+        || spo2 > 100
+      )
+    ) {
+      throw new Error(
+        'invalid_spo2'
+      );
+    }
+
+
+    const fio2Fraction =
+      fio2Percent / 100;
+
+
+    const pfRatio =
+      hasPao2
+        ? pao2 / fio2Fraction
+        : null;
+
+
+    const sfRatio =
+      hasSpo2
+        ? spo2 / fio2Fraction
+        : null;
+
+
+    const sfAbove97 =
+      hasSpo2
+        ? spo2 > 97
+        : null;
+
+
+    const sfThresholdApplicable =
+      hasSpo2
+        ? spo2 <= 97
+        : null;
+
+
+    return {
+      tool:
+        'oxygenation_ratios',
+
+      fio2_percent:
+        Math.round(
+          fio2Percent * 10
+        ) / 10,
+
+      fio2_fraction:
+        Math.round(
+          fio2Fraction * 10000
+        ) / 10000,
+
+      pao2_mm_hg:
+        hasPao2
+          ? Math.round(
+              pao2 * 10
+            ) / 10
+          : null,
+
+      spo2_percent:
+        hasSpo2
+          ? Math.round(
+              spo2 * 10
+            ) / 10
+          : null,
+
+      pf_ratio_mm_hg:
+        pfRatio === null
+          ? null
+          : Math.round(
+              pfRatio * 10
+            ) / 10,
+
+      sf_ratio:
+        sfRatio === null
+          ? null
+          : Math.round(
+              sfRatio * 10
+            ) / 10,
+
+      pf_method:
+        'PaO2 / FiO2 fraction',
+
+      sf_method:
+        'SpO2 / FiO2 fraction',
+
+      ards_classification_applied:
+        false,
+
+      sf_spo2_above_97_caution:
+        sfAbove97,
+
+      global_ards_sf_threshold_applicable:
+        sfThresholdApplicable,
+
+      interpretation_pt:
+        'As relações P/F e S/F quantificam oxigenação, mas não estabelecem diagnóstico nem gravidade de SDRA isoladamente. A interpretação exige contexto clínico, suporte respiratório e os demais critérios da definição aplicável.',
+
+      interpretation_en:
+        'P/F and S/F ratios quantify oxygenation but do not independently establish an ARDS diagnosis or severity. Interpretation requires clinical context, respiratory support and the other criteria of the applicable definition.',
+
+      sf_note_pt:
+        !hasSpo2
+          ? null
+          : sfAbove97
+            ? 'SpO2 acima de 97% reduz a utilidade discriminativa da relação S/F; o limiar S/F da definição global de SDRA não deve ser aplicado neste valor.'
+            : 'Quando usada na definição global de SDRA, a relação S/F é considerada com SpO2 ≤97%; a relação isolada não confirma SDRA.',
+
+      sf_note_en:
+        !hasSpo2
+          ? null
+          : sfAbove97
+            ? 'SpO2 above 97% reduces the discriminatory utility of the S/F ratio; the Global ARDS S/F threshold should not be applied to this value.'
+            : 'When used in the Global ARDS definition, the S/F ratio is considered with SpO2 ≤97%; the ratio alone does not confirm ARDS.',
+
+      fio2_note_pt:
+        'A FiO2 foi informada explicitamente. Este módulo não estima FiO2 a partir de fluxo de oxigênio ou do tipo de dispositivo.',
+
+      fio2_note_en:
+        'FiO2 was supplied explicitly. This module does not estimate FiO2 from oxygen flow rate or delivery-device type.'
+    };
+  }
+
+
   globalThis.ClinicalTools =
     Object.freeze({
       calculateNews2,
       calculateEgfrCkdEpi2021,
       classifyCkd,
       calculateKdigoAki,
-      calculateHemodynamics
+      calculateHemodynamics,
+      calculateOxygenation
     });
 })();
