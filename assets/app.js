@@ -5019,6 +5019,1025 @@ async function calculateIvcf20Tool(
 }
 
 
+
+let lastSteadiTugResult = null;
+let lastSteadiTugSource = null;
+
+let lastSteadiChairResult = null;
+let lastSteadiChairSource = null;
+
+let lastSteadiBalanceResult = null;
+let lastSteadiBalanceSource = null;
+
+let lastSteadiOrthostaticResult = null;
+let lastSteadiOrthostaticSource = null;
+
+
+function steadiBooleanSelect(
+  id
+) {
+  const value =
+    document
+      .getElementById(id)
+      ?.value;
+
+  if (
+    value === ''
+    || value === null
+    || value === undefined
+  ) {
+    return null;
+  }
+
+  if (value === 'true') {
+    return true;
+  }
+
+  if (value === 'false') {
+    return false;
+  }
+
+  return null;
+}
+
+
+function steadiRequiredNumber(
+  id
+) {
+  const value =
+    document
+      .getElementById(id)
+      ?.value;
+
+  if (
+    value === ''
+    || value === null
+    || value === undefined
+  ) {
+    return null;
+  }
+
+  const parsed =
+    Number.parseFloat(
+      value
+    );
+
+  return Number.isFinite(
+    parsed
+  )
+    ? parsed
+    : null;
+}
+
+
+function steadiRequiredInteger(
+  id
+) {
+  const number =
+    steadiRequiredNumber(
+      id
+    );
+
+  if (
+    number === null
+    || !Number.isInteger(number)
+  ) {
+    return null;
+  }
+
+  return number;
+}
+
+
+function steadiOfflineNotice(
+  source
+) {
+  if (source !== 'offline') {
+    return '';
+  }
+
+  return `
+    <p class="text-[11px] text-amber-300 mt-3">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('steadi.offline')
+        || clinicalText(
+          'Resultado calculado localmente em modo offline.',
+          'Result calculated locally while offline.'
+        )
+      )}
+    </p>
+  `;
+}
+
+
+function renderSteadiTugResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'steadi-tug-result'
+    );
+
+  if (!res || !result) return;
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+  const statusText =
+    result.increased_fall_risk
+      ? (
+          globalThis.ClinicalI18n
+            ?.t?.('steadi.tug.increased')
+          || clinicalText(
+            'Critério STEADI de risco aumentado atingido (≥12 s).',
+            'STEADI increased-risk criterion reached (≥12 s).'
+          )
+        )
+      : (
+          globalThis.ClinicalI18n
+            ?.t?.('steadi.tug.notIncreased')
+          || clinicalText(
+            'Critério STEADI de risco aumentado não atingido (<12 s).',
+            'STEADI increased-risk criterion not reached (<12 s).'
+          )
+        );
+
+  res.classList.remove(
+    'hidden'
+  );
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('steadi.tug.resultTitle')
+        || clinicalText(
+          'Resultado · TUG STEADI',
+          'Result · STEADI TUG'
+        )
+      )}
+    </p>
+
+    <p class="text-2xl font-bold text-violet-300 mt-1">
+      ${escapeHtml(
+        result.time_seconds
+      )}
+      <span class="text-xs text-slate-400">
+        s
+      </span>
+    </p>
+
+    <p class="text-sm font-semibold text-white mt-2">
+      ${escapeHtml(
+        statusText
+      )}
+    </p>
+
+    <p class="text-[11px] text-slate-400 mt-2">
+      ${escapeHtml(
+        result[
+          `interpretation_${suffix}`
+        ]
+      )}
+    </p>
+
+    <p class="text-[11px] text-amber-300 mt-3">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('steadi.tug.boundary')
+        || clinicalText(
+          'TUG não é o item de marcha de 4 metros do IVCF-20.',
+          'TUG is not the IVCF-20 4-metre gait item.'
+        )
+      )}
+    </p>
+
+    ${steadiOfflineNotice(source)}
+  `;
+}
+
+
+async function calculateSteadiTugTool(
+  event
+) {
+  event.preventDefault();
+
+  const timeSeconds =
+    steadiRequiredNumber(
+      'steadi-tug-time'
+    );
+
+  const walkingAid =
+    steadiBooleanSelect(
+      'steadi-tug-walking-aid'
+    );
+
+  const protocolConfirmed =
+    steadiBooleanSelect(
+      'steadi-tug-protocol'
+    );
+
+  if (
+    timeSeconds === null
+    || timeSeconds <= 0
+    || walkingAid === null
+    || protocolConfirmed === null
+  ) {
+    return showError(
+      'steadi-tug-result',
+      clinicalText(
+        'Informe tempo maior que zero e responda aos campos de auxílio de marcha e confirmação do protocolo.',
+        'Enter a time greater than zero and answer the walking-aid and protocol-confirmation fields.'
+      )
+    );
+  }
+
+  const payload = {
+    time_seconds:
+      timeSeconds,
+
+    walking_aid_used:
+      walkingAid,
+
+    standard_3m_protocol_confirmed:
+      protocolConfirmed
+  };
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/steadi-tug',
+      payload,
+      globalThis
+        .ClinicalTools
+        .calculateSteadiTug
+    );
+
+    lastSteadiTugResult =
+      result;
+
+    lastSteadiTugSource =
+      source;
+
+    renderSteadiTugResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'steadi-tug-result',
+      error.message
+    );
+  }
+}
+
+
+function renderSteadiChairResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'steadi-chair-result'
+    );
+
+  if (!res || !result) return;
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+  let classification;
+
+  if (
+    !result
+      .reference_classification_available
+  ) {
+    classification =
+      (
+        globalThis.ClinicalI18n
+          ?.t?.('steadi.chair.unavailable')
+        || clinicalText(
+          'A tabela STEADI não fornece classificação idade/sexo para esta idade.',
+          'The STEADI table provides no age/sex classification for this age.'
+        )
+      );
+
+  } else if (
+    result.below_average
+  ) {
+    classification =
+      (
+        globalThis.ClinicalI18n
+          ?.t?.('steadi.chair.below')
+        || clinicalText(
+          'Abaixo da média de referência STEADI.',
+          'Below the STEADI reference average.'
+        )
+      );
+
+  } else {
+    classification =
+      (
+        globalThis.ClinicalI18n
+          ?.t?.('steadi.chair.notBelow')
+        || clinicalText(
+          'Não está abaixo da média de referência STEADI.',
+          'Not below the STEADI reference average.'
+        )
+      );
+  }
+
+  const referenceBlock =
+    result
+      .reference_classification_available
+      ? `
+        <p class="text-[11px] text-slate-400 mt-2">
+          ${escapeHtml(
+            result.reference_age_band
+          )}
+          ·
+          ${escapeHtml(
+            clinicalText(
+              'limiar',
+              'threshold'
+            )
+          )}
+          &lt;
+          ${escapeHtml(
+            result.below_average_threshold
+          )}
+        </p>
+      `
+      : `
+        <p class="text-[11px] text-amber-300 mt-2">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('steadi.chair.noExtrapolation')
+            || clinicalText(
+              'Após 94 anos, preserve o resultado bruto; não extrapole o ponto de corte.',
+              'After age 94, preserve the raw result; do not extrapolate a cutoff.'
+            )
+          )}
+        </p>
+      `;
+
+  const armBlock =
+    result.arms_required_to_stand
+      ? `
+        <p class="text-[11px] text-amber-300 mt-2">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('steadi.chair.armZero')
+            || clinicalText(
+              'Quando os braços são necessários para levantar, o protocolo orienta interromper o teste e registrar zero.',
+              'When the arms are required to stand, the protocol instructs the examiner to stop and record zero.'
+            )
+          )}
+        </p>
+      `
+      : '';
+
+  res.classList.remove(
+    'hidden'
+  );
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('steadi.chair.resultTitle')
+        || clinicalText(
+          'Resultado · 30-Second Chair Stand',
+          'Result · 30-Second Chair Stand'
+        )
+      )}
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+      <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+        <p class="text-[10px] text-slate-400">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('steadi.chair.raw')
+            || clinicalText(
+              'Repetições registradas',
+              'Recorded repetitions'
+            )
+          )}
+        </p>
+
+        <p class="text-2xl font-bold text-violet-300 mt-1">
+          ${escapeHtml(
+            result.recorded_repetitions
+          )}
+        </p>
+      </div>
+
+      <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+        <p class="text-sm font-semibold text-white">
+          ${escapeHtml(
+            classification
+          )}
+        </p>
+      </div>
+    </div>
+
+    ${referenceBlock}
+    ${armBlock}
+
+    <p class="text-[11px] text-slate-400 mt-3">
+      ${escapeHtml(
+        result[
+          `interpretation_${suffix}`
+        ]
+      )}
+    </p>
+
+    ${steadiOfflineNotice(source)}
+  `;
+}
+
+
+async function calculateSteadiChairStandTool(
+  event
+) {
+  event.preventDefault();
+
+  const age =
+    steadiRequiredInteger(
+      'steadi-chair-age'
+    );
+
+  const sex =
+    document
+      .getElementById(
+        'steadi-chair-sex'
+      )
+      ?.value;
+
+  const repetitions =
+    steadiRequiredInteger(
+      'steadi-chair-repetitions'
+    );
+
+  const armsRequired =
+    steadiBooleanSelect(
+      'steadi-chair-arms'
+    );
+
+  const protocolConfirmed =
+    steadiBooleanSelect(
+      'steadi-chair-protocol'
+    );
+
+  if (
+    age === null
+    || age < 60
+    || (
+      sex !== 'male'
+      && sex !== 'female'
+    )
+    || repetitions === null
+    || repetitions < 0
+    || armsRequired === null
+    || protocolConfirmed === null
+  ) {
+    return showError(
+      'steadi-chair-result',
+      clinicalText(
+        'Informe idade de 60 anos ou mais, sexo de referência, repetições e todos os campos do protocolo.',
+        'Enter age 60 years or over, reference sex, repetitions and all protocol fields.'
+      )
+    );
+  }
+
+  const payload = {
+    age_years:
+      age,
+
+    sex,
+
+    repetitions,
+
+    arms_required_to_stand:
+      armsRequired,
+
+    standard_30_second_protocol_confirmed:
+      protocolConfirmed
+  };
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/steadi-chair-stand-30s',
+      payload,
+      globalThis
+        .ClinicalTools
+        .calculateSteadiChairStand30s
+    );
+
+    lastSteadiChairResult =
+      result;
+
+    lastSteadiChairSource =
+      source;
+
+    renderSteadiChairResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'steadi-chair-result',
+      error.message
+    );
+  }
+}
+
+
+function renderSteadiBalanceResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'steadi-balance-result'
+    );
+
+  if (!res || !result) return;
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+  const statusText =
+    result.increased_fall_risk
+      ? (
+          globalThis.ClinicalI18n
+            ?.t?.('steadi.balance.increased')
+          || clinicalText(
+            'Tandem por menos de 10 s / não alcançado: critério STEADI de risco aumentado.',
+            'Tandem held for less than 10 s / not reached: STEADI increased-risk criterion.'
+          )
+        )
+      : (
+          globalThis.ClinicalI18n
+            ?.t?.('steadi.balance.notIncreased')
+          || clinicalText(
+            'Tandem mantido por 10 s: critério específico STEADI de risco aumentado não atingido.',
+            'Tandem held for 10 s: the STEADI tandem-specific increased-risk criterion was not reached.'
+          )
+        );
+
+  res.classList.remove(
+    'hidden'
+  );
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('steadi.balance.resultTitle')
+        || clinicalText(
+          'Resultado · 4-Stage Balance',
+          'Result · 4-Stage Balance'
+        )
+      )}
+    </p>
+
+    <p class="text-sm font-semibold text-white mt-2">
+      ${escapeHtml(
+        statusText
+      )}
+    </p>
+
+    <p class="text-[11px] text-slate-400 mt-2">
+      ${escapeHtml(
+        clinicalText(
+          'Último estágio tentado',
+          'Last stage attempted'
+        )
+      )}
+     :
+      ${escapeHtml(
+        result.last_stage_attempted
+      )}
+    </p>
+
+    <p class="text-[11px] text-slate-400 mt-2">
+      ${escapeHtml(
+        result[
+          `interpretation_${suffix}`
+        ]
+      )}
+    </p>
+
+    <p class="text-[11px] text-amber-300 mt-3">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('steadi.balance.noDevice')
+        || clinicalText(
+          'O protocolo STEADI de 4 estágios não permite dispositivo de auxílio durante o teste.',
+          'The STEADI 4-Stage Balance protocol does not permit an assistive device during the test.'
+        )
+      )}
+    </p>
+
+    ${steadiOfflineNotice(source)}
+  `;
+}
+
+
+async function calculateSteadiBalanceTool(
+  event
+) {
+  event.preventDefault();
+
+  const side =
+    steadiRequiredNumber(
+      'steadi-balance-side'
+    );
+
+  const semi =
+    nullableClinicalNumber(
+      'steadi-balance-semi'
+    );
+
+  const tandem =
+    nullableClinicalNumber(
+      'steadi-balance-tandem'
+    );
+
+  const oneLeg =
+    nullableClinicalNumber(
+      'steadi-balance-one-leg'
+    );
+
+  const deviceUsed =
+    steadiBooleanSelect(
+      'steadi-balance-device'
+    );
+
+  const protocolConfirmed =
+    steadiBooleanSelect(
+      'steadi-balance-protocol'
+    );
+
+  const values = [
+    side,
+    semi,
+    tandem,
+    oneLeg
+  ];
+
+  if (
+    side === null
+    || values.some(
+      value =>
+        value !== null
+        && (
+          value < 0
+          || value > 10
+        )
+    )
+    || deviceUsed === null
+    || protocolConfirmed === null
+  ) {
+    return showError(
+      'steadi-balance-result',
+      clinicalText(
+        'Informe tempos válidos de 0 a 10 segundos e responda aos campos de dispositivo e protocolo.',
+        'Enter valid 0–10-second stage times and answer the device and protocol fields.'
+      )
+    );
+  }
+
+  const payload = {
+    side_by_side_seconds:
+      side,
+
+    semi_tandem_seconds:
+      semi,
+
+    tandem_seconds:
+      tandem,
+
+    one_leg_seconds:
+      oneLeg,
+
+    assistive_device_used:
+      deviceUsed,
+
+    standard_four_stage_protocol_confirmed:
+      protocolConfirmed
+  };
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/steadi-four-stage-balance',
+      payload,
+      globalThis
+        .ClinicalTools
+        .calculateSteadiFourStageBalance
+    );
+
+    lastSteadiBalanceResult =
+      result;
+
+    lastSteadiBalanceSource =
+      source;
+
+    renderSteadiBalanceResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'steadi-balance-result',
+      error.message
+    );
+  }
+}
+
+
+function renderSteadiOrthostaticResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'steadi-orthostatic-result'
+    );
+
+  if (!res || !result) return;
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+  const statusText =
+    result
+      .abnormal_steadi_orthostatic_assessment
+      ? (
+          globalThis.ClinicalI18n
+            ?.t?.('steadi.ortho.abnormal')
+          || clinicalText(
+            'Avaliação STEADI anormal: queda de PAS ≥20 mmHg, queda de PAD ≥10 mmHg e/ou sintomas.',
+            'Abnormal STEADI assessment: SBP drop ≥20 mmHg, DBP drop ≥10 mmHg and/or symptoms.'
+          )
+        )
+      : (
+          globalThis.ClinicalI18n
+            ?.t?.('steadi.ortho.normal')
+          || clinicalText(
+            'Critérios STEADI de anormalidade não atingidos.',
+            'STEADI abnormality criteria were not reached.'
+          )
+        );
+
+  res.classList.remove(
+    'hidden'
+  );
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('steadi.ortho.resultTitle')
+        || clinicalText(
+          'Resultado · pressão ortostática STEADI',
+          'Result · STEADI orthostatic BP'
+        )
+      )}
+    </p>
+
+    <p class="text-sm font-semibold text-white mt-2">
+      ${escapeHtml(
+        statusText
+      )}
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+      <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+        <p class="text-[10px] text-slate-400">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('steadi.ortho.sbpDrop')
+            || clinicalText(
+              'Maior queda de PAS',
+              'Maximum SBP drop'
+            )
+          )}
+        </p>
+
+        <p class="text-xl font-bold text-violet-300 mt-1">
+          ${escapeHtml(
+            result
+              .maximum_systolic_drop_mm_hg
+          )}
+          mmHg
+        </p>
+      </div>
+
+      <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+        <p class="text-[10px] text-slate-400">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('steadi.ortho.dbpDrop')
+            || clinicalText(
+              'Maior queda de PAD',
+              'Maximum DBP drop'
+            )
+          )}
+        </p>
+
+        <p class="text-xl font-bold text-violet-300 mt-1">
+          ${escapeHtml(
+            result
+              .maximum_diastolic_drop_mm_hg
+          )}
+          mmHg
+        </p>
+      </div>
+    </div>
+
+    <p class="text-[11px] text-slate-400 mt-3">
+      ${escapeHtml(
+        result[
+          `interpretation_${suffix}`
+        ]
+      )}
+    </p>
+
+    <p class="text-[11px] text-amber-300 mt-3">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('steadi.ortho.noPulseThreshold')
+        || clinicalText(
+          'O pulso é registrado, mas nenhum limiar de pulso é inventado por esta ferramenta.',
+          'Pulse is recorded, but this tool does not invent a pulse threshold.'
+        )
+      )}
+    </p>
+
+    <p class="text-[11px] text-amber-300 mt-2">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('steadi.ortho.boundary')
+        || clinicalText(
+          'O protocolo 5/1/3 min e os critérios 20/10 mmHg são STEADI complementar.',
+          'The 5/1/3-minute protocol and 20/10-mmHg criteria are complementary STEADI guidance.'
+        )
+      )}
+    </p>
+
+    ${steadiOfflineNotice(source)}
+  `;
+}
+
+
+async function calculateSteadiOrthostaticTool(
+  event
+) {
+  event.preventDefault();
+
+  const fields = {
+    supine_sbp_mm_hg:
+      steadiRequiredNumber(
+        'steadi-ortho-supine-sbp'
+      ),
+
+    supine_dbp_mm_hg:
+      steadiRequiredNumber(
+        'steadi-ortho-supine-dbp'
+      ),
+
+    supine_pulse_bpm:
+      steadiRequiredNumber(
+        'steadi-ortho-supine-pulse'
+      ),
+
+    standing_1m_sbp_mm_hg:
+      steadiRequiredNumber(
+        'steadi-ortho-1m-sbp'
+      ),
+
+    standing_1m_dbp_mm_hg:
+      steadiRequiredNumber(
+        'steadi-ortho-1m-dbp'
+      ),
+
+    standing_1m_pulse_bpm:
+      steadiRequiredNumber(
+        'steadi-ortho-1m-pulse'
+      ),
+
+    standing_3m_sbp_mm_hg:
+      steadiRequiredNumber(
+        'steadi-ortho-3m-sbp'
+      ),
+
+    standing_3m_dbp_mm_hg:
+      steadiRequiredNumber(
+        'steadi-ortho-3m-dbp'
+      ),
+
+    standing_3m_pulse_bpm:
+      steadiRequiredNumber(
+        'steadi-ortho-3m-pulse'
+      )
+  };
+
+  const symptoms =
+    steadiBooleanSelect(
+      'steadi-ortho-symptoms'
+    );
+
+  const protocolConfirmed =
+    steadiBooleanSelect(
+      'steadi-ortho-protocol'
+    );
+
+  if (
+    Object
+      .values(fields)
+      .some(
+        value =>
+          value === null
+          || value <= 0
+      )
+    || symptoms === null
+    || protocolConfirmed === null
+  ) {
+    return showError(
+      'steadi-orthostatic-result',
+      clinicalText(
+        'Informe todas as medidas positivas de pressão/pulso e responda aos campos de sintomas e protocolo.',
+        'Enter all positive BP/pulse measurements and answer the symptom and protocol fields.'
+      )
+    );
+  }
+
+  const payload = {
+    ...fields,
+
+    lightheaded_or_dizzy:
+      symptoms,
+
+    standard_5_1_3_protocol_confirmed:
+      protocolConfirmed
+  };
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/steadi-orthostatic-bp',
+      payload,
+      globalThis
+        .ClinicalTools
+        .calculateSteadiOrthostaticBp
+    );
+
+    lastSteadiOrthostaticResult =
+      result;
+
+    lastSteadiOrthostaticSource =
+      source;
+
+    renderSteadiOrthostaticResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'steadi-orthostatic-result',
+      error.message
+    );
+  }
+}
+
+
 function scoreGlasgow() {
   const ids = ['glasgow-e', 'glasgow-v', 'glasgow-m'];
   const values = ids.map((id) => document.getElementById(id).value);
@@ -5090,6 +6109,10 @@ function wireUiEvents() {
     'methanol-form': calculateBrazilMethanolTool,
     'caderneta-falls-form': calculateCadernetaFallsTool,
     'ivcf20-form': calculateIvcf20Tool,
+    'steadi-tug-form': calculateSteadiTugTool,
+    'steadi-chair-form': calculateSteadiChairStandTool,
+    'steadi-balance-form': calculateSteadiBalanceTool,
+    'steadi-orthostatic-form': calculateSteadiOrthostaticTool,
     'growth-form': calculateGrowthTool,
     'drip-form': calculateDrip,
     'meds-form': calculateMeds,
@@ -5209,6 +6232,38 @@ globalThis.addEventListener?.(
       renderIvcf20Result(
         lastIvcf20Result,
         lastIvcf20Source
+      );
+    }
+
+
+    if (lastSteadiTugResult) {
+      renderSteadiTugResult(
+        lastSteadiTugResult,
+        lastSteadiTugSource
+      );
+    }
+
+
+    if (lastSteadiChairResult) {
+      renderSteadiChairResult(
+        lastSteadiChairResult,
+        lastSteadiChairSource
+      );
+    }
+
+
+    if (lastSteadiBalanceResult) {
+      renderSteadiBalanceResult(
+        lastSteadiBalanceResult,
+        lastSteadiBalanceSource
+      );
+    }
+
+
+    if (lastSteadiOrthostaticResult) {
+      renderSteadiOrthostaticResult(
+        lastSteadiOrthostaticResult,
+        lastSteadiOrthostaticSource
       );
     }
 

@@ -465,6 +465,20 @@
         "Do not import weighted STEADI scoring into the Brazilian Caderneta falls check-up.",
         "Do not label STEADI TUG, Chair Stand or 4-Stage cutoffs as national SUS cutoffs.",
         "Do not merge instrument outputs into a synthetic falls score."
+      ],
+      "brazil_primary_checkpoint": "78add2d1572d79179b66440114f703bdbdfd9fc6",
+      "brazil_primary_implementation_state": "qualified_committed_pushed",
+      "complementary_steadi_source_review_status": "pass",
+      "complementary_steadi_implementation_state": "implementation_complete",
+      "complementary_steadi_brazil_applicability_status": "no_national_variant_identified",
+      "complementary_steadi_source_dossier": "data/clinical-sources/falls_function_steadi_complementary.json",
+      "complementary_steadi_governance_rules": [
+        "Keep all STEADI assessments visibly separate from Caderneta 2026 and IVCF-20.",
+        "Do not describe CDC STEADI thresholds as generic national SUS thresholds.",
+        "Never infer one instrument result from another or create a synthetic cross-instrument score.",
+        "Do not extrapolate 30-Second Chair Stand age/sex reference cutoffs beyond age 94.",
+        "Keep IVCF-20 4-m gait distinct from Timed Up and Go.",
+        "Keep STEADI orthostatic timing and numeric cutoffs labelled as complementary guidance."
       ]
     },
     "8": {

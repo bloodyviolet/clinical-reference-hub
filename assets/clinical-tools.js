@@ -3846,6 +3846,937 @@
   }
 
 
+  const STEADI_CHAIR_STAND_THRESHOLDS = {
+    '60-64': {
+      minimum_age: 60,
+      maximum_age: 64,
+      male: 14,
+      female: 12
+    },
+
+    '65-69': {
+      minimum_age: 65,
+      maximum_age: 69,
+      male: 12,
+      female: 11
+    },
+
+    '70-74': {
+      minimum_age: 70,
+      maximum_age: 74,
+      male: 12,
+      female: 10
+    },
+
+    '75-79': {
+      minimum_age: 75,
+      maximum_age: 79,
+      male: 11,
+      female: 10
+    },
+
+    '80-84': {
+      minimum_age: 80,
+      maximum_age: 84,
+      male: 10,
+      female: 9
+    },
+
+    '85-89': {
+      minimum_age: 85,
+      maximum_age: 89,
+      male: 8,
+      female: 8
+    },
+
+    '90-94': {
+      minimum_age: 90,
+      maximum_age: 94,
+      male: 7,
+      female: 4
+    }
+  };
+
+
+  function steadiRequireBoolean(
+    name,
+    value
+  ) {
+    if (
+      typeof value
+      !== 'boolean'
+    ) {
+      throw new Error(
+        `${name}_must_be_boolean`
+      );
+    }
+  }
+
+
+  function steadiRequireInteger(
+    name,
+    value,
+    minimum
+  ) {
+    if (
+      !Number.isInteger(value)
+      || value < minimum
+    ) {
+      throw new Error(
+        `${name}_invalid_integer_domain`
+      );
+    }
+
+    return value;
+  }
+
+
+  function steadiRequireNumber(
+    name,
+    value,
+    minimum,
+    minimumInclusive = true
+  ) {
+    if (
+      typeof value !== 'number'
+      || !Number.isFinite(value)
+    ) {
+      throw new Error(
+        `${name}_must_be_finite_number`
+      );
+    }
+
+    const invalid =
+      minimumInclusive
+        ? value < minimum
+        : value <= minimum;
+
+    if (invalid) {
+      throw new Error(
+        `${name}_outside_numeric_domain`
+      );
+    }
+
+    return value;
+  }
+
+
+  function steadiRequireBalanceSeconds(
+    name,
+    value
+  ) {
+    const seconds =
+      steadiRequireNumber(
+        name,
+        value,
+        0,
+        true
+      );
+
+    if (seconds > 10) {
+      throw new Error(
+        `${name}_exceeds_10_second_stage`
+      );
+    }
+
+    return seconds;
+  }
+
+
+  function steadiChairReference(
+    ageYears,
+    sex
+  ) {
+    for (
+      const [
+        band,
+        values
+      ]
+      of Object.entries(
+        STEADI_CHAIR_STAND_THRESHOLDS
+      )
+    ) {
+      if (
+        ageYears >= values.minimum_age
+        && ageYears <= values.maximum_age
+      ) {
+        return {
+          reference_age_band:
+            band,
+
+          below_average_threshold:
+            values[sex]
+        };
+      }
+    }
+
+    return {
+      reference_age_band:
+        null,
+
+      below_average_threshold:
+        null
+    };
+  }
+
+
+  function calculateSteadiTug(
+    input
+  ) {
+    const seconds =
+      steadiRequireNumber(
+        'time_seconds',
+        input.time_seconds,
+        0,
+        false
+      );
+
+    steadiRequireBoolean(
+      'walking_aid_used',
+      input.walking_aid_used
+    );
+
+    steadiRequireBoolean(
+      'standard_3m_protocol_confirmed',
+      input.standard_3m_protocol_confirmed
+    );
+
+    if (
+      !input.standard_3m_protocol_confirmed
+    ) {
+      throw new Error(
+        'steadi_tug_standard_3m_protocol_required'
+      );
+    }
+
+    const increasedFallRisk =
+      seconds >= 12;
+
+    return {
+      tool:
+        'steadi_timed_up_and_go',
+
+      source_role:
+        'complementary_international_guidance',
+
+      time_seconds:
+        seconds,
+
+      course_distance_m:
+        3,
+
+      course_distance_ft:
+        10,
+
+      walking_aid_allowed:
+        true,
+
+      walking_aid_used:
+        input.walking_aid_used,
+
+      threshold_seconds:
+        12,
+
+      threshold_comparison:
+        '>=',
+
+      increased_fall_risk:
+        increasedFallRisk,
+
+      ivcf_four_meter_gait_inferred:
+        false,
+
+      national_sus_threshold_applied:
+        false,
+
+      automatic_cross_instrument_inference_applied:
+        false,
+
+      synthetic_cross_instrument_score_applied:
+        false,
+
+      interpretation_pt:
+        increasedFallRisk
+          ? (
+              'TUG STEADI em 12 segundos ou mais: '
+              + 'o instrumento indica risco aumentado '
+              + 'de queda.'
+            )
+          : (
+              'TUG STEADI abaixo de 12 segundos: '
+              + 'o ponto de corte STEADI de risco aumentado '
+              + 'não foi atingido.'
+            ),
+
+      interpretation_en:
+        increasedFallRisk
+          ? (
+              'STEADI TUG at 12 seconds or longer: '
+              + 'the instrument indicates increased fall risk.'
+            )
+          : (
+              'STEADI TUG below 12 seconds: '
+              + 'the STEADI increased-risk threshold '
+              + 'was not reached.'
+            )
+    };
+  }
+
+
+  function calculateSteadiChairStand30s(
+    input
+  ) {
+    const ageYears =
+      steadiRequireInteger(
+        'age_years',
+        input.age_years,
+        60
+      );
+
+    if (
+      input.sex !== 'male'
+      && input.sex !== 'female'
+    ) {
+      throw new Error(
+        'steadi_chair_reference_sex_must_be_male_or_female'
+      );
+    }
+
+    const repetitions =
+      steadiRequireInteger(
+        'repetitions',
+        input.repetitions,
+        0
+      );
+
+    steadiRequireBoolean(
+      'arms_required_to_stand',
+      input.arms_required_to_stand
+    );
+
+    steadiRequireBoolean(
+      'standard_30_second_protocol_confirmed',
+      input.standard_30_second_protocol_confirmed
+    );
+
+    if (
+      !input.standard_30_second_protocol_confirmed
+    ) {
+      throw new Error(
+        'steadi_chair_standard_30_second_protocol_required'
+      );
+    }
+
+    const recordedRepetitions =
+      input.arms_required_to_stand
+        ? 0
+        : repetitions;
+
+    const reference =
+      steadiChairReference(
+        ageYears,
+        input.sex
+      );
+
+    const classificationAvailable =
+      reference
+        .below_average_threshold
+        !== null;
+
+    let belowAverage = null;
+    let increasedFallRisk = null;
+
+    if (classificationAvailable) {
+      belowAverage =
+        recordedRepetitions
+        < reference
+            .below_average_threshold;
+
+      increasedFallRisk =
+        belowAverage;
+    }
+
+    return {
+      tool:
+        'steadi_30_second_chair_stand',
+
+      source_role:
+        'complementary_international_guidance',
+
+      age_years:
+        ageYears,
+
+      reference_sex:
+        input.sex,
+
+      observed_repetitions_input:
+        repetitions,
+
+      arms_required_to_stand:
+        input.arms_required_to_stand,
+
+      test_stopped_due_to_arm_use:
+        input.arms_required_to_stand,
+
+      recorded_repetitions:
+        recordedRepetitions,
+
+      reference_age_band:
+        reference.reference_age_band,
+
+      below_average_threshold:
+        reference.below_average_threshold,
+
+      threshold_comparison:
+        '<',
+
+      reference_classification_available:
+        classificationAvailable,
+
+      below_average:
+        belowAverage,
+
+      increased_fall_risk:
+        increasedFallRisk,
+
+      reference_table_maximum_age_years:
+        94,
+
+      cutoff_extrapolated:
+        false,
+
+      national_sus_threshold_applied:
+        false,
+
+      automatic_cross_instrument_inference_applied:
+        false,
+
+      synthetic_cross_instrument_score_applied:
+        false,
+
+      interpretation_pt:
+        !classificationAvailable
+          ? (
+              'A tabela STEADI publicada não fornece '
+              + 'ponto de corte etário/sexo para esta idade; '
+              + 'o número bruto de repetições é preservado '
+              + 'sem classificação extrapolada.'
+            )
+          : (
+              belowAverage
+                ? (
+                    'Resultado abaixo da média de referência '
+                    + 'STEADI para idade e sexo de referência.'
+                  )
+                : (
+                    'Resultado não está abaixo da média '
+                    + 'de referência STEADI para idade e sexo '
+                    + 'de referência.'
+                  )
+            ),
+
+      interpretation_en:
+        !classificationAvailable
+          ? (
+              'The published STEADI table provides no '
+              + 'age/sex cutoff for this age; the raw count '
+              + 'is preserved without an extrapolated '
+              + 'classification.'
+            )
+          : (
+              belowAverage
+                ? (
+                    'Result is below the STEADI reference '
+                    + 'average for the reference age and sex.'
+                  )
+                : (
+                    'Result is not below the STEADI reference '
+                    + 'average for the reference age and sex.'
+                  )
+            )
+    };
+  }
+
+
+  function calculateSteadiFourStageBalance(
+    input
+  ) {
+    steadiRequireBoolean(
+      'assistive_device_used',
+      input.assistive_device_used
+    );
+
+    steadiRequireBoolean(
+      'standard_four_stage_protocol_confirmed',
+      input.standard_four_stage_protocol_confirmed
+    );
+
+    if (
+      !input.standard_four_stage_protocol_confirmed
+    ) {
+      throw new Error(
+        'steadi_four_stage_standard_protocol_required'
+      );
+    }
+
+    if (
+      input.assistive_device_used
+    ) {
+      throw new Error(
+        'steadi_four_stage_assistive_device_not_permitted'
+      );
+    }
+
+    const side =
+      steadiRequireBalanceSeconds(
+        'side_by_side_seconds',
+        input.side_by_side_seconds
+      );
+
+    const semi =
+      input.semi_tandem_seconds == null
+        ? null
+        : steadiRequireBalanceSeconds(
+            'semi_tandem_seconds',
+            input.semi_tandem_seconds
+          );
+
+    const tandem =
+      input.tandem_seconds == null
+        ? null
+        : steadiRequireBalanceSeconds(
+            'tandem_seconds',
+            input.tandem_seconds
+          );
+
+    const oneLeg =
+      input.one_leg_seconds == null
+        ? null
+        : steadiRequireBalanceSeconds(
+            'one_leg_seconds',
+            input.one_leg_seconds
+          );
+
+    let lastStageAttempted;
+    let tandemHeld10Seconds;
+
+    if (side < 10) {
+      if (
+        semi !== null
+        || tandem !== null
+        || oneLeg !== null
+      ) {
+        throw new Error(
+          'steadi_four_stage_invalid_progression_after_side_by_side'
+        );
+      }
+
+      lastStageAttempted =
+        'side_by_side';
+
+      tandemHeld10Seconds =
+        false;
+
+    } else {
+      if (semi === null) {
+        throw new Error(
+          'steadi_four_stage_semi_tandem_required'
+        );
+      }
+
+      if (semi < 10) {
+        if (
+          tandem !== null
+          || oneLeg !== null
+        ) {
+          throw new Error(
+            'steadi_four_stage_invalid_progression_after_semi_tandem'
+          );
+        }
+
+        lastStageAttempted =
+          'semi_tandem';
+
+        tandemHeld10Seconds =
+          false;
+
+      } else {
+        if (tandem === null) {
+          throw new Error(
+            'steadi_four_stage_tandem_required'
+          );
+        }
+
+        if (tandem < 10) {
+          if (oneLeg !== null) {
+            throw new Error(
+              'steadi_four_stage_invalid_progression_after_tandem'
+            );
+          }
+
+          lastStageAttempted =
+            'tandem';
+
+          tandemHeld10Seconds =
+            false;
+
+        } else {
+          if (oneLeg === null) {
+            throw new Error(
+              'steadi_four_stage_one_leg_required'
+            );
+          }
+
+          lastStageAttempted =
+            'one_leg';
+
+          tandemHeld10Seconds =
+            true;
+        }
+      }
+    }
+
+    const increasedFallRisk =
+      !tandemHeld10Seconds;
+
+    return {
+      tool:
+        'steadi_four_stage_balance',
+
+      source_role:
+        'complementary_international_guidance',
+
+      side_by_side_seconds:
+        side,
+
+      semi_tandem_seconds:
+        semi,
+
+      tandem_seconds:
+        tandem,
+
+      one_leg_seconds:
+        oneLeg,
+
+      target_seconds_per_stage:
+        10,
+
+      last_stage_attempted:
+        lastStageAttempted,
+
+      tandem_held_10_seconds:
+        tandemHeld10Seconds,
+
+      increased_fall_risk:
+        increasedFallRisk,
+
+      assistive_device_allowed:
+        false,
+
+      assistive_device_used:
+        false,
+
+      eyes_open_required:
+        true,
+
+      national_sus_threshold_applied:
+        false,
+
+      automatic_cross_instrument_inference_applied:
+        false,
+
+      synthetic_cross_instrument_score_applied:
+        false,
+
+      interpretation_pt:
+        increasedFallRisk
+          ? (
+              'No 4-Stage Balance STEADI, não foi '
+              + 'demonstrada manutenção da posição tandem '
+              + 'por pelo menos 10 segundos; o instrumento '
+              + 'indica risco aumentado de queda.'
+            )
+          : (
+              'A posição tandem foi mantida por pelo menos '
+              + '10 segundos; o critério específico STEADI '
+              + 'de risco aumentado pelo tandem não foi atingido.'
+            ),
+
+      interpretation_en:
+        increasedFallRisk
+          ? (
+              'In the STEADI 4-Stage Balance Test, tandem '
+              + 'stance was not demonstrated for at least '
+              + '10 seconds; the instrument indicates '
+              + 'increased fall risk.'
+            )
+          : (
+              'Tandem stance was maintained for at least '
+              + '10 seconds; the STEADI tandem-specific '
+              + 'increased-risk criterion was not met.'
+            )
+    };
+  }
+
+
+  function calculateSteadiOrthostaticBp(
+    input
+  ) {
+    steadiRequireBoolean(
+      'lightheaded_or_dizzy',
+      input.lightheaded_or_dizzy
+    );
+
+    steadiRequireBoolean(
+      'standard_5_1_3_protocol_confirmed',
+      input.standard_5_1_3_protocol_confirmed
+    );
+
+    if (
+      !input.standard_5_1_3_protocol_confirmed
+    ) {
+      throw new Error(
+        'steadi_orthostatic_standard_5_1_3_protocol_required'
+      );
+    }
+
+    const readings = {
+      supine_sbp_mm_hg:
+        steadiRequireNumber(
+          'supine_sbp_mm_hg',
+          input.supine_sbp_mm_hg,
+          0,
+          false
+        ),
+
+      supine_dbp_mm_hg:
+        steadiRequireNumber(
+          'supine_dbp_mm_hg',
+          input.supine_dbp_mm_hg,
+          0,
+          false
+        ),
+
+      supine_pulse_bpm:
+        steadiRequireNumber(
+          'supine_pulse_bpm',
+          input.supine_pulse_bpm,
+          0,
+          false
+        ),
+
+      standing_1m_sbp_mm_hg:
+        steadiRequireNumber(
+          'standing_1m_sbp_mm_hg',
+          input.standing_1m_sbp_mm_hg,
+          0,
+          false
+        ),
+
+      standing_1m_dbp_mm_hg:
+        steadiRequireNumber(
+          'standing_1m_dbp_mm_hg',
+          input.standing_1m_dbp_mm_hg,
+          0,
+          false
+        ),
+
+      standing_1m_pulse_bpm:
+        steadiRequireNumber(
+          'standing_1m_pulse_bpm',
+          input.standing_1m_pulse_bpm,
+          0,
+          false
+        ),
+
+      standing_3m_sbp_mm_hg:
+        steadiRequireNumber(
+          'standing_3m_sbp_mm_hg',
+          input.standing_3m_sbp_mm_hg,
+          0,
+          false
+        ),
+
+      standing_3m_dbp_mm_hg:
+        steadiRequireNumber(
+          'standing_3m_dbp_mm_hg',
+          input.standing_3m_dbp_mm_hg,
+          0,
+          false
+        ),
+
+      standing_3m_pulse_bpm:
+        steadiRequireNumber(
+          'standing_3m_pulse_bpm',
+          input.standing_3m_pulse_bpm,
+          0,
+          false
+        )
+    };
+
+    for (
+      const prefix
+      of [
+        'supine',
+        'standing_1m',
+        'standing_3m'
+      ]
+    ) {
+      if (
+        readings[
+          `${prefix}_sbp_mm_hg`
+        ]
+        < readings[
+          `${prefix}_dbp_mm_hg`
+        ]
+      ) {
+        throw new Error(
+          `${prefix}_systolic_below_diastolic`
+        );
+      }
+    }
+
+    const systolicDrop1m =
+      (
+        readings.supine_sbp_mm_hg
+        - readings.standing_1m_sbp_mm_hg
+      );
+
+    const systolicDrop3m =
+      (
+        readings.supine_sbp_mm_hg
+        - readings.standing_3m_sbp_mm_hg
+      );
+
+    const diastolicDrop1m =
+      (
+        readings.supine_dbp_mm_hg
+        - readings.standing_1m_dbp_mm_hg
+      );
+
+    const diastolicDrop3m =
+      (
+        readings.supine_dbp_mm_hg
+        - readings.standing_3m_dbp_mm_hg
+      );
+
+    const maximumSystolicDrop =
+      Math.max(
+        systolicDrop1m,
+        systolicDrop3m
+      );
+
+    const maximumDiastolicDrop =
+      Math.max(
+        diastolicDrop1m,
+        diastolicDrop3m
+      );
+
+    const systolicThresholdMet =
+      maximumSystolicDrop >= 20;
+
+    const diastolicThresholdMet =
+      maximumDiastolicDrop >= 10;
+
+    const abnormal =
+      (
+        systolicThresholdMet
+        || diastolicThresholdMet
+        || input.lightheaded_or_dizzy
+      );
+
+    return {
+      tool:
+        'steadi_orthostatic_blood_pressure',
+
+      source_role:
+        'complementary_international_guidance',
+
+      ...readings,
+
+      supine_rest_minutes:
+        5,
+
+      standing_measurement_minutes:
+        [
+          1,
+          3
+        ],
+
+      systolic_drop_1m_mm_hg:
+        systolicDrop1m,
+
+      systolic_drop_3m_mm_hg:
+        systolicDrop3m,
+
+      diastolic_drop_1m_mm_hg:
+        diastolicDrop1m,
+
+      diastolic_drop_3m_mm_hg:
+        diastolicDrop3m,
+
+      maximum_systolic_drop_mm_hg:
+        maximumSystolicDrop,
+
+      maximum_diastolic_drop_mm_hg:
+        maximumDiastolicDrop,
+
+      systolic_drop_threshold_mm_hg:
+        20,
+
+      diastolic_drop_threshold_mm_hg:
+        10,
+
+      systolic_threshold_met:
+        systolicThresholdMet,
+
+      diastolic_threshold_met:
+        diastolicThresholdMet,
+
+      lightheaded_or_dizzy:
+        input.lightheaded_or_dizzy,
+
+      abnormal_steadi_orthostatic_assessment:
+        abnormal,
+
+      fall_risk_classification_applied:
+        false,
+
+      national_sus_threshold_applied:
+        false,
+
+      automatic_cross_instrument_inference_applied:
+        false,
+
+      synthetic_cross_instrument_score_applied:
+        false,
+
+      interpretation_pt:
+        abnormal
+          ? (
+              'Avaliação ortostática STEADI anormal por '
+              + 'queda pressórica e/ou tontura.'
+            )
+          : (
+              'Os critérios STEADI de anormalidade '
+              + 'ortostática não foram atingidos.'
+            ),
+
+      interpretation_en:
+        abnormal
+          ? (
+              'STEADI orthostatic assessment is abnormal '
+              + 'because of blood-pressure drop and/or '
+              + 'lightheadedness or dizziness.'
+            )
+          : (
+              'STEADI orthostatic abnormality criteria '
+              + 'were not met.'
+            )
+    };
+  }
+
+
   globalThis.ClinicalTools =
     Object.freeze({
       calculateNews2,
@@ -3858,6 +4789,10 @@
       calculateMetabolicToolkit,
       calculateBrazilMethanolContext,
       calculateCadernetaFallsCheckup,
-      calculateIvcf20
+      calculateIvcf20,
+      calculateSteadiTug,
+      calculateSteadiChairStand30s,
+      calculateSteadiFourStageBalance,
+      calculateSteadiOrthostaticBp
     });
 })();

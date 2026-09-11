@@ -276,7 +276,7 @@ assert(
 
 assert(
   sw.includes(
-    'clinical-reference-v21-v2-brazil-falls-function'
+    'clinical-reference-v22-v2-steadi-complementary'
   )
 );
 
@@ -289,5 +289,5 @@ assert(
 
 
 console.log(
-  'falls_function_ui_static_qc: bilingual Caderneta/IVCF-20 DOM + v21 cache PASS'
+  'falls_function_ui_static_qc: bilingual Caderneta/IVCF-20 DOM + current cache PASS'
 );

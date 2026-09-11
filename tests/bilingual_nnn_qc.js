@@ -74,7 +74,7 @@ for (const token of [
 
 assert(
   sw.includes(
-    'clinical-reference-v21-v2-brazil-falls-function'
+    'clinical-reference-v22-v2-steadi-complementary'
   ),
   'service-worker cache version not bumped'
 );

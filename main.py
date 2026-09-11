@@ -47,6 +47,16 @@ from clinical_tools.falls_function import (
     calculate_caderneta_falls_checkup,
     calculate_ivcf20,
 )
+from clinical_tools.steadi import (
+    STEADI_CHAIR_STAND_METADATA,
+    STEADI_FOUR_STAGE_METADATA,
+    STEADI_ORTHOSTATIC_BP_METADATA,
+    STEADI_TUG_METADATA,
+    calculate_steadi_chair_stand_30s,
+    calculate_steadi_four_stage_balance,
+    calculate_steadi_orthostatic_bp,
+    calculate_steadi_tug,
+)
 from config import load_settings
 from observability import RateLimitMiddleware, RequestContextMiddleware, configure_logging
 from scripts.clinical_content import file_hash, validate_release_content
@@ -1128,6 +1138,161 @@ def api_calculate_ivcf20(
             ),
             hospitalized_last_six_months=(
                 payload.hospitalized_last_six_months
+            ),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/steadi-tug/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_steadi_tug_metadata():
+    return STEADI_TUG_METADATA
+
+
+@api_v1.post(
+    "/tools/steadi-tug",
+    response_model=schemas.SteadiTUGResponse,
+)
+def api_calculate_steadi_tug(
+    payload: schemas.SteadiTUGInput,
+):
+    try:
+        return calculate_steadi_tug(
+            time_seconds=payload.time_seconds,
+            walking_aid_used=payload.walking_aid_used,
+            standard_3m_protocol_confirmed=(
+                payload.standard_3m_protocol_confirmed
+            ),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/steadi-chair-stand-30s/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_steadi_chair_stand_metadata():
+    return STEADI_CHAIR_STAND_METADATA
+
+
+@api_v1.post(
+    "/tools/steadi-chair-stand-30s",
+    response_model=schemas.SteadiChairStand30sResponse,
+)
+def api_calculate_steadi_chair_stand(
+    payload: schemas.SteadiChairStand30sInput,
+):
+    try:
+        return calculate_steadi_chair_stand_30s(
+            age_years=payload.age_years,
+            sex=payload.sex,
+            repetitions=payload.repetitions,
+            arms_required_to_stand=(
+                payload.arms_required_to_stand
+            ),
+            standard_30_second_protocol_confirmed=(
+                payload.standard_30_second_protocol_confirmed
+            ),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/steadi-four-stage-balance/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_steadi_four_stage_metadata():
+    return STEADI_FOUR_STAGE_METADATA
+
+
+@api_v1.post(
+    "/tools/steadi-four-stage-balance",
+    response_model=schemas.SteadiFourStageBalanceResponse,
+)
+def api_calculate_steadi_four_stage_balance(
+    payload: schemas.SteadiFourStageBalanceInput,
+):
+    try:
+        return calculate_steadi_four_stage_balance(
+            side_by_side_seconds=(
+                payload.side_by_side_seconds
+            ),
+            semi_tandem_seconds=(
+                payload.semi_tandem_seconds
+            ),
+            tandem_seconds=payload.tandem_seconds,
+            one_leg_seconds=payload.one_leg_seconds,
+            assistive_device_used=(
+                payload.assistive_device_used
+            ),
+            standard_four_stage_protocol_confirmed=(
+                payload.standard_four_stage_protocol_confirmed
+            ),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/steadi-orthostatic-bp/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_steadi_orthostatic_bp_metadata():
+    return STEADI_ORTHOSTATIC_BP_METADATA
+
+
+@api_v1.post(
+    "/tools/steadi-orthostatic-bp",
+    response_model=schemas.SteadiOrthostaticBPResponse,
+)
+def api_calculate_steadi_orthostatic_bp(
+    payload: schemas.SteadiOrthostaticBPInput,
+):
+    try:
+        return calculate_steadi_orthostatic_bp(
+            supine_sbp_mm_hg=payload.supine_sbp_mm_hg,
+            supine_dbp_mm_hg=payload.supine_dbp_mm_hg,
+            supine_pulse_bpm=payload.supine_pulse_bpm,
+            standing_1m_sbp_mm_hg=(
+                payload.standing_1m_sbp_mm_hg
+            ),
+            standing_1m_dbp_mm_hg=(
+                payload.standing_1m_dbp_mm_hg
+            ),
+            standing_1m_pulse_bpm=(
+                payload.standing_1m_pulse_bpm
+            ),
+            standing_3m_sbp_mm_hg=(
+                payload.standing_3m_sbp_mm_hg
+            ),
+            standing_3m_dbp_mm_hg=(
+                payload.standing_3m_dbp_mm_hg
+            ),
+            standing_3m_pulse_bpm=(
+                payload.standing_3m_pulse_bpm
+            ),
+            lightheaded_or_dizzy=(
+                payload.lightheaded_or_dizzy
+            ),
+            standard_5_1_3_protocol_confirmed=(
+                payload.standard_5_1_3_protocol_confirmed
             ),
         )
     except ValueError as exc:

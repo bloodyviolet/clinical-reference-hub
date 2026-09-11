@@ -1326,3 +1326,362 @@ class IVCF20Response(BaseModel):
 
     interpretation_pt: str
     interpretation_en: str
+
+
+# ---------------------------------------------------------------------------
+# v2 Item 7 complementary layer — CDC STEADI assessments.
+#
+# These remain separate from the Brazil-primary Caderneta 2026 and IVCF-20
+# instruments. No cross-instrument synthetic score is permitted.
+# ---------------------------------------------------------------------------
+
+SteadiSourceRole = Literal[
+    "complementary_international_guidance",
+]
+
+
+class SteadiTUGInput(BaseModel):
+    time_seconds: float = Field(
+        gt=0,
+    )
+
+    walking_aid_used: bool
+
+    standard_3m_protocol_confirmed: bool
+
+
+class SteadiTUGResponse(BaseModel):
+    tool: Literal[
+        "steadi_timed_up_and_go"
+    ]
+
+    source_role: SteadiSourceRole
+
+    time_seconds: float = Field(
+        gt=0,
+    )
+
+    course_distance_m: Literal[3]
+    course_distance_ft: Literal[10]
+
+    walking_aid_allowed: Literal[True]
+    walking_aid_used: bool
+
+    threshold_seconds: Literal[12]
+
+    threshold_comparison: Literal[
+        ">=",
+    ]
+
+    increased_fall_risk: bool
+
+    ivcf_four_meter_gait_inferred: Literal[False]
+
+    national_sus_threshold_applied: Literal[False]
+
+    automatic_cross_instrument_inference_applied: Literal[False]
+
+    synthetic_cross_instrument_score_applied: Literal[False]
+
+    interpretation_pt: str
+    interpretation_en: str
+
+
+SteadiReferenceSex = Literal[
+    "male",
+    "female",
+]
+
+
+SteadiChairAgeBand = Literal[
+    "60-64",
+    "65-69",
+    "70-74",
+    "75-79",
+    "80-84",
+    "85-89",
+    "90-94",
+]
+
+
+class SteadiChairStand30sInput(BaseModel):
+    age_years: int = Field(
+        ge=60,
+    )
+
+    sex: SteadiReferenceSex
+
+    repetitions: int = Field(
+        ge=0,
+    )
+
+    arms_required_to_stand: bool
+
+    standard_30_second_protocol_confirmed: bool
+
+
+class SteadiChairStand30sResponse(BaseModel):
+    tool: Literal[
+        "steadi_30_second_chair_stand"
+    ]
+
+    source_role: SteadiSourceRole
+
+    age_years: int = Field(
+        ge=60,
+    )
+
+    reference_sex: SteadiReferenceSex
+
+    observed_repetitions_input: int = Field(
+        ge=0,
+    )
+
+    arms_required_to_stand: bool
+
+    test_stopped_due_to_arm_use: bool
+
+    recorded_repetitions: int = Field(
+        ge=0,
+    )
+
+    reference_age_band: SteadiChairAgeBand | None
+
+    below_average_threshold: int | None
+
+    threshold_comparison: Literal[
+        "<",
+    ]
+
+    reference_classification_available: bool
+
+    below_average: bool | None
+
+    increased_fall_risk: bool | None
+
+    reference_table_maximum_age_years: Literal[
+        94
+    ]
+
+    cutoff_extrapolated: Literal[False]
+
+    national_sus_threshold_applied: Literal[False]
+
+    automatic_cross_instrument_inference_applied: Literal[False]
+
+    synthetic_cross_instrument_score_applied: Literal[False]
+
+    interpretation_pt: str
+    interpretation_en: str
+
+
+SteadiBalanceStage = Literal[
+    "side_by_side",
+    "semi_tandem",
+    "tandem",
+    "one_leg",
+]
+
+
+class SteadiFourStageBalanceInput(BaseModel):
+    side_by_side_seconds: float = Field(
+        ge=0,
+        le=10,
+    )
+
+    semi_tandem_seconds: float | None = Field(
+        default=None,
+        ge=0,
+        le=10,
+    )
+
+    tandem_seconds: float | None = Field(
+        default=None,
+        ge=0,
+        le=10,
+    )
+
+    one_leg_seconds: float | None = Field(
+        default=None,
+        ge=0,
+        le=10,
+    )
+
+    assistive_device_used: bool
+
+    standard_four_stage_protocol_confirmed: bool
+
+
+class SteadiFourStageBalanceResponse(BaseModel):
+    tool: Literal[
+        "steadi_four_stage_balance"
+    ]
+
+    source_role: SteadiSourceRole
+
+    side_by_side_seconds: float = Field(
+        ge=0,
+        le=10,
+    )
+
+    semi_tandem_seconds: float | None = Field(
+        ge=0,
+        le=10,
+    )
+
+    tandem_seconds: float | None = Field(
+        ge=0,
+        le=10,
+    )
+
+    one_leg_seconds: float | None = Field(
+        ge=0,
+        le=10,
+    )
+
+    target_seconds_per_stage: Literal[10]
+
+    last_stage_attempted: SteadiBalanceStage
+
+    tandem_held_10_seconds: bool
+
+    increased_fall_risk: bool
+
+    assistive_device_allowed: Literal[False]
+
+    assistive_device_used: Literal[False]
+
+    eyes_open_required: Literal[True]
+
+    national_sus_threshold_applied: Literal[False]
+
+    automatic_cross_instrument_inference_applied: Literal[False]
+
+    synthetic_cross_instrument_score_applied: Literal[False]
+
+    interpretation_pt: str
+    interpretation_en: str
+
+
+class SteadiOrthostaticBPInput(BaseModel):
+    supine_sbp_mm_hg: float = Field(
+        gt=0,
+    )
+
+    supine_dbp_mm_hg: float = Field(
+        gt=0,
+    )
+
+    supine_pulse_bpm: float = Field(
+        gt=0,
+    )
+
+    standing_1m_sbp_mm_hg: float = Field(
+        gt=0,
+    )
+
+    standing_1m_dbp_mm_hg: float = Field(
+        gt=0,
+    )
+
+    standing_1m_pulse_bpm: float = Field(
+        gt=0,
+    )
+
+    standing_3m_sbp_mm_hg: float = Field(
+        gt=0,
+    )
+
+    standing_3m_dbp_mm_hg: float = Field(
+        gt=0,
+    )
+
+    standing_3m_pulse_bpm: float = Field(
+        gt=0,
+    )
+
+    lightheaded_or_dizzy: bool
+
+    standard_5_1_3_protocol_confirmed: bool
+
+
+class SteadiOrthostaticBPResponse(BaseModel):
+    tool: Literal[
+        "steadi_orthostatic_blood_pressure"
+    ]
+
+    source_role: SteadiSourceRole
+
+    supine_sbp_mm_hg: float = Field(
+        gt=0,
+    )
+
+    supine_dbp_mm_hg: float = Field(
+        gt=0,
+    )
+
+    supine_pulse_bpm: float = Field(
+        gt=0,
+    )
+
+    standing_1m_sbp_mm_hg: float = Field(
+        gt=0,
+    )
+
+    standing_1m_dbp_mm_hg: float = Field(
+        gt=0,
+    )
+
+    standing_1m_pulse_bpm: float = Field(
+        gt=0,
+    )
+
+    standing_3m_sbp_mm_hg: float = Field(
+        gt=0,
+    )
+
+    standing_3m_dbp_mm_hg: float = Field(
+        gt=0,
+    )
+
+    standing_3m_pulse_bpm: float = Field(
+        gt=0,
+    )
+
+    supine_rest_minutes: Literal[5]
+
+    standing_measurement_minutes: tuple[
+        Literal[1],
+        Literal[3],
+    ]
+
+    systolic_drop_1m_mm_hg: float
+    systolic_drop_3m_mm_hg: float
+
+    diastolic_drop_1m_mm_hg: float
+    diastolic_drop_3m_mm_hg: float
+
+    maximum_systolic_drop_mm_hg: float
+    maximum_diastolic_drop_mm_hg: float
+
+    systolic_drop_threshold_mm_hg: Literal[20]
+
+    diastolic_drop_threshold_mm_hg: Literal[10]
+
+    systolic_threshold_met: bool
+    diastolic_threshold_met: bool
+
+    lightheaded_or_dizzy: bool
+
+    abnormal_steadi_orthostatic_assessment: bool
+
+    fall_risk_classification_applied: Literal[False]
+
+    national_sus_threshold_applied: Literal[False]
+
+    automatic_cross_instrument_inference_applied: Literal[False]
+
+    synthetic_cross_instrument_score_applied: Literal[False]
+
+    interpretation_pt: str
+    interpretation_en: str

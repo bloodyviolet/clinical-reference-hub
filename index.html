@@ -1144,6 +1144,608 @@
 
         </div>
 
+
+        <!-- Complementary CDC STEADI Falls / Function -->
+        <div
+          id="steadi-complementary-card"
+          class="col-span-full bg-slate-900 border border-violet-700/50 rounded-2xl p-6 shadow-xl space-y-8"
+        >
+
+          <div class="space-y-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <h2
+                data-i18n="steadi.title"
+                class="text-base font-semibold text-white"
+              >Avaliações complementares · CDC STEADI</h2>
+
+              <span
+                data-i18n="steadi.badge"
+                class="rounded-full border border-violet-500/50 bg-violet-500/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-violet-200"
+              >Orientação internacional complementar</span>
+            </div>
+
+            <p
+              data-i18n="steadi.description"
+              class="text-xs text-slate-400"
+            >Camada internacional complementar para avaliação de quedas e função. Não substitui a Caderneta Brasileira da Pessoa Idosa 2026 nem o IVCF-20.</p>
+
+            <div class="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 space-y-2">
+              <p
+                data-i18n="steadi.boundary"
+                class="text-xs text-amber-200"
+              >Os resultados STEADI permanecem separados entre si e da Caderneta/IVCF-20. Não existe escore sintético combinando estes instrumentos.</p>
+
+              <p
+                data-i18n="steadi.sourceRole"
+                class="text-[11px] text-slate-400"
+              >Fonte: CDC STEADI. Estes pontos de corte não são apresentados como padrão nacional genérico do SUS.</p>
+            </div>
+          </div>
+
+
+          <!-- STEADI TUG -->
+          <section
+            id="steadi-tug-section"
+            class="space-y-4 border-t border-slate-700 pt-6"
+          >
+            <div class="space-y-1">
+              <h3
+                data-i18n="steadi.tug.title"
+                class="text-sm font-semibold text-violet-200"
+              >Timed Up and Go (TUG)</h3>
+
+              <p
+                data-i18n="steadi.tug.description"
+                class="text-xs text-slate-400"
+              >Protocolo STEADI de 3 m / 10 ft: levantar, caminhar, virar, retornar e sentar. O auxílio habitual de marcha pode ser utilizado quando necessário.</p>
+            </div>
+
+            <form
+              id="steadi-tug-form"
+              class="space-y-4"
+            >
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+
+                <div>
+                  <label
+                    for="steadi-tug-time"
+                    data-i18n="steadi.tug.time"
+                    class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                  >Tempo total (segundos)</label>
+
+                  <input
+                    id="steadi-tug-time"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    required
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  >
+                </div>
+
+
+              <div>
+                <label
+                  for="steadi-tug-walking-aid"
+                  data-i18n="steadi.tug.walkingAid"
+                  class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                >Utilizou auxílio habitual de marcha?</label>
+
+                <select
+                  id="steadi-tug-walking-aid"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  required
+                >
+                  <option value="" data-i18n="steadi.select">Selecione...</option>
+                  <option value="false" data-i18n="steadi.no">Não</option>
+                  <option value="true" data-i18n="steadi.yes">Sim</option>
+                </select>
+              </div>
+
+
+              <div>
+                <label
+                  for="steadi-tug-protocol"
+                  data-i18n="steadi.tug.protocol"
+                  class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                >Protocolo STEADI de 3 m / 10 ft confirmado?</label>
+
+                <select
+                  id="steadi-tug-protocol"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  required
+                >
+                  <option value="" data-i18n="steadi.select">Selecione...</option>
+                  <option value="true" data-i18n="steadi.confirmed">Confirmado</option>
+                  <option value="false" data-i18n="steadi.notConfirmed">Não confirmado</option>
+                </select>
+              </div>
+
+              </div>
+
+              <button
+                type="submit"
+                data-i18n="steadi.tug.calculate"
+                class="w-full bg-violet-600 hover:bg-violet-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition"
+              >Avaliar TUG STEADI</button>
+            </form>
+
+            <div
+              id="steadi-tug-result"
+              aria-live="polite"
+              class="hidden rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+            ></div>
+
+            <p
+              data-i18n="steadi.tug.boundary"
+              class="text-[11px] text-amber-300"
+            >TUG não é o item de marcha de 4 metros do IVCF-20. O limiar ≥12 s não deve ser aplicado ao IVCF-20.</p>
+          </section>
+
+
+          <!-- STEADI Chair Stand -->
+          <section
+            id="steadi-chair-section"
+            class="space-y-4 border-t border-slate-700 pt-6"
+          >
+            <div class="space-y-1">
+              <h3
+                data-i18n="steadi.chair.title"
+                class="text-sm font-semibold text-violet-200"
+              >Teste de sentar e levantar em 30 segundos</h3>
+
+              <p
+                data-i18n="steadi.chair.description"
+                class="text-xs text-slate-400"
+              >Avaliação STEADI de força e resistência dos membros inferiores. A tabela publicada de idade/sexo cobre 60–94 anos.</p>
+            </div>
+
+            <form
+              id="steadi-chair-form"
+              class="space-y-4"
+            >
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+
+                <div>
+                  <label
+                    for="steadi-chair-age"
+                    data-i18n="steadi.chair.age"
+                    class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                  >Idade (anos)</label>
+
+                  <input
+                    id="steadi-chair-age"
+                    type="number"
+                    min="60"
+                    step="1"
+                    required
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  >
+                </div>
+
+                <div>
+                  <label
+                    for="steadi-chair-sex"
+                    data-i18n="steadi.chair.sex"
+                    class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                  >Sexo da tabela de referência</label>
+
+                  <select
+                    id="steadi-chair-sex"
+                    required
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  >
+                    <option value="" data-i18n="steadi.select">Selecione...</option>
+                    <option value="male" data-i18n="steadi.chair.male">Masculino</option>
+                    <option value="female" data-i18n="steadi.chair.female">Feminino</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    for="steadi-chair-repetitions"
+                    data-i18n="steadi.chair.repetitions"
+                    class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                  >Repetições observadas</label>
+
+                  <input
+                    id="steadi-chair-repetitions"
+                    type="number"
+                    min="0"
+                    step="1"
+                    required
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  >
+                </div>
+
+
+              <div>
+                <label
+                  for="steadi-chair-arms"
+                  data-i18n="steadi.chair.arms"
+                  class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                >Precisou usar os braços para levantar?</label>
+
+                <select
+                  id="steadi-chair-arms"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  required
+                >
+                  <option value="" data-i18n="steadi.select">Selecione...</option>
+                  <option value="false" data-i18n="steadi.no">Não</option>
+                  <option value="true" data-i18n="steadi.yes">Sim</option>
+                </select>
+              </div>
+
+
+              <div>
+                <label
+                  for="steadi-chair-protocol"
+                  data-i18n="steadi.chair.protocol"
+                  class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                >Protocolo de 30 segundos confirmado?</label>
+
+                <select
+                  id="steadi-chair-protocol"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  required
+                >
+                  <option value="" data-i18n="steadi.select">Selecione...</option>
+                  <option value="true" data-i18n="steadi.confirmed">Confirmado</option>
+                  <option value="false" data-i18n="steadi.notConfirmed">Não confirmado</option>
+                </select>
+              </div>
+
+              </div>
+
+              <button
+                type="submit"
+                data-i18n="steadi.chair.calculate"
+                class="w-full bg-violet-600 hover:bg-violet-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition"
+              >Avaliar Chair Stand STEADI</button>
+            </form>
+
+            <div
+              id="steadi-chair-result"
+              aria-live="polite"
+              class="hidden rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+            ></div>
+
+            <div class="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3 space-y-1">
+              <p
+                data-i18n="steadi.chair.armZero"
+                class="text-[11px] text-amber-200"
+              >Quando os braços são necessários para levantar, o protocolo orienta interromper o teste e registrar zero.</p>
+
+              <p
+                data-i18n="steadi.chair.noExtrapolation"
+                class="text-[11px] text-amber-200"
+              >Após 94 anos, preserve o resultado bruto; não extrapole o ponto de corte.</p>
+            </div>
+          </section>
+
+
+          <!-- STEADI 4-Stage Balance -->
+          <section
+            id="steadi-balance-section"
+            class="space-y-4 border-t border-slate-700 pt-6"
+          >
+            <div class="space-y-1">
+              <h3
+                data-i18n="steadi.balance.title"
+                class="text-sm font-semibold text-violet-200"
+              >Teste de equilíbrio em 4 estágios</h3>
+
+              <p
+                data-i18n="steadi.balance.description"
+                class="text-xs text-slate-400"
+              >Quatro posições progressivas, olhos abertos, até 10 segundos por estágio. Não utilizar dispositivo de auxílio.</p>
+            </div>
+
+            <div class="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-3 space-y-1">
+              <p
+                data-i18n="steadi.balance.sequence"
+                class="text-[11px] text-cyan-100"
+              >Avance apenas quando o estágio atual for mantido por 10 segundos; interrompa após falha.</p>
+
+              <p
+                data-i18n="steadi.balance.noDevice"
+                class="text-[11px] text-amber-200"
+              >O protocolo STEADI de 4 estágios não permite dispositivo de auxílio durante o teste.</p>
+            </div>
+
+            <form
+              id="steadi-balance-form"
+              class="space-y-4"
+            >
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+
+                <div>
+                  <label
+                    for="steadi-balance-side"
+                    data-i18n="steadi.balance.side"
+                    class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                  >Pés lado a lado (0–10 s)</label>
+
+                  <input
+                    id="steadi-balance-side"
+                    type="number"
+                    min="0"
+                    max="10"
+                    step="0.01"
+                    required
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  >
+                </div>
+
+                <div>
+                  <label
+                    for="steadi-balance-semi"
+                    data-i18n="steadi.balance.semi"
+                    class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                  >Semi-tandem (0–10 s; deixe vazio se não realizado)</label>
+
+                  <input
+                    id="steadi-balance-semi"
+                    type="number"
+                    min="0"
+                    max="10"
+                    step="0.01"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  >
+                </div>
+
+                <div>
+                  <label
+                    for="steadi-balance-tandem"
+                    data-i18n="steadi.balance.tandem"
+                    class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                  >Tandem calcanhar-ponta (0–10 s; deixe vazio se não realizado)</label>
+
+                  <input
+                    id="steadi-balance-tandem"
+                    type="number"
+                    min="0"
+                    max="10"
+                    step="0.01"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  >
+                </div>
+
+                <div>
+                  <label
+                    for="steadi-balance-one-leg"
+                    data-i18n="steadi.balance.oneLeg"
+                    class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                  >Apoio unipodal (0–10 s; deixe vazio se não realizado)</label>
+
+                  <input
+                    id="steadi-balance-one-leg"
+                    type="number"
+                    min="0"
+                    max="10"
+                    step="0.01"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  >
+                </div>
+
+
+              <div>
+                <label
+                  for="steadi-balance-device"
+                  data-i18n="steadi.balance.device"
+                  class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                >Foi utilizado dispositivo de auxílio?</label>
+
+                <select
+                  id="steadi-balance-device"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  required
+                >
+                  <option value="" data-i18n="steadi.select">Selecione...</option>
+                  <option value="false" data-i18n="steadi.no">Não</option>
+                  <option value="true" data-i18n="steadi.yes">Sim</option>
+                </select>
+              </div>
+
+
+              <div>
+                <label
+                  for="steadi-balance-protocol"
+                  data-i18n="steadi.balance.protocol"
+                  class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                >Protocolo STEADI de 4 estágios confirmado?</label>
+
+                <select
+                  id="steadi-balance-protocol"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  required
+                >
+                  <option value="" data-i18n="steadi.select">Selecione...</option>
+                  <option value="true" data-i18n="steadi.confirmed">Confirmado</option>
+                  <option value="false" data-i18n="steadi.notConfirmed">Não confirmado</option>
+                </select>
+              </div>
+
+              </div>
+
+              <button
+                type="submit"
+                data-i18n="steadi.balance.calculate"
+                class="w-full bg-violet-600 hover:bg-violet-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition"
+              >Avaliar equilíbrio STEADI</button>
+            </form>
+
+            <div
+              id="steadi-balance-result"
+              aria-live="polite"
+              class="hidden rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+            ></div>
+          </section>
+
+
+          <!-- STEADI Orthostatic BP -->
+          <section
+            id="steadi-orthostatic-section"
+            class="space-y-4 border-t border-slate-700 pt-6"
+          >
+            <div class="space-y-1">
+              <h3
+                data-i18n="steadi.ortho.title"
+                class="text-sm font-semibold text-violet-200"
+              >Pressão arterial ortostática STEADI</h3>
+
+              <p
+                data-i18n="steadi.ortho.description"
+                class="text-xs text-slate-400"
+              >Protocolo complementar: 5 minutos em decúbito, seguido de medidas em pé aos 1 e 3 minutos.</p>
+            </div>
+
+            <form
+              id="steadi-orthostatic-form"
+              class="space-y-4"
+            >
+
+              <fieldset class="rounded-xl border border-slate-800 p-4">
+                <legend
+                  data-i18n="steadi.ortho.supine"
+                  class="px-2 text-xs font-semibold text-violet-300"
+                >Após 5 min em decúbito</legend>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div>
+                    <label for="steadi-ortho-supine-sbp" data-i18n="steadi.ortho.sbp" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">PAS (mmHg)</label>
+                    <input id="steadi-ortho-supine-sbp" type="number" min="1" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+
+                  <div>
+                    <label for="steadi-ortho-supine-dbp" data-i18n="steadi.ortho.dbp" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">PAD (mmHg)</label>
+                    <input id="steadi-ortho-supine-dbp" type="number" min="1" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+
+                  <div>
+                    <label for="steadi-ortho-supine-pulse" data-i18n="steadi.ortho.pulse" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Pulso (bpm)</label>
+                    <input id="steadi-ortho-supine-pulse" type="number" min="1" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="rounded-xl border border-slate-800 p-4">
+                <legend
+                  data-i18n="steadi.ortho.oneMinute"
+                  class="px-2 text-xs font-semibold text-violet-300"
+                >Em pé · 1 minuto</legend>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div>
+                    <label for="steadi-ortho-1m-sbp" data-i18n="steadi.ortho.sbp" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">PAS (mmHg)</label>
+                    <input id="steadi-ortho-1m-sbp" type="number" min="1" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+
+                  <div>
+                    <label for="steadi-ortho-1m-dbp" data-i18n="steadi.ortho.dbp" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">PAD (mmHg)</label>
+                    <input id="steadi-ortho-1m-dbp" type="number" min="1" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+
+                  <div>
+                    <label for="steadi-ortho-1m-pulse" data-i18n="steadi.ortho.pulse" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Pulso (bpm)</label>
+                    <input id="steadi-ortho-1m-pulse" type="number" min="1" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="rounded-xl border border-slate-800 p-4">
+                <legend
+                  data-i18n="steadi.ortho.threeMinutes"
+                  class="px-2 text-xs font-semibold text-violet-300"
+                >Em pé · 3 minutos</legend>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div>
+                    <label for="steadi-ortho-3m-sbp" data-i18n="steadi.ortho.sbp" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">PAS (mmHg)</label>
+                    <input id="steadi-ortho-3m-sbp" type="number" min="1" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+
+                  <div>
+                    <label for="steadi-ortho-3m-dbp" data-i18n="steadi.ortho.dbp" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">PAD (mmHg)</label>
+                    <input id="steadi-ortho-3m-dbp" type="number" min="1" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+
+                  <div>
+                    <label for="steadi-ortho-3m-pulse" data-i18n="steadi.ortho.pulse" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Pulso (bpm)</label>
+                    <input id="steadi-ortho-3m-pulse" type="number" min="1" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  </div>
+                </div>
+              </fieldset>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+              <div>
+                <label
+                  for="steadi-ortho-symptoms"
+                  data-i18n="steadi.ortho.symptoms"
+                  class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                >Tontura ou sensação de cabeça leve?</label>
+
+                <select
+                  id="steadi-ortho-symptoms"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  required
+                >
+                  <option value="" data-i18n="steadi.select">Selecione...</option>
+                  <option value="false" data-i18n="steadi.no">Não</option>
+                  <option value="true" data-i18n="steadi.yes">Sim</option>
+                </select>
+              </div>
+
+
+              <div>
+                <label
+                  for="steadi-ortho-protocol"
+                  data-i18n="steadi.ortho.protocol"
+                  class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+                >Protocolo STEADI 5 / 1 / 3 minutos confirmado?</label>
+
+                <select
+                  id="steadi-ortho-protocol"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+                  required
+                >
+                  <option value="" data-i18n="steadi.select">Selecione...</option>
+                  <option value="true" data-i18n="steadi.confirmed">Confirmado</option>
+                  <option value="false" data-i18n="steadi.notConfirmed">Não confirmado</option>
+                </select>
+              </div>
+              </div>
+
+              <button
+                type="submit"
+                data-i18n="steadi.ortho.calculate"
+                class="w-full bg-violet-600 hover:bg-violet-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition"
+              >Avaliar pressão ortostática STEADI</button>
+            </form>
+
+            <div
+              id="steadi-orthostatic-result"
+              aria-live="polite"
+              class="hidden rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+            ></div>
+
+            <div class="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3 space-y-1">
+              <p
+                data-i18n="steadi.ortho.noPulseThreshold"
+                class="text-[11px] text-amber-200"
+              >O pulso é registrado, mas nenhum limiar de pulso é inventado por esta ferramenta.</p>
+
+              <p
+                data-i18n="steadi.ortho.boundary"
+                class="text-[11px] text-amber-200"
+              >O protocolo 5/1/3 min e os critérios 20/10 mmHg são STEADI complementar; não são apresentados como regra numérica da Caderneta/SUS.</p>
+            </div>
+          </section>
+
+        </div>
+
         <!-- WHO / SISVAN Paediatric Growth -->
         <div id="growth-card" class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
 

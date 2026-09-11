@@ -755,6 +755,216 @@
       "ivcf.item.hospitalized_last_six_months":
         "Internação hospitalar nos últimos 6 meses.",
 
+      "steadi.title":
+        "Avaliações complementares · CDC STEADI",
+
+      "steadi.description":
+        "Camada internacional complementar para avaliação de quedas e função. Não substitui a Caderneta Brasileira da Pessoa Idosa 2026 nem o IVCF-20.",
+
+      "steadi.badge":
+        "Orientação internacional complementar",
+
+      "steadi.boundary":
+        "Os resultados STEADI permanecem separados entre si e da Caderneta/IVCF-20. Não existe escore sintético combinando estes instrumentos.",
+
+      "steadi.sourceRole":
+        "Fonte: CDC STEADI. Estes pontos de corte não são apresentados como padrão nacional genérico do SUS.",
+
+      "steadi.select":
+        "Selecione...",
+
+      "steadi.yes":
+        "Sim",
+
+      "steadi.no":
+        "Não",
+
+      "steadi.confirmed":
+        "Confirmado",
+
+      "steadi.notConfirmed":
+        "Não confirmado",
+
+      "steadi.offline":
+        "Resultado calculado localmente em modo offline.",
+
+      "steadi.tug.title":
+        "Timed Up and Go (TUG)",
+
+      "steadi.tug.description":
+        "Protocolo STEADI de 3 m / 10 ft: levantar, caminhar, virar, retornar e sentar. O auxílio habitual de marcha pode ser utilizado quando necessário.",
+
+      "steadi.tug.time":
+        "Tempo total (segundos)",
+
+      "steadi.tug.walkingAid":
+        "Utilizou auxílio habitual de marcha?",
+
+      "steadi.tug.protocol":
+        "Protocolo STEADI de 3 m / 10 ft confirmado?",
+
+      "steadi.tug.calculate":
+        "Avaliar TUG STEADI",
+
+      "steadi.tug.resultTitle":
+        "Resultado · TUG STEADI",
+
+      "steadi.tug.increased":
+        "Critério STEADI de risco aumentado atingido (≥12 s).",
+
+      "steadi.tug.notIncreased":
+        "Critério STEADI de risco aumentado não atingido (<12 s).",
+
+      "steadi.tug.boundary":
+        "TUG não é o item de marcha de 4 metros do IVCF-20. O limiar ≥12 s não deve ser aplicado ao IVCF-20.",
+
+      "steadi.chair.title":
+        "Teste de sentar e levantar em 30 segundos",
+
+      "steadi.chair.description":
+        "Avaliação STEADI de força e resistência dos membros inferiores. A tabela publicada de idade/sexo cobre 60–94 anos.",
+
+      "steadi.chair.age":
+        "Idade (anos)",
+
+      "steadi.chair.sex":
+        "Sexo da tabela de referência",
+
+      "steadi.chair.male":
+        "Masculino",
+
+      "steadi.chair.female":
+        "Feminino",
+
+      "steadi.chair.repetitions":
+        "Repetições observadas",
+
+      "steadi.chair.arms":
+        "Precisou usar os braços para levantar?",
+
+      "steadi.chair.protocol":
+        "Protocolo de 30 segundos confirmado?",
+
+      "steadi.chair.calculate":
+        "Avaliar Chair Stand STEADI",
+
+      "steadi.chair.resultTitle":
+        "Resultado · 30-Second Chair Stand",
+
+      "steadi.chair.raw":
+        "Repetições registradas",
+
+      "steadi.chair.below":
+        "Abaixo da média de referência STEADI.",
+
+      "steadi.chair.notBelow":
+        "Não está abaixo da média de referência STEADI.",
+
+      "steadi.chair.unavailable":
+        "A tabela STEADI não fornece classificação idade/sexo para esta idade.",
+
+      "steadi.chair.armZero":
+        "Quando os braços são necessários para levantar, o protocolo orienta interromper o teste e registrar zero.",
+
+      "steadi.chair.noExtrapolation":
+        "Após 94 anos, preserve o resultado bruto; não extrapole o ponto de corte.",
+
+      "steadi.balance.title":
+        "Teste de equilíbrio em 4 estágios",
+
+      "steadi.balance.description":
+        "Quatro posições progressivas, olhos abertos, até 10 segundos por estágio. Não utilizar dispositivo de auxílio.",
+
+      "steadi.balance.side":
+        "Pés lado a lado (0–10 s)",
+
+      "steadi.balance.semi":
+        "Semi-tandem (0–10 s; deixe vazio se não realizado)",
+
+      "steadi.balance.tandem":
+        "Tandem calcanhar-ponta (0–10 s; deixe vazio se não realizado)",
+
+      "steadi.balance.oneLeg":
+        "Apoio unipodal (0–10 s; deixe vazio se não realizado)",
+
+      "steadi.balance.device":
+        "Foi utilizado dispositivo de auxílio?",
+
+      "steadi.balance.protocol":
+        "Protocolo STEADI de 4 estágios confirmado?",
+
+      "steadi.balance.calculate":
+        "Avaliar equilíbrio STEADI",
+
+      "steadi.balance.resultTitle":
+        "Resultado · 4-Stage Balance",
+
+      "steadi.balance.increased":
+        "Tandem por menos de 10 s / não alcançado: critério STEADI de risco aumentado.",
+
+      "steadi.balance.notIncreased":
+        "Tandem mantido por 10 s: critério específico STEADI de risco aumentado não atingido.",
+
+      "steadi.balance.noDevice":
+        "O protocolo STEADI de 4 estágios não permite dispositivo de auxílio durante o teste.",
+
+      "steadi.balance.sequence":
+        "Avance apenas quando o estágio atual for mantido por 10 segundos; interrompa após falha.",
+
+      "steadi.ortho.title":
+        "Pressão arterial ortostática STEADI",
+
+      "steadi.ortho.description":
+        "Protocolo complementar: 5 minutos em decúbito, seguido de medidas em pé aos 1 e 3 minutos.",
+
+      "steadi.ortho.supine":
+        "Após 5 min em decúbito",
+
+      "steadi.ortho.oneMinute":
+        "Em pé · 1 minuto",
+
+      "steadi.ortho.threeMinutes":
+        "Em pé · 3 minutos",
+
+      "steadi.ortho.sbp":
+        "PAS (mmHg)",
+
+      "steadi.ortho.dbp":
+        "PAD (mmHg)",
+
+      "steadi.ortho.pulse":
+        "Pulso (bpm)",
+
+      "steadi.ortho.symptoms":
+        "Tontura ou sensação de cabeça leve?",
+
+      "steadi.ortho.protocol":
+        "Protocolo STEADI 5 / 1 / 3 minutos confirmado?",
+
+      "steadi.ortho.calculate":
+        "Avaliar pressão ortostática STEADI",
+
+      "steadi.ortho.resultTitle":
+        "Resultado · pressão ortostática STEADI",
+
+      "steadi.ortho.abnormal":
+        "Avaliação STEADI anormal: queda de PAS ≥20 mmHg, queda de PAD ≥10 mmHg e/ou sintomas.",
+
+      "steadi.ortho.normal":
+        "Critérios STEADI de anormalidade não atingidos.",
+
+      "steadi.ortho.sbpDrop":
+        "Maior queda de PAS",
+
+      "steadi.ortho.dbpDrop":
+        "Maior queda de PAD",
+
+      "steadi.ortho.noPulseThreshold":
+        "O pulso é registrado, mas nenhum limiar de pulso é inventado por esta ferramenta.",
+
+      "steadi.ortho.boundary":
+        "O protocolo 5/1/3 min e os critérios 20/10 mmHg são STEADI complementar; não são apresentados como regra numérica da Caderneta/SUS.",
+
       'growth.title':
         'Crescimento pediátrico · WHO / SISVAN',
 
@@ -1629,6 +1839,216 @@
 
       "ivcf.item.hospitalized_last_six_months":
         "Hospital admission during the previous 6 months.",
+
+      "steadi.title":
+        "Complementary assessments · CDC STEADI",
+
+      "steadi.description":
+        "Complementary international layer for falls and functional assessment. It does not replace the Brazilian Older Person Caderneta 2026 or IVCF-20.",
+
+      "steadi.badge":
+        "Complementary international guidance",
+
+      "steadi.boundary":
+        "STEADI results remain separate from one another and from Caderneta/IVCF-20. No synthetic score combines these instruments.",
+
+      "steadi.sourceRole":
+        "Source: CDC STEADI. These thresholds are not presented as generic national SUS standards.",
+
+      "steadi.select":
+        "Select...",
+
+      "steadi.yes":
+        "Yes",
+
+      "steadi.no":
+        "No",
+
+      "steadi.confirmed":
+        "Confirmed",
+
+      "steadi.notConfirmed":
+        "Not confirmed",
+
+      "steadi.offline":
+        "Result calculated locally while offline.",
+
+      "steadi.tug.title":
+        "Timed Up and Go (TUG)",
+
+      "steadi.tug.description":
+        "STEADI 3-m / 10-ft protocol: stand, walk, turn, return and sit. The usual walking aid may be used when needed.",
+
+      "steadi.tug.time":
+        "Total time (seconds)",
+
+      "steadi.tug.walkingAid":
+        "Was the usual walking aid used?",
+
+      "steadi.tug.protocol":
+        "STEADI 3-m / 10-ft protocol confirmed?",
+
+      "steadi.tug.calculate":
+        "Assess STEADI TUG",
+
+      "steadi.tug.resultTitle":
+        "Result · STEADI TUG",
+
+      "steadi.tug.increased":
+        "STEADI increased-risk criterion reached (≥12 s).",
+
+      "steadi.tug.notIncreased":
+        "STEADI increased-risk criterion not reached (<12 s).",
+
+      "steadi.tug.boundary":
+        "TUG is not the IVCF-20 4-metre gait item. The ≥12-second threshold must not be applied to IVCF-20.",
+
+      "steadi.chair.title":
+        "30-Second Chair Stand",
+
+      "steadi.chair.description":
+        "STEADI assessment of lower-limb strength and endurance. The published age/sex table covers ages 60–94.",
+
+      "steadi.chair.age":
+        "Age (years)",
+
+      "steadi.chair.sex":
+        "Reference-table sex",
+
+      "steadi.chair.male":
+        "Male",
+
+      "steadi.chair.female":
+        "Female",
+
+      "steadi.chair.repetitions":
+        "Observed repetitions",
+
+      "steadi.chair.arms":
+        "Were the arms required to stand?",
+
+      "steadi.chair.protocol":
+        "30-second protocol confirmed?",
+
+      "steadi.chair.calculate":
+        "Assess STEADI Chair Stand",
+
+      "steadi.chair.resultTitle":
+        "Result · 30-Second Chair Stand",
+
+      "steadi.chair.raw":
+        "Recorded repetitions",
+
+      "steadi.chair.below":
+        "Below the STEADI reference average.",
+
+      "steadi.chair.notBelow":
+        "Not below the STEADI reference average.",
+
+      "steadi.chair.unavailable":
+        "The STEADI table provides no age/sex classification for this age.",
+
+      "steadi.chair.armZero":
+        "When the arms are required to stand, the protocol instructs the examiner to stop and record zero.",
+
+      "steadi.chair.noExtrapolation":
+        "After age 94, preserve the raw result; do not extrapolate a cutoff.",
+
+      "steadi.balance.title":
+        "4-Stage Balance Test",
+
+      "steadi.balance.description":
+        "Four progressive positions, eyes open, up to 10 seconds per stage. Do not use an assistive device.",
+
+      "steadi.balance.side":
+        "Feet side-by-side (0–10 s)",
+
+      "steadi.balance.semi":
+        "Semi-tandem (0–10 s; leave blank if not attempted)",
+
+      "steadi.balance.tandem":
+        "Tandem heel-to-toe (0–10 s; leave blank if not attempted)",
+
+      "steadi.balance.oneLeg":
+        "One-leg stand (0–10 s; leave blank if not attempted)",
+
+      "steadi.balance.device":
+        "Was an assistive device used?",
+
+      "steadi.balance.protocol":
+        "STEADI 4-Stage protocol confirmed?",
+
+      "steadi.balance.calculate":
+        "Assess STEADI balance",
+
+      "steadi.balance.resultTitle":
+        "Result · 4-Stage Balance",
+
+      "steadi.balance.increased":
+        "Tandem held for less than 10 s / not reached: STEADI increased-risk criterion.",
+
+      "steadi.balance.notIncreased":
+        "Tandem held for 10 s: the STEADI tandem-specific increased-risk criterion was not reached.",
+
+      "steadi.balance.noDevice":
+        "The STEADI 4-Stage Balance protocol does not permit an assistive device during the test.",
+
+      "steadi.balance.sequence":
+        "Progress only when the current stage is held for 10 seconds; stop after failure.",
+
+      "steadi.ortho.title":
+        "STEADI orthostatic blood pressure",
+
+      "steadi.ortho.description":
+        "Complementary protocol: 5 minutes supine, followed by standing measurements at 1 and 3 minutes.",
+
+      "steadi.ortho.supine":
+        "After 5 min supine",
+
+      "steadi.ortho.oneMinute":
+        "Standing · 1 minute",
+
+      "steadi.ortho.threeMinutes":
+        "Standing · 3 minutes",
+
+      "steadi.ortho.sbp":
+        "SBP (mmHg)",
+
+      "steadi.ortho.dbp":
+        "DBP (mmHg)",
+
+      "steadi.ortho.pulse":
+        "Pulse (bpm)",
+
+      "steadi.ortho.symptoms":
+        "Lightheadedness or dizziness?",
+
+      "steadi.ortho.protocol":
+        "STEADI 5 / 1 / 3-minute protocol confirmed?",
+
+      "steadi.ortho.calculate":
+        "Assess STEADI orthostatic BP",
+
+      "steadi.ortho.resultTitle":
+        "Result · STEADI orthostatic BP",
+
+      "steadi.ortho.abnormal":
+        "Abnormal STEADI assessment: SBP drop ≥20 mmHg, DBP drop ≥10 mmHg and/or symptoms.",
+
+      "steadi.ortho.normal":
+        "STEADI abnormality criteria were not reached.",
+
+      "steadi.ortho.sbpDrop":
+        "Maximum SBP drop",
+
+      "steadi.ortho.dbpDrop":
+        "Maximum DBP drop",
+
+      "steadi.ortho.noPulseThreshold":
+        "Pulse is recorded, but this tool does not invent a pulse threshold.",
+
+      "steadi.ortho.boundary":
+        "The 5/1/3-minute protocol and 20/10-mmHg criteria are complementary STEADI guidance; they are not presented as a Caderneta/SUS numeric rule.",
 
       'growth.title':
         'Paediatric growth · WHO / SISVAN',

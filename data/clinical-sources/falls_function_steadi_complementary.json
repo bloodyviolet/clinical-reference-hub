@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "feature": "Falls / function — complementary CDC STEADI assessments",
+  "review_date": "2026-09-11",
+  "implementation_status": "source_review_complete_implementation_pending",
+  "source_role": "complementary_international_guidance",
+  "brazil_applicability_status": "no_national_variant_identified",
+  "brazil_primary_checkpoint": "78add2d1572d79179b66440114f703bdbdfd9fc6",
+  "national_sus_adoption_of_steadi_identified": false,
+  "synthetic_cross_instrument_score_allowed": false,
+  "automatic_cross_instrument_inference_allowed": false,
+  "current_resource": {
+    "authority": "US Centers for Disease Control and Prevention / National Center for Injury Prevention and Control",
+    "program": "STEADI — Stopping Elderly Accidents, Deaths & Injuries",
+    "clinical_resources_url": "https://www.cdc.gov/steadi/hcp/clinical-resources/index.html",
+    "current_page_reviewed": true,
+    "current_page_retains_all_four_assessments": true,
+    "assessments": [
+      "Timed Up and Go",
+      "30-Second Chair Stand",
+      "4-Stage Balance",
+      "Measuring Orthostatic Blood Pressure"
+    ]
+  },
+  "timed_up_and_go": {
+    "instrument": "Timed Up and Go (TUG)",
+    "purpose": "mobility",
+    "source_url": "https://www.cdc.gov/steadi/media/pdfs/STEADI-Assessment-TUG-508.pdf",
+    "course_distance_m": 3,
+    "course_distance_ft": 10,
+    "regular_footwear": true,
+    "usual_walking_aid_allowed_if_needed": true,
+    "timing_start": "on Go",
+    "timing_stop": "after patient sits back down",
+    "increased_fall_risk_if_seconds_gte": 12,
+    "qualitative_observation_remains_clinically_relevant": true,
+    "not_equivalent_to_ivcf_four_meter_gait": true
+  },
+  "chair_stand_30s": {
+    "instrument": "30-Second Chair Stand",
+    "purpose": "leg strength and endurance",
+    "source_url": "https://www.cdc.gov/steadi/media/pdfs/STEADI-Assessment-30Sec-508.pdf",
+    "test_duration_seconds": 30,
+    "chair_has_armrests": false,
+    "arms_crossed_at_wrists_against_chest": true,
+    "arms_required_to_stand_rule": "stop test and record zero",
+    "halfway_up_at_30_seconds_counts_as_stand": true,
+    "below_average_score_indicates_fall_risk": true,
+    "reference_table_age_range_years": {
+      "minimum": 60,
+      "maximum": 94
+    },
+    "cutoff_semantics": "below_average_if_repetitions_strictly_less_than_threshold",
+    "below_average_if_repetitions_lt": {
+      "60-64": {
+        "men": 14,
+        "women": 12
+      },
+      "65-69": {
+        "men": 12,
+        "women": 11
+      },
+      "70-74": {
+        "men": 12,
+        "women": 10
+      },
+      "75-79": {
+        "men": 11,
+        "women": 10
+      },
+      "80-84": {
+        "men": 10,
+        "women": 9
+      },
+      "85-89": {
+        "men": 8,
+        "women": 8
+      },
+      "90-94": {
+        "men": 7,
+        "women": 4
+      }
+    },
+    "cutoff_extrapolation_beyond_age_94_allowed": false
+  },
+  "four_stage_balance": {
+    "instrument": "4-Stage Balance Test",
+    "purpose": "static balance",
+    "source_url": "https://www.cdc.gov/steadi/media/pdfs/STEADI-Assessment-4Stage-508.pdf",
+    "eyes_open": true,
+    "assistive_device_allowed_during_test": false,
+    "positions": [
+      "feet_side_by_side",
+      "instep_touching_big_toe",
+      "tandem_heel_to_toe",
+      "one_leg"
+    ],
+    "target_seconds_per_position": 10,
+    "progress_only_if_position_held_for_seconds": 10,
+    "stop_if_position_not_held": true,
+    "increased_fall_risk_if_tandem_seconds_lt": 10
+  },
+  "orthostatic_blood_pressure": {
+    "instrument": "Measuring Orthostatic Blood Pressure",
+    "source_url": "https://www.cdc.gov/steadi/media/pdfs/STEADI-Assessment-MeasuringBP-508.pdf",
+    "supine_rest_minutes": 5,
+    "measure_supine_bp_and_pulse": true,
+    "stand_after_supine_measurement": true,
+    "standing_measurement_minutes": [
+      1,
+      3
+    ],
+    "measure_standing_bp_and_pulse": true,
+    "abnormal_if_systolic_drop_mm_hg_gte": 20,
+    "abnormal_if_diastolic_drop_mm_hg_gte": 10,
+    "abnormal_if_lightheaded_or_dizzy": true,
+    "abnormal_rule": "any_of",
+    "not_a_current_caderneta_2026_numeric_protocol": true
+  },
+  "brazil_boundary": {
+    "primary_national_layer_remains": [
+      "Caderneta Brasileira da Pessoa Idosa 2026",
+      "IVCF-20"
+    ],
+    "generic_national_sus_tug_cutoff_identified": false,
+    "generic_national_sus_chair_stand_cutoff_identified": false,
+    "generic_national_sus_four_stage_cutoff_identified": false,
+    "caderneta_2026_records_lying_sitting_standing_bp": true,
+    "caderneta_2026_defines_full_steadi_orthostatic_timing": false,
+    "software_rule": "Present every STEADI assessment as complementary international guidance below or separately from the Brazilian national layer."
+  },
+  "durable_boundaries": [
+    {
+      "id": "STEADI-BRAZIL-LAYER-01",
+      "severity": "critical",
+      "finding": "CDC STEADI is complementary international guidance for this application; the current Brazilian national layer remains Caderneta 2026 plus IVCF-20.",
+      "software_rule": "Never present STEADI as the national SUS default or replace the Brazil-primary instruments."
+    },
+    {
+      "id": "STEADI-SYNTHETIC-SCORE-02",
+      "severity": "critical",
+      "finding": "TUG, Chair Stand, 4-Stage Balance, orthostatic BP, Caderneta and IVCF-20 are distinct assessments.",
+      "software_rule": "Never add their outputs into a synthetic fall-risk score and never infer one instrument's result from another."
+    },
+    {
+      "id": "STEADI-TUG-IVCF-03",
+      "severity": "critical",
+      "finding": "STEADI TUG is a 3-m/10-ft stand-walk-turn-return-sit test; IVCF-20 contains a separate 4-m gait condition.",
+      "software_rule": "Never relabel the IVCF-20 4-m gait item as TUG or reuse its >5-second finding as the STEADI >=12-second TUG threshold."
+    },
+    {
+      "id": "STEADI-CHAIR-AGE-04",
+      "severity": "high",
+      "finding": "The CDC 30-Second Chair Stand reference table supplied by STEADI spans ages 60 through 94.",
+      "software_rule": "Do not extrapolate age/sex cutoffs beyond age 94. Outside the source table, return the raw stand count without a STEADI below-average classification."
+    },
+    {
+      "id": "STEADI-CHAIR-STRICT-05",
+      "severity": "high",
+      "finding": "Chair Stand values are below average only when the repetition count is strictly less than the age/sex threshold.",
+      "software_rule": "A count exactly equal to the published threshold must not be classified as below average."
+    },
+    {
+      "id": "STEADI-BALANCE-DEVICE-06",
+      "severity": "high",
+      "finding": "The 4-Stage Balance handout instructs that an assistive device is not used during the test.",
+      "software_rule": "Do not silently apply TUG's walking-aid allowance to the 4-Stage Balance Test."
+    },
+    {
+      "id": "STEADI-BP-BRAZIL-07",
+      "severity": "high",
+      "finding": "The STEADI orthostatic protocol specifies 5 minutes supine and standing measurements at 1 and 3 minutes; the 2026 Brazilian Caderneta does not itself define that full timing/cutoff protocol.",
+      "software_rule": "Label the timing and 20/10-mmHg-or-symptom interpretation as STEADI complementary guidance, not as a Caderneta/SUS numeric rule."
+    }
+  ],
+  "implementation_order": [
+    "source/governance qualification",
+    "Python engines with each instrument separate",
+    "typed FastAPI schemas and endpoints",
+    "browser numerical parity",
+    "bilingual UI below/separate from Brazil-primary layer",
+    "offline parity",
+    "full qualification"
+  ],
+  "final_release_recheck_required": true
+}

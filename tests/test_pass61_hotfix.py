@@ -69,7 +69,7 @@ def test_offline_bundles_are_complete_and_match_database():
 
 def test_service_worker_precaches_offline_data_and_local_icons():
     sw = (ROOT / "sw.js").read_text(encoding="utf-8")
-    assert "clinical-reference-v21-v2-brazil-falls-function" in sw
+    assert "clinical-reference-v22-v2-steadi-complementary" in sw
     assert "clinical-reference-v20-v2-brazil-methanol" not in sw
     for path in (
         "/assets/offline/sae.json",
