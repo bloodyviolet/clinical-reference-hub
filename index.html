@@ -220,6 +220,48 @@
           <div id="crcl-result" aria-live="polite" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
         
+        <!-- Hemodynamics -->
+        <div id="hemodynamics-card" class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+
+          <div class="space-y-1">
+            <h2 data-i18n="hemo.title" class="text-base font-semibold text-white">Hemodinâmica · PAM / Pressão de Pulso / SI / MSI</h2>
+            <p data-i18n="hemo.description" class="text-xs text-slate-400">Cálculos hemodinâmicos a partir de PAS, PAD e frequência cardíaca.</p>
+          </div>
+
+          <form id="hemodynamics-form" class="space-y-4 border-t border-slate-800 pt-4">
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+
+              <div>
+                <label data-i18n="hemo.sbp" for="hemo-sbp" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Pressão arterial sistólica (mmHg)</label>
+                <input id="hemo-sbp" type="number" min="1" step="1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="hemo.dbp" for="hemo-dbp" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Pressão arterial diastólica (mmHg)</label>
+                <input id="hemo-dbp" type="number" min="1" step="1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="hemo.hr" for="hemo-hr" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Frequência cardíaca (bpm)</label>
+                <input id="hemo-hr" type="number" min="1" step="1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+            </div>
+
+            <button type="submit" data-i18n="hemo.calculate" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular índices hemodinâmicos</button>
+
+          </form>
+
+          <div id="hemodynamics-result" aria-live="polite" class="hidden rounded-xl border border-slate-800 bg-slate-950/60 p-4"></div>
+
+          <div class="border-t border-slate-800 pt-3 space-y-1">
+            <p data-i18n="hemo.noThreshold" class="text-[10px] text-amber-300">Nenhum ponto de corte universal de SI/MSI foi aplicado.</p>
+            <p data-i18n="hemo.source" class="text-[10px] text-slate-500">Fórmulas: PAM ≈ PAD + ⅓(PAS−PAD); PP = PAS−PAD; SI = FC/PAS; MSI = FC/PAM.</p>
+          </div>
+
+        </div>
+
         <!-- Renal Suite -->
         <div id="renal-suite-card" class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
 

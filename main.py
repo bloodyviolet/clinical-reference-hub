@@ -21,6 +21,10 @@ from clinical_tools.renal import (
     calculate_kdigo_aki,
     classify_ckd,
 )
+from clinical_tools.hemodynamics import (
+    HEMODYNAMICS_METADATA,
+    calculate_hemodynamics,
+)
 from config import load_settings
 from observability import RateLimitMiddleware, RequestContextMiddleware, configure_logging
 from scripts.clinical_content import file_hash, validate_release_content
@@ -759,6 +763,34 @@ def api_calculate_kdigo_aki(
             renal_replacement_therapy=(
                 payload.renal_replacement_therapy
             ),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/hemodynamics/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_hemodynamics_metadata():
+    return HEMODYNAMICS_METADATA
+
+
+@api_v1.post(
+    "/tools/hemodynamics",
+    response_model=schemas.HemodynamicsResponse,
+)
+def api_calculate_hemodynamics(
+    payload: schemas.HemodynamicsInput,
+):
+    try:
+        return calculate_hemodynamics(
+            systolic_bp=payload.systolic_bp,
+            diastolic_bp=payload.diastolic_bp,
+            heart_rate=payload.heart_rate,
         )
     except ValueError as exc:
         raise HTTPException(

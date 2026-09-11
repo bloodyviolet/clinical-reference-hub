@@ -1400,11 +1400,138 @@
   }
 
 
+
+  function calculateHemodynamics(
+    input
+  ) {
+    const systolic =
+      input.systolic_bp;
+
+    const diastolic =
+      input.diastolic_bp;
+
+    const heartRate =
+      input.heart_rate;
+
+
+    if (
+      !Number.isFinite(systolic)
+      || systolic <= 0
+      || !Number.isFinite(diastolic)
+      || diastolic <= 0
+      || !Number.isFinite(heartRate)
+      || heartRate <= 0
+    ) {
+      throw new Error(
+        'invalid_hemodynamic_input'
+      );
+    }
+
+
+    if (
+      systolic < diastolic
+    ) {
+      throw new Error(
+        'systolic_below_diastolic'
+      );
+    }
+
+
+    const pulsePressure =
+      systolic
+      - diastolic;
+
+
+    const map =
+      diastolic
+      + pulsePressure / 3;
+
+
+    const shockIndex =
+      heartRate
+      / systolic;
+
+
+    const modifiedShockIndex =
+      heartRate
+      / map;
+
+
+    return {
+      tool:
+        'hemodynamics',
+
+      systolic_bp_mm_hg:
+        Math.round(
+          systolic * 10
+        ) / 10,
+
+      diastolic_bp_mm_hg:
+        Math.round(
+          diastolic * 10
+        ) / 10,
+
+      heart_rate_bpm:
+        Math.round(
+          heartRate * 10
+        ) / 10,
+
+      pulse_pressure_mm_hg:
+        Math.round(
+          pulsePressure * 10
+        ) / 10,
+
+      mean_arterial_pressure_mm_hg:
+        Math.round(
+          map * 10
+        ) / 10,
+
+      shock_index:
+        Math.round(
+          shockIndex * 1000
+        ) / 1000,
+
+      modified_shock_index:
+        Math.round(
+          modifiedShockIndex * 1000
+        ) / 1000,
+
+      map_method:
+        'DBP + 1/3(SBP - DBP)',
+
+      pulse_pressure_method:
+        'SBP - DBP',
+
+      shock_index_method:
+        'HR / SBP',
+
+      modified_shock_index_method:
+        'HR / MAP',
+
+      threshold_classification_applied:
+        false,
+
+      interpretation_pt:
+        'Os índices são auxiliares de avaliação hemodinâmica e devem ser interpretados junto ao contexto clínico, tendência dos sinais vitais, perfusão e comorbidades. Não foi aplicado um ponto de corte universal para Shock Index ou Modified Shock Index.',
+
+      interpretation_en:
+        'These indices are adjuncts to haemodynamic assessment and should be interpreted with the clinical context, vital-sign trends, perfusion and comorbidities. No universal Shock Index or Modified Shock Index cut-off has been applied.',
+
+      map_note_pt:
+        'A PAM calculada é uma aproximação baseada em PAS/PAD e não substitui a PAM derivada diretamente da curva arterial quando esta estiver disponível.',
+
+      map_note_en:
+        'Calculated MAP is an approximation derived from SBP/DBP and does not replace MAP obtained directly from an arterial waveform when available.'
+    };
+  }
+
+
   globalThis.ClinicalTools =
     Object.freeze({
       calculateNews2,
       calculateEgfrCkdEpi2021,
       classifyCkd,
-      calculateKdigoAki
+      calculateKdigoAki,
+      calculateHemodynamics
     });
 })();

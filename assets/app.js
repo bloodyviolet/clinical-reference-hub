@@ -1726,6 +1726,230 @@ async function calculateAkiTool(event) {
 }
 
 
+
+let lastHemodynamicsResult = null;
+let lastHemodynamicsSource = null;
+
+
+function renderHemodynamicsResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'hemodynamics-result'
+    );
+
+  if (!res || !result) {
+    return;
+  }
+
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+
+  const interpretation =
+    result[
+      `interpretation_${suffix}`
+    ];
+
+
+  const mapNote =
+    result[
+      `map_note_${suffix}`
+    ];
+
+
+  const offlineNotice =
+    source === 'offline'
+      ? `
+        <p class="text-[11px] text-amber-300 mt-3">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('hemo.offline')
+            || clinicalText(
+              'Resultado calculado localmente em modo offline.',
+              'Result calculated locally while offline.'
+            )
+          )}
+        </p>
+      `
+      : '';
+
+
+  const values = [
+    [
+      globalThis.ClinicalI18n
+        ?.t?.('hemo.pp')
+      || clinicalText(
+        'Pressão de pulso',
+        'Pulse pressure'
+      ),
+      `${result.pulse_pressure_mm_hg.toFixed(1)} mmHg`
+    ],
+
+    [
+      globalThis.ClinicalI18n
+        ?.t?.('hemo.map')
+      || clinicalText(
+        'Pressão arterial média',
+        'Mean arterial pressure'
+      ),
+      `${result.mean_arterial_pressure_mm_hg.toFixed(1)} mmHg`
+    ],
+
+    [
+      'Shock Index',
+      result.shock_index.toFixed(3)
+    ],
+
+    [
+      'Modified Shock Index',
+      result.modified_shock_index.toFixed(3)
+    ]
+  ];
+
+
+  res.classList.remove(
+    'hidden'
+  );
+
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('hemo.result')
+        || clinicalText(
+          'Índices calculados',
+          'Calculated indices'
+        )
+      )}
+    </p>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-3">
+      ${values.map(
+        ([label, value]) => `
+          <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+            <p class="text-[10px] text-slate-400">
+              ${escapeHtml(label)}
+            </p>
+            <p class="text-lg font-bold text-cyan-300 mt-1">
+              ${escapeHtml(value)}
+            </p>
+          </div>
+        `
+      ).join('')}
+    </div>
+
+    <p class="text-[11px] text-slate-300 mt-4">
+      ${escapeHtml(interpretation)}
+    </p>
+
+    <p class="text-[11px] text-slate-500 mt-2">
+      ${escapeHtml(mapNote)}
+    </p>
+
+    ${offlineNotice}
+  `;
+}
+
+
+async function calculateHemodynamicsTool(
+  event
+) {
+  event.preventDefault();
+
+
+  const payload = {
+    systolic_bp:
+      Number.parseFloat(
+        document.getElementById(
+          'hemo-sbp'
+        ).value
+      ),
+
+    diastolic_bp:
+      Number.parseFloat(
+        document.getElementById(
+          'hemo-dbp'
+        ).value
+      ),
+
+    heart_rate:
+      Number.parseFloat(
+        document.getElementById(
+          'hemo-hr'
+        ).value
+      )
+  };
+
+
+  if (
+    !Number.isFinite(
+      payload.systolic_bp
+    )
+    || payload.systolic_bp <= 0
+    || !Number.isFinite(
+      payload.diastolic_bp
+    )
+    || payload.diastolic_bp <= 0
+    || !Number.isFinite(
+      payload.heart_rate
+    )
+    || payload.heart_rate <= 0
+    || payload.systolic_bp
+      < payload.diastolic_bp
+  ) {
+    return showError(
+      'hemodynamics-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('hemo.invalid')
+      || clinicalText(
+        'Informe PAS, PAD e frequência cardíaca válidas.',
+        'Enter valid SBP, DBP and heart rate values.'
+      )
+    );
+  }
+
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/hemodynamics',
+      payload,
+      globalThis.ClinicalTools
+        .calculateHemodynamics
+    );
+
+
+    lastHemodynamicsResult =
+      result;
+
+    lastHemodynamicsSource =
+      source;
+
+
+    renderHemodynamicsResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'hemodynamics-result',
+      error.message
+    );
+  }
+}
+
+
 function scoreGlasgow() {
   const ids = ['glasgow-e', 'glasgow-v', 'glasgow-m'];
   const values = ids.map((id) => document.getElementById(id).value);
@@ -1791,6 +2015,7 @@ function wireUiEvents() {
     'renal-egfr-form': calculateEgfrTool,
     'renal-ckd-form': calculateCkdTool,
     'renal-aki-form': calculateAkiTool,
+    'hemodynamics-form': calculateHemodynamicsTool,
     'drip-form': calculateDrip,
     'meds-form': calculateMeds,
     'bmi-form': calculateBMI,
@@ -1861,6 +2086,14 @@ globalThis.addEventListener?.(
       renderAkiResult(
         lastAkiResult,
         lastAkiSource
+      );
+    }
+
+
+    if (lastHemodynamicsResult) {
+      renderHemodynamicsResult(
+        lastHemodynamicsResult,
+        lastHemodynamicsSource
       );
     }
   }

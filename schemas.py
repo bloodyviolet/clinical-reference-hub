@@ -521,3 +521,40 @@ class KDIGOAKIResponse(BaseModel):
 
     interpretation_pt: str
     interpretation_en: str
+
+
+# ---------------------------------------------------------------------------
+# v2 Item 3 — haemodynamic calculations.
+# ---------------------------------------------------------------------------
+
+class HemodynamicsInput(BaseModel):
+    systolic_bp: float = Field(gt=0)
+    diastolic_bp: float = Field(gt=0)
+    heart_rate: float = Field(gt=0)
+
+
+class HemodynamicsResponse(BaseModel):
+    tool: Literal["hemodynamics"]
+
+    systolic_bp_mm_hg: float
+    diastolic_bp_mm_hg: float
+    heart_rate_bpm: float
+
+    pulse_pressure_mm_hg: float
+    mean_arterial_pressure_mm_hg: float
+
+    shock_index: float
+    modified_shock_index: float
+
+    map_method: str
+    pulse_pressure_method: str
+    shock_index_method: str
+    modified_shock_index_method: str
+
+    threshold_classification_applied: Literal[False]
+
+    interpretation_pt: str
+    interpretation_en: str
+
+    map_note_pt: str
+    map_note_en: str

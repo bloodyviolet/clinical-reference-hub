@@ -1,0 +1,50 @@
+[
+  {
+    "name": "reference_120_80_60",
+    "input": {
+      "systolic_bp": 120,
+      "diastolic_bp": 80,
+      "heart_rate": 60
+    },
+    "pulse_pressure": 40.0,
+    "map": 93.3,
+    "shock_index": 0.5,
+    "modified_shock_index": 0.643
+  },
+  {
+    "name": "ninety_si_one",
+    "input": {
+      "systolic_bp": 90,
+      "diastolic_bp": 60,
+      "heart_rate": 90
+    },
+    "pulse_pressure": 30.0,
+    "map": 70.0,
+    "shock_index": 1.0,
+    "modified_shock_index": 1.286
+  },
+  {
+    "name": "wide_pulse_pressure",
+    "input": {
+      "systolic_bp": 100,
+      "diastolic_bp": 50,
+      "heart_rate": 120
+    },
+    "pulse_pressure": 50.0,
+    "map": 66.7,
+    "shock_index": 1.2,
+    "modified_shock_index": 1.8
+  },
+  {
+    "name": "equal_systolic_diastolic",
+    "input": {
+      "systolic_bp": 80,
+      "diastolic_bp": 80,
+      "heart_rate": 80
+    },
+    "pulse_pressure": 0.0,
+    "map": 80.0,
+    "shock_index": 1.0,
+    "modified_shock_index": 1.0
+  }
+]

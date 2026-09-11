@@ -210,7 +210,52 @@
         'Para avaliar diurese, informe conjuntamente peso, volume urinário e duração.',
 
       'renal.source':
-        'Fontes: CKD-EPI 2021 / National Kidney Foundation; KDIGO CKD 2024; KDIGO AKI 2012.'
+        'Fontes: CKD-EPI 2021 / National Kidney Foundation; KDIGO CKD 2024; KDIGO AKI 2012.',
+
+      'hemo.title':
+        'Hemodinâmica · PAM / Pressão de Pulso / SI / MSI',
+
+      'hemo.description':
+        'Cálculos hemodinâmicos a partir de PAS, PAD e frequência cardíaca.',
+
+      'hemo.sbp':
+        'Pressão arterial sistólica (mmHg)',
+
+      'hemo.dbp':
+        'Pressão arterial diastólica (mmHg)',
+
+      'hemo.hr':
+        'Frequência cardíaca (bpm)',
+
+      'hemo.calculate':
+        'Calcular índices hemodinâmicos',
+
+      'hemo.result':
+        'Índices calculados',
+
+      'hemo.pp':
+        'Pressão de pulso',
+
+      'hemo.map':
+        'Pressão arterial média',
+
+      'hemo.si':
+        'Shock Index',
+
+      'hemo.msi':
+        'Modified Shock Index',
+
+      'hemo.offline':
+        'Resultado calculado localmente em modo offline.',
+
+      'hemo.invalid':
+        'Informe PAS, PAD e frequência cardíaca válidas. A PAS não pode ser menor que a PAD.',
+
+      'hemo.noThreshold':
+        'Nenhum ponto de corte universal de SI/MSI foi aplicado.',
+
+      'hemo.source':
+        'Fórmulas: PAM ≈ PAD + ⅓(PAS−PAD); PP = PAS−PAD; SI = FC/PAS; MSI = FC/PAM.'
     },
 
     'en-GB': {
@@ -413,7 +458,52 @@
         'To assess urine output, provide weight, urine volume and duration together.',
 
       'renal.source':
-        'Sources: CKD-EPI 2021 / National Kidney Foundation; KDIGO CKD 2024; KDIGO AKI 2012.'
+        'Sources: CKD-EPI 2021 / National Kidney Foundation; KDIGO CKD 2024; KDIGO AKI 2012.',
+
+      'hemo.title':
+        'Haemodynamics · MAP / Pulse Pressure / SI / MSI',
+
+      'hemo.description':
+        'Haemodynamic calculations from SBP, DBP and heart rate.',
+
+      'hemo.sbp':
+        'Systolic blood pressure (mmHg)',
+
+      'hemo.dbp':
+        'Diastolic blood pressure (mmHg)',
+
+      'hemo.hr':
+        'Heart rate (beats/min)',
+
+      'hemo.calculate':
+        'Calculate haemodynamic indices',
+
+      'hemo.result':
+        'Calculated indices',
+
+      'hemo.pp':
+        'Pulse pressure',
+
+      'hemo.map':
+        'Mean arterial pressure',
+
+      'hemo.si':
+        'Shock Index',
+
+      'hemo.msi':
+        'Modified Shock Index',
+
+      'hemo.offline':
+        'Result calculated locally while offline.',
+
+      'hemo.invalid':
+        'Enter valid SBP, DBP and heart rate values. SBP cannot be lower than DBP.',
+
+      'hemo.noThreshold':
+        'No universal SI/MSI cut-off has been applied.',
+
+      'hemo.source':
+        'Formulae: MAP ≈ DBP + ⅓(SBP−DBP); PP = SBP−DBP; SI = HR/SBP; MSI = HR/MAP.'
     }
   };
 
