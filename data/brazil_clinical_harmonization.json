@@ -166,8 +166,8 @@
       "brazil_applicability_status": "complementary_brazil_guidance",
       "national_sus_mandate_identified": false,
       "brazil_differs_from_international_numeric_rules": false,
-      "remediation_required": true,
-      "remediation_priority": "medium",
+      "remediation_required": false,
+      "remediation_priority": "none",
       "brazil_authorities": [
         "Ministério da Saúde",
         "Agência Nacional de Saúde Suplementar"
@@ -191,14 +191,57 @@
         }
       ],
       "required_actions": [
-        "Keep MAP, pulse pressure, SI and MSI base calculations numerically neutral.",
-        "Add Brazilian context notes for septic shock MAP targets without creating a universal normal/abnormal MAP threshold.",
-        "Add obstetric haemorrhage Shock Index context without converting >0.9 into a universal SI threshold.",
-        "Do not invent a Brazilian universal MSI cutoff."
+        "Preserve generic MAP, pulse pressure, SI and MSI mathematics.",
+        "Preserve generic threshold_classification_applied=false.",
+        "Keep MAP 65 mmHg restricted to explicitly selected septic-shock context.",
+        "Keep Shock Index >0.9 restricted to explicitly selected obstetric-haemorrhage context.",
+        "Do not infer a clinical context automatically.",
+        "Do not invent universal Brazilian MSI or pulse-pressure thresholds.",
+        "Recheck federal/national guidance during final v2.0 qualification."
       ],
       "scope_pt": "Existem limiares brasileiros dependentes do contexto clínico, mas não um ponto de corte universal para os índices.",
       "scope_en": "Brazilian guidance contains context-dependent thresholds, not universal cutoffs for these indices.",
-      "final_brazil_review_status": "remediation_required"
+      "final_brazil_review_status": "pass",
+      "source_review_verified": true,
+      "base_calculations_change_required": false,
+      "universal_brazil_threshold_identified": false,
+      "verified_contexts": {
+        "septic_shock_map": {
+          "threshold_mm_hg": 65,
+          "context_only": true
+        },
+        "obstetric_hemorrhage_shock_index": {
+          "threshold": 0.9,
+          "context_only": true
+        }
+      },
+      "no_universal_cutoff_identified": [
+        "MAP",
+        "Shock Index",
+        "Modified Shock Index",
+        "pulse pressure"
+      ],
+      "bh3b_core_status": "pass",
+      "bh3b_ui_status": "pass",
+      "bh3b_core_completed": [
+        "Generic MAP, pulse pressure, SI and MSI mathematics preserved.",
+        "Generic threshold_classification_applied remains false.",
+        "Explicit septic-shock context added for MAP >=65 mmHg.",
+        "Explicit obstetric-haemorrhage context added for Ministry Shock Index >0.9.",
+        "Context selection does not alter base calculations.",
+        "No MSI or pulse-pressure threshold added.",
+        "Python/API/browser parity added."
+      ],
+      "remediation_completed": [
+        "Generic MAP, pulse pressure, Shock Index and Modified Shock Index calculations remain unchanged.",
+        "Generic threshold_classification_applied remains false.",
+        "Septic-shock MAP >=65 mmHg guidance is available only after explicit septic-shock context selection.",
+        "Ministry obstetric Shock Index >0.9 guidance is available only after explicit obstetric-haemorrhage context selection.",
+        "Shock Index exactly 0.9 does not satisfy the Ministry strict >0.9 contextual trigger.",
+        "No clinical context is inferred automatically.",
+        "No universal Brazilian MAP, SI, MSI or pulse-pressure classification has been introduced.",
+        "PT-BR, EN-GB, API, browser and offline behavior are integrated."
+      ]
     },
     {
       "item": 4,

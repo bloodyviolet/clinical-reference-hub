@@ -820,6 +820,7 @@ def api_calculate_hemodynamics(
             systolic_bp=payload.systolic_bp,
             diastolic_bp=payload.diastolic_bp,
             heart_rate=payload.heart_rate,
+            clinical_context=payload.clinical_context,
         )
     except ValueError as exc:
         raise HTTPException(

@@ -458,6 +458,24 @@
 
             </div>
 
+            <div class="rounded-xl border border-cyan-900/50 bg-cyan-950/20 p-3 space-y-2">
+
+              <label data-i18n="hemo.context" for="hemo-context" class="block text-[10px] font-semibold text-cyan-300 uppercase">
+                Contexto clínico opcional · Brasil
+              </label>
+
+              <select id="hemo-context" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                <option value="none" data-i18n="hemo.contextNone" selected>Nenhum · cálculo hemodinâmico genérico</option>
+                <option value="septic_shock" data-i18n="hemo.contextSeptic">Choque séptico · orientação contextual de PAM</option>
+                <option value="obstetric_hemorrhage" data-i18n="hemo.contextObstetric">Hemorragia obstétrica · orientação contextual de Shock Index</option>
+              </select>
+
+              <p data-i18n="hemo.contextHelp" class="text-[10px] text-slate-400">
+                A seleção apenas adiciona orientação brasileira dependente do contexto. Ela não altera as fórmulas nem cria um ponto de corte universal.
+              </p>
+
+            </div>
+
             <button type="submit" data-i18n="hemo.calculate" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular índices hemodinâmicos</button>
 
           </form>
@@ -465,7 +483,8 @@
           <div id="hemodynamics-result" aria-live="polite" class="hidden rounded-xl border border-slate-800 bg-slate-950/60 p-4"></div>
 
           <div class="border-t border-slate-800 pt-3 space-y-1">
-            <p data-i18n="hemo.noThreshold" class="text-[10px] text-amber-300">Nenhum ponto de corte universal de SI/MSI foi aplicado.</p>
+            <p data-i18n="hemo.noThreshold" class="text-[10px] text-amber-300">Nenhum ponto de corte universal de PAM, pressão de pulso, SI ou MSI foi aplicado.</p>
+            <p data-i18n="hemo.brazilSource" class="text-[10px] text-cyan-300">Brasil: PAM 65 mmHg é apresentada somente no contexto selecionado de choque séptico; Shock Index &gt;0,9 somente no contexto selecionado de hemorragia obstétrica.</p>
             <p data-i18n="hemo.source" class="text-[10px] text-slate-500">Fórmulas: PAM ≈ PAD + ⅓(PAS−PAD); PP = PAS−PAD; SI = FC/PAS; MSI = FC/PAM.</p>
           </div>
 

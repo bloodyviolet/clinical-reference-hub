@@ -1977,6 +1977,131 @@ function renderHemodynamicsResult(
       : '';
 
 
+  let contextBlock = '';
+
+
+  if (
+    result
+      .brazil_context_guidance_applied
+  ) {
+    const contextLabel =
+      result[
+        `brazil_context_label_${suffix}`
+      ];
+
+
+    const contextInterpretation =
+      result[
+        `brazil_context_interpretation_${suffix}`
+      ];
+
+
+    const isMapContext =
+      result.brazil_context_rule_code
+      === 'septic_shock_map_target';
+
+
+    const metricLabel =
+      isMapContext
+        ? (
+            globalThis.ClinicalI18n
+              ?.t?.('hemo.map')
+            || clinicalText(
+              'Pressão arterial média',
+              'Mean arterial pressure'
+            )
+          )
+        : 'Shock Index';
+
+
+    const observed =
+      isMapContext
+        ? `${
+            Number(
+              result
+                .brazil_context_observed_value
+            ).toFixed(1)
+          } mmHg`
+        : Number(
+            result
+              .brazil_context_observed_value
+          ).toFixed(3);
+
+
+    const threshold =
+      result
+        .brazil_context_threshold_unit
+        === 'mmHg'
+        ? `${
+            result
+              .brazil_context_operator
+          } ${
+            Number(
+              result
+                .brazil_context_threshold_value
+            ).toFixed(0)
+          } mmHg`
+        : `${
+            result
+              .brazil_context_operator
+          } ${
+            Number(
+              result
+                .brazil_context_threshold_value
+            ).toFixed(1)
+          }`;
+
+
+    contextBlock = `
+      <div class="rounded-xl border border-cyan-800/60 bg-cyan-950/20 p-3 mt-4">
+
+        <p class="text-[10px] font-semibold text-cyan-300 uppercase">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('hemo.contextResult')
+            || clinicalText(
+              'Orientação brasileira contextual',
+              'Contextual Brazilian guidance'
+            )
+          )}
+        </p>
+
+        <p class="text-sm font-semibold text-white mt-1">
+          ${escapeHtml(
+            contextLabel
+          )}
+        </p>
+
+        <p class="text-[11px] text-cyan-200 mt-2">
+          ${escapeHtml(
+            metricLabel
+          )}:
+          ${escapeHtml(
+            observed
+          )}
+          ·
+          ${escapeHtml(
+            clinicalText(
+              'referência contextual',
+              'contextual reference'
+            )
+          )}:
+          ${escapeHtml(
+            threshold
+          )}
+        </p>
+
+        <p class="text-[11px] text-slate-300 mt-2">
+          ${escapeHtml(
+            contextInterpretation
+          )}
+        </p>
+
+      </div>
+    `;
+  }
+
+
   const values = [
     [
       globalThis.ClinicalI18n
@@ -2050,6 +2175,7 @@ function renderHemodynamicsResult(
       ${escapeHtml(mapNote)}
     </p>
 
+    ${contextBlock}
     ${offlineNotice}
   `;
 }
@@ -2081,7 +2207,13 @@ async function calculateHemodynamicsTool(
         document.getElementById(
           'hemo-hr'
         ).value
-      )
+      ),
+
+    clinical_context:
+      document.getElementById(
+        'hemo-context'
+      ).value
+      || 'none'
   };
 
 

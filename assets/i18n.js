@@ -243,7 +243,7 @@
         'Hemodinâmica · PAM / Pressão de Pulso / SI / MSI',
 
       'hemo.description':
-        'Cálculos hemodinâmicos a partir de PAS, PAD e frequência cardíaca.',
+        'Cálculos hemodinâmicos neutros a partir de PAS, PAD e frequência cardíaca, com orientação brasileira opcional dependente do contexto clínico.',
 
       'hemo.sbp':
         'Pressão arterial sistólica (mmHg)',
@@ -253,6 +253,24 @@
 
       'hemo.hr':
         'Frequência cardíaca (bpm)',
+
+      'hemo.context':
+        'Contexto clínico opcional · Brasil',
+
+      'hemo.contextNone':
+        'Nenhum · cálculo hemodinâmico genérico',
+
+      'hemo.contextSeptic':
+        'Choque séptico · orientação contextual de PAM',
+
+      'hemo.contextObstetric':
+        'Hemorragia obstétrica · orientação contextual de Shock Index',
+
+      'hemo.contextHelp':
+        'A seleção apenas adiciona orientação brasileira dependente do contexto. Ela não altera as fórmulas nem cria um ponto de corte universal.',
+
+      'hemo.contextResult':
+        'Orientação brasileira contextual',
 
       'hemo.calculate':
         'Calcular índices hemodinâmicos',
@@ -279,10 +297,13 @@
         'Informe PAS, PAD e frequência cardíaca válidas. A PAS não pode ser menor que a PAD.',
 
       'hemo.noThreshold':
-        'Nenhum ponto de corte universal de SI/MSI foi aplicado.',
+        'Nenhum ponto de corte universal de PAM, pressão de pulso, SI ou MSI foi aplicado.',
 
       'hemo.source':
         'Fórmulas: PAM ≈ PAD + ⅓(PAS−PAD); PP = PAS−PAD; SI = FC/PAS; MSI = FC/PAM.',
+
+      'hemo.brazilSource':
+        'Brasil: PAM 65 mmHg é apresentada somente no contexto selecionado de choque séptico; Shock Index >0,9 somente no contexto selecionado de hemorragia obstétrica.',
 
       'oxygen.title':
         'Oxigenação · Relações P/F e S/F',
@@ -773,7 +794,7 @@
         'Haemodynamics · MAP / Pulse Pressure / SI / MSI',
 
       'hemo.description':
-        'Haemodynamic calculations from SBP, DBP and heart rate.',
+        'Threshold-neutral haemodynamic calculations from SBP, DBP and heart rate, with optional context-dependent Brazilian guidance.',
 
       'hemo.sbp':
         'Systolic blood pressure (mmHg)',
@@ -783,6 +804,24 @@
 
       'hemo.hr':
         'Heart rate (beats/min)',
+
+      'hemo.context':
+        'Optional clinical context · Brazil',
+
+      'hemo.contextNone':
+        'None · generic haemodynamic calculation',
+
+      'hemo.contextSeptic':
+        'Septic shock · contextual MAP guidance',
+
+      'hemo.contextObstetric':
+        'Obstetric haemorrhage · contextual Shock Index guidance',
+
+      'hemo.contextHelp':
+        'Selection only adds context-dependent Brazilian guidance. It does not alter the formulae or create a universal cut-off.',
+
+      'hemo.contextResult':
+        'Contextual Brazilian guidance',
 
       'hemo.calculate':
         'Calculate haemodynamic indices',
@@ -809,10 +848,13 @@
         'Enter valid SBP, DBP and heart rate values. SBP cannot be lower than DBP.',
 
       'hemo.noThreshold':
-        'No universal SI/MSI cut-off has been applied.',
+        'No universal MAP, pulse-pressure, SI or MSI cut-off has been applied.',
 
       'hemo.source':
         'Formulae: MAP ≈ DBP + ⅓(SBP−DBP); PP = SBP−DBP; SI = HR/SBP; MSI = HR/MAP.',
+
+      'hemo.brazilSource':
+        'Brazil: MAP 65 mmHg is shown only in the selected septic-shock context; Shock Index >0.9 only in the selected obstetric-haemorrhage context.',
 
       'oxygen.title':
         'Oxygenation · P/F and S/F Ratios',

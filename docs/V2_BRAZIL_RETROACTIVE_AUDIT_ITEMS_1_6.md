@@ -8,7 +8,7 @@ Review date: 2026-09-11
 |---|---|---|---|
 | 1 | NEWS2 | Validated Brazilian adaptation | PASS |
 | 2 | Renal | National SUS variant + Brazilian consensus | PASS |
-| 3 | Hemodynamics | Context-specific Brazilian guidance | Required |
+| 3 | Hemodynamics | Context-specific Brazilian guidance | PASS |
 | 4 | Oxygenation | No national generic variant identified | Metadata/source update |
 | 5 | Acid-base/metabolic | Context-specific national toxicology guidance | Required |
 | 6 | WHO/SISVAN growth | National standard integrated | PASS |
@@ -100,21 +100,54 @@ Status: PASS.
 
 ## Item 3 — Hemodynamics
 
-No universal Brazilian cutoffs should be attached to generic MAP, pulse
-pressure, Shock Index or Modified Shock Index.
+BH3A source verification confirmed that the existing generic
+haemodynamic mathematics should remain unchanged.
 
-Brazilian official guidance contains context-specific uses:
+Brazilian federal guidance contains clinically important but
+**context-specific** thresholds:
 
-- septic shock uses a MAP target around 65 mmHg;
-- Ministry obstetric material uses Shock Index >0.9 as an obstetric
-  haemorrhage escalation signal.
+- Ministry guidance uses PAM around 65 mmHg in septic-shock
+  diagnosis/resuscitation contexts;
+- Ministry obstetric material uses Shock Index above 0.9 as an
+  escalation signal for obstetric haemorrhage;
+- current EBSERH postpartum-haemorrhage protocols independently
+  corroborate the obstetric use of SI around 0.9, but are treated as
+  implementation evidence rather than a national standard.
+
+No authoritative Brazilian universal threshold was identified for:
+
+- generic MAP;
+- generic Shock Index;
+- Modified Shock Index; or
+- pulse pressure.
 
 Disposition:
 
-- preserve neutral base calculations;
-- add context-specific Brazilian interpretation;
-- never convert obstetric/sepsis thresholds into universal ranges;
-- no Brazilian universal MSI cutoff has been established by this audit.
+- preserve MAP, pulse pressure, SI and MSI formulas unchanged;
+- preserve `threshold_classification_applied = false` for generic
+  haemodynamics;
+- expose MAP 65 mmHg only in an explicit septic-shock context;
+- expose SI 0.9 only in an explicit obstetric-haemorrhage context;
+- never convert either value into a universal adult cutoff;
+- do not invent MSI or pulse-pressure thresholds.
+
+BH3 implementation remains pending.
+
+BH3 final disposition:
+
+- generic MAP, pulse pressure, SI and MSI calculations remain unchanged;
+- generic threshold classification remains disabled;
+- septic-shock MAP guidance is available only after explicit context
+  selection;
+- obstetric-haemorrhage SI guidance is available only after explicit
+  context selection;
+- Ministry wording is preserved as strict SI >0.9, so exactly 0.9 does
+  not satisfy the contextual trigger;
+- no context is inferred from the entered vital signs;
+- no universal Brazilian MSI or pulse-pressure threshold is introduced;
+- PT-BR, EN-GB, API, browser and offline behavior are integrated.
+
+Status: PASS.
 
 ## Item 4 — Oxygenation
 

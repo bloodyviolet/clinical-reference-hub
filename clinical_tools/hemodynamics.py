@@ -30,11 +30,31 @@ MSI_SOURCE_URL = (
 )
 
 
+BRAZIL_OBSTETRIC_SI_URL = (
+    "https://bvsms.saude.gov.br/bvs/publicacoes/"
+    "linha_cuidados_doenca_trofoblastica_gestacional.pdf"
+)
+
+BRAZIL_ANS_SEPSIS_URL = (
+    "https://www.gov.br/ans/pt-br/centrais-de-conteudo/"
+    "projeto-indicadores-manual-metodolgico-"
+    "linhas-de-cuidado-3-2-pdf"
+)
+
+
+HEMODYNAMIC_CONTEXTS = {
+    "none",
+    "septic_shock",
+    "obstetric_hemorrhage",
+}
+
+
 def calculate_hemodynamics(
     *,
     systolic_bp: float,
     diastolic_bp: float,
     heart_rate: float,
+    clinical_context: str = "none",
 ) -> dict:
     """Calculate basic non-invasive haemodynamic indices."""
 
@@ -53,6 +73,12 @@ def calculate_hemodynamics(
     if systolic_bp < diastolic_bp:
         raise ValueError(
             "systolic_bp cannot be lower than diastolic_bp."
+        )
+
+    if clinical_context not in HEMODYNAMIC_CONTEXTS:
+        raise ValueError(
+            "clinical_context must be one of: "
+            "none, septic_shock, obstetric_hemorrhage."
         )
 
     pulse_pressure = (
@@ -74,6 +100,163 @@ def calculate_hemodynamics(
         heart_rate
         / mean_arterial_pressure
     )
+
+    brazil_context_guidance_applied = False
+
+    brazil_context_rule_code = "none"
+    brazil_context_threshold_value = None
+    brazil_context_threshold_unit = None
+    brazil_context_operator = None
+    brazil_context_observed_value = None
+    brazil_context_rule_met = None
+
+    brazil_context_label_pt = (
+        "Sem contexto brasileiro específico selecionado"
+    )
+
+    brazil_context_label_en = (
+        "No specific Brazilian clinical context selected"
+    )
+
+    brazil_context_interpretation_pt = (
+        "Nenhum limiar brasileiro dependente de contexto "
+        "foi aplicado ao resultado genérico."
+    )
+
+    brazil_context_interpretation_en = (
+        "No context-dependent Brazilian threshold was "
+        "applied to the generic result."
+    )
+
+    if clinical_context == "septic_shock":
+        brazil_context_guidance_applied = True
+
+        brazil_context_rule_code = (
+            "septic_shock_map_target"
+        )
+
+        brazil_context_threshold_value = 65.0
+        brazil_context_threshold_unit = "mmHg"
+        brazil_context_operator = ">="
+
+        brazil_context_observed_value = round(
+            mean_arterial_pressure,
+            4,
+        )
+
+        brazil_context_rule_met = (
+            mean_arterial_pressure
+            >= 65.0
+        )
+
+        brazil_context_label_pt = (
+            "Contexto brasileiro — choque séptico"
+        )
+
+        brazil_context_label_en = (
+            "Brazilian context — septic shock"
+        )
+
+        if brazil_context_rule_met:
+            brazil_context_interpretation_pt = (
+                "No contexto explicitamente selecionado de "
+                "choque séptico, a PAM calculada está em ou "
+                "acima de 65 mmHg. Este é um alvo contextual "
+                "de manejo e não um limite universal de PAM; "
+                "não estabelece nem exclui diagnóstico."
+            )
+
+            brazil_context_interpretation_en = (
+                "In the explicitly selected septic-shock "
+                "context, calculated MAP is at or above "
+                "65 mmHg. This is a contextual management "
+                "target rather than a universal MAP limit; "
+                "it neither establishes nor excludes diagnosis."
+            )
+
+        else:
+            brazil_context_interpretation_pt = (
+                "No contexto explicitamente selecionado de "
+                "choque séptico, a PAM calculada está abaixo "
+                "de 65 mmHg. Este é um limiar contextual de "
+                "manejo e não uma classificação universal "
+                "de PAM; integrar ao protocolo e quadro clínico."
+            )
+
+            brazil_context_interpretation_en = (
+                "In the explicitly selected septic-shock "
+                "context, calculated MAP is below 65 mmHg. "
+                "This is a contextual management threshold, "
+                "not a universal MAP classification; integrate "
+                "with the protocol and clinical picture."
+            )
+
+    elif clinical_context == "obstetric_hemorrhage":
+        brazil_context_guidance_applied = True
+
+        brazil_context_rule_code = (
+            "obstetric_hemorrhage_si_trigger"
+        )
+
+        brazil_context_threshold_value = 0.9
+        brazil_context_threshold_unit = "ratio"
+        brazil_context_operator = ">"
+
+        brazil_context_observed_value = round(
+            shock_index,
+            4,
+        )
+
+        # The Ministry source says "acima de 0,9":
+        # preserve the strict > operator.
+        brazil_context_rule_met = (
+            shock_index
+            > 0.9
+        )
+
+        brazil_context_label_pt = (
+            "Contexto brasileiro — hemorragia obstétrica"
+        )
+
+        brazil_context_label_en = (
+            "Brazilian context — obstetric haemorrhage"
+        )
+
+        if brazil_context_rule_met:
+            brazil_context_interpretation_pt = (
+                "No contexto explicitamente selecionado de "
+                "hemorragia obstétrica, o Shock Index está "
+                "acima de 0,9, limiar descrito pelo Ministério "
+                "da Saúde para acionamento do protocolo de "
+                "hemorragia obstétrica. Não aplicar este "
+                "limiar como corte universal de Shock Index."
+            )
+
+            brazil_context_interpretation_en = (
+                "In the explicitly selected obstetric-"
+                "haemorrhage context, Shock Index is above "
+                "0.9, the Ministry of Health threshold "
+                "described for activation of the obstetric "
+                "haemorrhage protocol. Do not apply this as "
+                "a universal Shock Index cut-off."
+            )
+
+        else:
+            brazil_context_interpretation_pt = (
+                "No contexto explicitamente selecionado de "
+                "hemorragia obstétrica, o Shock Index não está "
+                "acima de 0,9. Isso não exclui hemorragia, "
+                "choque ou necessidade de escalonamento "
+                "segundo avaliação clínica e protocolo."
+            )
+
+            brazil_context_interpretation_en = (
+                "In the explicitly selected obstetric-"
+                "haemorrhage context, Shock Index is not "
+                "above 0.9. This does not exclude haemorrhage, "
+                "shock, or need for escalation according to "
+                "clinical assessment and protocol."
+            )
 
     return {
         "tool": "hemodynamics",
@@ -107,6 +290,32 @@ def calculate_hemodynamics(
             "HR / MAP",
         "threshold_classification_applied":
             False,
+        "universal_threshold_inference_applied":
+            False,
+        "clinical_context":
+            clinical_context,
+        "brazil_context_guidance_applied":
+            brazil_context_guidance_applied,
+        "brazil_context_rule_code":
+            brazil_context_rule_code,
+        "brazil_context_threshold_value":
+            brazil_context_threshold_value,
+        "brazil_context_threshold_unit":
+            brazil_context_threshold_unit,
+        "brazil_context_operator":
+            brazil_context_operator,
+        "brazil_context_observed_value":
+            brazil_context_observed_value,
+        "brazil_context_rule_met":
+            brazil_context_rule_met,
+        "brazil_context_label_pt":
+            brazil_context_label_pt,
+        "brazil_context_label_en":
+            brazil_context_label_en,
+        "brazil_context_interpretation_pt":
+            brazil_context_interpretation_pt,
+        "brazil_context_interpretation_en":
+            brazil_context_interpretation_en,
         "interpretation_pt": (
             "Os índices são auxiliares de avaliação hemodinâmica "
             "e devem ser interpretados junto ao contexto clínico, "
@@ -254,4 +463,44 @@ HEMODYNAMICS_METADATA = {
         date(2026, 9, 11),
     "offline_capable":
         True,
+    "brazil_applicability_status":
+        "complementary_brazil_guidance",
+    "brazil_review_date":
+        date(2026, 9, 11),
+    "brazil_authority":
+        "Ministério da Saúde / ANS",
+    "brazil_source_title": (
+        "Orientações federais contextuais para PAM em "
+        "choque séptico e Shock Index em hemorragia obstétrica"
+    ),
+    "brazil_source_url":
+        BRAZIL_OBSTETRIC_SI_URL,
+    "brazil_document_or_portaria":
+        None,
+    "brazil_scope_pt": (
+        "Limiar de PAM em choque séptico e Shock Index em "
+        "hemorragia obstétrica são apresentados somente em "
+        "contextos clínicos explicitamente selecionados."
+    ),
+    "brazil_scope_en": (
+        "MAP guidance in septic shock and Shock Index guidance "
+        "in obstetric haemorrhage are exposed only in explicitly "
+        "selected clinical contexts."
+    ),
+    "brazil_differs_from_international":
+        False,
+    "brazil_difference_notes_pt": (
+        "As fórmulas genéricas permanecem neutras. PAM 65 mmHg "
+        "e Shock Index 0,9 não são convertidos em pontos de "
+        "corte universais; não há limiar brasileiro universal "
+        "de MSI ou pressão de pulso identificado."
+    ),
+    "brazil_difference_notes_en": (
+        "Generic formulae remain neutral. MAP 65 mmHg and "
+        "Shock Index 0.9 are not converted into universal "
+        "cut-offs; no Brazilian universal MSI or pulse-pressure "
+        "threshold was identified."
+    ),
+    "final_brazil_review_status":
+        "pass",
 }

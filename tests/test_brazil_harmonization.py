@@ -249,6 +249,48 @@ def test_context_specific_rules_cannot_become_universal():
     )
 
     assert (
+        hemo[
+            "remediation_required"
+        ]
+        is False
+    )
+
+    assert (
+        hemo[
+            "remediation_priority"
+        ]
+        == "none"
+    )
+
+    assert (
+        hemo[
+            "final_brazil_review_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        hemo[
+            "bh3b_core_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        hemo[
+            "bh3b_ui_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        hemo[
+            "universal_brazil_threshold_identified"
+        ]
+        is False
+    )
+
+    assert (
         metabolic[
             "brazil_applicability_status"
         ]

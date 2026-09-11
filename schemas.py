@@ -623,10 +623,19 @@ class KDIGOAKIResponse(BaseModel):
 # v2 Item 3 — haemodynamic calculations.
 # ---------------------------------------------------------------------------
 
+HemodynamicsClinicalContext = Literal[
+    "none",
+    "septic_shock",
+    "obstetric_hemorrhage",
+]
+
+
 class HemodynamicsInput(BaseModel):
     systolic_bp: float = Field(gt=0)
     diastolic_bp: float = Field(gt=0)
     heart_rate: float = Field(gt=0)
+
+    clinical_context: HemodynamicsClinicalContext = "none"
 
 
 class HemodynamicsResponse(BaseModel):
@@ -648,6 +657,34 @@ class HemodynamicsResponse(BaseModel):
     modified_shock_index_method: str
 
     threshold_classification_applied: Literal[False]
+    universal_threshold_inference_applied: Literal[False]
+
+    clinical_context: HemodynamicsClinicalContext
+
+    brazil_context_guidance_applied: bool
+
+    brazil_context_rule_code: Literal[
+        "none",
+        "septic_shock_map_target",
+        "obstetric_hemorrhage_si_trigger",
+    ]
+
+    brazil_context_threshold_value: float | None
+    brazil_context_threshold_unit: str | None
+
+    brazil_context_operator: Literal[
+        ">=",
+        ">",
+    ] | None
+
+    brazil_context_observed_value: float | None
+    brazil_context_rule_met: bool | None
+
+    brazil_context_label_pt: str
+    brazil_context_label_en: str
+
+    brazil_context_interpretation_pt: str
+    brazil_context_interpretation_en: str
 
     interpretation_pt: str
     interpretation_en: str

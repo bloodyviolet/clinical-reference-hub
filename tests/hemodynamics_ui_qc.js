@@ -50,12 +50,37 @@ assert(
   )
 );
 
+assert(
+  html.includes(
+    'id="hemo-context"'
+  )
+);
+
+assert(
+  html.includes(
+    'value="septic_shock"'
+  )
+);
+
+assert(
+  html.includes(
+    'value="obstetric_hemorrhage"'
+  )
+);
+
 
 for (const key of [
   'hemo.title',
   'hemo.sbp',
   'hemo.dbp',
   'hemo.hr',
+  'hemo.context',
+  'hemo.contextNone',
+  'hemo.contextSeptic',
+  'hemo.contextObstetric',
+  'hemo.contextHelp',
+  'hemo.contextResult',
+  'hemo.brazilSource',
   'hemo.noThreshold',
   'hemo.offline'
 ]) {
@@ -70,7 +95,7 @@ for (const key of [
 
 assert(
   swSource.includes(
-    'clinical-reference-v17-v2-brazil-renal'
+    'clinical-reference-v18-v2-brazil-hemodynamics'
   )
 );
 
@@ -190,6 +215,12 @@ const event = {
     '60'
   );
 
+  const clinicalContext =
+    set(
+      'hemo-context',
+      'none'
+    );
+
   const result =
     set(
       'hemodynamics-result'
@@ -228,6 +259,112 @@ const event = {
       )
   );
 
+  assert(
+    !result.innerHTML
+      .includes(
+        'Contexto brasileiro —'
+      )
+  );
+
+
+  // Context must be explicitly selected.
+  elements.get(
+    'hemo-sbp'
+  ).value = '85';
+
+  elements.get(
+    'hemo-dbp'
+  ).value = '55';
+
+  elements.get(
+    'hemo-hr'
+  ).value = '90';
+
+  clinicalContext.value =
+    'septic_shock';
+
+
+  await calculateHemodynamicsTool(
+    event
+  );
+
+
+  assert(
+    result.innerHTML
+      .includes(
+        'Contexto brasileiro — choque séptico'
+      )
+  );
+
+  assert(
+    result.innerHTML
+      .includes(
+        'em ou acima de 65 mmHg'
+      )
+  );
+
+
+  // Ministry obstetric source uses strict >0.9.
+  elements.get(
+    'hemo-sbp'
+  ).value = '100';
+
+  elements.get(
+    'hemo-dbp'
+  ).value = '70';
+
+  elements.get(
+    'hemo-hr'
+  ).value = '90';
+
+  clinicalContext.value =
+    'obstetric_hemorrhage';
+
+
+  await calculateHemodynamicsTool(
+    event
+  );
+
+
+  assert(
+    result.innerHTML
+      .includes(
+        '0.900'
+      )
+  );
+
+  assert(
+    result.innerHTML
+      .includes(
+        'não está acima de 0,9'
+      )
+  );
+
+
+  elements.get(
+    'hemo-hr'
+  ).value = '91';
+
+
+  await calculateHemodynamicsTool(
+    event
+  );
+
+
+  assert(
+    result.innerHTML
+      .includes(
+        '0.910'
+      )
+  );
+
+  assert(
+    result.innerHTML
+      .includes(
+        'está acima de 0,9'
+      )
+  );
+
 
   // Language switch must re-render an existing result,
   // not require a new calculation.
@@ -246,6 +383,9 @@ const event = {
 
         'hemo.map':
           'Mean arterial pressure',
+
+        'hemo.contextResult':
+          'Contextual Brazilian guidance',
 
         'hemo.offline':
           'Result calculated locally while offline.'
@@ -267,6 +407,27 @@ const event = {
     result.innerHTML
       .includes(
         'These indices are adjuncts'
+      )
+  );
+
+  assert(
+    result.innerHTML
+      .includes(
+        'Brazilian context — obstetric haemorrhage'
+      )
+  );
+
+  assert(
+    result.innerHTML
+      .includes(
+        'Shock Index is above 0.9'
+      )
+  );
+
+  assert(
+    result.innerHTML
+      .includes(
+        'Contextual Brazilian guidance'
       )
   );
 

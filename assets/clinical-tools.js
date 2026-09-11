@@ -1763,6 +1763,10 @@
     const heartRate =
       input.heart_rate;
 
+    const clinicalContext =
+      input.clinical_context
+      ?? 'none';
+
 
     if (
       !Number.isFinite(systolic)
@@ -1787,6 +1791,21 @@
     }
 
 
+    if (
+      ![
+        'none',
+        'septic_shock',
+        'obstetric_hemorrhage'
+      ].includes(
+        clinicalContext
+      )
+    ) {
+      throw new Error(
+        'invalid_hemodynamic_context'
+      );
+    }
+
+
     const pulsePressure =
       systolic
       - diastolic;
@@ -1805,6 +1824,137 @@
     const modifiedShockIndex =
       heartRate
       / map;
+
+
+    let brazilContextGuidanceApplied = false;
+
+    let brazilContextRuleCode =
+      'none';
+
+    let brazilContextThresholdValue =
+      null;
+
+    let brazilContextThresholdUnit =
+      null;
+
+    let brazilContextOperator =
+      null;
+
+    let brazilContextObservedValue =
+      null;
+
+    let brazilContextRuleMet =
+      null;
+
+    let brazilContextLabelPt =
+      'Sem contexto brasileiro específico selecionado';
+
+    let brazilContextLabelEn =
+      'No specific Brazilian clinical context selected';
+
+    let brazilContextInterpretationPt =
+      'Nenhum limiar brasileiro dependente de contexto foi aplicado ao resultado genérico.';
+
+    let brazilContextInterpretationEn =
+      'No context-dependent Brazilian threshold was applied to the generic result.';
+
+
+    if (
+      clinicalContext
+      === 'septic_shock'
+    ) {
+      brazilContextGuidanceApplied = true;
+
+      brazilContextRuleCode =
+        'septic_shock_map_target';
+
+      brazilContextThresholdValue =
+        65.0;
+
+      brazilContextThresholdUnit =
+        'mmHg';
+
+      brazilContextOperator =
+        '>=';
+
+      brazilContextObservedValue =
+        Math.round(
+          map * 10000
+        ) / 10000;
+
+      brazilContextRuleMet =
+        map >= 65.0;
+
+      brazilContextLabelPt =
+        'Contexto brasileiro — choque séptico';
+
+      brazilContextLabelEn =
+        'Brazilian context — septic shock';
+
+
+      if (brazilContextRuleMet) {
+        brazilContextInterpretationPt =
+          'No contexto explicitamente selecionado de choque séptico, a PAM calculada está em ou acima de 65 mmHg. Este é um alvo contextual de manejo e não um limite universal de PAM; não estabelece nem exclui diagnóstico.';
+
+        brazilContextInterpretationEn =
+          'In the explicitly selected septic-shock context, calculated MAP is at or above 65 mmHg. This is a contextual management target rather than a universal MAP limit; it neither establishes nor excludes diagnosis.';
+
+      } else {
+        brazilContextInterpretationPt =
+          'No contexto explicitamente selecionado de choque séptico, a PAM calculada está abaixo de 65 mmHg. Este é um limiar contextual de manejo e não uma classificação universal de PAM; integrar ao protocolo e quadro clínico.';
+
+        brazilContextInterpretationEn =
+          'In the explicitly selected septic-shock context, calculated MAP is below 65 mmHg. This is a contextual management threshold, not a universal MAP classification; integrate with the protocol and clinical picture.';
+      }
+
+    } else if (
+      clinicalContext
+      === 'obstetric_hemorrhage'
+    ) {
+      brazilContextGuidanceApplied = true;
+
+      brazilContextRuleCode =
+        'obstetric_hemorrhage_si_trigger';
+
+      brazilContextThresholdValue =
+        0.9;
+
+      brazilContextThresholdUnit =
+        'ratio';
+
+      brazilContextOperator =
+        '>';
+
+      brazilContextObservedValue =
+        Math.round(
+          shockIndex * 10000
+        ) / 10000;
+
+      brazilContextRuleMet =
+        shockIndex > 0.9;
+
+      brazilContextLabelPt =
+        'Contexto brasileiro — hemorragia obstétrica';
+
+      brazilContextLabelEn =
+        'Brazilian context — obstetric haemorrhage';
+
+
+      if (brazilContextRuleMet) {
+        brazilContextInterpretationPt =
+          'No contexto explicitamente selecionado de hemorragia obstétrica, o Shock Index está acima de 0,9, limiar descrito pelo Ministério da Saúde para acionamento do protocolo de hemorragia obstétrica. Não aplicar este limiar como corte universal de Shock Index.';
+
+        brazilContextInterpretationEn =
+          'In the explicitly selected obstetric-haemorrhage context, Shock Index is above 0.9, the Ministry of Health threshold described for activation of the obstetric haemorrhage protocol. Do not apply this as a universal Shock Index cut-off.';
+
+      } else {
+        brazilContextInterpretationPt =
+          'No contexto explicitamente selecionado de hemorragia obstétrica, o Shock Index não está acima de 0,9. Isso não exclui hemorragia, choque ou necessidade de escalonamento segundo avaliação clínica e protocolo.';
+
+        brazilContextInterpretationEn =
+          'In the explicitly selected obstetric-haemorrhage context, Shock Index is not above 0.9. This does not exclude haemorrhage, shock, or need for escalation according to clinical assessment and protocol.';
+      }
+    }
 
 
     return {
@@ -1860,6 +2010,45 @@
 
       threshold_classification_applied:
         false,
+
+      universal_threshold_inference_applied:
+        false,
+
+      clinical_context:
+        clinicalContext,
+
+      brazil_context_guidance_applied:
+        brazilContextGuidanceApplied,
+
+      brazil_context_rule_code:
+        brazilContextRuleCode,
+
+      brazil_context_threshold_value:
+        brazilContextThresholdValue,
+
+      brazil_context_threshold_unit:
+        brazilContextThresholdUnit,
+
+      brazil_context_operator:
+        brazilContextOperator,
+
+      brazil_context_observed_value:
+        brazilContextObservedValue,
+
+      brazil_context_rule_met:
+        brazilContextRuleMet,
+
+      brazil_context_label_pt:
+        brazilContextLabelPt,
+
+      brazil_context_label_en:
+        brazilContextLabelEn,
+
+      brazil_context_interpretation_pt:
+        brazilContextInterpretationPt,
+
+      brazil_context_interpretation_en:
+        brazilContextInterpretationEn,
 
       interpretation_pt:
         'Os índices são auxiliares de avaliação hemodinâmica e devem ser interpretados junto ao contexto clínico, tendência dos sinais vitais, perfusão e comorbidades. Não foi aplicado um ponto de corte universal para Shock Index ou Modified Shock Index.',

@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "feature": "hemodynamics_brazil_harmonization",
+  "clinical_review_date": "2026-09-11",
+  "implementation_status": "context_integration_complete",
+  "base_calculation_policy": {
+    "map_formula_change_required": false,
+    "pulse_pressure_formula_change_required": false,
+    "shock_index_formula_change_required": false,
+    "modified_shock_index_formula_change_required": false,
+    "universal_threshold_classification_allowed": false
+  },
+  "brazil_applicability_status": "complementary_brazil_guidance",
+  "national_universal_hemodynamic_threshold_identified": false,
+  "contexts": {
+    "septic_shock_map": {
+      "status": "context_specific_brazil_guidance",
+      "threshold_mm_hg": 65,
+      "direction": "target_at_or_above_in_resuscitation_context",
+      "source_1": {
+        "authority": "Ministério da Saúde",
+        "title": "Manual de Gestação de Alto Risco",
+        "url": "https://bvsms.saude.gov.br/bvs/publicacoes/manual_gestacao_alto_risco.pdf",
+        "scope": "Obstetric sepsis / septic shock",
+        "finding": "Septic shock definition/management includes vasopressor requirement to maintain MAP at or above 65 mmHg after adequate fluid resuscitation, with lactate above 2 mmol/L."
+      },
+      "source_2": {
+        "authority": "Agência Nacional de Saúde Suplementar",
+        "title": "Manual metodológico — linha de cuidado de sepse",
+        "url": "https://www.gov.br/ans/pt-br/arquivos/assuntos/consumidor/qualidade-de-hospitais-clinicas-laboratorios-e-profissionais-de-saude-1/projeto_indicadores_manual_metodologico_linhas_de_cuidado_3.pdf",
+        "scope": "Sepsis / septic shock line of care",
+        "finding": "Uses a MAP threshold around 65 mmHg in septic-shock identification/management."
+      },
+      "software_rule": "MAP 65 mmHg may be presented only inside an explicit septic-shock context. It must not be applied as a universal MAP normal/abnormal classification."
+    },
+    "obstetric_hemorrhage_shock_index": {
+      "status": "context_specific_brazil_guidance",
+      "threshold": 0.9,
+      "operator_from_ministry_source": ">",
+      "source_1": {
+        "authority": "Ministério da Saúde",
+        "title": "Linha de Cuidados para Doença Trofoblástica Gestacional",
+        "url": "https://bvsms.saude.gov.br/bvs/publicacoes/linha_cuidados_doenca_trofoblastica_gestacional.pdf",
+        "scope": "Haemodynamic evaluation of bleeding in gestational trophoblastic disease",
+        "finding": "Shock Index is HR/SBP; values above 0.9 trigger activation of the obstetric haemorrhage protocol."
+      },
+      "implementation_corroboration": {
+        "authority": "EBSERH / federal university hospitals",
+        "scope": "Postpartum haemorrhage implementation",
+        "finding": "Current institutional protocols use SI at or above 0.9 as an obstetric haemorrhage risk/escalation marker.",
+        "national_standard": false
+      },
+      "software_rule": "The 0.9 Shock Index threshold may be exposed only under an explicit obstetric-haemorrhage context and must never become the generic Shock Index threshold."
+    }
+  },
+  "no_universal_variant_findings": {
+    "map": "No authoritative Brazilian source reviewed establishes 65 mmHg as a universal MAP threshold for all adult haemodynamic assessment.",
+    "shock_index": "Brazilian sources identify condition-specific Shock Index thresholds; no universal adult Brazilian SI cutoff was identified.",
+    "modified_shock_index": "No authoritative Brazilian universal Modified Shock Index cutoff was identified.",
+    "pulse_pressure": "No authoritative Brazilian universal pulse-pressure cutoff for this generic bedside calculator was identified."
+  },
+  "bh3b_implementation_rules": [
+    "Preserve MAP, pulse pressure, Shock Index and Modified Shock Index numerical calculations.",
+    "Preserve threshold_classification_applied=false for the generic result.",
+    "Do not automatically classify generic MAP against 65 mmHg.",
+    "Do not automatically classify generic Shock Index against 0.9.",
+    "Expose MAP >=65 mmHg only as septic-shock contextual guidance.",
+    "Expose obstetric Shock Index >0.9 only as obstetric-haemorrhage contextual guidance.",
+    "Do not invent a Brazilian Modified Shock Index threshold.",
+    "Do not invent a Brazilian universal pulse-pressure threshold.",
+    "Keep Brazil-context guidance bilingual and available offline."
+  ],
+  "final_release_recheck_required": true,
+  "bh3b_core_status": "pass",
+  "bh3b_ui_status": "pass",
+  "harmonization_implementation_complete": true,
+  "final_brazil_review_status": "pass"
+}
