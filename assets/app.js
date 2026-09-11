@@ -1115,7 +1115,7 @@ async function runClinicalCalculator(
 
     return {
       result:
-        offlineCalculator(payload),
+        await offlineCalculator(payload),
 
       source: 'offline'
     };
@@ -2777,6 +2777,583 @@ async function calculateMetabolicTool(
 }
 
 
+
+let lastGrowthResult = null;
+let lastGrowthSource = null;
+
+
+function growthIndicatorLabel(
+  name
+) {
+  const keys = {
+    weight_for_age:
+      'growth.wfa',
+
+    length_height_for_age:
+      'growth.hfa',
+
+    weight_for_length_height:
+      'growth.wflh',
+
+    bmi_for_age:
+      'growth.bfa',
+
+    head_circumference_for_age:
+      'growth.hcfa'
+  };
+
+
+  const fallbacks = {
+    weight_for_age: [
+      'Peso para idade',
+      'Weight for age'
+    ],
+
+    length_height_for_age: [
+      'Comprimento / estatura para idade',
+      'Length / height for age'
+    ],
+
+    weight_for_length_height: [
+      'Peso para comprimento / estatura',
+      'Weight for length / height'
+    ],
+
+    bmi_for_age: [
+      'IMC para idade',
+      'BMI for age'
+    ],
+
+    head_circumference_for_age: [
+      'Perímetro cefálico para idade',
+      'Head circumference for age'
+    ]
+  };
+
+
+  const fallback =
+    fallbacks[name]
+    || [name, name];
+
+
+  return (
+    globalThis.ClinicalI18n
+      ?.t?.(keys[name])
+    || clinicalText(
+      fallback[0],
+      fallback[1]
+    )
+  );
+}
+
+
+function renderGrowthResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'growth-result'
+    );
+
+
+  if (!res || !result) {
+    return;
+  }
+
+
+  const suffix =
+    uiLanguage() === 'en-GB'
+      ? 'en'
+      : 'pt';
+
+
+  const cards =
+    Object.entries(
+      result.indicators
+      || {}
+    )
+      .filter(
+        ([, value]) =>
+          value !== null
+      )
+      .map(
+        ([name, value]) => {
+          const whoClass =
+            value.classification_who;
+
+          const brClass =
+            value.classification_br;
+
+
+          const whoText =
+            whoClass
+              ? whoClass[
+                  `label_${suffix}`
+                ]
+              : (
+                  globalThis.ClinicalI18n
+                    ?.t?.(
+                      'growth.noNamedClass'
+                    )
+                  || clinicalText(
+                    'Sem classificação nominal adicional',
+                    'No additional named classification'
+                  )
+                );
+
+
+          const brText =
+            brClass
+              ? brClass[
+                  `label_${suffix}`
+                ]
+              : (
+                  globalThis.ClinicalI18n
+                    ?.t?.(
+                      'growth.noNamedClass'
+                    )
+                  || clinicalText(
+                    'Sem classificação nominal adicional',
+                    'No additional named classification'
+                  )
+                );
+
+
+          const percentileText =
+            value.percentile_available
+            && value.percentile !== null
+              ? `${value.percentile.toFixed(2)}%`
+              : (
+                  globalThis.ClinicalI18n
+                    ?.t?.(
+                      'growth.percentileUnavailable'
+                    )
+                  || clinicalText(
+                    'Indisponível fora de ±3 DP',
+                    'Unavailable outside ±3 SD'
+                  )
+                );
+
+
+          const flag =
+            value.plausibility_flag
+              ? `
+                <p class="text-[10px] text-red-300 mt-2">
+                  ${escapeHtml(
+                    clinicalText(
+                      'Valor fora da faixa de plausibilidade WHO',
+                      'Value outside the WHO plausibility range'
+                    )
+                  )}
+                  ·
+                  ${escapeHtml(
+                    value.who_plausibility_range
+                  )}
+                </p>
+              `
+              : '';
+
+
+          return `
+            <div class="rounded-xl border border-slate-800 bg-slate-900 p-4 space-y-3">
+
+              <p class="text-xs font-semibold text-white">
+                ${escapeHtml(
+                  growthIndicatorLabel(
+                    name
+                  )
+                )}
+              </p>
+
+              <div class="grid grid-cols-2 gap-2">
+
+                <div>
+                  <p class="text-[10px] text-slate-500 uppercase">
+                    ${escapeHtml(
+                      globalThis.ClinicalI18n
+                        ?.t?.('growth.z')
+                      || 'Z'
+                    )}
+                  </p>
+
+                  <p class="text-xl font-bold text-emerald-300">
+                    ${escapeHtml(
+                      value.z_score.toFixed(2)
+                    )}
+                  </p>
+                </div>
+
+                <div>
+                  <p class="text-[10px] text-slate-500 uppercase">
+                    ${escapeHtml(
+                      globalThis.ClinicalI18n
+                        ?.t?.(
+                          'growth.percentile'
+                        )
+                      || clinicalText(
+                        'Percentil',
+                        'Percentile'
+                      )
+                    )}
+                  </p>
+
+                  <p class="text-sm font-semibold text-slate-200 mt-1">
+                    ${escapeHtml(
+                      percentileText
+                    )}
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+
+                <div class="rounded-lg bg-slate-950/70 p-2">
+                  <p class="text-[10px] text-slate-500 uppercase">
+                    ${escapeHtml(
+                      globalThis.ClinicalI18n
+                        ?.t?.('growth.who')
+                      || 'WHO'
+                    )}
+                  </p>
+
+                  <p class="text-[11px] text-slate-200 mt-1">
+                    ${escapeHtml(
+                      whoText
+                    )}
+                  </p>
+                </div>
+
+                <div class="rounded-lg bg-slate-950/70 p-2">
+                  <p class="text-[10px] text-slate-500 uppercase">
+                    ${escapeHtml(
+                      globalThis.ClinicalI18n
+                        ?.t?.('growth.brazil')
+                      || 'Brasil · SISVAN'
+                    )}
+                  </p>
+
+                  <p class="text-[11px] text-slate-200 mt-1">
+                    ${escapeHtml(
+                      brText
+                    )}
+                  </p>
+                </div>
+
+              </div>
+
+              <p class="text-[9px] text-slate-600">
+                ${escapeHtml(
+                  value.reference_standard
+                )}
+              </p>
+
+              ${flag}
+
+            </div>
+          `;
+        }
+      );
+
+
+  const warnings =
+    result[
+      `warnings_${suffix}`
+    ] || [];
+
+
+  const warningBlock =
+    warnings.length
+      ? `
+        <div class="mt-4 rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
+
+          <p class="text-[10px] font-semibold text-amber-300 uppercase">
+            ${escapeHtml(
+              globalThis.ClinicalI18n
+                ?.t?.('growth.warning')
+              || clinicalText(
+                'Observações / alertas',
+                'Notes / warnings'
+              )
+            )}
+          </p>
+
+          <ul class="mt-2 space-y-1">
+            ${warnings.map(
+              warning => `
+                <li class="text-[11px] text-slate-300">
+                  • ${escapeHtml(
+                    warning
+                  )}
+                </li>
+              `
+            ).join('')}
+          </ul>
+
+        </div>
+      `
+      : '';
+
+
+  const adjustmentBlock =
+    result.measurement_adjustment_cm !== 0
+      ? `
+        <p class="text-[11px] text-cyan-300 mt-3">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('growth.adjustment')
+            || clinicalText(
+              'Ajuste de posição aplicado',
+              'Measurement-position adjustment'
+            )
+          )}:
+          ${escapeHtml(
+            result.measurement_adjustment_cm
+              .toFixed(1)
+          )}
+          cm
+        </p>
+      `
+      : '';
+
+
+  const bmiBlock =
+    result.bmi_kg_m2 !== null
+      ? `
+        <p class="text-[11px] text-slate-400 mt-2">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('growth.bmi')
+            || clinicalText(
+              'IMC calculado',
+              'Calculated BMI'
+            )
+          )}:
+          ${escapeHtml(
+            result.bmi_kg_m2
+              .toFixed(4)
+          )}
+          kg/m²
+        </p>
+      `
+      : '';
+
+
+  const offlineBlock =
+    source === 'offline'
+      ? `
+        <p class="text-[11px] text-amber-300 mt-3">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('growth.offline')
+            || clinicalText(
+              'Resultado calculado localmente com as tabelas WHO precacheadas.',
+              'Result calculated locally using the precached WHO tables.'
+            )
+          )}
+        </p>
+      `
+      : '';
+
+
+  res.classList.remove(
+    'hidden'
+  );
+
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('growth.results')
+        || clinicalText(
+          'Resultados de crescimento',
+          'Growth results'
+        )
+      )}
+    </p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-3">
+      ${cards.join('')}
+    </div>
+
+    ${adjustmentBlock}
+    ${bmiBlock}
+    ${warningBlock}
+    ${offlineBlock}
+  `;
+}
+
+
+async function calculateGrowthTool(
+  event
+) {
+  event.preventDefault();
+
+
+  const sex =
+    document.getElementById(
+      'growth-sex'
+    ).value;
+
+
+  const age =
+    Number.parseFloat(
+      document.getElementById(
+        'growth-age'
+      ).value
+    );
+
+
+  const ageUnit =
+    document.getElementById(
+      'growth-age-unit'
+    ).value;
+
+
+  const ageBasis =
+    document.getElementById(
+      'growth-age-basis'
+    ).value;
+
+
+  const weight =
+    nullableClinicalNumber(
+      'growth-weight'
+    );
+
+
+  const lenhei =
+    nullableClinicalNumber(
+      'growth-lenhei'
+    );
+
+
+  const head =
+    nullableClinicalNumber(
+      'growth-head'
+    );
+
+
+  const position =
+    document.getElementById(
+      'growth-position'
+    ).value || null;
+
+
+  const oedema =
+    document.getElementById(
+      'growth-oedema'
+    ).checked;
+
+
+  if (
+    !['male', 'female'].includes(
+      sex
+    )
+    || !Number.isFinite(age)
+    || age < 0
+    || (
+      weight === null
+      && lenhei === null
+      && head === null
+    )
+  ) {
+    return showError(
+      'growth-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.('growth.invalid')
+      || clinicalText(
+        'Informe sexo, idade válida e pelo menos uma medida antropométrica.',
+        'Enter sex, a valid age and at least one anthropometric measurement.'
+      )
+    );
+  }
+
+
+  if (
+    lenhei !== null
+    && position === null
+  ) {
+    return showError(
+      'growth-result',
+
+      globalThis.ClinicalI18n
+        ?.t?.(
+          'growth.positionRequired'
+        )
+      || clinicalText(
+        'Informe a posição da medida.',
+        'Specify the measurement position.'
+      )
+    );
+  }
+
+
+  const payload = {
+    sex,
+
+    age_value:
+      age,
+
+    age_unit:
+      ageUnit,
+
+    age_basis:
+      ageBasis,
+
+    weight_kg:
+      weight,
+
+    length_height_cm:
+      lenhei,
+
+    measurement_position:
+      position,
+
+    head_circumference_cm:
+      head,
+
+    oedema
+  };
+
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/who-growth',
+      payload,
+      globalThis
+        .ClinicalGrowthTools
+        .calculateWhoGrowth
+    );
+
+
+    lastGrowthResult =
+      result;
+
+    lastGrowthSource =
+      source;
+
+
+    renderGrowthResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'growth-result',
+      error.message
+    );
+  }
+}
+
+
 function scoreGlasgow() {
   const ids = ['glasgow-e', 'glasgow-v', 'glasgow-m'];
   const values = ids.map((id) => document.getElementById(id).value);
@@ -2845,6 +3422,7 @@ function wireUiEvents() {
     'hemodynamics-form': calculateHemodynamicsTool,
     'oxygenation-form': calculateOxygenationTool,
     'metabolic-form': calculateMetabolicTool,
+    'growth-form': calculateGrowthTool,
     'drip-form': calculateDrip,
     'meds-form': calculateMeds,
     'bmi-form': calculateBMI,
@@ -2939,6 +3517,14 @@ globalThis.addEventListener?.(
       renderMetabolicResult(
         lastMetabolicResult,
         lastMetabolicSource
+      );
+    }
+
+
+    if (lastGrowthResult) {
+      renderGrowthResult(
+        lastGrowthResult,
+        lastGrowthSource
       );
     }
   }

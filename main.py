@@ -33,6 +33,10 @@ from clinical_tools.metabolic import (
     METABOLIC_METADATA,
     calculate_metabolic_toolkit,
 )
+from clinical_tools.growth import (
+    GROWTH_METADATA,
+    calculate_who_growth,
+)
 from config import load_settings
 from observability import RateLimitMiddleware, RequestContextMiddleware, configure_logging
 from scripts.clinical_content import file_hash, validate_release_content
@@ -64,7 +68,21 @@ def _assert_runtime_files() -> None:
     required = (
         INDEX_FILE, MANIFEST_FILE, SERVICE_WORKER_FILE,
         ASSET_DIR / "app.css", ASSET_DIR / "app.js",
+        ASSET_DIR / "growth-tools.js",
         ASSET_DIR / "offline" / "sae.json", ASSET_DIR / "offline" / "policies.json",
+        ASSET_DIR / "reference" / "who-growth" / "who2006_weight_for_age.json",
+        ASSET_DIR / "reference" / "who-growth" / "who2006_length_height_for_age.json",
+        ASSET_DIR / "reference" / "who-growth" / "who2006_bmi_for_age.json",
+        ASSET_DIR / "reference" / "who-growth" / "who2006_head_circumference_for_age.json",
+        ASSET_DIR / "reference" / "who-growth" / "who2006_weight_for_length.json",
+        ASSET_DIR / "reference" / "who-growth" / "who2006_weight_for_height.json",
+        ASSET_DIR / "reference" / "who-growth" / "who2007_weight_for_age.json",
+        ASSET_DIR / "reference" / "who-growth" / "who2007_height_for_age.json",
+        ASSET_DIR / "reference" / "who-growth" / "who2007_bmi_for_age.json",
+        ASSET_DIR / "reference" / "who-growth" / "BRAZIL_SISVAN.json",
+        ASSET_DIR / "reference" / "who-growth" / "SOURCES.json",
+        ASSET_DIR / "reference" / "who-growth" / "NOTICE.txt",
+        ASSET_DIR / "reference" / "who-growth" / "GPL-3.0.txt",
         CLINICAL_CONTENT_MANIFEST_FILE,
         ASSET_DIR / "icons" / "icon-192.png", ASSET_DIR / "icons" / "icon-512.png",
         ASSET_DIR / "icons" / "apple-touch-icon.png", ASSET_DIR / "icons" / "favicon.ico",
@@ -862,6 +880,44 @@ def api_calculate_metabolic(
             metabolic_acidosis_confirmed=(
                 payload.metabolic_acidosis_confirmed
             ),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/tools/who-growth/meta",
+    response_model=schemas.ClinicalToolMetadataResponse,
+)
+def api_growth_metadata():
+    return GROWTH_METADATA
+
+
+@api_v1.post(
+    "/tools/who-growth",
+    response_model=schemas.GrowthResponse,
+)
+def api_calculate_who_growth(
+    payload: schemas.GrowthInput,
+):
+    try:
+        return calculate_who_growth(
+            sex=payload.sex,
+            age_value=payload.age_value,
+            age_unit=payload.age_unit,
+            age_basis=payload.age_basis,
+            weight_kg=payload.weight_kg,
+            length_height_cm=payload.length_height_cm,
+            measurement_position=(
+                payload.measurement_position
+            ),
+            head_circumference_cm=(
+                payload.head_circumference_cm
+            ),
+            oedema=payload.oedema,
         )
     except ValueError as exc:
         raise HTTPException(

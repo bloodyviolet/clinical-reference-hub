@@ -716,3 +716,138 @@ class MetabolicToolkitResponse(BaseModel):
 
     interpretation_pt: str
     interpretation_en: str
+
+# ---------------------------------------------------------------------------
+# v2 Item 6 — WHO paediatric growth + Brazil SISVAN interpretation.
+# ---------------------------------------------------------------------------
+
+GrowthSex = Literal[
+    "male",
+    "female",
+]
+
+GrowthAgeUnit = Literal[
+    "days",
+    "months",
+]
+
+GrowthAgeBasis = Literal[
+    "chronological",
+    "corrected",
+]
+
+GrowthMeasurementPosition = Literal[
+    "length",
+    "height",
+]
+
+
+class GrowthInput(BaseModel):
+    sex: GrowthSex
+
+    age_value: float = Field(
+        ge=0,
+    )
+
+    age_unit: GrowthAgeUnit
+
+    age_basis: GrowthAgeBasis = "chronological"
+
+    weight_kg: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    length_height_cm: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    measurement_position: GrowthMeasurementPosition | None = None
+
+    head_circumference_cm: float | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    oedema: bool = False
+
+
+class GrowthClassification(BaseModel):
+    code: str
+    label_pt: str
+    label_en: str
+
+
+class GrowthIndicatorResult(BaseModel):
+    indicator: Literal[
+        "weight_for_age",
+        "length_height_for_age",
+        "weight_for_length_height",
+        "bmi_for_age",
+        "head_circumference_for_age",
+    ]
+
+    z_score: float
+
+    percentile: float | None
+    percentile_available: bool
+
+    reference_standard: str
+    reference_table: str
+
+    classification_who: GrowthClassification | None = None
+    classification_br: GrowthClassification | None = None
+
+    classification_z_basis: str
+
+    plausibility_flag: bool
+    who_plausibility_range: str
+
+    brazil_routine_monitoring_applicable: bool | None = None
+
+
+class GrowthIndicators(BaseModel):
+    weight_for_age: GrowthIndicatorResult | None = None
+    length_height_for_age: GrowthIndicatorResult | None = None
+    weight_for_length_height: GrowthIndicatorResult | None = None
+    bmi_for_age: GrowthIndicatorResult | None = None
+    head_circumference_for_age: GrowthIndicatorResult | None = None
+
+
+class GrowthProvenance(BaseModel):
+    who2006_commit: str
+    who2007_commit: str
+    brazil_policy: str
+
+
+class GrowthResponse(BaseModel):
+    tool: Literal["who_pediatric_growth"]
+
+    sex: GrowthSex
+
+    age_input_value: float
+    age_input_unit: GrowthAgeUnit
+    age_basis: GrowthAgeBasis
+
+    who_age_days: int
+    who_age_months: float
+
+    oedema: bool
+
+    measurement_position_input: GrowthMeasurementPosition | None
+    measurement_position_effective: GrowthMeasurementPosition | None
+
+    measurement_adjustment_cm: float
+
+    length_height_input_cm: float | None
+    length_height_effective_cm: float | None
+
+    bmi_kg_m2: float | None
+
+    indicators: GrowthIndicators
+
+    warnings_pt: list[str]
+    warnings_en: list[str]
+
+    provenance: GrowthProvenance

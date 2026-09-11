@@ -77,7 +77,7 @@ for (const key of [
 
 assert(
   swSource.includes(
-    'clinical-reference-v13-v2-metabolic'
+    'clinical-reference-v15-v2-growth-ui'
   )
 );
 

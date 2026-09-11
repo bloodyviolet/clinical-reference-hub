@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clinical-reference-v13-v2-metabolic';
+const CACHE_NAME = 'clinical-reference-v15-v2-growth-ui';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [
@@ -7,6 +7,7 @@ const APP_SHELL = [
   '/assets/app.css',
   '/assets/i18n.js',
   '/assets/clinical-tools.js',
+  '/assets/growth-tools.js',
   '/assets/app.js',
   '/assets/icons/icon-192.png',
   '/assets/icons/icon-512.png',
@@ -16,6 +17,19 @@ const APP_SHELL = [
   '/favicon.ico',
   OFFLINE_SAE_URL,
   OFFLINE_POLICIES_URL,
+  '/assets/reference/who-growth/who2006_weight_for_age.json',
+  '/assets/reference/who-growth/who2006_length_height_for_age.json',
+  '/assets/reference/who-growth/who2006_bmi_for_age.json',
+  '/assets/reference/who-growth/who2006_head_circumference_for_age.json',
+  '/assets/reference/who-growth/who2006_weight_for_length.json',
+  '/assets/reference/who-growth/who2006_weight_for_height.json',
+  '/assets/reference/who-growth/who2007_weight_for_age.json',
+  '/assets/reference/who-growth/who2007_height_for_age.json',
+  '/assets/reference/who-growth/who2007_bmi_for_age.json',
+  '/assets/reference/who-growth/BRAZIL_SISVAN.json',
+  '/assets/reference/who-growth/SOURCES.json',
+  '/assets/reference/who-growth/NOTICE.txt',
+  '/assets/reference/who-growth/GPL-3.0.txt',
 ];
 
 function jsonResponse(payload, status = 200, extraHeaders = {}) {

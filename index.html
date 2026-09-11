@@ -220,6 +220,100 @@
           <div id="crcl-result" aria-live="polite" class="hidden mt-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800"></div>
         </div>
         
+        <!-- WHO / SISVAN Paediatric Growth -->
+        <div id="growth-card" class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+
+          <div class="space-y-1">
+            <h2 data-i18n="growth.title" class="text-base font-semibold text-white">Crescimento pediátrico · WHO / SISVAN</h2>
+            <p data-i18n="growth.description" class="text-xs text-slate-400">Escores-z e percentis WHO com interpretação brasileira SISVAN separada.</p>
+          </div>
+
+          <form id="growth-form" class="space-y-4 border-t border-slate-800 pt-4">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+
+              <div>
+                <label data-i18n="growth.sex" for="growth-sex" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Sexo da referência WHO</label>
+                <select id="growth-sex" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="male" data-i18n="growth.male">Masculino</option>
+                  <option value="female" data-i18n="growth.female">Feminino</option>
+                </select>
+              </div>
+
+              <div>
+                <label data-i18n="growth.age" for="growth-age" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Idade</label>
+                <input id="growth-age" type="number" min="0" step="0.01" required class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="growth.ageUnit" for="growth-age-unit" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Unidade da idade</label>
+                <select id="growth-age-unit" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="days" data-i18n="growth.days">Dias</option>
+                  <option value="months" data-i18n="growth.months">Meses</option>
+                </select>
+              </div>
+
+              <div>
+                <label data-i18n="growth.ageBasis" for="growth-age-basis" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Base da idade</label>
+                <select id="growth-age-basis" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="chronological" data-i18n="growth.chronological">Idade cronológica</option>
+                  <option value="corrected" data-i18n="growth.corrected">Idade corrigida</option>
+                </select>
+              </div>
+
+              <div>
+                <label data-i18n="growth.weight" for="growth-weight" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Peso (kg) · opcional</label>
+                <input id="growth-weight" type="number" min="0.001" step="0.001" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="growth.lengthHeight" for="growth-lenhei" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Comprimento / estatura (cm) · opcional</label>
+                <input id="growth-lenhei" type="number" min="0.1" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+              <div>
+                <label data-i18n="growth.position" for="growth-position" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Posição da medida</label>
+                <select id="growth-position" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="" data-i18n="growth.positionSelect">Selecione...</option>
+                  <option value="length" data-i18n="growth.length">Comprimento recumbente</option>
+                  <option value="height" data-i18n="growth.height">Estatura em pé</option>
+                </select>
+              </div>
+
+              <div>
+                <label data-i18n="growth.head" for="growth-head" class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Perímetro cefálico (cm) · opcional</label>
+                <input id="growth-head" type="number" min="0.1" step="0.1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              </div>
+
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+
+              <div class="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3">
+                <p data-i18n="growth.correctedNote" class="text-[11px] text-amber-200">Selecione idade corrigida somente quando ela já tiver sido calculada para uma criança prematura; a idade cronológica deve permanecer registrada separadamente.</p>
+              </div>
+
+              <label class="rounded-xl border border-slate-800 bg-slate-950/50 p-3 flex items-start gap-3 text-sm text-slate-300">
+                <input id="growth-oedema" type="checkbox" class="mt-1">
+                <span data-i18n="growth.oedema">Edema presente</span>
+              </label>
+
+            </div>
+
+            <button type="submit" data-i18n="growth.calculate" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular crescimento</button>
+
+          </form>
+
+          <div id="growth-result" aria-live="polite" class="hidden rounded-xl border border-slate-800 bg-slate-950/60 p-4"></div>
+
+          <div class="border-t border-slate-800 pt-3 space-y-1">
+            <p data-i18n="growth.source" class="text-[10px] text-slate-500">Referências numéricas: WHO 2006/2007 · interpretação nacional: Ministério da Saúde / SISVAN.</p>
+            <p data-i18n="growth.noEndorsement" class="text-[10px] text-amber-300">A WHO não endossa este aplicativo nem seus resultados.</p>
+            <p data-i18n="growth.attribution" class="text-[10px] text-slate-500">Tabelas e proveniência: assets/reference/who-growth/NOTICE.txt.</p>
+          </div>
+
+        </div>
+
         <!-- Acid-base / Metabolic -->
         <div id="metabolic-card" class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
 
@@ -723,6 +817,7 @@
 
   <script src="/assets/i18n.js" defer></script>
   <script src="/assets/clinical-tools.js" defer></script>
+  <script src="/assets/growth-tools.js" defer></script>
   <script src="/assets/app.js" defer></script>
 
   <!-- Footer -->

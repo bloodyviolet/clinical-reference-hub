@@ -381,7 +381,136 @@
         'Informe cloreto + bicarbonato e/ou glicose para realizar pelo menos um cálculo.',
 
       'metabolic.source':
-        'AG = Na−(Cl+HCO₃) · AG corrigido = AG+2,5×(4−albumina) · Osm = 2Na+glicose/18+BUN/2,8 · Na corrigido: fator 1,6.'
+        'AG = Na−(Cl+HCO₃) · AG corrigido = AG+2,5×(4−albumina) · Osm = 2Na+glicose/18+BUN/2,8 · Na corrigido: fator 1,6.',
+
+      'growth.title':
+        'Crescimento pediátrico · WHO / SISVAN',
+
+      'growth.description':
+        'Escores-z e percentis WHO com interpretação brasileira SISVAN separada.',
+
+      'growth.sex':
+        'Sexo da referência WHO',
+
+      'growth.male':
+        'Masculino',
+
+      'growth.female':
+        'Feminino',
+
+      'growth.age':
+        'Idade',
+
+      'growth.ageUnit':
+        'Unidade da idade',
+
+      'growth.days':
+        'Dias',
+
+      'growth.months':
+        'Meses',
+
+      'growth.ageBasis':
+        'Base da idade',
+
+      'growth.chronological':
+        'Idade cronológica',
+
+      'growth.corrected':
+        'Idade corrigida',
+
+      'growth.correctedNote':
+        'Selecione idade corrigida somente quando ela já tiver sido calculada para uma criança prematura; a idade cronológica deve permanecer registrada separadamente.',
+
+      'growth.weight':
+        'Peso (kg) · opcional',
+
+      'growth.lengthHeight':
+        'Comprimento / estatura (cm) · opcional',
+
+      'growth.position':
+        'Posição da medida',
+
+      'growth.positionSelect':
+        'Selecione...',
+
+      'growth.length':
+        'Comprimento recumbente',
+
+      'growth.height':
+        'Estatura em pé',
+
+      'growth.head':
+        'Perímetro cefálico (cm) · opcional',
+
+      'growth.oedema':
+        'Edema presente',
+
+      'growth.calculate':
+        'Calcular crescimento',
+
+      'growth.results':
+        'Resultados de crescimento',
+
+      'growth.wfa':
+        'Peso para idade',
+
+      'growth.hfa':
+        'Comprimento / estatura para idade',
+
+      'growth.wflh':
+        'Peso para comprimento / estatura',
+
+      'growth.bfa':
+        'IMC para idade',
+
+      'growth.hcfa':
+        'Perímetro cefálico para idade',
+
+      'growth.z':
+        'Escore-z',
+
+      'growth.percentile':
+        'Percentil',
+
+      'growth.percentileUnavailable':
+        'Indisponível fora de ±3 DP',
+
+      'growth.who':
+        'WHO',
+
+      'growth.brazil':
+        'Brasil · SISVAN',
+
+      'growth.noNamedClass':
+        'Sem classificação nominal adicional',
+
+      'growth.warning':
+        'Observações / alertas',
+
+      'growth.adjustment':
+        'Ajuste de posição aplicado',
+
+      'growth.bmi':
+        'IMC calculado',
+
+      'growth.offline':
+        'Resultado calculado localmente com as tabelas WHO precacheadas.',
+
+      'growth.invalid':
+        'Informe sexo, idade válida e pelo menos uma medida antropométrica.',
+
+      'growth.positionRequired':
+        'Informe se a medida foi obtida como comprimento recumbente ou estatura em pé.',
+
+      'growth.source':
+        'Referências numéricas: WHO 2006/2007 · interpretação nacional: Ministério da Saúde / SISVAN.',
+
+      'growth.noEndorsement':
+        'A WHO não endossa este aplicativo nem seus resultados.',
+
+      'growth.attribution':
+        'Tabelas e proveniência: assets/reference/who-growth/NOTICE.txt.'
     },
 
     'en-GB': {
@@ -755,7 +884,136 @@
         'Provide chloride + bicarbonate and/or glucose to perform at least one calculation.',
 
       'metabolic.source':
-        'AG = Na−(Cl+HCO₃) · corrected AG = AG+2.5×(4−albumin) · Osm = 2Na+glucose/18+BUN/2.8 · corrected Na: 1.6 factor.'
+        'AG = Na−(Cl+HCO₃) · corrected AG = AG+2.5×(4−albumin) · Osm = 2Na+glucose/18+BUN/2.8 · corrected Na: 1.6 factor.',
+
+      'growth.title':
+        'Paediatric growth · WHO / SISVAN',
+
+      'growth.description':
+        'WHO z-scores and percentiles with a separate Brazilian SISVAN interpretation layer.',
+
+      'growth.sex':
+        'WHO reference sex',
+
+      'growth.male':
+        'Male',
+
+      'growth.female':
+        'Female',
+
+      'growth.age':
+        'Age',
+
+      'growth.ageUnit':
+        'Age unit',
+
+      'growth.days':
+        'Days',
+
+      'growth.months':
+        'Months',
+
+      'growth.ageBasis':
+        'Age basis',
+
+      'growth.chronological':
+        'Chronological age',
+
+      'growth.corrected':
+        'Corrected age',
+
+      'growth.correctedNote':
+        'Select corrected age only when it has already been calculated for a preterm child; chronological age should remain recorded separately.',
+
+      'growth.weight':
+        'Weight (kg) · optional',
+
+      'growth.lengthHeight':
+        'Length / height (cm) · optional',
+
+      'growth.position':
+        'Measurement position',
+
+      'growth.positionSelect':
+        'Select...',
+
+      'growth.length':
+        'Recumbent length',
+
+      'growth.height':
+        'Standing height',
+
+      'growth.head':
+        'Head circumference (cm) · optional',
+
+      'growth.oedema':
+        'Oedema present',
+
+      'growth.calculate':
+        'Calculate growth',
+
+      'growth.results':
+        'Growth results',
+
+      'growth.wfa':
+        'Weight for age',
+
+      'growth.hfa':
+        'Length / height for age',
+
+      'growth.wflh':
+        'Weight for length / height',
+
+      'growth.bfa':
+        'BMI for age',
+
+      'growth.hcfa':
+        'Head circumference for age',
+
+      'growth.z':
+        'Z-score',
+
+      'growth.percentile':
+        'Percentile',
+
+      'growth.percentileUnavailable':
+        'Unavailable outside ±3 SD',
+
+      'growth.who':
+        'WHO',
+
+      'growth.brazil':
+        'Brazil · SISVAN',
+
+      'growth.noNamedClass':
+        'No additional named classification',
+
+      'growth.warning':
+        'Notes / warnings',
+
+      'growth.adjustment':
+        'Measurement-position adjustment',
+
+      'growth.bmi':
+        'Calculated BMI',
+
+      'growth.offline':
+        'Result calculated locally using the precached WHO tables.',
+
+      'growth.invalid':
+        'Enter sex, a valid age and at least one anthropometric measurement.',
+
+      'growth.positionRequired':
+        'Specify whether the measurement was recumbent length or standing height.',
+
+      'growth.source':
+        'Numerical references: WHO 2006/2007 · national interpretation: Brazilian Ministry of Health / SISVAN.',
+
+      'growth.noEndorsement':
+        'WHO does not endorse this application or its outputs.',
+
+      'growth.attribution':
+        'Tables and provenance: assets/reference/who-growth/NOTICE.txt.'
     }
   };
 

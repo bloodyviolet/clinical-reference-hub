@@ -1,0 +1,629 @@
+[
+  {
+    "name": "who_anthro_official_under5",
+    "input": {
+      "sex": "male",
+      "age_value": 1001,
+      "age_unit": "days",
+      "weight_kg": 18,
+      "length_height_cm": 120,
+      "measurement_position": "height"
+    },
+    "expected": {
+      "tool": "who_pediatric_growth",
+      "sex": "male",
+      "age_input_value": 1001,
+      "age_input_unit": "days",
+      "age_basis": "chronological",
+      "who_age_days": 1001,
+      "who_age_months": 32.8871,
+      "oedema": false,
+      "measurement_position_input": "height",
+      "measurement_position_effective": "height",
+      "measurement_adjustment_cm": 0.0,
+      "length_height_input_cm": 120,
+      "length_height_effective_cm": 120,
+      "bmi_kg_m2": 12.5,
+      "indicators": {
+        "weight_for_age": {
+          "indicator": "weight_for_age",
+          "z_score": 2.2,
+          "percentile": 98.61,
+          "percentile_available": true,
+          "reference_standard": "WHO Child Growth Standards 2006",
+          "reference_table": "who2006_weight_for_age.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "high_weight",
+            "label_pt": "Peso elevado para a idade",
+            "label_en": "High weight for age"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-6 <= z <= +5"
+        },
+        "length_height_for_age": {
+          "indicator": "length_height_for_age",
+          "z_score": 7.31,
+          "percentile": null,
+          "percentile_available": false,
+          "reference_standard": "WHO Child Growth Standards 2006",
+          "reference_table": "who2006_length_height_for_age.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "adequate",
+            "label_pt": "Estatura adequada para a idade",
+            "label_en": "Adequate stature for age"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": true,
+          "who_plausibility_range": "-6 <= z <= +6"
+        },
+        "weight_for_length_height": {
+          "indicator": "weight_for_length_height",
+          "z_score": -2.39,
+          "percentile": 0.85,
+          "percentile_available": true,
+          "reference_standard": "WHO Child Growth Standards 2006",
+          "reference_table": "who2006_weight_for_height.json",
+          "classification_who": {
+            "code": "wasted",
+            "label_pt": "Magreza",
+            "label_en": "Wasted"
+          },
+          "classification_br": {
+            "code": "thinness",
+            "label_pt": "Magreza",
+            "label_en": "Thinness"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-5 <= z <= +5"
+        },
+        "bmi_for_age": {
+          "indicator": "bmi_for_age",
+          "z_score": -3.01,
+          "percentile": null,
+          "percentile_available": false,
+          "reference_standard": "WHO Child Growth Standards 2006",
+          "reference_table": "who2006_bmi_for_age.json",
+          "classification_who": {
+            "code": "severely_wasted",
+            "label_pt": "Magreza grave",
+            "label_en": "Severely wasted"
+          },
+          "classification_br": {
+            "code": "severe_thinness",
+            "label_pt": "Magreza acentuada",
+            "label_en": "Severe thinness"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-5 <= z <= +5"
+        },
+        "head_circumference_for_age": null
+      },
+      "warnings_pt": [],
+      "warnings_en": [],
+      "provenance": {
+        "who2006_commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+        "who2007_commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+        "brazil_policy": "Ministério da Saúde / SISVAN"
+      }
+    }
+  },
+  {
+    "name": "who_anthroplus_official",
+    "input": {
+      "sex": "male",
+      "age_value": 100,
+      "age_unit": "months",
+      "weight_kg": 30,
+      "length_height_cm": 100,
+      "measurement_position": "height"
+    },
+    "expected": {
+      "tool": "who_pediatric_growth",
+      "sex": "male",
+      "age_input_value": 100,
+      "age_input_unit": "months",
+      "age_basis": "chronological",
+      "who_age_days": 3044,
+      "who_age_months": 100,
+      "oedema": false,
+      "measurement_position_input": "height",
+      "measurement_position_effective": "height",
+      "measurement_adjustment_cm": 0.0,
+      "length_height_input_cm": 100,
+      "length_height_effective_cm": 100,
+      "bmi_kg_m2": 30.0,
+      "indicators": {
+        "weight_for_age": {
+          "indicator": "weight_for_age",
+          "z_score": 0.87,
+          "percentile": 80.78,
+          "percentile_available": true,
+          "reference_standard": "WHO Growth Reference 2007",
+          "reference_table": "who2007_weight_for_age.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "adequate_weight",
+            "label_pt": "Peso adequado para a idade",
+            "label_en": "Adequate weight for age"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-6 <= z <= +5"
+        },
+        "length_height_for_age": {
+          "indicator": "length_height_for_age",
+          "z_score": -5.04,
+          "percentile": null,
+          "percentile_available": false,
+          "reference_standard": "WHO Growth Reference 2007",
+          "reference_table": "who2007_height_for_age.json",
+          "classification_who": {
+            "code": "severely_stunted",
+            "label_pt": "Déficit grave de estatura",
+            "label_en": "Severely stunted"
+          },
+          "classification_br": {
+            "code": "very_short",
+            "label_pt": "Muito baixa estatura para a idade",
+            "label_en": "Very short stature for age"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-6 <= z <= +6"
+        },
+        "weight_for_length_height": null,
+        "bmi_for_age": {
+          "indicator": "bmi_for_age",
+          "z_score": 5.03,
+          "percentile": null,
+          "percentile_available": false,
+          "reference_standard": "WHO Growth Reference 2007",
+          "reference_table": "who2007_bmi_for_age.json",
+          "classification_who": {
+            "code": "obesity",
+            "label_pt": "Obesidade",
+            "label_en": "Obesity"
+          },
+          "classification_br": {
+            "code": "severe_obesity",
+            "label_pt": "Obesidade grave",
+            "label_en": "Severe obesity"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": true,
+          "who_plausibility_range": "-5 <= z <= +5"
+        },
+        "head_circumference_for_age": null
+      },
+      "warnings_pt": [],
+      "warnings_en": [],
+      "provenance": {
+        "who2006_commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+        "who2007_commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+        "brazil_policy": "Ministério da Saúde / SISVAN"
+      }
+    }
+  },
+  {
+    "name": "fractional_month_interpolation",
+    "input": {
+      "sex": "female",
+      "age_value": 100.5,
+      "age_unit": "months",
+      "weight_kg": 28,
+      "length_height_cm": 132,
+      "measurement_position": "height"
+    },
+    "expected": {
+      "tool": "who_pediatric_growth",
+      "sex": "female",
+      "age_input_value": 100.5,
+      "age_input_unit": "months",
+      "age_basis": "chronological",
+      "who_age_days": 3059,
+      "who_age_months": 100.5,
+      "oedema": false,
+      "measurement_position_input": "height",
+      "measurement_position_effective": "height",
+      "measurement_adjustment_cm": 0.0,
+      "length_height_input_cm": 132,
+      "length_height_effective_cm": 132,
+      "bmi_kg_m2": 16.0698,
+      "indicators": {
+        "weight_for_age": {
+          "indicator": "weight_for_age",
+          "z_score": 0.41,
+          "percentile": 65.79,
+          "percentile_available": true,
+          "reference_standard": "WHO Growth Reference 2007",
+          "reference_table": "who2007_weight_for_age.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "adequate_weight",
+            "label_pt": "Peso adequado para a idade",
+            "label_en": "Adequate weight for age"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-6 <= z <= +5"
+        },
+        "length_height_for_age": {
+          "indicator": "length_height_for_age",
+          "z_score": 0.55,
+          "percentile": 70.82,
+          "percentile_available": true,
+          "reference_standard": "WHO Growth Reference 2007",
+          "reference_table": "who2007_height_for_age.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "adequate",
+            "label_pt": "Estatura adequada para a idade",
+            "label_en": "Adequate stature for age"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-6 <= z <= +6"
+        },
+        "weight_for_length_height": null,
+        "bmi_for_age": {
+          "indicator": "bmi_for_age",
+          "z_score": 0.13,
+          "percentile": 55.31,
+          "percentile_available": true,
+          "reference_standard": "WHO Growth Reference 2007",
+          "reference_table": "who2007_bmi_for_age.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "eutrophy",
+            "label_pt": "Eutrofia",
+            "label_en": "Eutrophy"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-5 <= z <= +5"
+        },
+        "head_circumference_for_age": null
+      },
+      "warnings_pt": [],
+      "warnings_en": [],
+      "provenance": {
+        "who2006_commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+        "who2007_commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+        "brazil_policy": "Ministério da Saúde / SISVAN"
+      }
+    }
+  },
+  {
+    "name": "position_conversion_under24m",
+    "input": {
+      "sex": "female",
+      "age_value": 400,
+      "age_unit": "days",
+      "weight_kg": 8.5,
+      "length_height_cm": 70,
+      "measurement_position": "height"
+    },
+    "expected": {
+      "tool": "who_pediatric_growth",
+      "sex": "female",
+      "age_input_value": 400,
+      "age_input_unit": "days",
+      "age_basis": "chronological",
+      "who_age_days": 400,
+      "who_age_months": 13.1417,
+      "oedema": false,
+      "measurement_position_input": "height",
+      "measurement_position_effective": "length",
+      "measurement_adjustment_cm": 0.7,
+      "length_height_input_cm": 70,
+      "length_height_effective_cm": 70.7,
+      "bmi_kg_m2": 17.0051,
+      "indicators": {
+        "weight_for_age": {
+          "indicator": "weight_for_age",
+          "z_score": -0.65,
+          "percentile": 25.77,
+          "percentile_available": true,
+          "reference_standard": "WHO Child Growth Standards 2006",
+          "reference_table": "who2006_weight_for_age.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "adequate_weight",
+            "label_pt": "Peso adequado para a idade",
+            "label_en": "Adequate weight for age"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-6 <= z <= +5"
+        },
+        "length_height_for_age": {
+          "indicator": "length_height_for_age",
+          "z_score": -1.78,
+          "percentile": 3.78,
+          "percentile_available": true,
+          "reference_standard": "WHO Child Growth Standards 2006",
+          "reference_table": "who2006_length_height_for_age.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "adequate",
+            "label_pt": "Estatura adequada para a idade",
+            "label_en": "Adequate stature for age"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-6 <= z <= +6"
+        },
+        "weight_for_length_height": {
+          "indicator": "weight_for_length_height",
+          "z_score": 0.25,
+          "percentile": 60.03,
+          "percentile_available": true,
+          "reference_standard": "WHO Child Growth Standards 2006",
+          "reference_table": "who2006_weight_for_length.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "eutrophy",
+            "label_pt": "Eutrofia",
+            "label_en": "Eutrophy"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-5 <= z <= +5"
+        },
+        "bmi_for_age": {
+          "indicator": "bmi_for_age",
+          "z_score": 0.54,
+          "percentile": 70.49,
+          "percentile_available": true,
+          "reference_standard": "WHO Child Growth Standards 2006",
+          "reference_table": "who2006_bmi_for_age.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "eutrophy",
+            "label_pt": "Eutrofia",
+            "label_en": "Eutrophy"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-5 <= z <= +5"
+        },
+        "head_circumference_for_age": null
+      },
+      "warnings_pt": [],
+      "warnings_en": [],
+      "provenance": {
+        "who2006_commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+        "who2007_commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+        "brazil_policy": "Ministério da Saúde / SISVAN"
+      }
+    }
+  },
+  {
+    "name": "head_circumference",
+    "input": {
+      "sex": "female",
+      "age_value": 180,
+      "age_unit": "days",
+      "head_circumference_cm": 42
+    },
+    "expected": {
+      "tool": "who_pediatric_growth",
+      "sex": "female",
+      "age_input_value": 180,
+      "age_input_unit": "days",
+      "age_basis": "chronological",
+      "who_age_days": 180,
+      "who_age_months": 5.9138,
+      "oedema": false,
+      "measurement_position_input": null,
+      "measurement_position_effective": null,
+      "measurement_adjustment_cm": 0.0,
+      "length_height_input_cm": null,
+      "length_height_effective_cm": null,
+      "bmi_kg_m2": null,
+      "indicators": {
+        "weight_for_age": null,
+        "length_height_for_age": null,
+        "weight_for_length_height": null,
+        "bmi_for_age": null,
+        "head_circumference_for_age": {
+          "indicator": "head_circumference_for_age",
+          "z_score": -0.11,
+          "percentile": 45.71,
+          "percentile_available": true,
+          "reference_standard": "WHO Child Growth Standards 2006",
+          "reference_table": "who2006_head_circumference_for_age.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "adequate",
+            "label_pt": "Adequado para a idade",
+            "label_en": "Within expected range for age"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-5 <= z <= +5",
+          "brazil_routine_monitoring_applicable": true
+        }
+      },
+      "warnings_pt": [],
+      "warnings_en": [],
+      "provenance": {
+        "who2006_commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+        "who2007_commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+        "brazil_policy": "Ministério da Saúde / SISVAN"
+      }
+    }
+  },
+  {
+    "name": "corrected_age_explicit",
+    "input": {
+      "sex": "female",
+      "age_value": 300,
+      "age_unit": "days",
+      "age_basis": "corrected",
+      "weight_kg": 8
+    },
+    "expected": {
+      "tool": "who_pediatric_growth",
+      "sex": "female",
+      "age_input_value": 300,
+      "age_input_unit": "days",
+      "age_basis": "corrected",
+      "who_age_days": 300,
+      "who_age_months": 9.8563,
+      "oedema": false,
+      "measurement_position_input": null,
+      "measurement_position_effective": null,
+      "measurement_adjustment_cm": 0.0,
+      "length_height_input_cm": null,
+      "length_height_effective_cm": null,
+      "bmi_kg_m2": null,
+      "indicators": {
+        "weight_for_age": {
+          "indicator": "weight_for_age",
+          "z_score": -0.44,
+          "percentile": 32.83,
+          "percentile_available": true,
+          "reference_standard": "WHO Child Growth Standards 2006",
+          "reference_table": "who2006_weight_for_age.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "adequate_weight",
+            "label_pt": "Peso adequado para a idade",
+            "label_en": "Adequate weight for age"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-6 <= z <= +5"
+        },
+        "length_height_for_age": null,
+        "weight_for_length_height": null,
+        "bmi_for_age": null,
+        "head_circumference_for_age": null
+      },
+      "warnings_pt": [
+        "Foi utilizada idade corrigida. A idade cronológica deve permanecer registrada separadamente."
+      ],
+      "warnings_en": [
+        "Corrected age was used. Chronological age should remain recorded separately."
+      ],
+      "provenance": {
+        "who2006_commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+        "who2007_commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+        "brazil_policy": "Ministério da Saúde / SISVAN"
+      }
+    }
+  },
+  {
+    "name": "oedema_suppression",
+    "input": {
+      "sex": "female",
+      "age_value": 800,
+      "age_unit": "days",
+      "weight_kg": 12,
+      "length_height_cm": 85,
+      "measurement_position": "height",
+      "oedema": true
+    },
+    "expected": {
+      "tool": "who_pediatric_growth",
+      "sex": "female",
+      "age_input_value": 800,
+      "age_input_unit": "days",
+      "age_basis": "chronological",
+      "who_age_days": 800,
+      "who_age_months": 26.2834,
+      "oedema": true,
+      "measurement_position_input": "height",
+      "measurement_position_effective": "height",
+      "measurement_adjustment_cm": 0.0,
+      "length_height_input_cm": 85,
+      "length_height_effective_cm": 85,
+      "bmi_kg_m2": 16.609,
+      "indicators": {
+        "weight_for_age": null,
+        "length_height_for_age": {
+          "indicator": "length_height_for_age",
+          "z_score": -0.8,
+          "percentile": 21.1,
+          "percentile_available": true,
+          "reference_standard": "WHO Child Growth Standards 2006",
+          "reference_table": "who2006_length_height_for_age.json",
+          "classification_who": null,
+          "classification_br": {
+            "code": "adequate",
+            "label_pt": "Estatura adequada para a idade",
+            "label_en": "Adequate stature for age"
+          },
+          "classification_z_basis": "WHO z-score rounded to 2 decimals",
+          "plausibility_flag": false,
+          "who_plausibility_range": "-6 <= z <= +6"
+        },
+        "weight_for_length_height": null,
+        "bmi_for_age": null,
+        "head_circumference_for_age": null
+      },
+      "warnings_pt": [
+        "Edema informado: indicadores dependentes de peso não foram calculados."
+      ],
+      "warnings_en": [
+        "Oedema was reported: weight-related indicators were not calculated."
+      ],
+      "provenance": {
+        "who2006_commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+        "who2007_commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+        "brazil_policy": "Ministério da Saúde / SISVAN"
+      }
+    }
+  },
+  {
+    "name": "no_extrapolation_229",
+    "input": {
+      "sex": "female",
+      "age_value": 229,
+      "age_unit": "months",
+      "weight_kg": 55,
+      "length_height_cm": 165,
+      "measurement_position": "height"
+    },
+    "expected": {
+      "tool": "who_pediatric_growth",
+      "sex": "female",
+      "age_input_value": 229,
+      "age_input_unit": "months",
+      "age_basis": "chronological",
+      "who_age_days": 6970,
+      "who_age_months": 229,
+      "oedema": false,
+      "measurement_position_input": "height",
+      "measurement_position_effective": "height",
+      "measurement_adjustment_cm": 0.0,
+      "length_height_input_cm": 165,
+      "length_height_effective_cm": 165,
+      "bmi_kg_m2": 20.202,
+      "indicators": {
+        "weight_for_age": null,
+        "length_height_for_age": null,
+        "weight_for_length_height": null,
+        "bmi_for_age": null,
+        "head_circumference_for_age": null
+      },
+      "warnings_pt": [
+        "Idade fora do domínio nativo da referência WHO 2007 (<229 meses); nenhum LMS foi extrapolado."
+      ],
+      "warnings_en": [
+        "Age is outside the native WHO 2007 reference domain (<229 months); no LMS value was extrapolated."
+      ],
+      "provenance": {
+        "who2006_commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+        "who2007_commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+        "brazil_policy": "Ministério da Saúde / SISVAN"
+      }
+    }
+  }
+]

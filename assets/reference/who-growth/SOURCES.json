@@ -1,0 +1,250 @@
+{
+  "title": "WHO growth reference provenance",
+  "generated_for": "Clinical Reference Hub v2 Item 6",
+  "canonical_sources": {
+    "who_child_growth_standards_0_5": "WHO Child Growth Standards 2006",
+    "who_growth_reference_5_19": "WHO Reference 2007"
+  },
+  "source_repositories": [
+    {
+      "repository": "WorldHealthOrganization/anthro",
+      "commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+      "license": "GPL-3.0",
+      "scope": "WHO Child Growth Standards 0-5 years"
+    },
+    {
+      "repository": "WorldHealthOrganization/anthroplus",
+      "commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+      "license": "GPL-3.0-or-later",
+      "scope": "WHO Reference 2007, 5-19 years"
+    }
+  ],
+  "domains": {
+    "weight_for_age": {
+      "who2006": "birth to <60 months",
+      "who2007": "60 to <121 months"
+    },
+    "length_height_for_age": {
+      "who2006": "birth to <60 months",
+      "who2007": "60 to <229 months"
+    },
+    "bmi_for_age": {
+      "who2006": "birth to <60 months",
+      "who2007": "60 to <229 months"
+    },
+    "head_circumference_for_age": {
+      "who2006": "birth to <60 months",
+      "who2007": null
+    },
+    "weight_for_length": {
+      "reference_range_cm": "45.0-110.0",
+      "measurement_basis": "recumbent length"
+    },
+    "weight_for_height": {
+      "reference_range_cm": "65.0-120.0",
+      "measurement_basis": "standing height"
+    }
+  },
+  "measurement_position_rule": {
+    "under_731_days": "recumbent length expected; if standing height supplied, add 0.7 cm",
+    "731_days_and_over_under5": "standing height expected; if recumbent length supplied, subtract 0.7 cm"
+  },
+  "percentile_policy": {
+    "method": "standard normal CDF from exact z-score",
+    "display_domain": "-3 <= z <= +3",
+    "outside_domain": "percentile unavailable (WHO Anthro convention)"
+  },
+  "source_files": [
+    {
+      "repository": "WorldHealthOrganization/anthro",
+      "commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+      "filename": "bmianthro.txt",
+      "sha256": "78a4364e99303114fb2c458d28d64c6d10ac33832a5d5b2d437bc5cea1c93a0d"
+    },
+    {
+      "repository": "WorldHealthOrganization/anthro",
+      "commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+      "filename": "hcanthro.txt",
+      "sha256": "e794e46f06b91223ad2c6435148dc08794a1d75b67613a652c3151201a98bf7c"
+    },
+    {
+      "repository": "WorldHealthOrganization/anthro",
+      "commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+      "filename": "lenanthro.txt",
+      "sha256": "709f7a11881451daf7820f022d363d5bdb93746b5361d6bd9218af6ff838e0c2"
+    },
+    {
+      "repository": "WorldHealthOrganization/anthro",
+      "commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+      "filename": "weianthro.txt",
+      "sha256": "bc15a6a623dd1d5beaeed1497666332aa54bc4ccd15ff9658c487d79694ab77b"
+    },
+    {
+      "repository": "WorldHealthOrganization/anthro",
+      "commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+      "filename": "wfhanthro.txt",
+      "sha256": "0050d31041c2f7d4f8a34f27e8066fd73a24806835b9e4a0de1a7ee46d54d582"
+    },
+    {
+      "repository": "WorldHealthOrganization/anthro",
+      "commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+      "filename": "wflanthro.txt",
+      "sha256": "ad470cf41b147bd2a16026e57fd17968df7bf746b9f0bf2ff85df95239643778"
+    },
+    {
+      "repository": "WorldHealthOrganization/anthro",
+      "commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+      "filename": "z-score-helper.R",
+      "sha256": "a5c9889721d1194552c9a07f84aeb01ad2cbf748082320fcdbbec17d96cebd67"
+    },
+    {
+      "repository": "WorldHealthOrganization/anthro",
+      "commit": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+      "filename": "z-score-weight-for-lenhei.R",
+      "sha256": "10bcca5384aaf51ffc43fd5286984ce81c129f2582f91f98f15d91fb8110d4cb"
+    },
+    {
+      "repository": "WorldHealthOrganization/anthroplus",
+      "commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+      "filename": "bfawho2007.txt",
+      "sha256": "70ef3260df08e48ce560c28cff4e733db78fb952cbd881eba63c9d3a15f38a6a"
+    },
+    {
+      "repository": "WorldHealthOrganization/anthroplus",
+      "commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+      "filename": "hfawho2007.txt",
+      "sha256": "9ac02aa4908f8ec3c6ba2362a4c7e1356043408b2873548ca22eedc016c235ad"
+    },
+    {
+      "repository": "WorldHealthOrganization/anthroplus",
+      "commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+      "filename": "wfawho2007.txt",
+      "sha256": "9234dc640ba54001a9afd42ef15ab675b211a721c8f3c0a07c3431fd9cea0e1c"
+    },
+    {
+      "repository": "WorldHealthOrganization/anthroplus",
+      "commit": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+      "filename": "zscores.R",
+      "sha256": "43bfdb016455c057b0ee986c0d4fb0b2a7733e19f0e74821aee9d3d0aece0c41"
+    }
+  ],
+  "normalized_files": [
+    {
+      "filename": "BRAZIL_SISVAN.json",
+      "sha256": "4b040995b980c4f13e65e3aab8f8ef5407f4d827925382af12e12863b50d2de3"
+    },
+    {
+      "filename": "who2006_bmi_for_age.json",
+      "sha256": "65d0ce057647bb81f2695d75fd8baddb437d1335bb00dcc32a7517346b05929c"
+    },
+    {
+      "filename": "who2006_head_circumference_for_age.json",
+      "sha256": "bb9ae44a0c993689d6ebf8e61a65afd3d380db152e04d171b9c3a61b741b0aa1"
+    },
+    {
+      "filename": "who2006_length_height_for_age.json",
+      "sha256": "4fb613705ebd9adccfefa8cadd1b06be250cabf1635648222e0df54b0acf781d"
+    },
+    {
+      "filename": "who2006_weight_for_age.json",
+      "sha256": "0893485830913bf3c1c7acd4e0e315de96bb4e914163e6ca82467d73a2d79449"
+    },
+    {
+      "filename": "who2006_weight_for_height.json",
+      "sha256": "e3ea6bba2abfb2443d7410a58b74bae54ec3d816d69a8354992402f026038aa4"
+    },
+    {
+      "filename": "who2006_weight_for_length.json",
+      "sha256": "fa4485302899c3a4551351cc612e84ab043c5fac47ceab5b1e189c824efd6115"
+    },
+    {
+      "filename": "who2007_bmi_for_age.json",
+      "sha256": "4bc50d08ecbeeafb5fe5659338077a88fae9dd149afe76b74fed730ba72e0cef"
+    },
+    {
+      "filename": "who2007_height_for_age.json",
+      "sha256": "511df59e7043b1631d3b0fdedfb829071f5842ceb15f49edfec2487e346a34c2"
+    },
+    {
+      "filename": "who2007_weight_for_age.json",
+      "sha256": "8ff2db4a56c08f62ce673b7f97e11814367b0c78fc692f0b86ed766dd7fafedd"
+    }
+  ],
+  "verified_date": "2026-09-11",
+  "who_current_standard_status": {
+    "under_5": "WHO Child Growth Standards 2006 remain current",
+    "age_5_to_19": "WHO Growth Reference 2007 remains current"
+  },
+  "upstream_verification": {
+    "anthro": {
+      "branch": "master",
+      "verified_head": "b776d8a12b1c97369c748b561159fd2ec4f4db58",
+      "latest_release": "v1.1.0",
+      "latest_release_date": "2026-01-30",
+      "pin_is_current_head": true
+    },
+    "anthroplus": {
+      "branch": "main",
+      "verified_head": "7cfcdb39026e9a55de55732bc3cf14c82261bcf7",
+      "latest_release": "v1.1.0",
+      "latest_release_date": "2026-03-12",
+      "pin_is_current_head": true
+    }
+  },
+  "table_domains": {
+    "who2006_age_tables": {
+      "sexes": [
+        1,
+        2
+      ],
+      "age_unit": "days",
+      "min_age": 0,
+      "max_age": 1826,
+      "rows_per_indicator": 3654,
+      "note": "Current WHO anthro reference tables contain daily ages 0..1826 inclusive."
+    },
+    "who2007_weight_for_age": {
+      "age_unit": "months",
+      "native_calculation_domain": "60 <= age_months < 121",
+      "table_sentinel_max_month": 121
+    },
+    "who2007_height_bmi_for_age": {
+      "age_unit": "months",
+      "native_calculation_domain": "60 <= age_months < 229",
+      "table_sentinel_max_month": 229
+    }
+  },
+  "national_interpretation_layers": [
+    {
+      "country": "Brazil",
+      "authority": "Ministério da Saúde / SISVAN",
+      "file": "BRAZIL_SISVAN.json",
+      "purpose": "Brazilian clinical classification and surveillance policy; WHO LMS numerical references remain canonical."
+    }
+  ],
+  "redistribution": {
+    "review_date": "2026-09-11",
+    "no_who_endorsement": true,
+    "who_emblem_used": false,
+    "upstream_package_license_declarations": {
+      "anthro": "GPL-3",
+      "anthroplus": "GPL (>= 3)"
+    },
+    "bundled_files": [
+      {
+        "filename": "NOTICE.txt",
+        "sha256": "8ee1897980a37a27f504b692320f0e15582e309c11878f4f62bcca8ba6db29ff"
+      },
+      {
+        "filename": "GPL-3.0.txt",
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      }
+    ],
+    "terms_reviewed": [
+      "https://www.who.int/about/policies/publishing/data-policy/terms-and-conditions",
+      "https://www.who.int/tools/child-growth-standards",
+      "https://www.who.int/tools/growth-reference-data-for-5to19-years"
+    ],
+    "note": "Provenance and redistribution terms are documented without asserting that one source of terms supersedes all others."
+  }
+}

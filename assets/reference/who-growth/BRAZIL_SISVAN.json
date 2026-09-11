@@ -1,0 +1,274 @@
+{
+  "policy_id": "brazil-ministry-sisvan-growth",
+  "authority": "Ministério da Saúde do Brasil",
+  "verified_date": "2026-09-11",
+  "role": "Interpretation and Brazilian clinical classification layer; does not alter WHO LMS calculations.",
+  "reference_standards": {
+    "under_5_years": "WHO Child Growth Standards 2006",
+    "from_5_years": "WHO Growth Reference 2007"
+  },
+  "current_source_context": [
+    {
+      "title": "Parâmetros para avaliação nutricional",
+      "authority": "Ministério da Saúde / Vigilância Alimentar e Nutricional",
+      "status": "current portal guidance verified 2026-09-11"
+    },
+    {
+      "title": "Orientações para a coleta e análise de dados antropométricos em serviços de saúde",
+      "authority": "Ministério da Saúde / SISVAN",
+      "portal_last_update": "2023-06-22",
+      "status": "current technical reference linked by Ministry portal"
+    },
+    {
+      "title": "Caderneta da Criança - 7ª edição revisada",
+      "authority": "Ministério da Saúde",
+      "edition": "2025",
+      "status": "current child health booklet verified 2026-09-11"
+    }
+  ],
+  "age_policy": {
+    "child_brazil": "birth to under 10 years",
+    "adolescent_brazil": "10 years through 19 years 11 months 29 days",
+    "who2007_native_lms_domain": "60 <= age_months < 229",
+    "warning": "Do not extrapolate WHO 2007 LMS parameters beyond their native reference domain without an explicitly sourced Brazilian rule."
+  },
+  "prematurity": {
+    "growth_age_basis": "corrected_age",
+    "vaccination_age_basis": "chronological_age",
+    "correction_formula": "corrected age = chronological age - (40 - gestational age at birth in weeks)",
+    "general_guidance": "Use corrected age for growth and development assessment in children born preterm.",
+    "specific_duration_guidance": {
+      "head_circumference": "use corrected age through 18 months",
+      "weight": "use corrected age through 24 months",
+      "neurological_assessment": "use corrected age through 42 months"
+    },
+    "general_upper_age": {
+      "gestational_age_at_birth_ge_28_weeks": "through 2 years chronological age",
+      "gestational_age_at_birth_lt_28_weeks": "through 3 years chronological age"
+    },
+    "implementation_requirement": "The growth engine must identify the age basis explicitly. It must never silently substitute corrected age for chronological age.",
+    "status": "Brazil Ministry child-care guidance verified 2026-09-11"
+  },
+  "head_circumference": {
+    "who_reference_available": "birth to under 5 years",
+    "brazil_routine_monitoring": "birth through 24 months",
+    "classification": [
+      {
+        "code": "below_expected",
+        "z_max": -2,
+        "z_max_inclusive": false,
+        "label_pt": "Abaixo do esperado para a idade",
+        "label_en": "Below expected for age"
+      },
+      {
+        "code": "adequate",
+        "z_min": -2,
+        "z_min_inclusive": true,
+        "z_max": 2,
+        "z_max_inclusive": true,
+        "label_pt": "Adequado para a idade",
+        "label_en": "Within expected range for age"
+      },
+      {
+        "code": "above_expected",
+        "z_min": 2,
+        "z_min_inclusive": false,
+        "label_pt": "Acima do esperado para a idade",
+        "label_en": "Above expected for age"
+      }
+    ],
+    "clinical_note_pt": "Perímetro cefálico < -2 ou > +2 escores-z é sinal de alerta no acompanhamento do desenvolvimento e requer avaliação clínica.",
+    "clinical_note_en": "Head circumference below -2 or above +2 z-scores is a developmental surveillance alert and requires clinical assessment."
+  },
+  "classifications": {
+    "under_5": {
+      "weight_for_age": [
+        {
+          "code": "very_low_weight",
+          "z_max": -3,
+          "z_max_inclusive": false,
+          "label_pt": "Muito baixo peso para a idade",
+          "label_en": "Very low weight for age"
+        },
+        {
+          "code": "low_weight",
+          "z_min": -3,
+          "z_min_inclusive": true,
+          "z_max": -2,
+          "z_max_inclusive": false,
+          "label_pt": "Baixo peso para a idade",
+          "label_en": "Low weight for age"
+        },
+        {
+          "code": "adequate_weight",
+          "z_min": -2,
+          "z_min_inclusive": true,
+          "z_max": 2,
+          "z_max_inclusive": true,
+          "label_pt": "Peso adequado para a idade",
+          "label_en": "Adequate weight for age"
+        },
+        {
+          "code": "high_weight",
+          "z_min": 2,
+          "z_min_inclusive": false,
+          "label_pt": "Peso elevado para a idade",
+          "label_en": "High weight for age"
+        }
+      ],
+      "weight_for_length_height": [
+        {
+          "code": "severe_thinness",
+          "z_max": -3,
+          "z_max_inclusive": false,
+          "label_pt": "Magreza acentuada",
+          "label_en": "Severe thinness"
+        },
+        {
+          "code": "thinness",
+          "z_min": -3,
+          "z_min_inclusive": true,
+          "z_max": -2,
+          "z_max_inclusive": false,
+          "label_pt": "Magreza",
+          "label_en": "Thinness"
+        },
+        {
+          "code": "eutrophy",
+          "z_min": -2,
+          "z_min_inclusive": true,
+          "z_max": 1,
+          "z_max_inclusive": true,
+          "label_pt": "Eutrofia",
+          "label_en": "Eutrophy"
+        },
+        {
+          "code": "risk_overweight",
+          "z_min": 1,
+          "z_min_inclusive": false,
+          "z_max": 2,
+          "z_max_inclusive": true,
+          "label_pt": "Risco de sobrepeso",
+          "label_en": "Risk of overweight"
+        },
+        {
+          "code": "overweight",
+          "z_min": 2,
+          "z_min_inclusive": false,
+          "z_max": 3,
+          "z_max_inclusive": true,
+          "label_pt": "Sobrepeso",
+          "label_en": "Overweight"
+        },
+        {
+          "code": "obesity",
+          "z_min": 3,
+          "z_min_inclusive": false,
+          "label_pt": "Obesidade",
+          "label_en": "Obesity"
+        }
+      ],
+      "bmi_for_age": "same_as_weight_for_length_height",
+      "length_height_for_age": [
+        {
+          "code": "very_short",
+          "z_max": -3,
+          "z_max_inclusive": false,
+          "label_pt": "Muito baixa estatura para a idade",
+          "label_en": "Very short stature for age"
+        },
+        {
+          "code": "short",
+          "z_min": -3,
+          "z_min_inclusive": true,
+          "z_max": -2,
+          "z_max_inclusive": false,
+          "label_pt": "Baixa estatura para a idade",
+          "label_en": "Short stature for age"
+        },
+        {
+          "code": "adequate",
+          "z_min": -2,
+          "z_min_inclusive": true,
+          "label_pt": "Estatura adequada para a idade",
+          "label_en": "Adequate stature for age"
+        }
+      ]
+    },
+    "age_5_to_under_10": {
+      "weight_for_age": "same_boundaries_as_under_5_weight_for_age",
+      "bmi_for_age": [
+        {
+          "code": "severe_thinness",
+          "z_max": -3,
+          "z_max_inclusive": false,
+          "label_pt": "Magreza acentuada",
+          "label_en": "Severe thinness"
+        },
+        {
+          "code": "thinness",
+          "z_min": -3,
+          "z_min_inclusive": true,
+          "z_max": -2,
+          "z_max_inclusive": false,
+          "label_pt": "Magreza",
+          "label_en": "Thinness"
+        },
+        {
+          "code": "eutrophy",
+          "z_min": -2,
+          "z_min_inclusive": true,
+          "z_max": 1,
+          "z_max_inclusive": true,
+          "label_pt": "Eutrofia",
+          "label_en": "Eutrophy"
+        },
+        {
+          "code": "overweight",
+          "z_min": 1,
+          "z_min_inclusive": false,
+          "z_max": 2,
+          "z_max_inclusive": true,
+          "label_pt": "Sobrepeso",
+          "label_en": "Overweight"
+        },
+        {
+          "code": "obesity",
+          "z_min": 2,
+          "z_min_inclusive": false,
+          "z_max": 3,
+          "z_max_inclusive": true,
+          "label_pt": "Obesidade",
+          "label_en": "Obesity"
+        },
+        {
+          "code": "severe_obesity",
+          "z_min": 3,
+          "z_min_inclusive": false,
+          "label_pt": "Obesidade grave",
+          "label_en": "Severe obesity"
+        }
+      ],
+      "height_for_age": "same_boundaries_as_under_5_length_height_for_age"
+    },
+    "age_10_to_under_20": {
+      "weight_for_age": {
+        "supported": false,
+        "reason_pt": "Peso-para-idade não é recomendado para classificação após os 10 anos.",
+        "reason_en": "Weight-for-age is not recommended for classification after age 10."
+      },
+      "bmi_for_age": "same_boundaries_as_age_5_to_under_10_bmi_for_age",
+      "height_for_age": "same_boundaries_as_under_5_length_height_for_age"
+    }
+  },
+  "interpretation_priority": {
+    "numerical_reference": "WHO",
+    "brazilian_clinical_label": "Ministério da Saúde / SISVAN",
+    "rule": "Return WHO z-score and percentile separately from the Brazilian SISVAN classification."
+  },
+  "release_gates": [
+    "Do not extrapolate WHO 2007 LMS values past the native <229-month domain without a current explicit Brazilian handling rule.",
+    "Prematurity/corrected-age behavior must be visible and testable.",
+    "Head-circumference output must distinguish WHO reference availability from Brazil routine monitoring through 24 months."
+  ]
+}

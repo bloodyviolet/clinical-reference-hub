@@ -1,0 +1,78 @@
+WHO GROWTH REFERENCE NOTICE
+===========================
+
+Clinical Reference Hub v2 includes normalized reference tables used to
+calculate WHO paediatric growth z-scores.
+
+UPSTREAM SOURCES
+
+1. World Health Organization — anthro
+   Repository:
+   https://github.com/WorldHealthOrganization/anthro
+
+   Pinned commit:
+   b776d8a12b1c97369c748b561159fd2ec4f4db58
+
+   Upstream package DESCRIPTION declares:
+   License: GPL-3
+
+   Used for WHO Child Growth Standards 2006 reference tables.
+
+2. World Health Organization — anthroplus
+   Repository:
+   https://github.com/WorldHealthOrganization/anthroplus
+
+   Pinned commit:
+   7cfcdb39026e9a55de55732bc3cf14c82261bcf7
+
+   Upstream package DESCRIPTION declares:
+   License: GPL (>= 3)
+
+   Used for WHO Growth Reference 2007 reference tables.
+
+WHO REFERENCE PAGES
+
+WHO Child Growth Standards:
+https://www.who.int/tools/child-growth-standards
+
+WHO Growth Reference 5–19 years:
+https://www.who.int/tools/growth-reference-data-for-5to19-years
+
+WHO data/use terms:
+https://www.who.int/about/policies/publishing/data-policy/terms-and-conditions
+
+Access / verification date:
+2026-09-11
+
+NORMALIZATION
+
+The JSON files in this directory are normalized machine-readable forms
+of the corresponding upstream WHO-maintained reference tables. Their
+numeric LMS/reference content is not intentionally altered.
+
+The Clinical Reference Hub calculation code is an independent
+implementation validated against official WHO Anthro / AnthroPlus
+example vectors.
+
+BRAZILIAN INTERPRETATION
+
+BRAZIL_SISVAN.json is a locally authored structured interpretation
+layer derived from Brazilian Ministry of Health / SISVAN guidance. It
+does not modify the WHO numerical reference values.
+
+NO ENDORSEMENT
+
+The World Health Organization does not endorse Clinical Reference Hub,
+this implementation, or its outputs. No WHO emblem is used.
+
+THIRD-PARTY TERMS
+
+The general copyright notice of Clinical Reference Hub does not replace
+or override applicable third-party terms for bundled reference material.
+
+A copy of GNU GPL version 3 is supplied as GPL-3.0.txt in this
+directory.
+
+This notice records provenance and redistribution information; it is
+not a legal opinion about the interaction of all potentially applicable
+terms.
