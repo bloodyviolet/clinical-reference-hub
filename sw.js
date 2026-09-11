@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clinical-reference-v15-v2-growth-ui';
+const CACHE_NAME = 'clinical-reference-v16-v2-brazil-news2';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [

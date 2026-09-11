@@ -195,6 +195,24 @@ TranslationStatus = Literal[
 ]
 
 
+BrazilApplicabilityStatus = Literal[
+    "national_standard",
+    "national_variant",
+    "validated_brazilian_adaptation",
+    "complementary_brazil_guidance",
+    "no_national_variant_identified",
+    "not_applicable",
+]
+
+
+BrazilReviewStatus = Literal[
+    "pass",
+    "remediation_required",
+    "metadata_remediation_required",
+    "pending",
+]
+
+
 class ClinicalToolMetadataResponse(BaseModel):
     id: str
     name_pt: str
@@ -233,6 +251,27 @@ class ClinicalToolMetadataResponse(BaseModel):
 
     clinical_review_date: date
     offline_capable: bool
+
+    # v2 Brazil clinical-harmonization contract.
+    # Optional while legacy/v2 tools are remediated sequentially.
+    brazil_applicability_status: BrazilApplicabilityStatus | None = None
+
+    brazil_review_date: date | None = None
+    brazil_authority: str | None = None
+    brazil_source_title: str | None = None
+    brazil_source_url: HttpUrl | None = None
+    brazil_document_or_portaria: str | None = None
+
+    brazil_scope_pt: str | None = None
+    brazil_scope_en: str | None = None
+
+    brazil_differs_from_international: bool | None = None
+
+    brazil_difference_notes_pt: str | None = None
+    brazil_difference_notes_en: str | None = None
+
+    final_brazil_review_status: BrazilReviewStatus | None = None
+
 
 
 NEWS2Consciousness = Literal[

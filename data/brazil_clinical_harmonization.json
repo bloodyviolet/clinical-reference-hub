@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "title": "Clinical Reference Hub v2 Brazil Clinical Harmonization Audit",
+  "review_date": "2026-09-11",
+  "status_vocabulary": [
+    "national_standard",
+    "national_variant",
+    "validated_brazilian_adaptation",
+    "complementary_brazil_guidance",
+    "no_national_variant_identified",
+    "not_applicable"
+  ],
+  "source_hierarchy": [
+    "Ministério da Saúde / SUS / CONITEC",
+    "ANVISA",
+    "other relevant Brazilian federal health authority",
+    "Brazilian national professional society",
+    "state / municipal / EBSERH / institutional implementation evidence"
+  ],
+  "release_gate": {
+    "required_for_every_v2_feature": true,
+    "retroactive_items": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "prospective_from_item": 7,
+    "final_recheck_required_before_v2_release": true
+  },
+  "items": [
+    {
+      "item": 1,
+      "feature": "NEWS2 / clinical deterioration",
+      "international_reference": "Royal College of Physicians NEWS2",
+      "brazil_applicability_status": "validated_brazilian_adaptation",
+      "national_sus_mandate_identified": false,
+      "brazil_differs_from_international_numeric_rules": false,
+      "remediation_required": false,
+      "remediation_priority": "none",
+      "brazil_authorities": [
+        "Brazilian peer-reviewed transcultural adaptation authorised and approved by Royal College of Physicians"
+      ],
+      "brazil_sources": [
+        {
+          "title": "National Early Warning Score 2: transcultural adaptation to Brazilian Portuguese",
+          "url": "https://www.scielo.br/j/rgenf/a/Wc46R8wyJdLrGyffZQQQCcw/?lang=pt",
+          "source_type": "validated_brazilian_adaptation",
+          "key_findings": [
+            "Adaptation authorised by the Royal College of Physicians.",
+            "Final adapted instrument returned to and approved by the RCP.",
+            "Mean content-validity index 0.98.",
+            "Inter-rater agreement was perfect/almost perfect."
+          ]
+        }
+      ],
+      "required_actions": [
+        "Maintain exact numerical parity with the RCP NEWS2 scoring model.",
+        "Maintain validated Brazilian adaptation provenance for PT-BR core terminology.",
+        "Do not describe NEWS2 as a nationally mandated SUS deterioration score without a new federal source.",
+        "Recheck Brazilian and RCP source status at final v2 release qualification."
+      ],
+      "scope_pt": "Adaptação transcultural brasileira validada; sem alteração da matemática NEWS2.",
+      "scope_en": "Validated Brazilian cross-cultural adaptation; NEWS2 numerical rules remain unchanged.",
+      "final_brazil_review_status": "pass",
+      "remediation_completed": [
+        "PT-BR metadata upgraded to validated_translation with Brazilian adaptation provenance.",
+        "Core PT-BR NEWS2 interface terminology aligned with the validated Brazilian adaptation.",
+        "Brazil applicability metadata added without altering RCP numerical scoring.",
+        "Current RCP translated-material compliance remains an independent final-release gate."
+      ]
+    },
+    {
+      "item": 2,
+      "feature": "Renal suite — eGFR / CKD / AKI",
+      "international_reference": "CKD-EPI 2021 + KDIGO CKD 2024 + KDIGO AKI 2012",
+      "brazil_applicability_status": "national_variant",
+      "national_sus_mandate_identified": true,
+      "brazil_differs_from_international_numeric_rules": true,
+      "remediation_required": true,
+      "remediation_priority": "critical",
+      "brazil_authorities": [
+        "Ministério da Saúde",
+        "SAES",
+        "SECTICS",
+        "CONITEC",
+        "SUS"
+      ],
+      "brazil_sources": [
+        {
+          "title": "PCDT Estratégias para Atenuar a Progressão da Doença Renal Crônica",
+          "document": "Portaria Conjunta SAES/SECTICS nº 11/2024",
+          "url": "https://www.gov.br/conitec/pt-br/midias/protocolos/pcdt-de-estrategias-para-atenuar-a-progressao-da-doenca-renal-cronica/@@display-file/file",
+          "source_type": "national_standard",
+          "key_findings": [
+            "The Portaria explicitly states that the PCDT is national and must be used by state, DF and municipal SUS managers.",
+            "The PCDT recommends CKD-EPI and its displayed equation is adapted from Levey et al. 2009.",
+            "The PCDT CKD staging and urinary ACR categories are adapted from KDIGO 2012."
+          ]
+        },
+        {
+          "title": "Ministério da Saúde Linha de Cuidado — Doença Renal Crônica: Lesão Renal Aguda",
+          "url": "https://linhasdecuidado.saude.gov.br/portal/doenca-renal-cronica-%28DRC%29-em-adultos/unidade-hospitalar/avaliacao-conduta/",
+          "source_type": "national_complementary_guidance",
+          "key_findings": [
+            "Ministry line of care explicitly applies KDIGO 2012 for acute kidney injury."
+          ]
+        }
+      ],
+      "required_actions": [
+        "Retain CKD-EPI 2021/KDIGO 2024 as the current international view.",
+        "Add a separately labelled Brazil SUS PCDT view rather than replacing the international calculation.",
+        "Reproduce the exact PCDT CKD-EPI equation only after independent transcription QC of the official table.",
+        "Expose PCDT CKD stage and ACR interpretation as brazil_sus provenance.",
+        "Record that the current AKI engine is aligned with Brazilian Ministry use of KDIGO 2012; no separate numerical AKI engine is required unless a later national source changes it.",
+        "Never silently infer or substitute demographic coefficients required by an older equation."
+      ],
+      "scope_pt": "Há divergência entre o PCDT nacional vigente e a referência internacional mais recente usada pelo aplicativo; ambas devem ser explicitadas.",
+      "scope_en": "The current national SUS PCDT differs from the newer international reference used by the app; both must be exposed explicitly.",
+      "final_brazil_review_status": "remediation_required"
+    },
+    {
+      "item": 3,
+      "feature": "Hemodynamics — MAP / pulse pressure / Shock Index / Modified Shock Index",
+      "international_reference": "General hemodynamic formula/reference literature",
+      "brazil_applicability_status": "complementary_brazil_guidance",
+      "national_sus_mandate_identified": false,
+      "brazil_differs_from_international_numeric_rules": false,
+      "remediation_required": true,
+      "remediation_priority": "medium",
+      "brazil_authorities": [
+        "Ministério da Saúde",
+        "Agência Nacional de Saúde Suplementar"
+      ],
+      "brazil_sources": [
+        {
+          "title": "Linha de Cuidados para Doença Trofoblástica Gestacional",
+          "url": "https://bvsms.saude.gov.br/bvs/publicacoes/linha_cuidados_doenca_trofoblastica_gestacional.pdf",
+          "source_type": "ministry_context_specific_guidance",
+          "key_findings": [
+            "Uses maternal Shock Index and states values above 0.9 trigger the obstetric haemorrhage protocol."
+          ]
+        },
+        {
+          "title": "ANS methodological manual — sepsis line of care",
+          "url": "https://www.gov.br/ans/pt-br/centrais-de-conteudo/projeto-indicadores-manual-metodolgico-linhas-de-cuidado-3-2-pdf",
+          "source_type": "federal_context_specific_guidance",
+          "key_findings": [
+            "Uses MAP around the 65 mmHg threshold in septic-shock management."
+          ]
+        }
+      ],
+      "required_actions": [
+        "Keep MAP, pulse pressure, SI and MSI base calculations numerically neutral.",
+        "Add Brazilian context notes for septic shock MAP targets without creating a universal normal/abnormal MAP threshold.",
+        "Add obstetric haemorrhage Shock Index context without converting >0.9 into a universal SI threshold.",
+        "Do not invent a Brazilian universal MSI cutoff."
+      ],
+      "scope_pt": "Existem limiares brasileiros dependentes do contexto clínico, mas não um ponto de corte universal para os índices.",
+      "scope_en": "Brazilian guidance contains context-dependent thresholds, not universal cutoffs for these indices.",
+      "final_brazil_review_status": "remediation_required"
+    },
+    {
+      "item": 4,
+      "feature": "Oxygenation — P/F and S/F ratios",
+      "international_reference": "Global Definition of ARDS 2023",
+      "brazil_applicability_status": "no_national_variant_identified",
+      "national_sus_mandate_identified": false,
+      "brazil_differs_from_international_numeric_rules": false,
+      "remediation_required": true,
+      "remediation_priority": "low",
+      "brazil_authorities": [
+        "Ministério da Saúde"
+      ],
+      "brazil_sources": [
+        {
+          "title": "Guia de Vigilância Integrada da COVID-19, Influenza e Outros Vírus Respiratórios",
+          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/c/covid-19/publicacoes-tecnicas/guias-e-planos/guia-vigilancia-integrada-da-covid-19-influenza-e-outros-virus-respiratorios-de-importancia-em-saude-publica",
+          "source_type": "national_complementary_guidance",
+          "key_findings": [
+            "Current Brazilian respiratory guidance uses SpO2 and clinical severity criteria for respiratory infection surveillance.",
+            "The audited national sources did not identify a general Brazilian replacement formula for P/F or S/F ratios."
+          ]
+        }
+      ],
+      "required_actions": [
+        "Keep P/F and S/F mathematics unchanged.",
+        "Record the Brazilian applicability audit in tool metadata.",
+        "Do not claim that the 2023 Global ARDS definition has been formally adopted by SUS without an explicit national source.",
+        "Retain the current rule against automatically diagnosing or staging ARDS from the ratios.",
+        "Repeat the Ministry/CONITEC/SBPT/AMIB source check during final v2 release qualification."
+      ],
+      "scope_pt": "Nenhuma variante nacional geral de cálculo P/F ou S/F foi identificada no corpus oficial auditado.",
+      "scope_en": "No general national Brazilian P/F or S/F calculation variant was identified in the audited official corpus.",
+      "final_brazil_review_status": "metadata_remediation_required"
+    },
+    {
+      "item": 5,
+      "feature": "Acid-base / metabolic toolkit",
+      "international_reference": "General acid-base, anion-gap, osmolality and hyperglycaemia references",
+      "brazil_applicability_status": "complementary_brazil_guidance",
+      "national_sus_mandate_identified": false,
+      "brazil_differs_from_international_numeric_rules": true,
+      "remediation_required": true,
+      "remediation_priority": "high",
+      "brazil_authorities": [
+        "Ministério da Saúde",
+        "SAES"
+      ],
+      "brazil_sources": [
+        {
+          "title": "Fluxograma: Manejo da intoxicação por metanol pelo consumo de bebidas alcoólicas adulteradas",
+          "url": "https://www.gov.br/saude/pt-br/composicao/saes/publicacoes/fluxograma-metanol.pdf/view",
+          "source_type": "national_context_specific_guidance",
+          "key_findings": [
+            "The Ministry methanol pathway uses a toxicology-specific anion-gap formula including potassium.",
+            "It specifies a protocol-specific calculated osmolality and osmolar gap.",
+            "It uses methanol-specific acid-base thresholds and warns that normal early gaps do not exclude poisoning."
+          ]
+        }
+      ],
+      "required_actions": [
+        "Do not alter the existing general anion-gap or osmolality formulas.",
+        "Add a clearly separated Brazil Ministry methanol/toxic-alcohol context or mode.",
+        "Never apply the methanol formula automatically to general metabolic assessment.",
+        "Require measured osmolality when calculating an osmolar gap.",
+        "Preserve explicit source/version provenance for the Ministry toxicology pathway."
+      ],
+      "scope_pt": "O Ministério possui fórmulas específicas para intoxicação por metanol; são contexto toxicológico e não substituem as fórmulas metabólicas gerais.",
+      "scope_en": "The Ministry specifies formulas for methanol poisoning; these are toxicology-specific and do not replace the general metabolic formulas.",
+      "final_brazil_review_status": "remediation_required"
+    },
+    {
+      "item": 6,
+      "feature": "WHO / SISVAN paediatric growth",
+      "international_reference": "WHO Child Growth Standards 2006 + WHO Growth Reference 2007",
+      "brazil_applicability_status": "national_standard",
+      "national_sus_mandate_identified": true,
+      "brazil_differs_from_international_numeric_rules": false,
+      "remediation_required": false,
+      "remediation_priority": "none",
+      "brazil_authorities": [
+        "Ministério da Saúde",
+        "SISVAN"
+      ],
+      "brazil_sources": [
+        {
+          "title": "Parâmetros para avaliação nutricional",
+          "url": "https://www.gov.br/saude/pt-br/composicao/saps/vigilancia-alimentar-e-nutricional/parametros-para-avaliacao-nutricional",
+          "source_type": "national_standard"
+        },
+        {
+          "title": "BRAZIL_SISVAN.json",
+          "source_type": "implemented_structured_policy_layer"
+        }
+      ],
+      "required_actions": [
+        "No current remediation required; retain WHO numerical and Brazilian SISVAN layers separately.",
+        "Recheck Ministry/SISVAN source freshness during final v2 qualification."
+      ],
+      "scope_pt": "Camada WHO numérica e classificação brasileira SISVAN já implementadas separadamente.",
+      "scope_en": "WHO numerical reference and Brazilian SISVAN classification are already implemented separately.",
+      "final_brazil_review_status": "pass"
+    }
+  ],
+  "future_items": {
+    "7": {
+      "feature": "Falls / function",
+      "implementation_state": "blocked_pending_brazil_review",
+      "minimum_brazil_scope": "Ministry older-person functional assessment / IVCF-20 plus complementary STEADI review"
+    },
+    "8": {
+      "feature": "Brazil 2026 PNI vaccination engine",
+      "implementation_state": "brazil_first_by_design"
+    },
+    "9": {
+      "feature": "SUS PCDT metadata engine",
+      "implementation_state": "brazil_first_by_design"
+    },
+    "10": {
+      "feature": "FOUR Score + GCS-P",
+      "implementation_state": "blocked_pending_brazil_review"
+    },
+    "11": {
+      "feature": "Serial trends",
+      "implementation_state": "must_preserve_each_component_brazil_context"
+    }
+  }
+}

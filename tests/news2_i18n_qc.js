@@ -165,3 +165,68 @@ assert(
 console.log(
   'news2_i18n_qc: PASS'
 );
+
+
+assert(
+  i18n.includes(
+    "'Confusão aguda'"
+  ),
+  'Brazilian NEWS2 terminology: acute confusion'
+);
+
+
+assert(
+  i18n.includes(
+    "'Resposta a voz'"
+  ),
+  'Brazilian NEWS2 terminology: voice response'
+);
+
+
+assert(
+  i18n.includes(
+    "'Resposta a dor'"
+  ),
+  'Brazilian NEWS2 terminology: pain response'
+);
+
+
+assert(
+  i18n.includes(
+    "'Irresponsivo'"
+  ),
+  'Brazilian NEWS2 terminology: unresponsive'
+);
+
+
+const news2Py =
+  fs.readFileSync(
+    'clinical_tools/news2.py',
+    'utf8'
+  );
+
+
+assert(
+  news2Py.includes(
+    '"validated_translation"'
+  )
+);
+
+
+assert(
+  news2Py.includes(
+    '"validated_brazilian_adaptation"'
+  )
+);
+
+
+assert(
+  news2Py.includes(
+    '"final_brazil_review_status"'
+  )
+);
+
+
+console.log(
+  'news2_i18n_qc: Brazilian validated-adaptation provenance PASS'
+);

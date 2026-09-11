@@ -466,10 +466,25 @@ def test_metadata_contract_is_bilingual():
 
     assert payload[
         "translation_status_pt"
-    ] == (
-        "local_translation_"
-        "with_disclaimer_required"
-    )
+    ] == "validated_translation"
+
+    # Brazilian validation provenance and RCP translated-material
+    # compliance are separate requirements.
+    assert payload[
+        "translation_disclaimer_required"
+    ] is True
+
+    assert payload[
+        "brazil_applicability_status"
+    ] == "validated_brazilian_adaptation"
+
+    assert payload[
+        "brazil_differs_from_international"
+    ] is False
+
+    assert payload[
+        "final_brazil_review_status"
+    ] == "pass"
 
     assert payload[
         "translation_disclaimer_required"
@@ -520,4 +535,98 @@ def test_metadata_provenance_does_not_claim_2022_revision():
         in NEWS2_METADATA[
             "source_version"
         ]
+    )
+
+
+def test_news2_brazil_metadata_contract():
+    assert (
+        NEWS2_METADATA[
+            "translation_status_pt"
+        ]
+        == "validated_translation"
+    )
+
+    assert (
+        NEWS2_METADATA[
+            "translation_disclaimer_required"
+        ]
+        is True
+    )
+
+    assert (
+        NEWS2_METADATA[
+            "brazil_applicability_status"
+        ]
+        == "validated_brazilian_adaptation"
+    )
+
+    assert (
+        NEWS2_METADATA[
+            "brazil_differs_from_international"
+        ]
+        is False
+    )
+
+    assert (
+        NEWS2_METADATA[
+            "final_brazil_review_status"
+        ]
+        == "pass"
+    )
+
+    assert (
+        "scielo.br"
+        in str(
+            NEWS2_METADATA[
+                "brazil_source_url"
+            ]
+        )
+    )
+
+
+def test_news2_brazil_harmonization_does_not_change_scores():
+    for vector in VECTORS:
+        result = calculate_news2(
+            **vector["input"]
+        )
+
+        assert (
+            result["total"]
+            == vector["total"]
+        )
+
+        assert (
+            result["trigger_code"]
+            == vector["trigger"]
+        )
+
+
+def test_news2_metadata_api_exposes_brazil_layer():
+    response = client.get(
+        "/api/v1/tools/news2/meta"
+    )
+
+    assert response.status_code == 200
+
+    payload = response.json()
+
+    assert (
+        payload[
+            "translation_status_pt"
+        ]
+        == "validated_translation"
+    )
+
+    assert (
+        payload[
+            "brazil_applicability_status"
+        ]
+        == "validated_brazilian_adaptation"
+    )
+
+    assert (
+        payload[
+            "final_brazil_review_status"
+        ]
+        == "pass"
     )

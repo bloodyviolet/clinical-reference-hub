@@ -69,16 +69,16 @@
         'Alerta',
 
       'news2.confusion':
-        'Nova confusão',
+        'Confusão aguda',
 
       'news2.voice':
-        'Responde à voz',
+        'Resposta a voz',
 
       'news2.pain':
-        'Responde à dor',
+        'Resposta a dor',
 
       'news2.unresponsive':
-        'Não responsivo',
+        'Irresponsivo',
 
       'news2.temperature':
         'Temperatura (°C)',
@@ -99,7 +99,7 @@
         'Fonte',
 
       'news2.translation':
-        'PT-BR é tradução local informativa; consulte o material original do RCP antes do uso clínico.',
+        'Terminologia PT-BR harmonizada com a adaptação transcultural brasileira validada. Textos explicativos adicionais são locais; as condições atuais do RCP para material traduzido permanecem aplicáveis.',
 
       'news2.offline':
         'Resultado calculado localmente em modo offline.',

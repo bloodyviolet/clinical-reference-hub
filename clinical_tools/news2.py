@@ -1,10 +1,14 @@
 """Royal College of Physicians NEWS2 scoring engine.
 
 The scoring algorithm follows the NEWS2 physiological parameter chart.
-Human-readable explanatory text is locally authored and bilingual.
 
-PT-BR material is an informational/local translation and must not be
-represented as an RCP-approved translation.
+The PT-BR interface terminology is harmonized with the published
+Brazilian cross-cultural adaptation of NEWS2. Longer explanatory and
+locally authored response text remains distinguished from the validated
+instrument terminology.
+
+The current RCP translation-use/disclaimer requirements remain a
+separate v2 release gate.
 """
 
 from __future__ import annotations
@@ -394,19 +398,26 @@ NEWS2_METADATA = {
     "source_language": "en-GB",
     "canonical_language": "en-GB",
     "translation_status_pt":
-        "local_translation_with_disclaimer_required",
+        "validated_translation",
     "translation_status_en":
         "official_original",
     "translation_disclaimer_required": True,
     "translation_disclaimer_source_url": SOURCE_URL,
     "translation_note_pt": (
-        "A apresentação PT-BR é uma tradução local informativa "
-        "e não deve ser apresentada como tradução aprovada pelo RCP. "
-        "Consulte o original em inglês antes do uso clínico."
+        "A terminologia clínica principal em PT-BR foi harmonizada "
+        "com a adaptação transcultural brasileira publicada em 2020, "
+        "autorizada previamente pelo RCP e validada por especialistas "
+        "brasileiros. Textos explicativos adicionais do aplicativo "
+        "permanecem de autoria local. As condições atuais do RCP para "
+        "material traduzido continuam aplicáveis."
     ),
     "translation_note_en": (
-        "The PT-BR presentation is a local informational "
-        "translation and must not be represented as RCP-approved."
+        "Core PT-BR clinical terminology is harmonized with the "
+        "published 2020 Brazilian cross-cultural adaptation, which "
+        "was authorised by the RCP before adaptation and validated "
+        "by Brazilian experts. Additional explanatory application "
+        "text remains locally authored. Current RCP conditions for "
+        "translated material still apply."
     ),
     "population_pt": (
         "Adultos com 16 anos ou mais em contextos de "
@@ -462,6 +473,60 @@ NEWS2_METADATA = {
         "specific attribution, integrity and translation "
         "conditions."
     ),
-    "clinical_review_date": date(2026, 9, 10),
+    "clinical_review_date": date(2026, 9, 11),
     "offline_capable": True,
+
+    "brazil_applicability_status":
+        "validated_brazilian_adaptation",
+
+    "brazil_review_date":
+        date(2026, 9, 11),
+
+    "brazil_authority": (
+        "Brazilian cross-cultural adaptation study; "
+        "adaptation authorised by the Royal College of Physicians"
+    ),
+
+    "brazil_source_title": (
+        "National Early Warning Score 2: "
+        "transcultural adaptation to Brazilian Portuguese"
+    ),
+
+    "brazil_source_url": (
+        "https://www.scielo.br/j/rgenf/"
+        "a/Wc46R8wyJdLrGyffZQQQCcw/?lang=pt"
+    ),
+
+    "brazil_document_or_portaria":
+        None,
+
+    "brazil_scope_pt": (
+        "Adaptação transcultural brasileira validada do NEWS2. "
+        "A matemática, os limiares e os gatilhos do NEWS2 permanecem "
+        "os definidos pelo RCP."
+    ),
+
+    "brazil_scope_en": (
+        "Validated Brazilian cross-cultural adaptation of NEWS2. "
+        "NEWS2 mathematics, thresholds and trigger rules remain "
+        "those defined by the RCP."
+    ),
+
+    "brazil_differs_from_international":
+        False,
+
+    "brazil_difference_notes_pt": (
+        "Não foi identificada variante numérica nacional SUS. "
+        "A harmonização brasileira nesta etapa é linguística, "
+        "cultural e de proveniência."
+    ),
+
+    "brazil_difference_notes_en": (
+        "No national SUS numerical variant was identified. "
+        "Brazilian harmonization at this stage concerns language, "
+        "culture and provenance."
+    ),
+
+    "final_brazil_review_status":
+        "pass",
 }
