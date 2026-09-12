@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI — HPV4 routine 9-14 rule",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "rule_id": "PNI26-HPV4-ROUTINE-9-14-001",
+  "vaccine_key": "hpv4",
+  "layer": "routine",
+  "implementation_scope": "routine_9_to_14_only",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 2,
+  "primary_source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+  "routine_rule": {
+    "minimum_age_years": 9,
+    "maximum_age": "14_years_11_months_29_days",
+    "end_boundary": "before_15th_birthday",
+    "basic_series_doses": 1,
+    "sex_restriction": false,
+    "agenda_oportuna_age_years": 9,
+    "catchup_within_routine_window": "as_early_as_possible"
+  },
+  "history_contract": {
+    "documented_valid_dose": "not_due_now",
+    "documented_zero_dose": "continue_to_context_and_safety_gates",
+    "unknown_history": "history_required",
+    "partial_history_without_valid_dose": "history_required",
+    "unknown_is_not_documented_zero": true
+  },
+  "pregnancy_boundary": {
+    "pregnancy_is_contraindication": true,
+    "pregnant_action": "special_pathway_review",
+    "unknown_pregnancy_status_action": "context_required",
+    "inadvertent_vaccination_requires_intervention": false,
+    "inadvertent_vaccination_followup": "prenatal_followup_only"
+  },
+  "breastfeeding_boundary": {
+    "breastfeeding_permitted": true
+  },
+  "simultaneous_administration": {
+    "spacing_from_other_current_cnv_vaccines_required": false
+  },
+  "rescue_strategy_15_19": {
+    "layer": "rescue_strategy",
+    "routine_layer": false,
+    "age_range": "15_to_19_years_11_months_29_days",
+    "dose_count": 1,
+    "eligibility": "not previously vaccinated or no vaccination record, subject to rescue-strategy rules",
+    "current_national_extension_through": "2026-12-31",
+    "source_url": "https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/julho/jovens-de-15-a-19-anos-podem-se-vacinar-contra-o-hpv-ate-dezembro",
+    "implemented_in_this_rule": false
+  },
+  "special_priority_boundary": {
+    "exists": true,
+    "contains_multi_dose_pathways": true,
+    "implemented_in_this_rule": false,
+    "must_remain_separate": true
+  },
+  "administration_safety_boundary": {
+    "calendar_due_means_safe_to_administer": false,
+    "screen_states": [
+      "not_screened",
+      "screened_no_concern",
+      "screened_concern"
+    ],
+    "not_screened_action": "context_required",
+    "screened_concern_action": "special_pathway_review"
+  },
+  "localization_contract": {
+    "primary_language": "pt-BR",
+    "secondary_language": "en-GB",
+    "both_interpretations_required": true,
+    "language_neutral_decision_parity_required": true
+  },
+  "api_exposed": false,
+  "synthetic_score_allowed": false
+}

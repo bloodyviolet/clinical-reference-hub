@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "rule_id": "PNI26-VARICELLA-CHILD-ROUTINE-001",
+  "review_date": "2026-09-12",
+  "vaccine_key": "varicella",
+  "layer": "routine",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "primary_source": {
+    "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+    "url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf"
+  },
+  "history_model": "PNI26-VARICELLA-CHILD-HISTORY-001",
+  "general_population": {
+    "start": "exact_15_months",
+    "end": "before_exact_7_years",
+    "disease_criterion": "no_prior_varicella_or_history_uncertain"
+  },
+  "timely_agenda": {
+    "D1": "exact_15_months",
+    "D2": "exact_4_years"
+  },
+  "catch_up": {
+    "update_as_soon_as_possible": true,
+    "upper_age": "before_exact_7_years",
+    "respect_history": true,
+    "child_interval": "3_calendar_months",
+    "delayed_D1_D2_waits_until_age4": false,
+    "delayed_D1_D2_earliest": "delayed_D1_plus_3_calendar_months"
+  },
+  "timely_D1_D2_contract": {
+    "timely_D1": "exact_15_months",
+    "D2_earliest": "max(exact_4_years,D1_plus_3_calendar_months)"
+  },
+  "late_D1_age7_closure": {
+    "compress_interval": false,
+    "if_D1_plus_3_months_at_or_after_exact7": "ordinary_child_D2_opportunity_closed",
+    "age7plus_rescue_synthesized": false
+  },
+  "product": {
+    "ordinary_default": "varicella",
+    "scrv_alternative_when_monovalent_unavailable": true,
+    "availability_defines_due_status": false,
+    "automatic_SCRV_preference": false
+  },
+  "disease_history_context": {
+    "states": [
+      "not_screened",
+      "screened_no_prior_varicella",
+      "screened_prior_varicella_history_uncertain",
+      "screened_confirmed_prior_varicella"
+    ],
+    "confirmed_prior_disease": "routine_not_indicated",
+    "uncertain_prior_disease": "vaccination_may_proceed",
+    "inferred": false
+  },
+  "due_time_gates": {
+    "pregnancy": true,
+    "special_condition": true,
+    "interaction": true,
+    "administration_safety": true,
+    "consulted_when_not_due": false
+  },
+  "live_vaccine_interaction": {
+    "groups": [
+      "mmr",
+      "yellow_fever"
+    ],
+    "same_day_allowed": true,
+    "ordinary_different_day_interval_days": 30,
+    "exceptional_minimum_days": 15,
+    "exception_requires_explicit_authorization": true,
+    "under2_MMR_VFA_emergency_restriction_inherited": false,
+    "epidemiologic_emergency_field_required": false
+  },
+  "deferred": [
+    "outbreak_or_contact_postexposure",
+    "D0",
+    "anticipated_pre15_dose",
+    "occupational_series",
+    "indigenous_rescue",
+    "age7plus_general_rescue",
+    "age60plus_risk_benefit",
+    "CRIE_specific_schedule"
+  ],
+  "api_exposed": false,
+  "synthetic_score_allowed": false
+}

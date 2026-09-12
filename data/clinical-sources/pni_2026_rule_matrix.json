@@ -1,0 +1,850 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI rule-family matrix",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "baseline_checkpoint": "433f89d04cc23ead88f1fd71bf35f13f97a73b4f",
+  "matrix_type": "authoritative_rule_family_and_context_matrix",
+  "matrix_status": "locked_engine_implementation_blocked",
+  "does_not_encode_all_granular_dose_branches": true,
+  "rule_engine_implementation_allowed": false,
+  "rule_engine_block_reason": "Normalized model gaps identified during authoritative rule-family extraction.",
+  "primary_normative_source": {
+    "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+    "url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026",
+    "baseline_vaccine_count": 21
+  },
+  "continuous_update_registry": {
+    "url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/notas-tecnicas/2026",
+    "reviewed_through": "2026-09-11",
+    "later_2026_update_review_required": true
+  },
+  "baseline_vaccines": [
+    {
+      "baseline_order": 1,
+      "vaccine_key": "dtpa",
+      "official_acronym": "dTpa",
+      "official_label_pt": "Vacina adsorvida difteria, tétano e pertussis acelular ou tríplice bacteriana acelular",
+      "normative_section_number": 1,
+      "normative_pdf_page_index_start": 1,
+      "baseline_rule_family_id": "PNI26-DTPA-BASE-001",
+      "baseline_scope_summary_pt": "Gestantes a partir da 20ª semana; puérperas até 45 dias quando não vacinadas durante a gestação; profissionais de saúde e demais grupos ocupacionais expressamente previstos.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "pregnancy_status",
+        "gestational_age_weeks",
+        "postpartum_days",
+        "occupational_groups"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": true,
+      "occupational_context_sensitive": true,
+      "special_condition_sensitive": false,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [
+        "current_pregnancy_episode"
+      ],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 2,
+      "vaccine_key": "vvsr",
+      "official_acronym": "VVSR",
+      "official_label_pt": "Vacina vírus sincicial respiratório A e B (recombinante)",
+      "normative_section_number": 2,
+      "normative_pdf_page_index_start": 4,
+      "baseline_rule_family_id": "PNI26-VVSR-BASE-001",
+      "baseline_scope_summary_pt": "Gestantes a partir da 28ª semana gestacional, sem restrição de idade materna; dose única em cada gestação.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "pregnancy_status",
+        "gestational_age_weeks"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": true,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": false,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [
+        "current_pregnancy_episode"
+      ],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 3,
+      "vaccine_key": "hepatitis_b",
+      "official_acronym": "HB",
+      "official_label_pt": "Vacina hepatite B (recombinante)",
+      "normative_section_number": 3,
+      "normative_pdf_page_index_start": 5,
+      "baseline_rule_family_id": "PNI26-HEPATITIS-B-BASE-001",
+      "baseline_scope_summary_pt": "Toda a população a partir do nascimento. Produto e esquema de atualização dependem da idade e do histórico vacinal; há via perinatal específica.",
+      "recommendation_layers": [
+        "routine",
+        "special_condition"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "pregnancy_status",
+        "special_condition_codes"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": true,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": true,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [
+        "maternal_hbsag_status"
+      ],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 4,
+      "vaccine_key": "bcg",
+      "official_acronym": "BCG",
+      "official_label_pt": "Vacina BCG (atenuada)",
+      "normative_section_number": 4,
+      "normative_pdf_page_index_start": 8,
+      "baseline_rule_family_id": "PNI26-BCG-BASE-001",
+      "baseline_scope_summary_pt": "Rotina em crianças de 0 a 4 anos, 11 meses e 29 dias, com dose única ao nascer; existem ramos especiais, inclusive hanseníase e HIV.",
+      "recommendation_layers": [
+        "routine",
+        "special_condition"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "special_condition_codes",
+        "epidemiologic_context_codes"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": false,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": true,
+      "epidemiologic_context_sensitive": true,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [
+        "birth_weight_grams",
+        "bcg_scar_or_nodule_as_vaccination_evidence"
+      ],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 5,
+      "vaccine_key": "pentavalent",
+      "official_acronym": "penta",
+      "official_label_pt": "Vacina adsorvida difteria, tétano, pertussis, hepatite B e Haemophilus influenzae b",
+      "normative_section_number": 5,
+      "normative_pdf_page_index_start": 12,
+      "baseline_rule_family_id": "PNI26-PENTAVALENT-BASE-001",
+      "baseline_scope_summary_pt": "Crianças a partir de 2 meses até 6 anos, 11 meses e 29 dias; atualização depende do histórico e dos intervalos anteriores.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": false,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": false,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 6,
+      "vaccine_key": "ipv",
+      "official_acronym": "VIP",
+      "official_label_pt": "Vacina poliomielite 1, 2 e 3 (inativada)",
+      "normative_section_number": 6,
+      "normative_pdf_page_index_start": 14,
+      "baseline_rule_family_id": "PNI26-IPV-BASE-001",
+      "baseline_scope_summary_pt": "Crianças a partir de 2 meses até 4 anos, 11 meses e 29 dias; atualização depende do histórico vacinal.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": false,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": false,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 7,
+      "vaccine_key": "rotavirus",
+      "official_acronym": "VRH",
+      "official_label_pt": "Vacina rotavírus humano G1 P[8] (atenuada)",
+      "normative_section_number": 7,
+      "normative_pdf_page_index_start": 15,
+      "baseline_rule_family_id": "PNI26-ROTAVIRUS-BASE-001",
+      "baseline_scope_summary_pt": "Crianças até 23 meses e 29 dias, com limites etários específicos por dose.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": false,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": false,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 8,
+      "vaccine_key": "pneumococcal_20",
+      "official_acronym": "VPC20",
+      "official_label_pt": "Vacina pneumocócica 20-valente (conjugada)",
+      "normative_section_number": 8,
+      "normative_pdf_page_index_start": 17,
+      "baseline_rule_family_id": "PNI26-PNEUMOCOCCAL-20-BASE-001",
+      "baseline_scope_summary_pt": "Crianças a partir de 2 meses até 4 anos, 11 meses e 29 dias, além de grupos especiais. Em 2026 integra transição com produtos VPC10/VPC13/VPP23 conforme o ramo aplicável.",
+      "recommendation_layers": [
+        "routine",
+        "special_condition"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "special_condition_codes"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": true,
+      "pregnancy_or_postpartum_sensitive": false,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": true,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 9,
+      "vaccine_key": "pneumococcal_10",
+      "official_acronym": "VPC10",
+      "official_label_pt": "Vacina pneumocócica 10-valente (conjugada)",
+      "normative_section_number": 9,
+      "normative_pdf_page_index_start": 20,
+      "baseline_rule_family_id": "PNI26-PNEUMOCOCCAL-10-BASE-001",
+      "baseline_scope_summary_pt": "Produto em substituição durante a transição 2026; o documento descreve uso em crianças a partir de 4 meses até 11 meses e 29 dias no período de transição.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": true,
+      "pregnancy_or_postpartum_sensitive": false,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": false,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 10,
+      "vaccine_key": "meningococcal_c",
+      "official_acronym": "menC",
+      "official_label_pt": "Vacina adsorvida meningocócica C (conjugada)",
+      "normative_section_number": 10,
+      "normative_pdf_page_index_start": 22,
+      "baseline_rule_family_id": "PNI26-MENINGOCOCCAL-C-BASE-001",
+      "baseline_scope_summary_pt": "Crianças a partir de 3 meses até 11 meses e 29 dias no esquema infantil.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": false,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": false,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 11,
+      "vaccine_key": "influenza",
+      "official_acronym": "INF3",
+      "official_label_pt": "Vacina influenza trivalente (fragmentada, inativada)",
+      "normative_section_number": 11,
+      "normative_pdf_page_index_start": 24,
+      "baseline_rule_family_id": "PNI26-INFLUENZA-BASE-001",
+      "baseline_scope_summary_pt": "Rotina para crianças de 6 meses a menores de 6 anos, gestantes e pessoas com 60 anos ou mais. Estratégias sazonais abrangem grupos adicionais.",
+      "recommendation_layers": [
+        "routine",
+        "seasonal_strategy"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "pregnancy_status",
+        "occupational_groups",
+        "special_condition_codes",
+        "epidemiologic_context_codes",
+        "federative_unit"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": true,
+      "occupational_context_sensitive": true,
+      "special_condition_sensitive": true,
+      "epidemiologic_context_sensitive": true,
+      "geographic_context_sensitive": true,
+      "model_gap_inputs": [],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 12,
+      "vaccine_key": "covid19",
+      "official_acronym": "covid-19",
+      "official_label_pt": "Vacina covid-19 (RNAm)",
+      "normative_section_number": 12,
+      "normative_pdf_page_index_start": 26,
+      "baseline_rule_family_id": "PNI26-COVID19-BASE-001",
+      "baseline_scope_summary_pt": "Rotina para crianças de 6 meses a 4 anos, 11 meses e 29 dias, gestantes e pessoas com 60 anos ou mais, com periodicidade adicional para grupos expressamente definidos.",
+      "recommendation_layers": [
+        "routine",
+        "special_condition"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "pregnancy_status",
+        "special_condition_codes",
+        "epidemiologic_context_codes"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": true,
+      "pregnancy_or_postpartum_sensitive": true,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": true,
+      "epidemiologic_context_sensitive": true,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 13,
+      "vaccine_key": "yellow_fever",
+      "official_acronym": "VFA",
+      "official_label_pt": "Vacina febre amarela (atenuada)",
+      "normative_section_number": 13,
+      "normative_pdf_page_index_start": 28,
+      "baseline_rule_family_id": "PNI26-YELLOW-FEVER-BASE-001",
+      "baseline_scope_summary_pt": "Rotina infantil e atualização de 5 a 59 anos conforme histórico. Crianças 6–8 meses, pessoas a partir de 60 anos e gestantes têm ramos excepcionais dependentes de circulação/viagem e avaliação de risco-benefício.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "pregnancy_status",
+        "epidemiologic_context_codes",
+        "federative_unit",
+        "municipality"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": true,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": true,
+      "epidemiologic_context_sensitive": true,
+      "geographic_context_sensitive": true,
+      "model_gap_inputs": [
+        "travel_destination",
+        "travel_date",
+        "recommendation_layer:travel_or_area_risk"
+      ],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 14,
+      "vaccine_key": "meningococcal_acwy",
+      "official_acronym": "menACWY",
+      "official_label_pt": "Vacina meningocócica ACWY (conjugada)",
+      "normative_section_number": 14,
+      "normative_pdf_page_index_start": 34,
+      "baseline_rule_family_id": "PNI26-MENINGOCOCCAL-ACWY-BASE-001",
+      "baseline_scope_summary_pt": "Reforço infantil aos 12 meses, recuperável até 4 anos, 11 meses e 29 dias; dose/reforço entre 11 e 14 anos, 11 meses e 29 dias conforme situação vacinal.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "pregnancy_status"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": true,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": false,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 15,
+      "vaccine_key": "mmr",
+      "official_acronym": "SCR",
+      "official_label_pt": "Vacina sarampo, caxumba e rubéola ou tríplice viral",
+      "normative_section_number": 15,
+      "normative_pdf_page_index_start": 35,
+      "baseline_rule_family_id": "PNI26-MMR-BASE-001",
+      "baseline_scope_summary_pt": "População a partir de 12 meses até 59 anos e trabalhadores de saúde em qualquer idade conforme situação vacinal; bloqueio/dose zero possui regras epidemiológicas separadas.",
+      "recommendation_layers": [
+        "routine",
+        "outbreak_or_blocking"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "pregnancy_status",
+        "occupational_groups",
+        "epidemiologic_context_codes",
+        "federative_unit",
+        "municipality"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": true,
+      "occupational_context_sensitive": true,
+      "special_condition_sensitive": false,
+      "epidemiologic_context_sensitive": true,
+      "geographic_context_sensitive": true,
+      "model_gap_inputs": [
+        "exposure_event_date"
+      ],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 16,
+      "vaccine_key": "dtp",
+      "official_acronym": "DTP",
+      "official_label_pt": "Vacina adsorvida difteria, tétano e pertussis",
+      "normative_section_number": 16,
+      "normative_pdf_page_index_start": 38,
+      "baseline_rule_family_id": "PNI26-DTP-BASE-001",
+      "baseline_scope_summary_pt": "Crianças a partir de 15 meses até 6 anos, 11 meses e 29 dias, principalmente como reforços após esquema básico contendo DTP.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": false,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": false,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 17,
+      "vaccine_key": "varicella",
+      "official_acronym": "VZ",
+      "official_label_pt": "Vacina varicela monovalente (atenuada)",
+      "normative_section_number": 17,
+      "normative_pdf_page_index_start": 40,
+      "baseline_rule_family_id": "PNI26-VARICELLA-BASE-001",
+      "baseline_scope_summary_pt": "Esquema infantil aos 15 meses e 4 anos, com atualização conforme histórico até antes dos 7 anos; há regras distintas para surtos e pós-exposição.",
+      "recommendation_layers": [
+        "routine",
+        "outbreak_or_blocking",
+        "special_condition"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "pregnancy_status",
+        "special_condition_codes",
+        "epidemiologic_context_codes"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": true,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": true,
+      "epidemiologic_context_sensitive": true,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [
+        "prior_disease_history",
+        "exposure_event_date"
+      ],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 18,
+      "vaccine_key": "hepatitis_a",
+      "official_acronym": "HA",
+      "official_label_pt": "Vacina adsorvida hepatite A (inativada)",
+      "normative_section_number": 18,
+      "normative_pdf_page_index_start": 44,
+      "baseline_rule_family_id": "PNI26-HEPATITIS-A-BASE-001",
+      "baseline_scope_summary_pt": "Crianças aos 15 meses, com atualização até 4 anos, 11 meses e 29 dias.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": false,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": false,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 19,
+      "vaccine_key": "hpv4",
+      "official_acronym": "HPV4",
+      "official_label_pt": "Vacina papilomavírus humano 6, 11, 16 e 18",
+      "normative_section_number": 19,
+      "normative_pdf_page_index_start": 45,
+      "baseline_rule_family_id": "PNI26-HPV4-BASE-001",
+      "baseline_scope_summary_pt": "Rotina dos 9 aos 14 anos, 11 meses e 29 dias; resgate 15–19 para pessoas sem vacinação/registro conforme estratégia 2026; grupos prioritários especiais têm esquemas próprios.",
+      "recommendation_layers": [
+        "routine",
+        "rescue_strategy",
+        "special_condition"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "pregnancy_status",
+        "special_condition_codes"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": true,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": true,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 20,
+      "vaccine_key": "dengue",
+      "official_acronym": "DNG4",
+      "official_label_pt": "Vacina dengue 1, 2, 3, 4 (recombinante e atenuada)",
+      "normative_section_number": 20,
+      "normative_pdf_page_index_start": 48,
+      "baseline_rule_family_id": "PNI26-DENGUE-BASE-001",
+      "baseline_scope_summary_pt": "População de 10 a 14 anos, 11 meses e 29 dias; esquema básico de duas doses com intervalo de 3 meses, com regras adicionais após infecção e para histórico de outros produtos.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "pregnancy_status",
+        "special_condition_codes"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": true,
+      "pregnancy_or_postpartum_sensitive": true,
+      "occupational_context_sensitive": false,
+      "special_condition_sensitive": true,
+      "epidemiologic_context_sensitive": false,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [
+        "prior_disease_history",
+        "disease_event_date",
+        "breastfeeding_status"
+      ],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    },
+    {
+      "baseline_order": 21,
+      "vaccine_key": "dt",
+      "official_acronym": "dT",
+      "official_label_pt": "Vacina adsorvida difteria e tétano adulto ou dupla adulto",
+      "normative_section_number": 21,
+      "normative_pdf_page_index_start": 51,
+      "baseline_rule_family_id": "PNI26-DT-BASE-001",
+      "baseline_scope_summary_pt": "População a partir de 7 anos; completar esquema básico quando necessário e manter reforços periódicos, com antecipação em situações de exposição expressamente previstas.",
+      "recommendation_layers": [
+        "routine"
+      ],
+      "required_input_domains": [
+        "assessment_date",
+        "date_of_birth",
+        "vaccination_history",
+        "pregnancy_status",
+        "occupational_groups",
+        "epidemiologic_context_codes"
+      ],
+      "history_sensitive": true,
+      "product_history_sensitive": false,
+      "pregnancy_or_postpartum_sensitive": true,
+      "occupational_context_sensitive": true,
+      "special_condition_sensitive": false,
+      "epidemiologic_context_sensitive": true,
+      "geographic_context_sensitive": false,
+      "model_gap_inputs": [
+        "exposure_event_date"
+      ],
+      "matrix_status": "rule_family_source_locked_granular_branch_implementation_pending",
+      "engine_rule_implemented": false
+    }
+  ],
+  "known_2026_overlays": [
+    {
+      "overlay_id": "PNI26-PNEUMO-VPC20-TRANSITION-01",
+      "vaccine_keys": [
+        "pneumococcal_20",
+        "pneumococcal_10"
+      ],
+      "layer": "routine",
+      "scope": "national",
+      "source_role": "later_2026_implementation_guide",
+      "source_title": "Guia Técnico para introdução da vacina pneumocócica 20-valente conjugada no PNI",
+      "source_url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/guias-e-manuais/2026/guia-tecnico-para-introducao-da-vacina-pneumococica-20-valente-conjugada-no-programa-nacional-de-imunizacoes.pdf",
+      "effective_from": "2026-06",
+      "effective_from_precision": "month",
+      "exact_day_asserted": false,
+      "product_history_required": true,
+      "universalize_outside_scope": false,
+      "engine_rule_implemented": false
+    },
+    {
+      "overlay_id": "PNI26-PNEUMO-RIE-UPDATE-02",
+      "vaccine_keys": [
+        "pneumococcal_20"
+      ],
+      "layer": "special_condition",
+      "scope": "national_RIE",
+      "source_role": "later_2026_dpni_technical_note",
+      "source_title": "Nota Técnica nº 64/2026-DPNI/SVSA/MS",
+      "source_url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/notas-tecnicas/2026",
+      "published_date": "2026-07-21",
+      "special_condition_context_required": true,
+      "universalize_outside_scope": false,
+      "engine_rule_implemented": false
+    },
+    {
+      "overlay_id": "PNI26-HPV-RESCUE-15-19-03",
+      "vaccine_keys": [
+        "hpv4"
+      ],
+      "layer": "rescue_strategy",
+      "scope": "national",
+      "source_role": "2026_rescue_strategy",
+      "source_title": "Resgate vacinal HPV para adolescentes e jovens de 15 a 19 anos",
+      "source_url": "https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/julho/jovens-de-15-a-19-anos-podem-se-vacinar-contra-o-hpv-ate-dezembro",
+      "routine_age_domain": "9_to_14_years",
+      "rescue_age_domain": "15_to_19_years",
+      "effective_until": "2026-12-31",
+      "history_requirement": "unvaccinated_or_without_vaccination_record",
+      "routine_and_rescue_must_remain_distinct": true,
+      "engine_rule_implemented": false
+    },
+    {
+      "overlay_id": "PNI26-INFLUENZA-SEASONAL-NE-CO-S-SE-04",
+      "vaccine_keys": [
+        "influenza"
+      ],
+      "layer": "seasonal_strategy",
+      "scope": "regional",
+      "regions": [
+        "Northeast",
+        "Central-West",
+        "South",
+        "Southeast"
+      ],
+      "source_role": "2026_seasonal_strategy_guide",
+      "source_title": "Estratégia de Vacinação contra a Influenza nas Regiões Nordeste, Centro-Oeste, Sul e Sudeste – 2026",
+      "source_url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/guias-e-manuais/2026/estrategia-de-vacinacao-contra-a-influenza-nas-regioes-nordeste-centro-oeste-sul-e-sudeste-2026.pdf",
+      "effective_from": "2026-03-28",
+      "effective_until": "2026-05-30",
+      "routine_groups_remain_separate": true,
+      "universalize_to_north_region": false,
+      "engine_rule_implemented": false
+    },
+    {
+      "overlay_id": "PNI26-COVID-LP8-1-OPERATIONAL-05",
+      "vaccine_keys": [
+        "covid19"
+      ],
+      "layer": "routine",
+      "scope": "national_operational_product_transition",
+      "source_role": "later_2026_dpni_technical_note",
+      "source_title": "Nota Técnica nº 91/2026-DPNI/SVSA/MS",
+      "source_url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/notas-tecnicas/2026",
+      "published_date": "2026-09-09",
+      "product_history_relevant": true,
+      "eligibility_or_schedule_change_asserted": false,
+      "engine_rule_implemented": false
+    },
+    {
+      "overlay_id": "PNI26-MMR-LOCAL-D0-SP-06",
+      "vaccine_keys": [
+        "mmr"
+      ],
+      "layer": "outbreak_or_blocking",
+      "scope": "local_epidemiologic",
+      "source_role": "later_2026_dpni_local_technical_notes",
+      "source_title": "Notas Técnicas nº 71/2026 e nº 75/2026 sobre dose zero de tríplice viral",
+      "source_url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/notas-tecnicas/2026",
+      "municipalities": [
+        "São Paulo/SP",
+        "Guarulhos/SP",
+        "São Bernardo do Campo/SP"
+      ],
+      "age_domain": "6_months_to_11_months_29_days",
+      "dose_zero": true,
+      "valid_for_routine_series": false,
+      "universalize_outside_named_municipalities": false,
+      "engine_rule_implemented": false
+    },
+    {
+      "overlay_id": "PNI26-RIE-HEXA-DTPA-07",
+      "vaccine_keys": [
+        "dtpa",
+        "pentavalent",
+        "ipv",
+        "hepatitis_b"
+      ],
+      "layer": "special_condition",
+      "scope": "national_RIE",
+      "source_role": "later_2026_dpni_technical_note",
+      "source_title": "Nota Técnica nº 90/2026-CGICI/DPNI/SVSA/MS",
+      "source_url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/notas-tecnicas/2026",
+      "published_date": "2026-09-08",
+      "special_condition_context_required": true,
+      "routine_calendar_replacement_asserted": false,
+      "engine_rule_implemented": false
+    },
+    {
+      "overlay_id": "PNI26-DENGUE-PRODUCT-INTERCHANGE-08",
+      "vaccine_keys": [
+        "dengue"
+      ],
+      "layer": "routine",
+      "scope": "national_product_history",
+      "source_role": "later_2026_dpni_technical_note",
+      "source_title": "Nota Técnica nº 26/2026-CGICI/DPNI/SVSA/MS",
+      "source_url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/notas-tecnicas/2026",
+      "published_date": "2026-04-14",
+      "product_history_required": true,
+      "different_manufacturer_revaccination_not_recommended": true,
+      "engine_rule_implemented": false
+    }
+  ],
+  "model_gap_inputs": [
+    "bcg_scar_or_nodule_as_vaccination_evidence",
+    "birth_weight_grams",
+    "breastfeeding_status",
+    "current_pregnancy_episode",
+    "disease_event_date",
+    "exposure_event_date",
+    "maternal_hbsag_status",
+    "prior_disease_history",
+    "recommendation_layer:travel_or_area_risk",
+    "travel_date",
+    "travel_destination"
+  ],
+  "model_gap_remediation_required": true,
+  "safety_contract": {
+    "age_only_engine_allowed": false,
+    "unknown_history_equals_zero_dose": false,
+    "routine_and_strategy_layers_may_merge": false,
+    "local_rules_may_be_universalized": false,
+    "special_condition_may_be_silently_inferred": false,
+    "synthetic_vaccination_score_allowed": false
+  }
+}

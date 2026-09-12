@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "model_gap_id": "PNI26-PNEUMO-HISTORY-MODEL-GAP-001",
+  "feature": "Brazil PNI 2026 — routine pneumococcal VPC10/VPC20 transition history normalization",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 1,
+  "transition_guide_url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/guias-e-manuais/2026/guia-tecnico-para-introducao-da-vacina-pneumococica-20-valente-conjugada-no-programa-nacional-de-imunizacoes.pdf",
+  "normative_2026_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+  "current_routine_history_keys": {
+    "pneumococcal_10": {
+      "official_acronym": "VPC10",
+      "routine_transition_product": true
+    },
+    "pneumococcal_20": {
+      "official_acronym": "VPC20",
+      "routine_transition_product": true
+    }
+  },
+  "why_normalization_is_required": {
+    "effective_product_history_sensitive": true,
+    "reason": "the 2026 transition intentionally assigns different roles to VPC10 and VPC20 and allows mixed-product completion depending on age and prior history",
+    "role_must_not_be_inferred_from_total_dose_count": true
+  },
+  "normalizer_contract": {
+    "language_neutral": true,
+    "does_not_decide_due_status": true,
+    "preserves_vpc10_identity": true,
+    "preserves_vpc20_identity": true,
+    "preserves_chronology": true,
+    "preserves_present_history_keys": true,
+    "unknown_or_partial_history_is_unsafe": true,
+    "same_day_cross_product_ambiguity_is_unsafe": true,
+    "rejects_cross_labeled_product_key": true,
+    "unmapped_history_key_is_unsafe": true,
+    "does_not_infer_rie": true
+  },
+  "current_transition_source_contract": {
+    "official_introduction_from": "2026-06",
+    "routine_age_scope": "2m_through_4y11m29d",
+    "timely_d1": "VPC20",
+    "timely_d2": "VPC10",
+    "timely_booster": "VPC20",
+    "mixed_vpc10_vpc20_history_expected": true,
+    "vpc20_may_complete_vpc10_started_schedule": true
+  },
+  "source_hold": {
+    "status": "refined_current_state_resolution",
+    "former_broad_branch": "exact_11_months_no_history",
+    "former_ambiguity": "11m no-history row states D1 VPC20 while continuation references booster timing after D2",
+    "current_state_resolution": {
+      "11m_zero_history": "D1_VPC20_current_action_authorized",
+      "future_D2_inferred": false,
+      "later_age_state_reassessment_required": true,
+      "age_12m_or_older_with_only_D1": "VPC20_booster_after_60_days_from_D1"
+    },
+    "remaining_narrow_hold": {
+      "branch": "11m_only_prior_D1_VPC20",
+      "engine_behavior": "source_hold_review",
+      "reason": "the exact 11-month source row explicitly covers prior D1 VPC10 and zero history but not a single prior D1 VPC20 state"
+    },
+    "must_not_invent_missing_d2": true,
+    "must_not_invent_future_sequence": true,
+    "routine_engine_partially_authorized": true
+  },
+  "rie_boundary": {
+    "vpc13_consumed_by_routine_normalizer": false,
+    "vpp23_consumed_by_routine_normalizer": false,
+    "rie_vpc20_logic_consumed_by_routine_normalizer": false,
+    "special_condition_inference_allowed": false
+  },
+  "schema_remediation": {
+    "schema_mutation_required": false,
+    "reason": "PniVaccineHistory already supports separate VPC10 and VPC20 histories and PniAssessmentRequest already enforces unique vaccine keys"
+  },
+  "deferred": [
+    "routine_due_decision_engine",
+    "2m_4m_timely_role_assignment",
+    "5m_10m_catchup",
+    "11m_with_history",
+    "11m_no_history_until_source_resolution",
+    "12m_4y11m29d_catchup",
+    "routine_booster_decision",
+    "rie_vpc13_vpc20_vpp23",
+    "adult_and_special_condition_rules"
+  ],
+  "historical_source_ambiguity": {
+    "status": "unresolved_authoritative_internal_inconsistency",
+    "branch": "exact_11_months_no_history",
+    "transition_guide_states": "administer_D1_VPC20",
+    "continuation_states": "booster_after_D2",
+    "problem": "the no-history 11-month branch names D1 but the following booster instruction references D2 that the branch does not provide",
+    "normative_pretransition_pattern_also_ambiguous": true,
+    "engine_behavior_authorized": false,
+    "must_not_invent_missing_d2": true,
+    "must_not_invent_booster_chronology": true
+  }
+}

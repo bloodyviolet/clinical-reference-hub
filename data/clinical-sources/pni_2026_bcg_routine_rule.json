@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI — BCG child routine rule",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "rule_id": "PNI26-BCG-CHILD-ROUTINE-001",
+  "vaccine_key": "bcg",
+  "layer": "routine",
+  "implementation_scope": "routine_tuberculosis_protection_child_only",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 2,
+  "primary_source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+  "neonatal_definition_source_url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/t/tetano-neonatal",
+  "routine_rule": {
+    "basic_series_doses": 1,
+    "agenda": "at_birth_preferably_in_maternity",
+    "initial_missed_opportunity": "first_health_service_visit_as_soon_as_possible",
+    "routine_age_end": "before_fifth_birthday",
+    "official_age_wording": "0 a 4 anos, 11 meses e 29 dias"
+  },
+  "neonatal_weight_gate": {
+    "neonatal_age_days_inclusive": [
+      0,
+      27
+    ],
+    "defer_below_current_weight_grams": 2000,
+    "eligible_weight_threshold_grams": 2000,
+    "uses_birth_weight": false,
+    "uses_current_weight": true,
+    "unknown_current_weight_action": "context_required",
+    "current_weight_inference_allowed": false,
+    "birth_weight_substitution_allowed": false
+  },
+  "vaccination_evidence": {
+    "accepted_positive_evidence": [
+      "vaccination_record_present",
+      "scar_present",
+      "palpable_nodule_present"
+    ],
+    "any_positive_evidence_satisfies_routine_one_dose_rule": true,
+    "all_negative_evidence_proves_zero_dose": false,
+    "absent_scar_alone_proves_zero_dose": false,
+    "absent_scar_alone_triggers_revaccination": false
+  },
+  "history_contract": {
+    "documented_valid_bcg_dose": "not_due_now",
+    "documented_zero_dose": "continue_to_weight_and_safety_gates",
+    "unknown_history_without_positive_bcg_evidence": "history_required",
+    "partial_history_without_positive_bcg_evidence": "history_required",
+    "documented_zero_conflicting_with_positive_bcg_evidence": "history_required"
+  },
+  "special_pathways_deferred": [
+    "hanseniasis_contact_immunoprophylaxis",
+    "hiv_exposure_or_infection",
+    "primary_or_acquired_immunodeficiency",
+    "immunosuppressive_treatment",
+    "newborn_tuberculosis_contact",
+    "malignancy",
+    "pregnancy",
+    "exceptional_invalid_dose_revaccination"
+  ],
+  "exceptional_invalid_dose_boundary": {
+    "exists": true,
+    "implemented_in_this_rule": false,
+    "absent_scar_without_known_invalid_dose_is_sufficient": false
+  },
+  "simultaneous_administration": {
+    "spacing_from_other_current_cnv_vaccines_required": false
+  },
+  "administration_safety_boundary": {
+    "calendar_due_means_safe_to_administer": false,
+    "screen_states": [
+      "not_screened",
+      "screened_no_concern",
+      "screened_concern"
+    ],
+    "not_screened_action": "context_required",
+    "screened_concern_action": "special_pathway_review"
+  },
+  "localization_contract": {
+    "primary_language": "pt-BR",
+    "secondary_language": "en-GB",
+    "both_interpretations_required": true,
+    "language_neutral_decision_parity_required": true
+  },
+  "api_exposed": false,
+  "synthetic_score_allowed": false
+}

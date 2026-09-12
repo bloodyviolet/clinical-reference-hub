@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "rule_id": "PNI26-DNG4-TAKEDA-ROUTINE-001",
+  "review_date": "2026-09-12",
+  "vaccine_key": "dengue",
+  "product_key": "dengue_takeda",
+  "official_acronym": "DNG4",
+  "normative_position": 20,
+  "layer": "routine",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "primary_source": {
+    "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+    "url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf/@@download/file"
+  },
+  "error_management_source": {
+    "title": "Nota Técnica nº 15/2026 — erros de imunização dengue",
+    "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/notas-tecnicas/2026/nota-tecnica-no-15-2026-cgfam-dpni-svsa-ms.pdf"
+  },
+  "history_model": "PNI26-DNG4-TAKEDA-HISTORY-001",
+  "new_initiation": {
+    "start": "exact_10_years",
+    "end": "before_exact_15_years",
+    "national_all_municipalities_2026": true,
+    "product": "dengue_takeda"
+  },
+  "completion": {
+    "valid_pre15_D1_may_complete_after15": true,
+    "completion_age_floor_for_public_layer": "exact_10_years",
+    "automatic_completion_at_or_after60": false
+  },
+  "series": {
+    "doses": 2,
+    "D1_D2_interval_days": 90,
+    "calendar_month_interval_used": false,
+    "restart_if_late": false,
+    "early_D2_repair": "max(D1_plus_90d,early_event_plus_30d)"
+  },
+  "prior_dengue_D1": {
+    "recommended_wait": "6_calendar_months",
+    "fixed_day_conversion": false,
+    "threshold_at_or_after_exact15": "do_not_initiate_position20_takeda"
+  },
+  "dengue_after_D1": {
+    "restart_series": false,
+    "six_month_wait_applied": false,
+    "disease_floor_days": 30,
+    "D2_timing": "max(history_threshold,dengue_onset_plus_30d)"
+  },
+  "other_arbovirus": {
+    "diseases": [
+      "yellow_fever",
+      "chikungunya",
+      "zika"
+    ],
+    "required_evidence": "recovery_date",
+    "interval_days_after_recovery": 30,
+    "recovery_inferred": false
+  },
+  "blood_or_immunoglobulin": {
+    "ordinary_wait": "3_calendar_months",
+    "ordinary_fixed_day_conversion": false,
+    "minimum_wait_days": 42,
+    "minimum_requires_explicit_authorization": true,
+    "treatment_end_date_required": true
+  },
+  "live_vaccine_interaction": {
+    "same_day_allowed": true,
+    "different_day_interval_days": 30,
+    "calendar_month_conversion": false,
+    "exceptional_15_day_rule": false,
+    "inactivated_vaccine_interval_required": false
+  },
+  "reproductive_context": {
+    "pregnancy_distinct_from_breastfeeding": true,
+    "pregnancy": "contraindication_review",
+    "breastfeeding": "contraindication_review",
+    "state_inference": false
+  },
+  "special_condition_boundary": {
+    "automatic_schedule_implemented": false,
+    "examples": [
+      "immunodeficiency",
+      "immunosuppressive_therapy",
+      "symptomatic_HIV",
+      "HIV_with_impaired_immune_function"
+    ],
+    "action": "special_pathway_review"
+  },
+  "administration_safety": {
+    "due_time_only": true,
+    "documented_concern_action": "special_pathway_review",
+    "examples": [
+      "severe_hypersensitivity",
+      "prior_dose_reaction",
+      "moderate_or_severe_acute_febrile_illness"
+    ],
+    "mild_illness_inferred_as_concern": false
+  },
+  "cross_product": {
+    "general_takeda_butantan_interchangeability": false,
+    "historical_error_managed_completion_consumed": true,
+    "prospective_butantan_alternative_recommended": false
+  },
+  "decision_order": [
+    "history_identity_and_safety",
+    "series_completion",
+    "pure_series_timing",
+    "clinical_disease_and_exposure_timing",
+    "live_vaccine_interaction_timing",
+    "pregnancy",
+    "breastfeeding",
+    "special_condition",
+    "administration_safety",
+    "recommendation"
+  ],
+  "deferred": [
+    "butantan_strategy",
+    "occupational_butantan_strategy",
+    "municipality_specific_butantan_strategy",
+    "sanofi_revaccination",
+    "special_population_schedule"
+  ],
+  "api_exposed": false,
+  "synthetic_score_allowed": false
+}

@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "model_id": "PNI26-VFA-HISTORY-001",
+  "review_date": "2026-09-11",
+  "feature": "Brazil PNI 2026 yellow-fever product/age-sensitive history normalization",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "primary_source": {
+    "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+    "url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026",
+    "role": "current 2026 professional VFA schedule, age/history rules and live-vaccine spacing"
+  },
+  "fractional_overlay_source": {
+    "title": "Nota Técnica nº 6/2026-CGICI/DPNI/SVSA/MS",
+    "role": "2018 fractional-dose regularization and registration semantics"
+  },
+  "target_family": "yellow_fever_routine_history",
+  "generic_history": {
+    "vaccine_key": "yellow_fever",
+    "single_lifetime_history": true,
+    "count_only_model_safe": false
+  },
+  "normalized_product_keys": {
+    "standard": "yellow_fever_standard",
+    "fractional_2018": "yellow_fever_fractional_2018"
+  },
+  "clinical_roles": [
+    "before_vfa_minimum_age",
+    "exceptional_dose_zero",
+    "standard_series_dose_before5",
+    "standard_series_dose_age5_to59",
+    "standard_dose_age60plus_exception_layer",
+    "fractional_2018_nonstandard",
+    "unsupported_product"
+  ],
+  "age_boundaries": {
+    "minimum_exception_age": "DOB+6 calendar months",
+    "routine_start": "DOB+9 calendar months",
+    "child_booster_nominal": "DOB+48 calendar months",
+    "age5_crossover": "DOB+60 calendar months",
+    "routine_end": "DOB+720 calendar months"
+  },
+  "dose_zero": {
+    "age_interval": "[DOB+6m,DOB+9m)",
+    "counts_as_standard_series_dose": false,
+    "interval_relevant": true,
+    "subsequent_standard_minimum_days": 30
+  },
+  "standard_dose": {
+    "product_key": "yellow_fever_standard",
+    "routine_series_valid_from": "exact_9_month_birthday",
+    "internal_minimum_interval_days": 30
+  },
+  "fractional_2018": {
+    "product_key": "yellow_fever_fractional_2018",
+    "required_calendar_year": 2018,
+    "counts_as_standard_series_dose": false,
+    "fractional_only_requires_standard_regularization": true,
+    "standard_after_latest_fractional_resolves_overlay": true,
+    "standard_before_latest_fractional_resolves_overlay": false,
+    "ordinary_30_day_gate_to_standard": false,
+    "registration_ref_means_clinical_booster": false,
+    "regularization_requires_routine_countable_standard_dose": true,
+    "dose_zero_after_fractional_resolves_overlay": false,
+    "legitimate_third_standard_case": "two routine-countable standard doses before the latest 2018 fractional event plus exactly one later standard regularization dose",
+    "legitimate_third_standard_is_excess_history": false
+  },
+  "registration_role": {
+    "field": "source_registration_role",
+    "required": false,
+    "source_supplied": true,
+    "defines_clinical_role": false,
+    "exact_date_reconciliation": true
+  },
+  "age5_semantics": {
+    "age5_is_age_out": false,
+    "one_standard_before5": "booster_obligation_survives_age5",
+    "two_standard_before5": "complete",
+    "one_standard_at_or_after5": "complete",
+    "zero_standard_age5_to59": "single_standard_dose_required"
+  },
+  "internal_interval_rules": [
+    {
+      "from_role": "exceptional_dose_zero",
+      "to_role": "standard_series_dose_before5_or_later",
+      "minimum_days": 30
+    },
+    {
+      "from_role": "standard_series_dose",
+      "to_role": "subsequent_standard_series_dose",
+      "minimum_days": 30
+    }
+  ],
+  "normalizer_outputs": [
+    "age-derived clinical role",
+    "source registration role provenance",
+    "D0 count",
+    "standard-dose counts",
+    "fractional-2018 count",
+    "fractional regularization state",
+    "internal VFA interval checks",
+    "routine-evaluation safety state",
+    "standard-dose count before latest fractional event",
+    "explicit legitimate third-standard regularization state"
+  ],
+  "normalizer_does_not": [
+    "assign a due decision",
+    "recommend VFA",
+    "infer epidemiologic emergency",
+    "infer travel exposure",
+    "infer pregnancy eligibility",
+    "infer lactation eligibility",
+    "infer age>=60 eligibility",
+    "infer immune/CRIE eligibility",
+    "evaluate MMR/MMRV/varicella/dengue spacing",
+    "produce synthetic vaccination score"
+  ],
+  "fail_closed": [
+    "future event",
+    "event before date of birth",
+    "VFA event before exact 6 months",
+    "missing product identity",
+    "generic dose-level yellow_fever product key",
+    "unknown product identity",
+    "fractional_2018 product outside calendar year 2018",
+    "unknown or partial history",
+    "undated prior evidence",
+    "same-day duplicate or conflicting VFA events",
+    "duplicate registration metadata date",
+    "unreconciled registration metadata",
+    "D0-to-standard interval below 30 days",
+    "standard-to-standard interval below 30 days",
+    "standard-dose evidence beyond the ordinary series except the explicit two-pre-fractional-plus-one-regularization case"
+  ],
+  "deferred": [
+    "VFA due-decision engine",
+    "6-8 month administration decision",
+    "age>=60 risk-based decision",
+    "pregnancy",
+    "lactation",
+    "immune/CRIE pathways",
+    "travel/outbreak administration decision",
+    "live-vaccine interaction evaluator",
+    "API",
+    "browser",
+    "UI"
+  ]
+}

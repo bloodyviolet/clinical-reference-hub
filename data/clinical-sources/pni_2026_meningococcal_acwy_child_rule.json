@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI — MenACWY child booster/catch-up 12m through 4y11m29d",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "rule_id": "PNI26-MENACWY-CHILD-ROUTINE-001",
+  "vaccine_key": "meningococcal_acwy",
+  "official_acronym": "menACWY",
+  "layer": "routine",
+  "implementation_scope": "child_booster_and_catchup_12m_through_4y11m29d",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 1,
+  "primary_source_url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026",
+  "technical_child_calendar_url": "https://www.gov.br/saude/pt-br/vacinacao/calendario-tecnico/calendario-tecnico-nacional-de-vacinacao-crianca",
+  "age_scope": {
+    "minimum_age_months": 12,
+    "maximum_age": "4_years_11_months_29_days",
+    "adolescent_11_to_14_year_layer_implemented_here": false
+  },
+  "child_update_contract": {
+    "complete_menc_basic_without_booster": "one_menacwy_booster",
+    "incomplete_menc_basic_one_dose": "one_menacwy_update_dose",
+    "no_menc_history_documented": "one_menacwy_single_update_dose",
+    "complete_menc_basic_plus_documented_menc_booster": "consider_vaccinated",
+    "valid_documented_child_menacwy": "consider_child_layer_satisfied"
+  },
+  "menc_handoff_interval": {
+    "minimum_days_after_recent_menc": 60,
+    "generalized_exception_below_60_days_allowed": false,
+    "routine_agenda": "preferably_at_12_months; technical table describes routine booster timing after the basic series"
+  },
+  "cross_history_contract": {
+    "menc_vaccine_key": "meningococcal_c",
+    "menacwy_vaccine_key": "meningococcal_acwy",
+    "separate_history_arguments": true,
+    "dedicated_cross_key_normalizer_required": false,
+    "reason": "child update recommendation is MenACWY with or without a complete MenC basic series; MenC history is used only where it materially affects duplicate suppression or the 60-day handoff"
+  },
+  "uncertain_history_contract": {
+    "unknown_menacwy_without_other_satisfying_evidence": "history_required",
+    "unknown_or_partial_menc_when_recent_dose_cannot_be_excluded": "history_required",
+    "known_valid_child_menacwy_can_suppress_duplicate_even_if_menc_unknown": true
+  },
+  "legacy_menc_booster_contract": {
+    "suppression_requires": "two documented pre-12m MenC basic doses plus a documented MenC booster at or after 12m",
+    "safe_automatic_validation_requires": "routine-valid exact-date history with at least 60 days between basic doses and at least 60 days from second basic dose to MenC booster",
+    "ambiguous_legacy_history_action": "special_pathway_review"
+  },
+  "product_history_sensitive": false,
+  "special_condition_sensitive": false,
+  "pregnancy_boundary": {
+    "family_is_pregnancy_sensitive_in_global_matrix": true,
+    "child_subfamily_uses_pregnancy_status": false,
+    "reason": "this evaluator is strictly age-bounded below 5 years; adolescent/pregnancy contexts remain separate"
+  },
+  "administration_safety_boundary": {
+    "not_screened_action": "context_required",
+    "screened_concern_action": "special_pathway_review",
+    "schedule_engine_infers_contraindications": false
+  },
+  "localization_contract": {
+    "primary_language": "pt-BR",
+    "secondary_language": "en-GB",
+    "both_interpretations_required": true,
+    "language_neutral_decision_parity_required": true
+  },
+  "api_exposed": false,
+  "synthetic_score_allowed": false
+}

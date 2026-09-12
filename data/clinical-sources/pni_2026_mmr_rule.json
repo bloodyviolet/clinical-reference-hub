@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "rule_id": "PNI26-MMR-ROUTINE-001",
+  "review_date": "2026-09-12",
+  "vaccine_key": "mmr",
+  "target_family": "mmr_routine_12m_to59",
+  "primary_source": {
+    "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+    "authority": "Ministério da Saúde / SVSA / DPNI",
+    "role": "current SCR/MMR age targets, intervals, health-worker overlay, pregnancy precautions and live-vaccine administration rules"
+  },
+  "routine_age_scope": {
+    "start": "exact_12_month_birthday",
+    "ordinary_end": "before_exact_60_year_birthday",
+    "interval": "[DOB+12m,DOB+720m)"
+  },
+  "general_targets": {
+    "12m_to29": 2,
+    "30_to59": 1,
+    "age30_is_requirement_crossover": true,
+    "age30_is_age_out": false
+  },
+  "health_worker_overlay": {
+    "target_doses": 2,
+    "minimum_interval_days": 30,
+    "general_15_day_exception_applies": false,
+    "age60plus_incomplete": "risk_benefit_special_pathway"
+  },
+  "occupation_context_states": [
+    "not_screened",
+    "not_health_worker",
+    "health_worker"
+  ],
+  "occupation_context_principle": "request_only_when_it_can_change_decision",
+  "child_timing": {
+    "dose_1_nominal": "DOB+12m",
+    "dose_2_nominal": "DOB+15m",
+    "d0_to_d1_minimum_days": 30,
+    "ordinary_dose_interval_days": 30,
+    "exceptional_general_minimum_days": 15,
+    "exceptional_general_interval_requires_explicit_authorization": true,
+    "exceptional_general_interval_never_applies_to_health_worker_series": true
+  },
+  "pregnancy": {
+    "administration_contraindicated": true,
+    "status_inferred": false,
+    "gate_only_when_dose_otherwise_due": true,
+    "inadvertent_vaccination_requires_pregnancy_termination": false
+  },
+  "special_condition_screen": {
+    "states": [
+      "not_screened",
+      "screened_none",
+      "screened_special_condition_present"
+    ],
+    "gate_only_when_dose_otherwise_due": true,
+    "immune_crie_pathway_deferred": true
+  },
+  "interaction_context": {
+    "model": "PniMmrInteractionContext",
+    "consulted_only_when_mmr_otherwise_due": true,
+    "groups": [
+      "yellow_fever",
+      "varicella",
+      "dengue"
+    ],
+    "under2_yellow_fever_same_day_routine": "not_recommended",
+    "under2_yellow_fever_same_day_emergency": "allowed_when_explicitly_present",
+    "age2plus_same_day": "allowed",
+    "varicella_same_day": "allowed",
+    "routine_different_day_interval_days": 30,
+    "exceptional_15_day_groups": [
+      "yellow_fever",
+      "varicella"
+    ],
+    "dengue_exceptional_15_day_interval_authorized": false,
+    "dengue_same_day_or_interval_days": 30
+  },
+  "history_dependency": {
+    "normalizer": "clinical_tools.pni_history.normalize_mmr_history",
+    "general_and_occupational_validity_are_separate": true,
+    "mmrv_component_identity_preserved": true
+  },
+  "administration_safety": {
+    "consulted_only_when_dose_otherwise_due": true,
+    "not_screened": "context_required",
+    "screened_concern": "special_pathway_review",
+    "screened_no_concern": "may_recommend_if_other_gates_clear"
+  },
+  "deferred": [
+    "D0 administration eligibility",
+    "age>=60 non-health-worker vaccination strategy",
+    "age>=60 health-worker risk-benefit decision",
+    "severe immunodeficiency / CRIE eligibility",
+    "outbreak/blocking decision",
+    "manufacturer/APLV product selection",
+    "varicella-family completion",
+    "API",
+    "browser",
+    "UI"
+  ],
+  "safety": {
+    "no_occupation_inference": true,
+    "no_pregnancy_inference": true,
+    "no_special_condition_inference": true,
+    "no_epidemiologic_emergency_inference": true,
+    "no_exceptional_interval_inference": true,
+    "no_synthetic_score": true
+  }
+}

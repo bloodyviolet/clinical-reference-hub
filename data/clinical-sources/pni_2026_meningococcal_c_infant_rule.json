@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI — meningococcal C infant primary/catch-up rule",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "rule_id": "PNI26-MENC-INFANT-ROUTINE-001",
+  "vaccine_key": "meningococcal_c",
+  "official_acronym": "menC",
+  "layer": "routine",
+  "implementation_scope": "infant_menc_primary_and_catchup_before_12_months",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 1,
+  "primary_source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+  "routine_series": {
+    "dose_count": 2,
+    "agenda_months": [
+      3,
+      5
+    ],
+    "recommended_interval_days": 60,
+    "exceptional_minimum_interval_days": 30,
+    "exceptional_minimum_requires_explicit_authorization": true
+  },
+  "age_scope": {
+    "minimum_age_months": 3,
+    "menc_layer_end": "11_months_29_days",
+    "at_or_after_12_months": "defer_to_menacwy_booster_or_catchup_layer"
+  },
+  "catchup": {
+    "age_6_to_10_months_zero_history": "two_menc_doses",
+    "age_6_to_10_months_one_dose": "one_additional_menc_dose",
+    "age_11_months_zero_history": "one_menc_dose_then_transition_to_menacwy_layer",
+    "age_11_months_one_dose": "one_additional_menc_dose_when_interval_allows",
+    "menacwy_booster": "separate_rule_family_not_implemented_here",
+    "menacwy_preferred_age_months": 12,
+    "menacwy_catchup_latest": "4_years_11_months_29_days",
+    "menacwy_interval_after_second_menc_days": 60
+  },
+  "history_contract": {
+    "documented_zero_dose": "evaluate_age_specific_menc_update",
+    "one_complete_documented_menc_dose": "evaluate_second_menc_interval_and_age",
+    "two_valid_documented_menc_doses": "infant_menc_primary_complete",
+    "unknown_history": "history_required",
+    "partial_history": "history_required",
+    "documented_dose_before_minimum_age": "special_pathway_review",
+    "historical_interval_under_30_days": "special_pathway_review",
+    "historical_interval_30_to_59_days": "review_unless_historical_exception_can_be_independently_established"
+  },
+  "cross_family_boundary": {
+    "menacwy_vaccine_key": "meningococcal_acwy",
+    "menacwy_history_consumed_by_this_rule": false,
+    "cross_key_normalizer_required_for_this_subfamily": false,
+    "reason": "this evaluator stops before the 12-month MenACWY booster/catch-up layer"
+  },
+  "product_history_sensitive": false,
+  "special_condition_sensitive": false,
+  "administration_safety_boundary": {
+    "not_screened_action": "context_required",
+    "screened_concern_action": "special_pathway_review",
+    "schedule_engine_infers_contraindications": false
+  },
+  "localization_contract": {
+    "primary_language": "pt-BR",
+    "secondary_language": "en-GB",
+    "both_interpretations_required": true,
+    "language_neutral_decision_parity_required": true
+  },
+  "api_exposed": false,
+  "synthetic_score_allowed": false
+}

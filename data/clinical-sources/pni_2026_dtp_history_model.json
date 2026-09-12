@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "model_id": "PNI26-DTP-CHILD-HISTORY-001",
+  "review_date": "2026-09-12",
+  "vaccine_family": "dtp_child_booster_history",
+  "scope": "routine_childhood_DTP_booster_history",
+  "source_precedence": [
+    "2026_PNI_professional_instruction",
+    "qualified_pentavalent_basic_series_contract",
+    "qualified_cross_vaccine_toxoid_history_contract"
+  ],
+  "architecture": {
+    "dedicated_history_normalizer_required": true,
+    "aggregate_toxoid_history_defines_DTP_completion": false,
+    "physical_product_identity_preserved": true,
+    "generic_PNI_schema_widening_required": false
+  },
+  "ordinary_products": {
+    "pentavalent": {
+      "role": "qualifying_basic_series",
+      "ordinary_basic_series_dose_count": 3,
+      "counts_as_DTP_booster": false
+    },
+    "dtp": {
+      "role": "ordinary_childhood_booster",
+      "ordinary_booster_roles": [
+        "R1",
+        "R2"
+      ]
+    }
+  },
+  "non_equivalent_or_special_products": {
+    "dtpa": "not_silently_equivalent_to_childhood_DTP",
+    "dt": "no_pertussis_component_not_DTP",
+    "hexa_acellular_rie": "special_RIE_pathway_not_ordinary_DTP",
+    "late_pentavalent": "booster_role_not_inferred_without_structured_context"
+  },
+  "primary_series_contract": {
+    "ordinary_authority": "pentavalent",
+    "required_doses": 3,
+    "historical_30_to_59_day_interval_without_exception_evidence": "fail_closed",
+    "historical_interval_under_30_days": "fail_closed",
+    "historical_D1_before_2_months_without_exception_evidence": "fail_closed",
+    "D1_to_D3_minimum": "4_calendar_months",
+    "D3_absolute_minimum_age": "6_calendar_months"
+  },
+  "DTP_booster_contract": {
+    "R1_nominal_age": "15_calendar_months",
+    "R1_minimum_after_qualifying_penta_D3": "6_calendar_months",
+    "R2_nominal_age": "4_calendar_years",
+    "R2_minimum_after_valid_R1": "6_calendar_months",
+    "DTP_absolute_upper_boundary": "before_exact_7th_birthday",
+    "minimum_interval_compression_allowed": false
+  },
+  "age7_closure": {
+    "late_R1_may_close_R2_opportunity": true,
+    "R2_due_date_must_precede_exact_age7": true,
+    "future_dT_recommendation_generated_here": false
+  },
+  "history_fail_closed": [
+    "partial_or_unknown_history_scope",
+    "undated_prior_dose_evidence",
+    "unsupported_product_identity",
+    "future_administration",
+    "pre_birth_administration",
+    "same_day_duplicate_or_conflicting_evidence",
+    "more_than_three_pentavalent_events",
+    "more_than_two_DTP_events",
+    "invalid_pentavalent_primary_chronology",
+    "DTP_before_qualifying_primary_series",
+    "R1_before_exact_15_months",
+    "D3_to_R1_under_6_calendar_months",
+    "R2_before_exact_4_years",
+    "R1_to_R2_under_6_calendar_months",
+    "DTP_at_or_after_exact_7_years"
+  ],
+  "deferred_contexts": {
+    "neurologic_or_serious_pertussis_AEFI": "special_pathway",
+    "CRIE_product_substitution": "special_pathway",
+    "outbreak_or_contact_control": "separate_nonroutine_context",
+    "pentavalent_substitution_for_unavailable_DTP": "not_inferred",
+    "future_dT_schedule": "separate_rule_family"
+  },
+  "normalizer_boundaries": {
+    "assigns_due_decision": false,
+    "infers_special_condition": false,
+    "infers_CRIE_eligibility": false,
+    "infers_outbreak_or_contact_context": false,
+    "infers_pentavalent_booster_substitution": false,
+    "infers_future_dT_schedule": false,
+    "synthetic_score_allowed": false
+  },
+  "api_exposed": false
+}

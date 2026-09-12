@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "rule_id": "PNI26-DTP-CHILD-ROUTINE-001",
+  "review_date": "2026-09-12",
+  "family": "dtp",
+  "layer": "routine",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "source_title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+  "source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+  "history_model": "PNI26-DTP-CHILD-HISTORY-001",
+  "history_contract": {
+    "input": "locked_normalized_DTP_child_history",
+    "raw_history_interpretation_in_evaluator": false,
+    "aggregate_toxoid_history_defines_completion": false
+  },
+  "routine_scope": {
+    "start": "exact_15_months",
+    "end": "before_exact_7_years",
+    "DTP_at_or_after_exact_7_years": false
+  },
+  "primary_series_prerequisite": {
+    "product": "pentavalent",
+    "required_valid_doses": 3,
+    "qualifying_D3_date_required": true
+  },
+  "R1": {
+    "nominal_age_months": 15,
+    "minimum_after_qualifying_penta_D3_calendar_months": 6,
+    "earliest_date": "max(exact15m,penta_D3_plus_6_calendar_months)"
+  },
+  "R2": {
+    "nominal_age_months": 48,
+    "minimum_after_valid_R1_calendar_months": 6,
+    "earliest_date": "max(exact4y,R1_plus_6_calendar_months)",
+    "earliest_date_must_be_before_exact7y": true
+  },
+  "age7_closure": {
+    "compress_minimum_interval_to_fit": false,
+    "late_R1_can_close_R2_opportunity": true,
+    "future_dT_schedule_generated": false
+  },
+  "incomplete_primary_series": {
+    "DTP_recommended": false,
+    "pentavalent_schedule_implemented_here": false,
+    "decision": "not_due_now"
+  },
+  "special_condition_gate": {
+    "applies_only_when_DTP_otherwise_due": true,
+    "not_screened": "context_required",
+    "screened_special_condition_present": "special_pathway_review",
+    "absence_inferred": false
+  },
+  "administration_safety_gate": {
+    "applies_only_when_DTP_otherwise_due": true,
+    "not_screened": "context_required",
+    "screened_concern": "special_pathway_review"
+  },
+  "special_pathways_not_automated": [
+    "neurologic_or_serious_pertussis_component_AEFI",
+    "CRIE_product_substitution",
+    "outbreak_or_contact_control",
+    "pentavalent_substitution_for_unavailable_DTP"
+  ],
+  "interaction_model": {
+    "live_vaccine_spacing_required": false,
+    "dedicated_interaction_schema_required": false,
+    "simultaneous_CNV_administration_allowed": true
+  },
+  "calendar_interval_contract": {
+    "six_month_minimum_is_calendar_based": true,
+    "fixed_day_conversion_used": false,
+    "recommended_date_is_authoritative": true
+  },
+  "localization": {
+    "primary": "pt-BR",
+    "secondary": "en-GB",
+    "decision_language_neutral": true
+  },
+  "api_exposed": false,
+  "synthetic_score_allowed": false
+}

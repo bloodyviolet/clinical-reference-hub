@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI vaccination engine",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "baseline_checkpoint": "433f89d04cc23ead88f1fd71bf35f13f97a73b4f",
+  "implementation_status": "source_review_complete_implementation_pending",
+  "source_role": "national_brazil_standard",
+  "brazil_applicability_status": "national_standard",
+  "authority": {
+    "ministry": "Ministério da Saúde",
+    "secretariat": "Secretaria de Vigilância em Saúde e Ambiente",
+    "department": "Departamento do Programa Nacional de Imunizações",
+    "program": "Programa Nacional de Imunizações — PNI"
+  },
+  "primary_normative_source": {
+    "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+    "url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026",
+    "baseline_vaccine_count": 21,
+    "life_course_scope": [
+      "pregnancy",
+      "child",
+      "adolescent_and_young_person",
+      "adult",
+      "older_person"
+    ],
+    "baseline_role": "National normative baseline. Vaccine-specific later DPNI guidance may update or supersede parts of the baseline during 2026."
+  },
+  "current_national_calendar": {
+    "url": "https://www.gov.br/saude/pt-br/vacinacao/calendario",
+    "routine_available_year_round": true,
+    "public_presentation_role": "Current citizen-facing national calendar; use for presentation cross-check, not as the sole professional rule source."
+  },
+  "technical_life_course_calendars": {
+    "child": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/calendario-tecnico-nacional-de-vacinacao-crianca/view",
+    "pregnancy": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/calendario-tecnico-nacional-de-vacinacao-gestante/view",
+    "adolescent_and_young_person": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/calendario-tecnico-nacional-de-vacinacao-adolescentes-jovens/view",
+    "adult": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/calendario-tecnico-nacional-de-vacinacao-adulto/view",
+    "older_person": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/calendario-tecnico-nacional-de-vacinacao-idoso/view"
+  },
+  "continuous_update_sources": {
+    "pni_2026_technical_notes_registry": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/notas-tecnicas/2026",
+    "source_freshness_required": true,
+    "latest_registry_review_date": "2026-09-11",
+    "rule": "Later authoritative DPNI technical notes, rectifications and implementation guides must be reviewed for vaccine-specific changes before the engine treats the January baseline as current."
+  },
+  "known_2026_midyear_or_time_limited_updates": {
+    "pneumococcal_vpc20_transition": {
+      "status": "national_transition",
+      "effective_period_start": "2026-06",
+      "source_title": "Guia Técnico para introdução da vacina pneumocócica 20-valente conjugada no PNI",
+      "source_url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/guias-e-manuais/2026/guia-tecnico-para-introducao-da-vacina-pneumococica-20-valente-conjugada-no-programa-nacional-de-imunizacoes.pdf",
+      "current_schedule_cannot_be_derived_from_january_only": true,
+      "history_and_product_transition_relevant": true
+    },
+    "hpv_rescue_15_to_19": {
+      "routine_age_domain": "9_to_14_years",
+      "rescue_age_domain": "15_to_19_years",
+      "strategy_end_date": "2026-12-31",
+      "routine_and_rescue_must_remain_distinct": true
+    },
+    "influenza_2026": {
+      "routine_groups": [
+        "children_6_months_to_under_6_years",
+        "pregnant_people",
+        "people_age_60_or_older"
+      ],
+      "seasonal_strategy_includes_additional_priority_groups": true,
+      "routine_and_campaign_groups_must_remain_distinct": true
+    }
+  },
+  "pregnancy_examples_requiring_context": {
+    "dtpa": {
+      "from_gestational_week": 20,
+      "each_pregnancy": true
+    },
+    "maternal_rsv_vaccine": {
+      "from_gestational_week": 28,
+      "each_pregnancy": true,
+      "no_maternal_age_restriction": true
+    }
+  },
+  "engine_architecture_requirements": {
+    "age_only_due_list_allowed": false,
+    "vaccination_history_required_when_rule_depends_on_history": true,
+    "assessment_date_required": true,
+    "effective_date_versioning_required": true,
+    "recommended_and_minimum_intervals_must_be_distinct": true,
+    "routine_and_strategy_layers_must_be_distinct": true,
+    "special_clinical_situation_layer_must_be_distinct": true,
+    "local_or_outbreak_rules_must_not_be_universalized": true,
+    "unknown_history_must_remain_unknown_when_source_requires_history": true,
+    "automatic_inference_of_special_condition": false,
+    "synthetic_vaccination_score_allowed": false
+  },
+  "source_precedence": [
+    {
+      "rank": 1,
+      "source": "Later 2026 DPNI technical note, rectification or implementation guide",
+      "scope": "Only where it explicitly updates a vaccine-specific rule"
+    },
+    {
+      "rank": 2,
+      "source": "2026 Instrução Normativa do Calendário Nacional de Vacinação",
+      "scope": "National baseline"
+    },
+    {
+      "rank": 3,
+      "source": "2026 technical life-course calendars",
+      "scope": "Professional life-course cross-check"
+    },
+    {
+      "rank": 4,
+      "source": "Current national public vaccination calendar",
+      "scope": "Citizen-facing presentation cross-check"
+    },
+    {
+      "rank": 5,
+      "source": "RIE/CRIE guidance",
+      "scope": "Special clinical conditions only"
+    },
+    {
+      "rank": 6,
+      "source": "State/local/outbreak strategy",
+      "scope": "Only when explicitly requested and geographically/temporally applicable"
+    }
+  ],
+  "durable_boundaries": [
+    {
+      "id": "PNI-SOURCE-FRESHNESS-01",
+      "severity": "critical",
+      "finding": "PNI recommendations can change during the year through technical notes, rectifications and implementation guides.",
+      "software_rule": "Every result must carry an assessment date and source snapshot/effective-rule date. Re-review authoritative 2026 updates before final v2 release."
+    },
+    {
+      "id": "PNI-HISTORY-02",
+      "severity": "critical",
+      "finding": "Many PNI recommendations depend on prior doses and whether an age-appropriate series is complete.",
+      "software_rule": "Never generate a definitive due/not-due list from age alone when the official rule requires vaccination history."
+    },
+    {
+      "id": "PNI-UNKNOWN-HISTORY-03",
+      "severity": "critical",
+      "finding": "Unknown vaccination history is not equivalent to a documented zero-dose history.",
+      "software_rule": "Preserve unknown history explicitly and apply only source-supported unknown-history pathways."
+    },
+    {
+      "id": "PNI-ROUTINE-STRATEGY-04",
+      "severity": "critical",
+      "finding": "Routine calendar, seasonal campaigns, rescue strategies and outbreak/blocking actions can have different populations and effective periods.",
+      "software_rule": "Keep routine, campaign/rescue and outbreak recommendations as separate result layers."
+    },
+    {
+      "id": "PNI-SPECIAL-CONDITION-05",
+      "severity": "critical",
+      "finding": "RIE/CRIE and other special-condition indications are not interchangeable with the routine calendar.",
+      "software_rule": "Never infer special-condition eligibility from age or from an unrelated diagnosis. Require explicit context and identify the special-source pathway."
+    },
+    {
+      "id": "PNI-INTERVALS-06",
+      "severity": "high",
+      "finding": "Recommended intervals and minimum exceptional intervals are clinically distinct.",
+      "software_rule": "Never silently substitute minimum intervals for recommended intervals. Label exceptional minimum interval use explicitly."
+    },
+    {
+      "id": "PNI-EFFECTIVE-DATE-07",
+      "severity": "critical",
+      "finding": "The 2026 pneumococcal schedule underwent a VPC10-to-VPC20 transition beginning midyear.",
+      "software_rule": "Rules must be effective-date aware and preserve historical product/dose information. Do not apply a January-only pneumococcal table to all of 2026."
+    },
+    {
+      "id": "PNI-HPV-RESCUE-08",
+      "severity": "high",
+      "finding": "HPV routine vaccination at ages 9–14 is distinct from the 2026 rescue strategy for unvaccinated people ages 15–19.",
+      "software_rule": "Never relabel the time-limited 15–19 rescue strategy as the routine HPV age domain."
+    },
+    {
+      "id": "PNI-INFLUENZA-LAYERS-09",
+      "severity": "high",
+      "finding": "Influenza routine groups are narrower than the broader groups included in the 2026 seasonal vaccination strategy.",
+      "software_rule": "Present routine eligibility separately from seasonal priority-strategy eligibility."
+    },
+    {
+      "id": "PNI-PREGNANCY-CONTEXT-10",
+      "severity": "critical",
+      "finding": "Pregnancy recommendations can depend on gestational age and may repeat each pregnancy.",
+      "software_rule": "Require pregnancy and gestational-week context where applicable; do not infer eligibility from chronological age alone."
+    },
+    {
+      "id": "PNI-LOCAL-EPIDEMIOLOGY-11",
+      "severity": "high",
+      "finding": "Some vaccination recommendations are geographic, epidemiologic, outbreak or municipality specific.",
+      "software_rule": "Do not promote local/outbreak recommendations to a generic nationwide routine rule."
+    },
+    {
+      "id": "PNI-NO-SYNTHETIC-SCORE-12",
+      "severity": "critical",
+      "finding": "Vaccination status is a set of vaccine-specific histories and recommendations, not a validated single numerical score.",
+      "software_rule": "Never create a synthetic vaccination-completeness or risk score unless an authoritative source explicitly defines one."
+    }
+  ]
+}

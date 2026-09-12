@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, HttpUrl
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl, model_validator
 
 
 class ORMModel(BaseModel):
@@ -1685,3 +1685,1777 @@ class SteadiOrthostaticBPResponse(BaseModel):
 
     interpretation_pt: str
     interpretation_en: str
+
+
+
+# ---------------------------------------------------------------------------
+# v2 Item 8 — Brazil 2026 PNI normalized data contracts.
+#
+# DATA MODEL ONLY.
+# No vaccine-specific eligibility or due/not-due rules are implemented here.
+#
+# Core boundaries:
+# - assessment/effective dates are first-class;
+# - unknown history != documented zero-dose history;
+# - routine/campaign/rescue/outbreak/special pathways remain distinct;
+# - special conditions are explicit inputs, never silently inferred;
+# - no synthetic vaccination score.
+# ---------------------------------------------------------------------------
+
+PniRecommendationLayer = Literal[
+    "routine",
+    "seasonal_strategy",
+    "rescue_strategy",
+    "outbreak_or_blocking",
+    "travel_or_area_risk",
+    "special_condition",
+]
+
+
+PniHistoryState = Literal[
+    "documented_zero_dose",
+    "documented_doses",
+    "partial_record",
+    "unknown",
+]
+
+
+PniDoseDocumentationSource = Literal[
+    "official_registry",
+    "vaccination_card",
+    "other_health_document",
+    "patient_or_caregiver_report",
+]
+
+
+PniPregnancyStatus = Literal[
+    "pregnant",
+    "not_pregnant",
+    "unknown",
+    "not_applicable",
+]
+
+
+PniMaternalHbsAgStatus = Literal[
+    "positive",
+    "negative",
+    "unknown_or_unavailable",
+]
+
+
+PniBreastfeedingStatus = Literal[
+    "breastfeeding",
+    "not_breastfeeding",
+    "unknown",
+]
+
+
+PniClinicalEvidenceSource = Literal[
+    "documented",
+    "patient_or_caregiver_report",
+]
+
+
+PniAntigenComponent = Literal[
+    "diphtheria_toxoid",
+    "tetanus_toxoid",
+    "pertussis_antigen",
+]
+
+
+PniCrossVaccineHistoryScope = Literal[
+    "complete",
+    "partial",
+    "unknown",
+]
+
+
+PniAntigenHistoryState = Literal[
+    "documented_zero_exposure",
+    "documented_exposures",
+    "partial_record",
+    "unknown",
+]
+
+
+class PniAntigenExposureRecord(BaseModel):
+    administration_date: date
+
+    gestational_age_weeks_at_administration: int | None = Field(
+        default=None,
+        ge=0,
+        le=45,
+    )
+
+    antigen_components: list[PniAntigenComponent] = Field(
+        min_length=1,
+    )
+
+    source_vaccine_key: str = Field(
+        min_length=1,
+        max_length=100,
+    )
+
+    source_product_key: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=100,
+    )
+
+    documentation_source: PniDoseDocumentationSource
+
+    pregnancy_episode_key: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=100,
+    )
+
+    special_pathway_product: bool = False
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_antigen_components(
+        self,
+    ):
+        if (
+            len(self.antigen_components)
+            != len(set(self.antigen_components))
+        ):
+            raise ValueError(
+                "antigen_components must not contain duplicates"
+            )
+
+        return self
+
+
+class PniAntigenHistorySummary(BaseModel):
+    target_antigens: list[PniAntigenComponent] = Field(
+        min_length=1,
+    )
+
+    history_scope: PniCrossVaccineHistoryScope
+
+    history_state: PniAntigenHistoryState
+
+    exposures: list[PniAntigenExposureRecord] = Field(
+        default_factory=list,
+    )
+
+    exposure_event_count: int = Field(
+        ge=0,
+    )
+
+    last_exposure_date: date | None = None
+
+    ambiguous_same_day_exposure_dates: list[date] = Field(
+        default_factory=list,
+    )
+
+    unmapped_vaccine_keys: list[str] = Field(
+        default_factory=list,
+    )
+
+    source_history_incomplete: bool
+
+    safe_for_interval_evaluation: bool
+    safe_for_basic_series_count: bool
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_summary(
+        self,
+    ):
+        if (
+            len(self.target_antigens)
+            != len(set(self.target_antigens))
+        ):
+            raise ValueError(
+                "target_antigens must not contain duplicates"
+            )
+
+        if (
+            self.exposure_event_count
+            != len(self.exposures)
+        ):
+            raise ValueError(
+                "exposure_event_count must equal exposures length"
+            )
+
+        if self.exposures:
+            expected_last = max(
+                exposure.administration_date
+                for exposure
+                in self.exposures
+            )
+
+            if (
+                self.last_exposure_date
+                != expected_last
+            ):
+                raise ValueError(
+                    "last_exposure_date must match latest exposure"
+                )
+
+        elif (
+            self.last_exposure_date
+            is not None
+        ):
+            raise ValueError(
+                "last_exposure_date requires at least one exposure"
+            )
+
+        if (
+            self.safe_for_interval_evaluation
+            or self.safe_for_basic_series_count
+        ):
+            if (
+                self.history_scope
+                != "complete"
+            ):
+                raise ValueError(
+                    "safe antigen-history evaluation requires complete scope"
+                )
+
+            if (
+                self.source_history_incomplete
+                or self.unmapped_vaccine_keys
+                or self.ambiguous_same_day_exposure_dates
+            ):
+                raise ValueError(
+                    "safe antigen-history evaluation cannot contain ambiguity"
+                )
+
+            if self.history_state not in {
+                "documented_zero_exposure",
+                "documented_exposures",
+            }:
+                raise ValueError(
+                    "safe antigen-history evaluation requires documented state"
+                )
+
+        return self
+
+
+PniRuleDecision = Literal[
+    "recommend_now",
+    "not_due_now",
+    "future_recommendation",
+    "history_required",
+    "context_required",
+    "special_pathway_review",
+    "not_applicable",
+]
+
+
+class PniBcgVaccinationEvidence(BaseModel):
+    vaccination_record_present: bool | None = None
+    scar_present: bool | None = None
+    palpable_nodule_present: bool | None = None
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_evidence(
+        self,
+    ):
+        if all(
+            value is None
+            for value in (
+                self.vaccination_record_present,
+                self.scar_present,
+                self.palpable_nodule_present,
+            )
+        ):
+            raise ValueError(
+                "BCG evidence requires at least one assessed evidence field"
+            )
+
+        return self
+
+
+class PniBreastfeedingContext(BaseModel):
+    status: PniBreastfeedingStatus
+
+    youngest_breastfed_child_date_of_birth: date | None = None
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_breastfeeding_context(
+        self,
+    ):
+        if (
+            self.status
+            != "breastfeeding"
+            and self.youngest_breastfed_child_date_of_birth
+            is not None
+        ):
+            raise ValueError(
+                "breastfed-child date of birth requires breastfeeding status"
+            )
+
+        return self
+
+
+class PniDiseaseEvent(BaseModel):
+    disease_key: str = Field(
+        min_length=1,
+        max_length=100,
+    )
+
+    event_date: date | None = None
+
+    evidence_source: PniClinicalEvidenceSource
+
+    notes: str | None = Field(
+        default=None,
+        max_length=2000,
+    )
+
+
+class PniExposureEvent(BaseModel):
+    exposure_key: str = Field(
+        min_length=1,
+        max_length=100,
+    )
+
+    event_date: date
+
+    evidence_source: PniClinicalEvidenceSource
+
+    notes: str | None = Field(
+        default=None,
+        max_length=2000,
+    )
+
+
+class PniTravelContext(BaseModel):
+    destination_country: str = Field(
+        min_length=2,
+        max_length=100,
+    )
+
+    destination_federative_unit: str | None = Field(
+        default=None,
+        min_length=2,
+        max_length=2,
+    )
+
+    destination_municipality: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=200,
+    )
+
+    departure_date: date
+    return_date: date | None = None
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_travel_window(
+        self,
+    ):
+        if (
+            self.return_date
+            is not None
+            and self.return_date
+            < self.departure_date
+        ):
+            raise ValueError(
+                "travel return_date cannot precede departure_date"
+            )
+
+        return self
+
+
+class PniDoseRecord(BaseModel):
+    administration_date: date
+
+    gestational_age_weeks_at_administration: int | None = Field(
+        default=None,
+        ge=0,
+        le=45,
+    )
+
+    pregnancy_episode_key: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=100,
+    )
+
+    product_key: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=100,
+    )
+
+    product_name: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=200,
+    )
+
+    dose_number: int | None = Field(
+        default=None,
+        ge=1,
+    )
+
+    dose_label: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=100,
+    )
+
+    documentation_source: PniDoseDocumentationSource
+
+
+class PniVaccineHistory(BaseModel):
+    vaccine_key: str = Field(
+        min_length=1,
+        max_length=100,
+    )
+
+    history_state: PniHistoryState
+
+    doses: list[PniDoseRecord] = Field(
+        default_factory=list,
+    )
+
+    reported_prior_doses_without_exact_dates: int = Field(
+        default=0,
+        ge=0,
+    )
+
+    notes: str | None = Field(
+        default=None,
+        max_length=2000,
+    )
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_history_state(
+        self,
+    ):
+        exact_doses = len(
+            self.doses
+        )
+
+        undated_doses = (
+            self.reported_prior_doses_without_exact_dates
+        )
+
+        if (
+            self.history_state
+            == "unknown"
+        ):
+            if (
+                exact_doses != 0
+                or undated_doses != 0
+            ):
+                raise ValueError(
+                    "unknown history cannot contain dose records"
+                )
+
+        elif (
+            self.history_state
+            == "documented_zero_dose"
+        ):
+            if (
+                exact_doses != 0
+                or undated_doses != 0
+            ):
+                raise ValueError(
+                    "documented zero-dose history cannot contain prior doses"
+                )
+
+        elif (
+            self.history_state
+            == "documented_doses"
+        ):
+            if exact_doses == 0:
+                raise ValueError(
+                    "documented_doses requires at least one dated dose"
+                )
+
+        elif (
+            self.history_state
+            == "partial_record"
+        ):
+            if (
+                exact_doses == 0
+                and undated_doses == 0
+            ):
+                raise ValueError(
+                    "partial_record requires some known or reported dose evidence"
+                )
+
+        return self
+
+
+class PniAssessmentContext(BaseModel):
+    assessment_date: date
+    date_of_birth: date
+
+    pregnancy_status: PniPregnancyStatus = (
+        "not_applicable"
+    )
+
+    gestational_age_weeks: int | None = Field(
+        default=None,
+        ge=0,
+        le=45,
+    )
+
+    postpartum_days: int | None = Field(
+        default=None,
+        ge=0,
+        le=365,
+    )
+
+    pregnancy_episode_key: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=100,
+    )
+
+    postpartum_pregnancy_episode_key: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=100,
+    )
+
+    maternal_hbsag_status: PniMaternalHbsAgStatus | None = None
+
+    birth_weight_grams: int | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    current_weight_grams: int | None = Field(
+        default=None,
+        ge=1,
+    )
+
+    bcg_vaccination_evidence: PniBcgVaccinationEvidence | None = None
+
+    breastfeeding: PniBreastfeedingContext | None = None
+
+    disease_history: list[PniDiseaseEvent] = Field(
+        default_factory=list,
+    )
+
+    exposure_events: list[PniExposureEvent] = Field(
+        default_factory=list,
+    )
+
+    travel_contexts: list[PniTravelContext] = Field(
+        default_factory=list,
+    )
+
+    occupational_groups: list[str] = Field(
+        default_factory=list,
+    )
+
+    special_condition_codes: list[str] = Field(
+        default_factory=list,
+    )
+
+    epidemiologic_context_codes: list[str] = Field(
+        default_factory=list,
+    )
+
+    federative_unit: str | None = Field(
+        default=None,
+        min_length=2,
+        max_length=2,
+    )
+
+    municipality: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=200,
+    )
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_context(
+        self,
+    ):
+        if (
+            self.assessment_date
+            < self.date_of_birth
+        ):
+            raise ValueError(
+                "assessment_date cannot precede date_of_birth"
+            )
+
+        if (
+            self.pregnancy_status
+            != "pregnant"
+            and self.gestational_age_weeks
+            is not None
+        ):
+            raise ValueError(
+                "gestational_age_weeks requires pregnancy_status=pregnant"
+            )
+
+        if (
+            self.pregnancy_status
+            == "pregnant"
+            and self.postpartum_days
+            is not None
+        ):
+            raise ValueError(
+                "pregnancy and postpartum context cannot coexist"
+            )
+
+        if (
+            self.pregnancy_episode_key
+            is not None
+            and self.pregnancy_status
+            != "pregnant"
+        ):
+            raise ValueError(
+                "pregnancy_episode_key requires pregnancy_status=pregnant"
+            )
+
+        if (
+            self.postpartum_pregnancy_episode_key
+            is not None
+            and self.postpartum_days
+            is None
+        ):
+            raise ValueError(
+                "postpartum_pregnancy_episode_key requires postpartum_days"
+            )
+
+        if (
+            self.postpartum_pregnancy_episode_key
+            is not None
+            and self.pregnancy_status
+            == "pregnant"
+        ):
+            raise ValueError(
+                "postpartum pregnancy episode cannot coexist with pregnancy"
+            )
+
+        if (
+            self.breastfeeding
+            is not None
+            and self.breastfeeding.youngest_breastfed_child_date_of_birth
+            is not None
+            and self.breastfeeding.youngest_breastfed_child_date_of_birth
+            > self.assessment_date
+        ):
+            raise ValueError(
+                "breastfed-child date of birth cannot follow assessment_date"
+            )
+
+        for event in self.disease_history:
+            if (
+                event.event_date
+                is not None
+                and event.event_date
+                > self.assessment_date
+            ):
+                raise ValueError(
+                    "disease event_date cannot follow assessment_date"
+                )
+
+        for event in self.exposure_events:
+            if (
+                event.event_date
+                > self.assessment_date
+            ):
+                raise ValueError(
+                    "exposure event_date cannot follow assessment_date"
+                )
+
+        return self
+
+
+class PniAssessmentRequest(BaseModel):
+    context: PniAssessmentContext
+
+    histories: list[PniVaccineHistory] = Field(
+        default_factory=list,
+    )
+
+    requested_layers: list[PniRecommendationLayer] = Field(
+        default_factory=lambda: [
+            "routine",
+        ],
+        min_length=1,
+    )
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_request(
+        self,
+    ):
+        vaccine_keys = [
+            history.vaccine_key
+            for history
+            in self.histories
+        ]
+
+        if (
+            len(vaccine_keys)
+            != len(set(vaccine_keys))
+        ):
+            raise ValueError(
+                "duplicate vaccine history entries are not allowed"
+            )
+
+        if (
+            len(self.requested_layers)
+            != len(set(self.requested_layers))
+        ):
+            raise ValueError(
+                "requested_layers must not contain duplicates"
+            )
+
+        return self
+
+
+class PniRuleProvenance(BaseModel):
+    rule_id: str = Field(
+        min_length=1,
+        max_length=150,
+    )
+
+    authority: str = Field(
+        min_length=1,
+        max_length=300,
+    )
+
+    authority_rank: int = Field(
+        ge=1,
+    )
+
+    source_title: str = Field(
+        min_length=1,
+        max_length=500,
+    )
+
+    source_url: HttpUrl
+
+    source_snapshot_date: date
+
+    rule_effective_from: date | None = None
+    rule_effective_until: date | None = None
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_effective_dates(
+        self,
+    ):
+        if (
+            self.rule_effective_from
+            is not None
+            and self.rule_effective_until
+            is not None
+            and self.rule_effective_until
+            < self.rule_effective_from
+        ):
+            raise ValueError(
+                "rule_effective_until cannot precede rule_effective_from"
+            )
+
+        return self
+
+
+class PniRuleResult(BaseModel):
+    vaccine_key: str = Field(
+        min_length=1,
+        max_length=100,
+    )
+
+    layer: PniRecommendationLayer
+
+    decision: PniRuleDecision
+
+    assessment_date: date
+
+    recommended_date: date | None = None
+
+    recommended_interval_days: int | None = Field(
+        default=None,
+        ge=0,
+    )
+
+    minimum_interval_days: int | None = Field(
+        default=None,
+        ge=0,
+    )
+
+    minimum_interval_applied: bool = False
+
+    history_required: bool = False
+
+    missing_context: list[str] = Field(
+        default_factory=list,
+    )
+
+    provenance: PniRuleProvenance
+
+    interpretation_pt: str
+    interpretation_en: str
+
+    special_condition_inferred: Literal[False] = False
+
+    synthetic_score_applied: Literal[False] = False
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_rule_result(
+        self,
+    ):
+        if (
+            self.minimum_interval_applied
+            and self.minimum_interval_days
+            is None
+        ):
+            raise ValueError(
+                "minimum_interval_applied requires minimum_interval_days"
+            )
+
+        if (
+            self.recommended_interval_days
+            is not None
+            and self.minimum_interval_days
+            is not None
+            and self.minimum_interval_days
+            > self.recommended_interval_days
+        ):
+            raise ValueError(
+                "minimum interval cannot exceed recommended interval"
+            )
+
+        if (
+            self.decision
+            == "future_recommendation"
+            and self.recommended_date
+            is None
+        ):
+            raise ValueError(
+                "future_recommendation requires recommended_date"
+            )
+
+        if (
+            self.decision
+            == "history_required"
+            and not self.history_required
+        ):
+            raise ValueError(
+                "history_required decision must set history_required=true"
+            )
+
+        if (
+            self.decision
+            == "context_required"
+            and not self.missing_context
+        ):
+            raise ValueError(
+                "context_required decision requires missing_context"
+            )
+
+        return self
+
+
+PniCovidHistoryProductKey = Literal[
+    "covid_pfizer_comirnaty_pediatric_under5",
+    "covid_moderna_spikevax",
+    "covid_coronavac_legacy",
+]
+
+PniCovidCurrentProductKey = Literal[
+    "covid_pfizer_comirnaty_pediatric_under5",
+    "covid_moderna_spikevax",
+]
+
+PniCovidOptionRole = Literal[
+    "preferred",
+    "allowed_alternative",
+    "source_allowed_no_preference",
+]
+
+PniCovidPreferenceBasis = Literal[
+    "current_2026_first_option",
+    "homologous_priority",
+    "mixed_history_no_new_preference_inferred",
+    "legacy_history_complete_with_available_mrna",
+]
+
+PniCovidProductChoiceCondition = Literal[
+    "pfizer_unavailable",
+]
+
+PniCovidSequenceState = Literal[
+    "source_authorized_incomplete_prefix",
+    "source_authorized_complete",
+]
+
+
+class PniCovidNextProductOption(BaseModel):
+    product_key: PniCovidCurrentProductKey
+
+    option_role: PniCovidOptionRole
+
+    condition: (
+        PniCovidProductChoiceCondition
+        | None
+    ) = None
+
+    resulting_product_sequence: list[
+        PniCovidHistoryProductKey
+    ] = Field(
+        min_length=1,
+    )
+
+    resulting_sequence_state: PniCovidSequenceState
+
+    next_minimum_interval_days: (
+        Literal[
+            28,
+            56,
+        ]
+        | None
+    ) = None
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_covid_option(
+        self,
+    ):
+        if (
+            self.resulting_product_sequence[
+                -1
+            ]
+            != self.product_key
+        ):
+            raise ValueError(
+                "COVID option product must be the final "
+                "resulting clinical exposure"
+            )
+
+        if (
+            self.resulting_sequence_state
+            == "source_authorized_complete"
+            and self.next_minimum_interval_days
+            is not None
+        ):
+            raise ValueError(
+                "complete COVID option cannot require "
+                "another minimum interval"
+            )
+
+        if (
+            self.resulting_sequence_state
+            == "source_authorized_incomplete_prefix"
+            and self.next_minimum_interval_days
+            is None
+        ):
+            raise ValueError(
+                "incomplete COVID option must expose "
+                "the next minimum interval"
+            )
+
+        return self
+
+
+class PniCovidChildRuleResult(PniRuleResult):
+    allowed_next_product_keys: list[
+        PniCovidCurrentProductKey
+    ] = Field(
+        default_factory=list,
+    )
+
+    preferred_next_product_key: (
+        PniCovidCurrentProductKey
+        | None
+    ) = None
+
+    preferred_product_basis: (
+        PniCovidPreferenceBasis
+        | None
+    ) = None
+
+    product_choice_condition: (
+        PniCovidProductChoiceCondition
+        | None
+    ) = None
+
+    next_product_options: list[
+        PniCovidNextProductOption
+    ] = Field(
+        default_factory=list,
+    )
+
+    age_out_closure_applied: bool = False
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_covid_product_output(
+        self,
+    ):
+        allowed = list(
+            self.allowed_next_product_keys
+        )
+
+        if (
+            len(
+                allowed
+            )
+            != len(
+                set(
+                    allowed
+                )
+            )
+        ):
+            raise ValueError(
+                "COVID allowed_next_product_keys "
+                "must not contain duplicates"
+            )
+
+        option_products = [
+            option.product_key
+            for option
+            in self.next_product_options
+        ]
+
+        if (
+            len(
+                option_products
+            )
+            != len(
+                set(
+                    option_products
+                )
+            )
+        ):
+            raise ValueError(
+                "COVID next_product_options "
+                "must not contain duplicate products"
+            )
+
+        if (
+            set(
+                allowed
+            )
+            != set(
+                option_products
+            )
+        ):
+            raise ValueError(
+                "COVID allowed products and option products "
+                "must describe the same product set"
+            )
+
+        preferred_options = [
+            option
+            for option
+            in self.next_product_options
+            if (
+                option.option_role
+                == "preferred"
+            )
+        ]
+
+        if (
+            self.preferred_next_product_key
+            is None
+        ):
+            if preferred_options:
+                raise ValueError(
+                    "COVID result without preferred product "
+                    "cannot mark an option preferred"
+                )
+
+        else:
+            if (
+                self.preferred_next_product_key
+                not in allowed
+            ):
+                raise ValueError(
+                    "preferred COVID product must belong "
+                    "to allowed_next_product_keys"
+                )
+
+            if (
+                len(
+                    preferred_options
+                )
+                != 1
+                or preferred_options[
+                    0
+                ].product_key
+                != self.preferred_next_product_key
+            ):
+                raise ValueError(
+                    "COVID preferred option must uniquely match "
+                    "preferred_next_product_key"
+                )
+
+        if (
+            self.product_choice_condition
+            is not None
+            and not any(
+                option.condition
+                == self.product_choice_condition
+                for option
+                in self.next_product_options
+            )
+        ):
+            raise ValueError(
+                "COVID product_choice_condition must be represented "
+                "by at least one product option"
+            )
+
+        if self.age_out_closure_applied:
+            if (
+                self.decision
+                != "not_applicable"
+            ):
+                raise ValueError(
+                    "COVID age-out closure requires "
+                    "decision=not_applicable"
+                )
+
+            if (
+                allowed
+                or self.next_product_options
+                or self.preferred_next_product_key
+                is not None
+            ):
+                raise ValueError(
+                    "COVID age-out closure cannot expose "
+                    "a current next-product recommendation"
+                )
+
+        return self
+
+
+class PniAssessmentResponse(BaseModel):
+    tool: Literal[
+        "brazil_pni_2026"
+    ]
+
+    assessment_date: date
+    source_snapshot_date: date
+
+    requested_layers: list[PniRecommendationLayer]
+
+    results: list[PniRuleResult]
+
+    routine_strategy_layers_merged: Literal[False] = False
+
+    special_condition_inference_applied: Literal[False] = False
+
+    synthetic_score_applied: Literal[False] = False
+
+PniYellowFeverLiveVaccineGroup = Literal[
+    "mmr",
+    "mmrv",
+    "varicella",
+    "dengue",
+]
+
+PniYellowFeverInteractionHistoryScreenState = Literal[
+    "not_screened",
+    "screened_no_relevant_recent_live_vaccine",
+    "screened_relevant_live_vaccine_history",
+]
+
+PniYellowFeverEmergencyState = Literal[
+    "not_assessed",
+    "not_present",
+    "present",
+]
+
+
+class PniYellowFeverLiveVaccineEvent(BaseModel):
+    vaccine_group: PniYellowFeverLiveVaccineGroup
+    administration_date: date
+
+
+class PniYellowFeverInteractionContext(BaseModel):
+    history_screen_state: (
+        PniYellowFeverInteractionHistoryScreenState
+    )
+
+    recent_live_vaccine_events: list[
+        PniYellowFeverLiveVaccineEvent
+    ] = Field(
+        default_factory=list,
+    )
+
+    planned_same_day_vaccine_groups: list[
+        PniYellowFeverLiveVaccineGroup
+    ] = Field(
+        default_factory=list,
+    )
+
+    epidemiologic_emergency_concomitant_circulation_state: (
+        PniYellowFeverEmergencyState
+    ) = "not_assessed"
+
+    exceptional_15_day_interval_authorized: bool = False
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_yellow_fever_interaction_context(
+        self,
+    ):
+        if (
+            self.history_screen_state
+            == "screened_no_relevant_recent_live_vaccine"
+            and self.recent_live_vaccine_events
+        ):
+            raise ValueError(
+                "screened-clear VFA interaction context "
+                "cannot contain recent live-vaccine events"
+            )
+
+        if (
+            self.history_screen_state
+            == "screened_relevant_live_vaccine_history"
+            and not self.recent_live_vaccine_events
+        ):
+            raise ValueError(
+                "documented VFA live-vaccine history state "
+                "requires at least one recent event"
+            )
+
+        event_keys = [
+            (
+                event.vaccine_group,
+                event.administration_date,
+            )
+            for event
+            in self.recent_live_vaccine_events
+        ]
+
+        if len(
+            event_keys
+        ) != len(
+            set(
+                event_keys
+            )
+        ):
+            raise ValueError(
+                "duplicate VFA live-vaccine interaction event"
+            )
+
+        if len(
+            self.planned_same_day_vaccine_groups
+        ) != len(
+            set(
+                self.planned_same_day_vaccine_groups
+            )
+        ):
+            raise ValueError(
+                "duplicate planned same-day VFA vaccine group"
+            )
+
+        return self
+
+PniMmrExternalLiveVaccineGroup = Literal[
+    "yellow_fever",
+    "varicella",
+    "dengue",
+]
+
+PniMmrInteractionHistoryScreenState = Literal[
+    "not_screened",
+    "screened_no_relevant_recent_live_vaccine",
+    "screened_relevant_live_vaccine_history",
+]
+
+PniMmrEmergencyState = Literal[
+    "not_assessed",
+    "not_present",
+    "present",
+]
+
+
+class PniMmrLiveVaccineEvent(BaseModel):
+    vaccine_group: PniMmrExternalLiveVaccineGroup
+    administration_date: date
+
+
+class PniMmrInteractionContext(BaseModel):
+    history_screen_state: (
+        PniMmrInteractionHistoryScreenState
+    )
+
+    recent_live_vaccine_events: list[
+        PniMmrLiveVaccineEvent
+    ] = Field(
+        default_factory=list,
+    )
+
+    planned_same_day_vaccine_groups: list[
+        PniMmrExternalLiveVaccineGroup
+    ] = Field(
+        default_factory=list,
+    )
+
+    epidemiologic_emergency_concomitant_circulation_state: (
+        PniMmrEmergencyState
+    ) = "not_assessed"
+
+    exceptional_15_day_interval_authorized: bool = False
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_mmr_interaction_context(
+        self,
+    ):
+        if (
+            self.history_screen_state
+            == "screened_no_relevant_recent_live_vaccine"
+            and self.recent_live_vaccine_events
+        ):
+            raise ValueError(
+                "screened-clear MMR interaction context "
+                "cannot contain recent live-vaccine events"
+            )
+
+        if (
+            self.history_screen_state
+            == "screened_relevant_live_vaccine_history"
+            and not self.recent_live_vaccine_events
+        ):
+            raise ValueError(
+                "documented MMR live-vaccine history state "
+                "requires at least one recent event"
+            )
+
+        event_keys = [
+            (
+                event.vaccine_group,
+                event.administration_date,
+            )
+            for event
+            in self.recent_live_vaccine_events
+        ]
+
+        if len(
+            event_keys
+        ) != len(
+            set(
+                event_keys
+            )
+        ):
+            raise ValueError(
+                "duplicate MMR live-vaccine interaction event"
+            )
+
+        if len(
+            self.planned_same_day_vaccine_groups
+        ) != len(
+            set(
+                self.planned_same_day_vaccine_groups
+            )
+        ):
+            raise ValueError(
+                "duplicate planned same-day MMR vaccine group"
+            )
+
+        return self
+
+PniVaricellaExternalLiveVaccineGroup = Literal[
+    "mmr",
+    "yellow_fever",
+]
+
+PniVaricellaInteractionHistoryScreenState = Literal[
+    "not_screened",
+    "screened_no_relevant_recent_live_vaccine",
+    "screened_relevant_live_vaccine_history",
+]
+
+class PniVaricellaLiveVaccineEvent(BaseModel):
+    vaccine_group: PniVaricellaExternalLiveVaccineGroup
+    administration_date: date
+
+
+class PniVaricellaInteractionContext(BaseModel):
+    history_screen_state: (
+        PniVaricellaInteractionHistoryScreenState
+    )
+
+    recent_live_vaccine_events: list[
+        PniVaricellaLiveVaccineEvent
+    ] = Field(
+        default_factory=list,
+    )
+
+    planned_same_day_vaccine_groups: list[
+        PniVaricellaExternalLiveVaccineGroup
+    ] = Field(
+        default_factory=list,
+    )
+
+    exceptional_15_day_interval_authorized: bool = False
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_varicella_interaction_context(
+        self,
+    ):
+        if (
+            self.history_screen_state
+            == "screened_no_relevant_recent_live_vaccine"
+            and self.recent_live_vaccine_events
+        ):
+            raise ValueError(
+                "screened-clear VZ interaction context "
+                "cannot contain recent live-vaccine events"
+            )
+
+        if (
+            self.history_screen_state
+            == "screened_relevant_live_vaccine_history"
+            and not self.recent_live_vaccine_events
+        ):
+            raise ValueError(
+                "documented VZ live-vaccine history state "
+                "requires at least one recent event"
+            )
+
+        event_keys = [
+            (
+                event.vaccine_group,
+                event.administration_date,
+            )
+            for event
+            in self.recent_live_vaccine_events
+        ]
+
+        if len(
+            event_keys
+        ) != len(
+            set(
+                event_keys
+            )
+        ):
+            raise ValueError(
+                "duplicate VZ live-vaccine interaction event"
+            )
+
+        if len(
+            self.planned_same_day_vaccine_groups
+        ) != len(
+            set(
+                self.planned_same_day_vaccine_groups
+            )
+        ):
+            raise ValueError(
+                "duplicate planned same-day VZ vaccine group"
+            )
+
+        return self
+
+PniDengueDiseaseHistoryScreenState = Literal[
+    "not_screened",
+    "screened_no_relevant_dengue_history",
+    "screened_dengue_history",
+]
+
+PniDengueOtherArbovirusDisease = Literal[
+    "yellow_fever",
+    "chikungunya",
+    "zika",
+]
+
+PniDengueOtherArbovirusScreenState = Literal[
+    "not_screened",
+    "screened_no_relevant_other_arbovirus",
+    "screened_relevant_other_arbovirus_history",
+]
+
+PniDengueBloodProductScreenState = Literal[
+    "not_screened",
+    "screened_no_relevant_blood_product_exposure",
+    "screened_relevant_blood_product_exposure",
+]
+
+PniDengueLiveVaccineHistoryScreenState = Literal[
+    "not_screened",
+    "screened_no_relevant_recent_live_vaccine",
+    "screened_relevant_live_vaccine_history",
+]
+
+
+class PniDengueOtherArbovirusEvent(BaseModel):
+    disease: PniDengueOtherArbovirusDisease
+    recovery_date: date
+
+
+class PniDengueClinicalTimingContext(BaseModel):
+    dengue_history_screen_state: (
+        PniDengueDiseaseHistoryScreenState
+    )
+
+    dengue_onset_dates: list[
+        date
+    ] = Field(
+        default_factory=list,
+    )
+
+    other_arbovirus_screen_state: (
+        PniDengueOtherArbovirusScreenState
+    )
+
+    other_arbovirus_events: list[
+        PniDengueOtherArbovirusEvent
+    ] = Field(
+        default_factory=list,
+    )
+
+    blood_product_screen_state: (
+        PniDengueBloodProductScreenState
+    )
+
+    latest_relevant_blood_product_treatment_end_date: (
+        date | None
+    ) = None
+
+    minimum_6_week_interval_authorized: bool = False
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_dengue_clinical_timing_context(
+        self,
+    ):
+        if (
+            self.dengue_history_screen_state
+            == "screened_no_relevant_dengue_history"
+            and self.dengue_onset_dates
+        ):
+            raise ValueError(
+                "screened-clear dengue history cannot "
+                "contain dengue onset dates"
+            )
+
+        if (
+            self.dengue_history_screen_state
+            == "screened_dengue_history"
+            and not self.dengue_onset_dates
+        ):
+            raise ValueError(
+                "documented dengue history requires "
+                "at least one onset date"
+            )
+
+        if (
+            self.dengue_history_screen_state
+            != "screened_dengue_history"
+            and self.dengue_onset_dates
+        ):
+            raise ValueError(
+                "dengue onset dates require documented "
+                "dengue history state"
+            )
+
+        if len(
+            self.dengue_onset_dates
+        ) != len(
+            set(
+                self.dengue_onset_dates
+            )
+        ):
+            raise ValueError(
+                "duplicate dengue onset date"
+            )
+
+        if (
+            self.other_arbovirus_screen_state
+            == "screened_no_relevant_other_arbovirus"
+            and self.other_arbovirus_events
+        ):
+            raise ValueError(
+                "screened-clear other-arbovirus history "
+                "cannot contain events"
+            )
+
+        if (
+            self.other_arbovirus_screen_state
+            == "screened_relevant_other_arbovirus_history"
+            and not self.other_arbovirus_events
+        ):
+            raise ValueError(
+                "documented other-arbovirus history "
+                "requires at least one event"
+            )
+
+        if (
+            self.other_arbovirus_screen_state
+            != "screened_relevant_other_arbovirus_history"
+            and self.other_arbovirus_events
+        ):
+            raise ValueError(
+                "other-arbovirus events require documented "
+                "relevant-history state"
+            )
+
+        arbovirus_keys = [
+            (
+                event.disease,
+                event.recovery_date,
+            )
+            for event in self.other_arbovirus_events
+        ]
+
+        if len(
+            arbovirus_keys
+        ) != len(
+            set(
+                arbovirus_keys
+            )
+        ):
+            raise ValueError(
+                "duplicate other-arbovirus recovery event"
+            )
+
+        if (
+            self.blood_product_screen_state
+            == "screened_no_relevant_blood_product_exposure"
+            and (
+                self.latest_relevant_blood_product_treatment_end_date
+                is not None
+                or self.minimum_6_week_interval_authorized
+            )
+        ):
+            raise ValueError(
+                "screened-clear blood-product context cannot "
+                "contain treatment timing or minimum authorization"
+            )
+
+        if (
+            self.blood_product_screen_state
+            == "screened_relevant_blood_product_exposure"
+            and (
+                self.latest_relevant_blood_product_treatment_end_date
+                is None
+            )
+        ):
+            raise ValueError(
+                "documented blood-product exposure requires "
+                "treatment-end date"
+            )
+
+        if (
+            self.blood_product_screen_state
+            != "screened_relevant_blood_product_exposure"
+            and (
+                self.latest_relevant_blood_product_treatment_end_date
+                is not None
+            )
+        ):
+            raise ValueError(
+                "blood-product treatment-end date requires "
+                "documented relevant exposure"
+            )
+
+        if (
+            self.minimum_6_week_interval_authorized
+            and (
+                self.blood_product_screen_state
+                != "screened_relevant_blood_product_exposure"
+            )
+        ):
+            raise ValueError(
+                "six-week minimum authorization requires "
+                "documented relevant blood-product exposure"
+            )
+
+        return self
+
+
+class PniDengueExternalLiveVaccineEvent(BaseModel):
+    administration_date: date
+
+
+class PniDengueLiveVaccineInteractionContext(BaseModel):
+    history_screen_state: (
+        PniDengueLiveVaccineHistoryScreenState
+    )
+
+    recent_live_vaccine_events: list[
+        PniDengueExternalLiveVaccineEvent
+    ] = Field(
+        default_factory=list,
+    )
+
+    planned_same_day_live_vaccine: bool = False
+
+    @model_validator(
+        mode="after"
+    )
+    def validate_dengue_live_vaccine_interaction_context(
+        self,
+    ):
+        if (
+            self.history_screen_state
+            == "screened_no_relevant_recent_live_vaccine"
+            and self.recent_live_vaccine_events
+        ):
+            raise ValueError(
+                "screened-clear DNG4 live-vaccine context "
+                "cannot contain recent events"
+            )
+
+        if (
+            self.history_screen_state
+            == "screened_relevant_live_vaccine_history"
+            and not self.recent_live_vaccine_events
+        ):
+            raise ValueError(
+                "documented DNG4 live-vaccine history "
+                "requires at least one event"
+            )
+
+        if (
+            self.history_screen_state
+            != "screened_relevant_live_vaccine_history"
+            and self.recent_live_vaccine_events
+        ):
+            raise ValueError(
+                "DNG4 live-vaccine events require "
+                "documented relevant-history state"
+            )
+
+        event_dates = [
+            event.administration_date
+            for event in self.recent_live_vaccine_events
+        ]
+
+        if len(
+            event_dates
+        ) != len(
+            set(
+                event_dates
+            )
+        ):
+            raise ValueError(
+                "duplicate DNG4 live-vaccine interaction event"
+            )
+
+        return self

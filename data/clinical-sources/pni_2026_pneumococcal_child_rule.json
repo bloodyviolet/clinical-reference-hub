@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "rule_id": "PNI26-PNEUMO-CHILD-ROUTINE-001",
+  "feature": "Brazil 2026 PNI — routine child pneumococcal VPC10/VPC20 transition",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 1,
+  "primary_source": {
+    "title": "Guia Técnico para Introdução da Vacina Pneumocócica 20-valente (conjugada) no PNI",
+    "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/guias-e-manuais/2026/guia-tecnico-para-introducao-da-vacina-pneumococica-20-valente-conjugada-no-programa-nacional-de-imunizacoes.pdf",
+    "transition_from": "2026-06"
+  },
+  "history_input_contract": {
+    "normalizer": "clinical_tools.pni_history.normalize_pneumococcal_history",
+    "requires_vpc10_history_object": true,
+    "requires_vpc20_history_object": true,
+    "absent_product_history_is_not_zero": true,
+    "product_identity_preserved": true,
+    "raw_history_reconstruction_in_evaluator": false
+  },
+  "age_scope": {
+    "routine_start_months": 2,
+    "routine_end": "before_60_month_birthday",
+    "explicit_branches": [
+      "2m_to_under_5m",
+      "5m_to_under_11m",
+      "11m_to_under_12m",
+      "12m_to_under_60m"
+    ]
+  },
+  "timely_schedule": {
+    "d1": {
+      "age_months": 2,
+      "product": "pneumococcal_20"
+    },
+    "d2": {
+      "age_months": 4,
+      "product": "pneumococcal_10"
+    },
+    "primary_recommended_interval_days": 60,
+    "booster": {
+      "age_months": 12,
+      "product": "pneumococcal_20",
+      "minimum_interval_days_after_d2": 60
+    }
+  },
+  "catchup_5m_to_10m": {
+    "zero_history": {
+      "current_action": "D1_VPC20",
+      "subsequent_product_if_still_pre11m": "VPC10"
+    },
+    "prior_d1_vpc10": {
+      "current_action": "D2_VPC20"
+    },
+    "prior_d1_vpc20": {
+      "current_action": "D2_VPC10"
+    },
+    "recommended_interval_days": 60,
+    "exceptional_minimum_interval_days": 30,
+    "exception_requires_explicit_authorization": true
+  },
+  "age_11m": {
+    "zero_history": {
+      "current_action": "D1_VPC20",
+      "future_d2_inferred": false
+    },
+    "prior_d1_vpc10": {
+      "current_action": "D2_VPC20",
+      "recommended_interval_days": 60,
+      "exceptional_minimum_interval_days": 30
+    },
+    "prior_d1_vpc20": {
+      "current_action": "source_hold_review",
+      "reason": "the exact 11-month source row explicitly covers zero history and prior D1 VPC10 but does not explicitly specify the state of one prior D1 VPC20"
+    },
+    "two_valid_primary_doses": {
+      "current_action": "wait_for_12m_booster_branch"
+    }
+  },
+  "age_12m_to_59m": {
+    "zero_history": {
+      "current_action": "single_VPC20"
+    },
+    "one_pre12_d1": {
+      "current_action": "VPC20_booster",
+      "minimum_interval_days_after_d1": 60
+    },
+    "two_pre12_primary_doses": {
+      "current_action": "VPC20_booster",
+      "minimum_interval_days_after_d2": 60
+    },
+    "single_vpc20_first_administered_at_or_after_12m": {
+      "current_state": "catchup_complete",
+      "additional_routine_dose": false
+    }
+  },
+  "supported_pre12_primary_product_patterns": [
+    [
+      "pneumococcal_20",
+      "pneumococcal_10"
+    ],
+    [
+      "pneumococcal_10",
+      "pneumococcal_20"
+    ],
+    [
+      "pneumococcal_10",
+      "pneumococcal_10"
+    ]
+  ],
+  "unsupported_or_review_states": [
+    "11m_only_prior_D1_VPC20",
+    "same_day_cross_product_ambiguity",
+    "unknown_or_partial_history",
+    "absent_VPC10_or_VPC20_history_object",
+    "pre12_primary_interval_under_30_days",
+    "historical_primary_interval_30_to_59_days_without_structured_exception",
+    "more_than_two_pre12_exposures",
+    "VPC10_first_administered_at_or_after_12m",
+    "unexpected_product_chronology",
+    "excess_routine_exposures"
+  ],
+  "current_state_principle": {
+    "future_sequence_must_not_be_fabricated": true,
+    "11m_zero_history_only_decides_current_D1": true,
+    "later_assessment_uses_later_age_branch": true,
+    "historical_age_at_each_exposure_is_material": true
+  },
+  "rie_boundary": {
+    "vpc13_consumed": false,
+    "vpp23_consumed": false,
+    "special_condition_vpc20_consumed": false,
+    "special_condition_inferred": false
+  },
+  "localization_contract": {
+    "primary": "pt-BR",
+    "secondary": "en-GB",
+    "both_required": true,
+    "decision_language_neutral": true
+  },
+  "synthetic_score_allowed": false,
+  "api_exposed": false
+}

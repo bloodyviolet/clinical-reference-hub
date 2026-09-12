@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI — rotavirus routine two-dose rule",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "rule_id": "PNI26-ROTAVIRUS-ROUTINE-001",
+  "vaccine_key": "rotavirus",
+  "official_acronym": "VRH",
+  "layer": "routine",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 1,
+  "primary_source_url": "https://www.gov.br/saude/pt-br/vacinacao/calendario",
+  "schedule": {
+    "dose_count": 2,
+    "dose_1": {
+      "routine_age_months": 2,
+      "minimum_age": {
+        "months": 1,
+        "days": 15
+      },
+      "maximum_age": {
+        "months": 11,
+        "days": 29
+      }
+    },
+    "dose_2": {
+      "routine_age_months": 4,
+      "minimum_age": {
+        "months": 3,
+        "days": 15
+      },
+      "maximum_age": {
+        "months": 23,
+        "days": 29
+      }
+    },
+    "recommended_interval_days": 60,
+    "exceptional_minimum_interval_days": 30,
+    "exceptional_minimum_requires_explicit_authorization": true,
+    "examples_of_exceptional_context_from_source": [
+      "imminent_travel",
+      "epidemiologic_risk_exposure"
+    ]
+  },
+  "missed_first_dose_rule": {
+    "if_dose_1_not_given_within_permitted_window": "dose_2_opportunity_is_lost",
+    "automatic_dose_2_without_valid_dose_1": false
+  },
+  "history_contract": {
+    "documented_zero_dose": "evaluate_dose_1_window",
+    "one_complete_documented_dose": "evaluate_dose_2_window_and_interval",
+    "two_valid_documented_doses": "routine_complete",
+    "unknown_history": "history_required",
+    "partial_history": "history_required",
+    "documented_dose_outside_permitted_age_window": "special_pathway_review",
+    "two_doses_with_sub_60_day_interval": "requires_review_unless_exceptional_context_is independently established"
+  },
+  "product_history_sensitive": false,
+  "special_condition_sensitive": false,
+  "administration_safety_boundary": {
+    "schedule_engine_does_not_infer_contraindications": true,
+    "not_screened_action": "context_required",
+    "screened_concern_action": "special_pathway_review"
+  },
+  "repeat_dose_boundary": {
+    "symptom_or_administration_event_input_implemented": false,
+    "automatic_repeat_rule_inferred": false
+  },
+  "simultaneous_administration": {
+    "inter_vaccine_spacing_rule_inferred": false
+  },
+  "localization_contract": {
+    "primary_language": "pt-BR",
+    "secondary_language": "en-GB",
+    "both_interpretations_required": true,
+    "language_neutral_decision_parity_required": true
+  },
+  "api_exposed": false,
+  "synthetic_score_allowed": false
+}

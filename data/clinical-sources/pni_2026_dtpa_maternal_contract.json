@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI — maternal dTpa rule contract",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "contract_status": "locked_engine_implemented_maternal_only",
+  "rule_id": "PNI26-DTPA-MATERNAL-ROUTINE-001",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 2,
+  "source_title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+  "source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+  "source_pages": [
+    2,
+    3,
+    4
+  ],
+  "pregnancy_rule": {
+    "pregnancy_required": true,
+    "minimum_gestational_week": 20,
+    "dose_each_pregnancy": 1,
+    "current_pregnancy_identity_required_for_repeat_suppression": true
+  },
+  "postpartum_rule": {
+    "eligible_only_if_missed_during_pregnancy": true,
+    "maximum_postpartum_days": 45,
+    "recent_pregnancy_identity_required": true
+  },
+  "basic_series_rule": {
+    "target_dt_toxoid_exposures": 3,
+    "zero_prior_exposures": "3 total D/T-containing doses; one must be dTpa from week 20 in pregnancy",
+    "one_prior_exposure": "2 remaining D/T-containing doses; one must be dTpa from week 20 in pregnancy",
+    "two_prior_exposures": "dTpa may compose the third D/T-containing dose",
+    "three_or_more_prior_exposures": "dTpa is given in each pregnancy as the pregnancy dose"
+  },
+  "interval_rule": {
+    "recommended_days": 60,
+    "exceptional_minimum_days": 30,
+    "exceptional_minimum_is_routine": false,
+    "exceptional_minimum_requires_explicit_authorization": true,
+    "exceptional_minimum_requires_risk_benefit_assessment": true,
+    "exception_examples_from_source": [
+      "imminent_exposure_risk",
+      "travel_to_risk_area",
+      "some_comorbidities"
+    ]
+  },
+  "prior_current_pregnancy_dtpa_rule": {
+    "automatic_not_due_requires": [
+      "documented_dtpa_exposure",
+      "matching_pregnancy_episode_key",
+      "gestational_age_weeks_at_administration_gte_20"
+    ],
+    "dose_before_week_20_repeat_rule_found_in_reviewed_source": false,
+    "dose_before_week_20_action": "special_pathway_review",
+    "missing_gestational_age_at_administration_action": "context_required"
+  },
+  "history_gate": {
+    "requires_safe_for_interval_evaluation": true,
+    "requires_safe_for_basic_series_count": true,
+    "partial_history_action": "history_required",
+    "unknown_history_action": "history_required",
+    "unmapped_product_action": "history_required",
+    "same_day_ambiguity_action": "history_required"
+  },
+  "administration_safety_boundary": {
+    "rule_output_scope": "calendar_schedule_recommendation",
+    "calendar_due_means_safe_to_administer": false,
+    "safety_screen_required_before_automatic_recommend_now": true,
+    "safety_screen_states": [
+      "not_screened",
+      "screened_no_concern",
+      "screened_concern"
+    ],
+    "not_screened_action": "context_required",
+    "screened_concern_action": "special_pathway_review",
+    "screened_no_concern_action": "continue_schedule_rule"
+  },
+  "simultaneous_vaccine_boundary": {
+    "interval_with_other_non_dt_toxoid_vaccines_required": false,
+    "dt_toxoid_interval_logic_is_not_a_general_vaccine_spacing_rule": true
+  },
+  "engine_function_planned": "evaluate_pni_dtpa_maternal_routine",
+  "engine_implemented": true,
+  "api_exposed": false,
+  "synthetic_score_allowed": false,
+  "implementation_scope": "maternal_pregnancy_and_postpartum_only",
+  "occupational_dtpa_branches_implemented": false,
+  "localization_contract": {
+    "primary_language": "pt-BR",
+    "secondary_language": "en-GB",
+    "both_interpretations_required": true,
+    "language_neutral_decision_parity_required": true
+  },
+  "exceptional_minimum_authorization_is_inferred": false,
+  "administration_safety_is_inferred": false
+}

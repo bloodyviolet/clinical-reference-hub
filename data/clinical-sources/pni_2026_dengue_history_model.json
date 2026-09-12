@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "model_id": "PNI26-DNG4-TAKEDA-HISTORY-001",
+  "review_date": "2026-09-12",
+  "target_family": "dengue_takeda_routine_history",
+  "scope": "product_sensitive_dengue_vaccine_history",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "product_keys": {
+    "takeda": "dengue_takeda",
+    "butantan": "dengue_butantan",
+    "sanofi_legacy": "dengue_sanofi_legacy"
+  },
+  "takeda": {
+    "position_20_ordinary_product": true,
+    "pni_new_D1_start_age": "exact_10_years",
+    "pni_new_D1_end": "before_exact_15_years",
+    "manufacturer_historical_age_floor": "exact_4_years",
+    "manufacturer_historical_age_ceiling": "before_exact_60_years",
+    "basic_series_doses": 2,
+    "D1_D2_interval_days": 90,
+    "calendar_month_interval_used": false,
+    "late_D2_restarts_series": false
+  },
+  "completion_after_age15": {
+    "new_D1_after_exact15_by_position20_core": false,
+    "valid_D1_before15_may_complete_after15": true,
+    "exact15_is_initiation_closure_not_series_closure": true
+  },
+  "early_takeda_D2": {
+    "physical_event_retained": true,
+    "automatically_counts": false,
+    "corrective_threshold": "max(valid_D1_plus_90d,latest_early_event_plus_30d)",
+    "automatic_D1_restart": false
+  },
+  "historical_prior_dengue": {
+    "inside_vaccine_history_normalizer": false,
+    "dose_within_6_months_after_prior_dengue": "retain_as_valid_vaccine_history",
+    "legacy_under30d_invalid_rule_carried_forward": false,
+    "current_D1_recommended_wait_months": 6,
+    "current_timing_belongs_to_evaluator": true
+  },
+  "post_D1_dengue": {
+    "inside_vaccine_history_normalizer": false,
+    "restart_series": false,
+    "future_D2_timing": "max(D1_plus_90d,dengue_onset_plus_30d)"
+  },
+  "butantan": {
+    "ordinary_position20_takeda_interchangeable": false,
+    "separate_strategy_product": true,
+    "single_dose_product": true,
+    "label_age_floor_years": 12,
+    "label_age_ceiling_years_exclusive": 60
+  },
+  "cross_product_error_management": {
+    "takeda_D1_then_butantan_minimum_days": 30,
+    "takeda_D1_then_butantan_at_or_after_30d": "scheme_considered_complete",
+    "general_interchangeability_created": false,
+    "butantan_before_takeda": "fail_closed",
+    "takeda_after_butantan": "fail_closed",
+    "butantan_less_than_30d_after_takeda_D1": "fail_closed"
+  },
+  "sanofi_legacy": {
+    "preserve_history": true,
+    "automatic_takeda_revaccination": false,
+    "automatic_butantan_revaccination": false,
+    "automatic_position20_interpretation": "fail_closed"
+  },
+  "history_normalizer_excludes": [
+    "dengue_disease_timing",
+    "other_arbovirus_recovery_timing",
+    "pregnancy",
+    "breastfeeding",
+    "immunodeficiency",
+    "immunosuppression",
+    "hypersensitivity",
+    "acute_febrile_illness",
+    "blood_or_immunoglobulin_exposure",
+    "live_vaccine_interaction",
+    "geographic_strategy_eligibility",
+    "occupational_strategy_eligibility"
+  ],
+  "fail_closed": [
+    "partial_or_unknown_history",
+    "undated_history",
+    "missing_product_identity",
+    "unsupported_product_identity",
+    "future_administration",
+    "pre_birth_administration",
+    "same_day_multiple_dengue_physical_events",
+    "takeda_event_before_exact4y",
+    "first_takeda_event_at_or_after_exact15y",
+    "butantan_event_below_exact12y",
+    "butantan_event_at_or_after_exact60y",
+    "butantan_without_prior_valid_takeda_D1",
+    "butantan_less_than_30d_after_valid_takeda_D1",
+    "takeda_after_butantan",
+    "sanofi_legacy_history"
+  ],
+  "normalizer_non_inference": {
+    "assigns_due_decision": false,
+    "dengue_disease_history_inferred": false,
+    "pregnancy_inferred": false,
+    "breastfeeding_inferred": false,
+    "immune_status_inferred": false,
+    "geographic_eligibility_inferred": false,
+    "synthetic_score_applied": false
+  },
+  "api_exposed": false
+}

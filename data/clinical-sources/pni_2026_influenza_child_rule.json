@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "rule_id": "PNI26-INFLUENZA-CHILD-ROUTINE-001",
+  "review_date": "2026-09-11",
+  "feature": "Brazil 2026 PNI — routine-child INF3 current-state rule",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 1,
+  "primary_source": {
+    "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+    "url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026"
+  },
+  "corroborating_source": {
+    "title": "Calendário de Vacinação — Ministério da Saúde",
+    "url": "https://www.gov.br/saude/pt-br/vacinacao/calendario"
+  },
+  "history_contract": {
+    "normalizer": "clinical_tools.pni_history.normalize_influenza_history",
+    "requires_cycle_aware_normalized_history": true,
+    "cycle_key_is_opaque": true,
+    "cycle_key_parsed": false,
+    "calendar_year_defines_cycle": false,
+    "geography_inferred_from_cycle_key": false,
+    "special_strategy_consumed_by_routine_core": false,
+    "private_inf4_equivalence_inferred": false
+  },
+  "product": {
+    "public_key": "influenza",
+    "official_acronym": "INF3",
+    "formulation": "trivalent_inactivated",
+    "private_inf4_interoperability": "deferred"
+  },
+  "routine_child_age_scope": {
+    "start": "exact_6_month_birthday",
+    "end": "before_exact_6_year_birthday",
+    "interval": "[DOB+6m,DOB+72m)"
+  },
+  "first_vaccination": {
+    "prior_cycle_vaccination_state": "documented_none",
+    "doses": 2,
+    "d1": "INF3",
+    "d2": "INF3",
+    "interval_days": 30,
+    "earlier_exceptional_interval_authorized": false
+  },
+  "previously_vaccinated": {
+    "prior_cycle_vaccination_state": "documented_prior",
+    "current_cycle_doses": 1,
+    "dose": "INF3"
+  },
+  "historical_validation": {
+    "first_series_interval_under_30_days": "review",
+    "more_than_two_first_series_cycle_events": "review",
+    "more_than_one_annual_cycle_event": "review",
+    "event_before_6_months": "review",
+    "event_at_or_after_6_years": "review"
+  },
+  "source_hold": {
+    "branch": "D1_before_6y_D2_threshold_at_or_after_6y",
+    "status": "unresolved",
+    "engine_behavior": "source_hold_review",
+    "reason": "The federal routine age indication ends before the sixth birthday, while primovaccination requires two doses 30 days apart. The reviewed routine source does not explicitly authorize completion after routine age-out.",
+    "must_not_infer_age_out_completion": true
+  },
+  "fail_closed": [
+    "unknown priming state",
+    "unknown or partial lifetime history",
+    "unknown or partial current-cycle history",
+    "special-strategy current-cycle evidence",
+    "unsupported product identity",
+    "same-day lifetime ambiguity",
+    "unreconciled cycle evidence",
+    "more than two routine current-cycle events",
+    "historical first-series interval under 30 days",
+    "routine event before age 6 months",
+    "routine event at or after age 6 years",
+    "first-ever D1 before age 6 with D2 threshold at or after sixth birthday"
+  ],
+  "deferred": [
+    "pregnancy",
+    "postpartum",
+    "age >=60 years",
+    "special annual strategy",
+    "indigenous/comorbidity extension to <9 years",
+    "North strategy decision logic",
+    "private INF4 interoperability",
+    "API",
+    "browser",
+    "UI"
+  ],
+  "localization": {
+    "primary": "pt-BR",
+    "secondary": "en-GB",
+    "decision_language_neutral": true
+  },
+  "synthetic_score_allowed": false
+}

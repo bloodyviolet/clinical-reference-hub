@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "rule_id": "PNI26-YELLOW-FEVER-ROUTINE-001",
+  "review_date": "2026-09-12",
+  "vaccine_key": "yellow_fever",
+  "target_family": "yellow_fever_routine_9m_to_59y",
+  "primary_source": {
+    "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+    "authority": "Ministério da Saúde / SVSA / DPNI",
+    "role": "current professional VFA routine schedule, history matrix and live-vaccine spacing"
+  },
+  "fractional_overlay_source": {
+    "title": "Nota Técnica nº 6/2026-CGICI/DPNI/SVSA/MS",
+    "role": "standard-dose regularization after the 2018 fractional strategy"
+  },
+  "routine_age_scope": {
+    "start": "exact_9_month_birthday",
+    "end": "before_exact_60_year_birthday",
+    "interval": "[DOB+9m,DOB+720m)"
+  },
+  "routine_context_states": [
+    "not_screened",
+    "screened_routine_no_special_condition",
+    "screened_special_condition_present"
+  ],
+  "routine_history": {
+    "under5_zero_standard": "first_standard_dose",
+    "under5_one_standard": "child_booster",
+    "under5_two_standard": "complete",
+    "age5_to59_zero_standard": "single_standard_dose",
+    "age5_to59_one_pre5_standard": "booster",
+    "age5_to59_two_pre5_standard": "complete",
+    "age5_to59_one_standard_at_or_after5": "complete",
+    "age5_is_age_out": false
+  },
+  "timing": {
+    "first_standard_nominal": "DOB+9m",
+    "child_booster_nominal": "DOB+48m",
+    "internal_vfa_minimum_days": 30,
+    "dose_zero_can_delay_first_standard": true,
+    "booster_obligation_can_cross_age5": true
+  },
+  "fractional_precedence": {
+    "unresolved_fractional_overlay_precedes_ordinary_completion": true,
+    "regularization_product": "yellow_fever_standard",
+    "ordinary_30_day_fractional_to_standard_gate": false,
+    "registration_REF_means_clinical_booster": false
+  },
+  "interaction_context": {
+    "model": "PniYellowFeverInteractionContext",
+    "consulted_only_when_vfa_otherwise_due": true,
+    "groups": [
+      "mmr",
+      "mmrv",
+      "varicella",
+      "dengue"
+    ],
+    "under2_mmr_mmrv_same_day_routine": "not_recommended",
+    "under2_mmr_mmrv_same_day_emergency": "allowed_when_explicitly_present",
+    "age2plus_live_vaccine_same_day": "allowed",
+    "varicella_same_day_any_recommended_age": "allowed",
+    "routine_different_day_interval_days": 30,
+    "exceptional_15_day_groups": [
+      "mmr",
+      "mmrv",
+      "varicella"
+    ],
+    "dengue_exceptional_15_day_interval_authorized": false,
+    "dengue_same_day_or_interval_days": 30
+  },
+  "administration_safety": {
+    "consulted_only_when_vfa_otherwise_due": true,
+    "not_screened": "context_required",
+    "screened_concern": "special_pathway_review",
+    "screened_no_concern": "may_recommend_if_other_gates_clear"
+  },
+  "deferred": [
+    "6-8 month D0 administration decision",
+    "age>=60 risk-based vaccination decision",
+    "pregnancy",
+    "lactation",
+    "immune/CRIE pathways",
+    "travel/outbreak eligibility decision",
+    "API",
+    "browser",
+    "UI"
+  ],
+  "safety": {
+    "no_special_condition_inference": true,
+    "no_epidemiologic_emergency_inference": true,
+    "no_exceptional_15_day_inference": true,
+    "no_synthetic_score": true
+  }
+}

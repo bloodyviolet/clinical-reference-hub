@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "model_id": "PNI26-MMR-HISTORY-001",
+  "review_date": "2026-09-12",
+  "feature": "Brazil PNI 2026 SCR/MMR product-component, D0 and interval-sensitive history normalization",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "primary_source": {
+    "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+    "role": "current SCR/MMR routine schedule, age targets, interval rules and health-worker overlay"
+  },
+  "d0_overlays": {
+    "role": "2026 measles blocking/intensification/travel D0 guidance",
+    "administration_decision_deferred": true
+  },
+  "target_family": "mmr_routine_history",
+  "generic_history": {
+    "vaccine_key": "mmr",
+    "single_lifetime_history": true,
+    "count_only_model_safe": false
+  },
+  "normalized_product_keys": {
+    "mmr_scr": {
+      "contains_measles": true,
+      "contains_mumps": true,
+      "contains_rubella": true,
+      "contains_varicella": false
+    },
+    "mmrv_scrv": {
+      "contains_measles": true,
+      "contains_mumps": true,
+      "contains_rubella": true,
+      "contains_varicella": true
+    }
+  },
+  "unsupported_first_model_products": [
+    "generic dose-level mmr",
+    "MR/SR legacy combination",
+    "monovalent measles",
+    "monovalent rubella",
+    "unknown measles-containing combination"
+  ],
+  "age_boundaries": {
+    "minimum_history_age": "DOB+6 calendar months",
+    "routine_start": "DOB+12 calendar months",
+    "second_dose_nominal": "DOB+15 calendar months",
+    "general_requirement_crossover": "DOB+360 calendar months",
+    "first_general_routine_end": "DOB+720 calendar months"
+  },
+  "dose_zero": {
+    "supported_history_product": "mmr_scr",
+    "age_interval": "[DOB+6m,DOB+12m)",
+    "counts_toward_routine_completion": false,
+    "subsequent_routine_minimum_days": 30,
+    "mmrv_scrv_under12_accepted_as_d0": false,
+    "historical_eligibility_inferred": false
+  },
+  "general_series": {
+    "ordinary_interval_days": 30,
+    "exceptional_minimum_days": 15,
+    "short_interval_requires_exact_authorization": true,
+    "target_12m_to29": 2,
+    "target_30_to59": 1
+  },
+  "health_worker_series": {
+    "target_doses": 2,
+    "minimum_interval_days": 30,
+    "general_15_day_exception_applies": false,
+    "occupation_inferred": false
+  },
+  "historical_interval_exception": {
+    "authorization_key": "source_authorized_general_15_day_exception",
+    "exact_date_pair_required": true,
+    "applies_to_d0_to_d1": false,
+    "applies_to_health_worker_series": false
+  },
+  "dual_validity_required": true,
+  "extra_doses": {
+    "more_than_two_is_automatically_unsafe": false,
+    "preserve_all_dated_events": true
+  },
+  "combination_event_semantics": {
+    "mmrv_is_one_physical_event": true,
+    "mmrv_contributes_mmr_component": true,
+    "mmrv_contributes_varicella_component": true,
+    "duplicate_into_fake_family_events": false
+  },
+  "registration_role": {
+    "source_supplied": true,
+    "defines_clinical_role": false,
+    "exact_date_reconciliation": true
+  },
+  "normalizer_outputs": [
+    "age-derived clinical role",
+    "product component flags",
+    "D0 count",
+    "raw routine-component event count",
+    "general-valid component dose count",
+    "occupational-valid component dose count",
+    "ordinary and exceptional interval evidence",
+    "D0-to-routine interval evidence",
+    "source registration provenance",
+    "routine-evaluation safety state"
+  ],
+  "normalizer_does_not": [
+    "assign current due/not-due decision",
+    "infer occupation",
+    "infer pregnancy",
+    "infer immune/special-condition status",
+    "infer outbreak or travel eligibility",
+    "infer historical interval exception",
+    "recommend MMR versus MMRV product",
+    "decide varicella-family completion",
+    "produce synthetic vaccination score"
+  ],
+  "fail_closed": [
+    "future event",
+    "event before date of birth",
+    "measles-containing event before exact 6 months",
+    "generic or unsupported dose-level product",
+    "MMRV/SCRV before exact 12 months",
+    "unknown or partial source history",
+    "undated prior evidence",
+    "same-day duplicate/conflicting MMR-containing events",
+    "unreconciled registration metadata",
+    "duplicate registration metadata date",
+    "duplicate interval-exception pair",
+    "reversed interval-exception pair",
+    "unreconciled interval-exception pair",
+    "routine-component interval below 15 days",
+    "routine-component interval 15-29 days without exact authorization",
+    "D0-to-first-routine interval below 30 days"
+  ],
+  "not_automatically_unsafe": [
+    "more than two MMR-containing events",
+    "15-29 day general-series interval with exact source authorization"
+  ],
+  "deferred": [
+    "MMR routine decision engine",
+    "D0 administration eligibility",
+    "age>=60 vaccination decisions",
+    "health-worker age>=60 risk-benefit pathway",
+    "pregnancy decision gate",
+    "immune/CRIE pathway",
+    "external live-vaccine interaction evaluator",
+    "varicella-family completion",
+    "API",
+    "browser",
+    "UI"
+  ]
+}

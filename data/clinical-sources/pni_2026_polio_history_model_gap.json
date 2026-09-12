@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil PNI 2026 — poliomyelitis cross-product history normalization",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "model_gap_id": "PNI26-POLIO-HISTORY-MODEL-GAP-001",
+  "current_routine_vaccine_key": "ipv",
+  "current_official_acronym": "VIP",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 1,
+  "normative_2026_source_url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026",
+  "exclusive_ipv_transition_source_url": "https://www.gov.br/saude/pt-br/vacinacao/informes/retirada-da-vacina-poliomielite-1-e-3-atenuada-e-adocao-do-esquema-exclusivo-com-vacina-poliomielite-1-2-e-3-inativada.pdf",
+  "combination_equivalence_source_url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/estudos-e-notas-informativas/2025/nota-informativa-no-15-2025-cimvac-cgesco-desco-saps-ms",
+  "why_model_gap_exists": {
+    "matrix_vaccine_key": "ipv",
+    "matrix_product_history_sensitive": false,
+    "implementation_override_required": true,
+    "reason": "legacy VOPb booster identity changes transition conduct, and supported IPV-containing combination vaccines can represent poliovirus exposures"
+  },
+  "normalized_history_keys": {
+    "ipv": {
+      "class": "ipv_equivalent",
+      "current_routine_product": true,
+      "legacy_oral": false,
+      "special_pathway": false
+    },
+    "opv_bivalent_legacy": {
+      "class": "legacy_vopb",
+      "current_routine_product": false,
+      "legacy_oral": true,
+      "special_pathway": false
+    },
+    "penta_acellular_ipv": {
+      "class": "ipv_equivalent",
+      "composition": "DTPa/VIP/Hib",
+      "current_routine_product": false,
+      "legacy_oral": false,
+      "special_pathway": false
+    },
+    "tetra_acellular_ipv": {
+      "class": "ipv_equivalent",
+      "composition": "DTPa/VIP",
+      "current_routine_product": false,
+      "legacy_oral": false,
+      "special_pathway": false
+    },
+    "hexa_acellular_ipv": {
+      "class": "ipv_equivalent",
+      "composition": "DTPa/HepB/VIP/Hib",
+      "current_routine_product": false,
+      "legacy_oral": false,
+      "special_pathway": false
+    },
+    "hexa_acellular_rie": {
+      "class": "ipv_equivalent",
+      "composition": "DTPa/HepB/VIP/Hib",
+      "current_routine_product": false,
+      "legacy_oral": false,
+      "special_pathway": true
+    }
+  },
+  "normalizer_contract": {
+    "language_neutral": true,
+    "does_not_decide_due_status": true,
+    "does_not_infer_crie_indication": true,
+    "does_not_infer_missing_vop_history_as_zero": true,
+    "preserves_present_history_keys": true,
+    "preserves_source_product_identity": true,
+    "rejects_cross_labeled_product_keys": true,
+    "flags_same_day_cross_history_ambiguity": true,
+    "unknown_or_partial_relevant_history_is_unsafe": true,
+    "unmapped_unknown_history_key_is_unsafe": true
+  },
+  "transition_contract": {
+    "exclusive_ipv_schedule_from": "2024-11-04",
+    "three_primary_ipv_plus_one_legacy_vopb": "transition_sensitive_not_complete; VIP booster required by 2024 transition guidance",
+    "minimum_days_after_one_legacy_vopb_to_transition_vip": 30,
+    "three_primary_ipv_plus_two_legacy_vop_boosters": "transition guidance considered complete",
+    "transition_decision_implemented_here": false
+  },
+  "combination_product_boundary": {
+    "penta_acellular_ipv_equivalence": "supported federal interoperability evidence",
+    "tetra_acellular_ipv_equivalence": "supported federal interoperability evidence",
+    "hexa_acellular_ipv_equivalence": "supported federal interoperability evidence",
+    "equivalence_used_here": "poliovirus exposure normalization only",
+    "routine_due_decision_deferred": true
+  },
+  "existing_schema_remediation": {
+    "schema_mutation_required": false,
+    "reason": "PniVaccineHistory accepts distinct normalized keys and PniAssessmentRequest already enforces unique keys"
+  },
+  "deferred": [
+    "routine_ipv_due_engine",
+    "legacy_transition_decision_engine",
+    "crie_indication_logic",
+    "international_travel_age_5_plus",
+    "outbreak_or_blocking_logic",
+    "yanomami_specific_rules"
+  ],
+  "provenance_warning": {
+    "nt64_2026_used_as_polio_authority": false,
+    "reason": "current Ministry index identifies NT 64/2026 with the VPC20 transition, not as a polio authority"
+  },
+  "cross_domain_toxoid_boundary": {
+    "polio_source_supports_ipv_component_equivalence": true,
+    "polio_source_alone_authorizes_dt_toxoid_history_equivalence": false,
+    "toxoid_component_map_extended_by_this_tranche": false,
+    "dt_history_behavior_for_new_acellular_ipv_keys": "unmapped_fail_closed",
+    "legacy_vopb_known_non_toxoid": true,
+    "reason": "IPV-component interoperability evidence is sufficient for polio exposure normalization but is not used to silently extend the independently source-limited diphtheria/tetanus history contract"
+  }
+}

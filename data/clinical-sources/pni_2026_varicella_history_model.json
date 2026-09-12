@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "model_id": "PNI26-VARICELLA-CHILD-HISTORY-001",
+  "review_date": "2026-09-12",
+  "vaccine_family": "varicella_child_routine_history",
+  "scope": "general_population_child_VZ_history",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "primary_source": {
+    "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+    "url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf"
+  },
+  "architecture": {
+    "dedicated_history_normalizer_required": true,
+    "raw_MMR_history_reparsed": false,
+    "locked_normalized_MMR_history_consumed": true,
+    "physical_event_cloning_allowed": false,
+    "MMR_validity_defines_VZ_validity": false,
+    "generic_PNI_schema_widening_required": false
+  },
+  "physical_component_sources": {
+    "varicella": {
+      "source_family": "varicella",
+      "physical_event_kind": "monovalent_varicella",
+      "contains_varicella": true
+    },
+    "mmrv_scrv": {
+      "source_family": "mmr",
+      "physical_event_kind": "scrv_varicella_component",
+      "contains_varicella": true,
+      "physical_event_remains_single": true
+    }
+  },
+  "general_child_age_contract": {
+    "ordinary_start": "exact_15_months",
+    "ordinary_end": "before_exact_7_years",
+    "nominal_D1": "exact_15_months",
+    "nominal_D2": "exact_4_years",
+    "target_component_doses": 2
+  },
+  "child_interval_contract": {
+    "interval": "3_calendar_months",
+    "fixed_day_conversion_allowed": false,
+    "valid_two_event_subsequence_allowed": true,
+    "extra_events_retained": true,
+    "short_interval_extra_erases_later_valid_series": false
+  },
+  "pre15_firewall": {
+    "pre15_evidence_preserved": true,
+    "post_exposure_role_inferred": false,
+    "D0_role_inferred": false,
+    "anticipated_dose_role_inferred": false,
+    "ordinary_D1_inferred": false,
+    "automatic_routine_interpretation": "fail_closed"
+  },
+  "cross_family_contract": {
+    "MMR_input_target_family": "mmr_routine_history",
+    "SCRV_product_key": "mmrv_scrv",
+    "required_component_flag": "contains_varicella",
+    "MMR_general_series_counted_reused": false,
+    "MMR_occupational_series_counted_reused": false,
+    "source_MMR_clinical_role_preserved_as_provenance": true
+  },
+  "disease_history": {
+    "inside_vaccine_history_normalizer": false,
+    "inferred": false,
+    "future_evaluator_context_required": true
+  },
+  "post_exposure_and_special_pathways_deferred": [
+    "contact_age_under_9m_IGHVZ",
+    "contact_age_9m_to_11m29d_D0",
+    "contact_age_12m_to_14m_anticipated_VZ",
+    "outbreak_or_blocking",
+    "health_worker_occupational_series",
+    "indigenous_rescue",
+    "age60plus_risk_benefit",
+    "pregnancy",
+    "CRIE_or_immunocompromised"
+  ],
+  "history_fail_closed": [
+    "partial_or_unknown_monovalent_history",
+    "undated_monovalent_history",
+    "partial_or_unknown_MMR_history",
+    "undated_MMR_history",
+    "unsupported_monovalent_product_identity",
+    "unsupported_MMR_product_evidence",
+    "inconsistent_SCRV_component_provenance",
+    "same_day_multiple_VZ_containing_physical_events",
+    "future_administration",
+    "pre_birth_administration",
+    "pre15_VZ_component_without_explicit_pathway_context"
+  ],
+  "normalizer_boundaries": {
+    "assigns_due_decision": false,
+    "infers_disease_history": false,
+    "infers_epidemiologic_context": false,
+    "infers_pregnancy": false,
+    "infers_special_condition": false,
+    "synthetic_score_allowed": false
+  },
+  "api_exposed": false
+}

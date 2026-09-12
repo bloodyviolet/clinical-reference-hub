@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "rule_id": "PNI26-IPV-CHILD-ROUTINE-001",
+  "feature": "Brazil 2026 PNI — VIP child routine and legacy-VOP transition",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "vaccine_key": "ipv",
+  "official_acronym": "VIP",
+  "layer": "routine",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 1,
+  "current_technical_calendar_url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/calendario-tecnico-nacional-de-vacinacao-crianca",
+  "legacy_transition_source_url": "https://www.gov.br/saude/pt-br/vacinacao/informes/retirada-da-vacina-poliomielite-1-e-3-atenuada-e-adocao-do-esquema-exclusivo-com-vacina-poliomielite-1-2-e-3-inativada.pdf",
+  "history_input_contract": {
+    "input": "normalized_polio_history",
+    "normalizer": "clinical_tools.pni_history.normalize_polio_history",
+    "raw_history_reconstruction_inside_evaluator": false,
+    "product_history_sensitive": true
+  },
+  "current_schedule": {
+    "age_scope": "2m_through_4y11m29d",
+    "primary_series": {
+      "dose_count": 3,
+      "agenda_months": [
+        2,
+        4,
+        6
+      ],
+      "recommended_interval_days": 60,
+      "minimum_interval_days": 30,
+      "minimum_interval_context": "exceptional",
+      "prospective_minimum_requires_explicit_authorization": true,
+      "historical_30_to_59_without_structured_exception": "special_pathway_review"
+    },
+    "booster": {
+      "current_routine_count": 1,
+      "agenda_age_months": 15,
+      "recommended_after_d3_calendar_months": 9,
+      "minimum_after_d3_calendar_months": 6,
+      "second_routine_booster_at_4_years": false
+    },
+    "maximum_age": "4y11m29d"
+  },
+  "legacy_transition": {
+    "exclusive_ipv_schedule_from": "2024-11-04",
+    "legacy_reconciliation_relevant_when": "15-month birthday occurred before 2024-11-04",
+    "dob_cutoff_for_possible_pretransition_r1": "2023-08-04",
+    "legacy_history_absent_equals_zero": false,
+    "three_primary_plus_zero_vopb": "current_single_vip_booster_rule",
+    "three_primary_plus_one_vopb": "vip_transition_booster_required",
+    "one_vopb_to_transition_vip_minimum_days": 30,
+    "three_primary_plus_two_vopb": "complete_under_transition_guidance",
+    "more_than_two_vopb": "special_pathway_review",
+    "vopb_before_complete_primary_series": "special_pathway_review"
+  },
+  "supported_ipv_equivalent_history_keys": [
+    "ipv",
+    "penta_acellular_ipv",
+    "tetra_acellular_ipv",
+    "hexa_acellular_ipv"
+  ],
+  "special_pathway_history_keys": [
+    "hexa_acellular_rie"
+  ],
+  "role_assignment": {
+    "fourth_ipv_equivalent_event_automatically_booster": false,
+    "primary_roles_assigned_by": [
+      "chronology",
+      "minimum_age",
+      "interval_validity"
+    ],
+    "booster_role_assigned_by": [
+      "primary_series_validity",
+      "age_at_administration",
+      "calendar_month_interval_from_d3"
+    ]
+  },
+  "safety_contract": {
+    "unknown_or_partial_history": "history_required",
+    "unmapped_product": "history_required",
+    "same_day_ambiguity": "history_required",
+    "rie_exposure": "special_pathway_review",
+    "crie_inferred": false,
+    "travel_or_outbreak_inferred": false
+  },
+  "provenance_warning": {
+    "nt64_2026_used_as_substantive_polio_authority": false,
+    "public_calendar_second_booster_used_as_engine_authority": false,
+    "reason": "current DPNI professional technical schedule specifies one VIP booster"
+  },
+  "localization_contract": {
+    "primary": "pt-BR",
+    "secondary": "en-GB",
+    "both_required": true,
+    "decision_language_neutral": true
+  },
+  "api_exposed": false,
+  "synthetic_score_allowed": false
+}

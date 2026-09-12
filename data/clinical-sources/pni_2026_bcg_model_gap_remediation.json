@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI — BCG current-weight model-gap remediation",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 2,
+  "source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+  "source_location": {
+    "pdf_page": 9,
+    "normative_lines": "382-384"
+  },
+  "source_rule": {
+    "population": "term_or_preterm_newborn",
+    "defer_if_current_weight_below_grams": 2000,
+    "resume_when_current_weight_reaches_grams": 2000,
+    "threshold_is_current_weight": true
+  },
+  "model_problem_discovered": {
+    "existing_birth_weight_field": "PniAssessmentContext.birth_weight_grams",
+    "birth_weight_is_historical": true,
+    "birth_weight_can_substitute_for_current_weight": false,
+    "existing_pni_current_weight_field_before_remediation": false,
+    "clinical_risk": "Using birth weight as the live BCG threshold could incorrectly defer a child who has already reached 2,000 g or incorrectly clear a child whose current weight remains below 2,000 g."
+  },
+  "remediation": {
+    "field": "PniAssessmentContext.current_weight_grams",
+    "unit": "g",
+    "type": "positive_integer_or_null",
+    "current_weight_is_inferred": false,
+    "birth_weight_is_inferred_from_current_weight": false,
+    "unit_conversion_is_inferred": false
+  },
+  "bcg_engine_state": "not_implemented",
+  "bcg_engine_allowed_after_remediation": true,
+  "bcg_engine_requirements": {
+    "must_not_substitute_birth_weight_for_current_weight": true,
+    "must_preserve_unknown_current_weight": true,
+    "must_keep_hanseniasis_pathway_separate": true,
+    "must_keep_hiv_immunodeficiency_pathways_separate": true,
+    "absent_scar_alone_must_not_trigger_revaccination": true
+  },
+  "synthetic_score_allowed": false
+}

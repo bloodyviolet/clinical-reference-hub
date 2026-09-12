@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI — maternal VVSR routine rule",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "implementation_status": "python_rule_core",
+  "vaccine_key": "vvsr",
+  "official_acronym": "VVSR",
+  "layer": "routine",
+  "rule_id": "PNI26-VVSR-PREG-ROUTINE-001",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 2,
+  "source_title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+  "source_url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026",
+  "source_rule": {
+    "pregnancy_required": true,
+    "minimum_gestational_week": 28,
+    "dose_count_each_pregnancy": 1,
+    "maternal_age_restriction": false,
+    "repeat_each_pregnancy": true,
+    "dose_administered_before_week_28_repeated": false
+  },
+  "history_logic": {
+    "documented_current_pregnancy_dose": "not_due_now",
+    "documented_zero_dose": "recommend_now_when_gestational_week_gte_28",
+    "unknown_history": "history_required_when_gestational_week_gte_28",
+    "partial_history_without_current_pregnancy_proof": "history_required_when_gestational_week_gte_28",
+    "previous_pregnancy_only": "recommend_now_when_gestational_week_gte_28",
+    "current_pregnancy_episode_identity_used": true
+  },
+  "fail_closed_boundaries": [
+    "Do not treat a dose from a previous pregnancy as satisfying the current pregnancy.",
+    "Do not treat unknown or partial vaccination history as documented zero-dose history.",
+    "Do not repeat an already documented VVSR dose in the current pregnancy solely because it was administered before week 28.",
+    "Do not invent a maternal-age restriction.",
+    "Do not fabricate an exact future administration date from integer-only gestational-week input."
+  ],
+  "dtpa_deferred": {
+    "status": "not_implemented_in_bh8e1",
+    "reason": "The 2026 national dTpa rule requires interval assessment across vaccines containing diphtheria and tetanus toxoids; vaccine-key-only history is insufficient for safe automation.",
+    "required_future_contract": "cross_vaccine_antigen_or_toxoid_history_normalization"
+  },
+  "special_condition_inference_allowed": false,
+  "synthetic_vaccination_score_allowed": false
+}

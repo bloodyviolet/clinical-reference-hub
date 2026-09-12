@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "model_id": "PNI26-COVID-CHILD-HISTORY-001",
+  "review_date": "2026-09-11",
+  "feature": "Brazil PNI COVID-19 product-sensitive under-5 history normalization",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "primary_sources": [
+    {
+      "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+      "url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026",
+      "role": "current 2026 routine-child authority"
+    },
+    {
+      "title": "Estratégia de vacinação contra a Covid-19 2024 — 2ª edição",
+      "url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/estrategia-de-vacinacao-contra-a-covid-19-2024-2a-edicao",
+      "role": "federal pediatric interoperability source"
+    }
+  ],
+  "target_family": "covid_19_healthy_child_under5_basic_series",
+  "generic_history": {
+    "vaccine_key": "covid_19",
+    "single_lifetime_history": true,
+    "count_only_model_safe": false
+  },
+  "normalized_product_keys": {
+    "pfizer": "covid_pfizer_comirnaty_pediatric_under5",
+    "moderna": "covid_moderna_spikevax",
+    "coronavac": "covid_coronavac_legacy"
+  },
+  "current_2026_initiation_product": "covid_pfizer_comirnaty_pediatric_under5",
+  "registration_role": {
+    "field": "source_registration_role",
+    "required": false,
+    "source_supplied": true,
+    "clinical_exposure_ordinal": false,
+    "used_for_interval_calculation": false
+  },
+  "clinical_ordinal": {
+    "derived_from": "unambiguous dated chronology",
+    "manufacturer_registration_role_ignored_for_ordinal": true
+  },
+  "complete_sequences": [
+    [
+      "covid_pfizer_comirnaty_pediatric_under5",
+      "covid_pfizer_comirnaty_pediatric_under5",
+      "covid_pfizer_comirnaty_pediatric_under5"
+    ],
+    [
+      "covid_pfizer_comirnaty_pediatric_under5",
+      "covid_pfizer_comirnaty_pediatric_under5",
+      "covid_moderna_spikevax"
+    ],
+    [
+      "covid_pfizer_comirnaty_pediatric_under5",
+      "covid_moderna_spikevax",
+      "covid_pfizer_comirnaty_pediatric_under5"
+    ],
+    [
+      "covid_pfizer_comirnaty_pediatric_under5",
+      "covid_moderna_spikevax",
+      "covid_moderna_spikevax"
+    ],
+    [
+      "covid_moderna_spikevax",
+      "covid_moderna_spikevax"
+    ],
+    [
+      "covid_moderna_spikevax",
+      "covid_pfizer_comirnaty_pediatric_under5",
+      "covid_pfizer_comirnaty_pediatric_under5"
+    ],
+    [
+      "covid_moderna_spikevax",
+      "covid_pfizer_comirnaty_pediatric_under5",
+      "covid_moderna_spikevax"
+    ],
+    [
+      "covid_coronavac_legacy",
+      "covid_pfizer_comirnaty_pediatric_under5",
+      "covid_pfizer_comirnaty_pediatric_under5"
+    ],
+    [
+      "covid_coronavac_legacy",
+      "covid_pfizer_comirnaty_pediatric_under5",
+      "covid_moderna_spikevax"
+    ],
+    [
+      "covid_coronavac_legacy",
+      "covid_moderna_spikevax",
+      "covid_pfizer_comirnaty_pediatric_under5"
+    ],
+    [
+      "covid_coronavac_legacy",
+      "covid_moderna_spikevax",
+      "covid_moderna_spikevax"
+    ],
+    [
+      "covid_coronavac_legacy",
+      "covid_coronavac_legacy",
+      "covid_pfizer_comirnaty_pediatric_under5"
+    ],
+    [
+      "covid_coronavac_legacy",
+      "covid_coronavac_legacy",
+      "covid_moderna_spikevax"
+    ]
+  ],
+  "minimum_intervals_days": {
+    "clinical_exposure_1_to_2": 28,
+    "clinical_exposure_2_to_3": 56
+  },
+  "age_scope": {
+    "series_start": "exact_6_month_birthday",
+    "series_end": "before_exact_5_year_birthday",
+    "interval": "[DOB+6m,DOB+60m)"
+  },
+  "age_out": {
+    "fifth_birthday_rule": "resolved",
+    "post_age5_under5_completion": false,
+    "one_or_more_valid_under5_exposures": "under5_series_closed_at_age5",
+    "zero_valid_under5_exposures": "outside_under5_core"
+  },
+  "normalizer_outputs": [
+    "clinical exposure ordinal",
+    "product sequence",
+    "sequence state",
+    "historical interval validation",
+    "historical age scope",
+    "valid under-5 exposure count",
+    "optional registration-role provenance"
+  ],
+  "normalizer_does_not": [
+    "recommend a vaccine",
+    "assign due/not-due",
+    "infer special-condition eligibility",
+    "apply age >=12 NT91 logic",
+    "infer pregnancy or immune status",
+    "produce synthetic vaccination score"
+  ],
+  "fail_closed": [
+    "missing or unmapped product identity",
+    "generic covid_19 dose-level product identity",
+    "unknown or partial product-sensitive history",
+    "undated prior product-sensitive evidence",
+    "future event",
+    "event before date of birth",
+    "same-day duplicate or conflicting event",
+    "unreconciled registration metadata",
+    "duplicate registration metadata date",
+    "unsupported product sequence",
+    "clinical exposure 1-to-2 interval below 28 days",
+    "clinical exposure 2-to-3 interval below 56 days for a three-exposure path"
+  ],
+  "deferred": [
+    "healthy-child current-state decision engine",
+    "immunocompromised periodic pathway",
+    "comorbidity periodic pathway",
+    "indigenous periodic pathway",
+    "quilombola periodic pathway",
+    "riverine periodic pathway",
+    "pregnancy",
+    "postpartum",
+    "age >=60",
+    "age >=12 NT91 product transition",
+    "API",
+    "browser",
+    "UI"
+  ]
+}

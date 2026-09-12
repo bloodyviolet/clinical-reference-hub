@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "model_gap_id": "PNI26-INFLUENZA-HISTORY-001",
+  "review_date": "2026-09-11",
+  "feature": "Brazil 2026 PNI influenza cycle-aware history normalization",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "primary_sources": [
+    {
+      "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+      "url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+      "relevance": [
+        "INF3 routine groups",
+        "child priming",
+        "30-day D1-D2 interval",
+        "annual subsequent dose",
+        "year-round routine availability"
+      ]
+    },
+    {
+      "title": "Nota Técnica nº 24/2026-DPNI/SVSA/MS",
+      "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/notas-tecnicas/2026/nota-tecnica-no-24-2026-dpni-svsa-ms.pdf",
+      "relevance": [
+        "2026 influenza registration",
+        "routine versus special strategy boundary",
+        "Região Norte – 2025 strategy remains registrable during 2026"
+      ]
+    },
+    {
+      "title": "Estratégia de vacinação contra a influenza nas regiões Nordeste, Centro-Oeste, Sul e Sudeste – 2026",
+      "url": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/guias-e-manuais/2026/estrategia-de-vacinacao-contra-a-influenza-nas-regioes-nordeste-centro-oeste-sul-e-sudeste-2026.pdf",
+      "relevance": [
+        "annual strategy layer",
+        "priority groups",
+        "strategy timing"
+      ]
+    }
+  ],
+  "federal_rule_facts": {
+    "product": "INF3",
+    "routine_child_age_start": "6_months",
+    "routine_child_age_end": "5y11m29d",
+    "first_influenza_vaccination_doses": 2,
+    "first_series_interval_days": 30,
+    "previous_year_or_cycle_vaccination": "one annual dose in subsequent cycles",
+    "routine_available_year_round": true,
+    "special_strategy_separate": true
+  },
+  "model_gap": {
+    "generic_history_preserves_dates": true,
+    "generic_history_preserves_explicit_cycle_identity": false,
+    "calendar_year_is_safe_cycle_identifier": false,
+    "reason": "Federal operational material can retain a named influenza strategy from a prior nominal cycle into a later calendar year."
+  },
+  "selected_architecture": {
+    "generic_pni_vaccine_history_retained": true,
+    "generic_schema_mutation_required": false,
+    "influenza_specific_cycle_overlay": true,
+    "current_cycle_key": {
+      "required": true,
+      "opaque": true,
+      "source_supplied": true,
+      "parsed_by_clinical_core": false,
+      "derived_from_calendar_year": false,
+      "geography_inferred_from_key": false
+    },
+    "current_cycle_history_states": [
+      "documented_zero_dose",
+      "documented_doses",
+      "unknown",
+      "partial_record"
+    ],
+    "current_cycle_strategy_layers": [
+      "routine",
+      "special"
+    ],
+    "prior_cycle_vaccination_states": [
+      "documented_prior",
+      "documented_none",
+      "unknown"
+    ]
+  },
+  "reconciliation_contract": {
+    "cycle_event_must_match_lifetime_dated_event": true,
+    "future_events_rejected": true,
+    "duplicate_cycle_dates_rejected": true,
+    "same_day_lifetime_ambiguity_fails_closed": true,
+    "unsupported_product_identity_fails_closed": true,
+    "undated_generic_evidence_not_assigned_to_cycle": true,
+    "normalizer_assigns_d1_d2_du_roles": false
+  },
+  "first_engine_scope": {
+    "authorized_now": false,
+    "future_target": "routine_child_INF3",
+    "age_scope": "6m_to_under_6y",
+    "special_strategy_interoperability": "deferred",
+    "private_INF4_interoperability": "deferred_no_equivalence_inferred"
+  },
+  "deferred": [
+    "routine child decision engine",
+    "pregnancy",
+    "postpartum",
+    "age >=60",
+    "special strategy eligibility",
+    "indigenous/comorbidity child extension to <9y",
+    "North strategy decision logic",
+    "private INF4 interoperability",
+    "API typing",
+    "browser",
+    "UI"
+  ]
+}

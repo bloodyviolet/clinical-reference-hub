@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI normalized-model gap remediation",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "baseline_checkpoint": "433f89d04cc23ead88f1fd71bf35f13f97a73b4f",
+  "remediation_status": "complete_rule_implementation_pending",
+  "source_matrix": "data/clinical-sources/pni_2026_rule_matrix.json",
+  "primary_source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+  "resolved_model_gaps": {
+    "current_pregnancy_episode": {
+      "fields": [
+        "PniAssessmentContext.pregnancy_episode_key",
+        "PniDoseRecord.pregnancy_episode_key"
+      ],
+      "purpose": "Distinguish vaccination in the current pregnancy from a dose administered in a previous pregnancy."
+    },
+    "maternal_hbsag_status": {
+      "fields": [
+        "PniAssessmentContext.maternal_hbsag_status"
+      ],
+      "allowed_states": [
+        "positive",
+        "negative",
+        "unknown_or_unavailable"
+      ],
+      "unknown_equals_negative": false
+    },
+    "birth_weight_grams": {
+      "fields": [
+        "PniAssessmentContext.birth_weight_grams"
+      ],
+      "arbitrary_upper_bound_added": false
+    },
+    "bcg_scar_or_nodule_as_vaccination_evidence": {
+      "fields": [
+        "PniAssessmentContext.bcg_vaccination_evidence.vaccination_record_present",
+        "PniAssessmentContext.bcg_vaccination_evidence.scar_present",
+        "PniAssessmentContext.bcg_vaccination_evidence.palpable_nodule_present"
+      ],
+      "unknown_distinct_from_absent": true
+    },
+    "prior_disease_history": {
+      "fields": [
+        "PniAssessmentContext.disease_history",
+        "PniDiseaseEvent.disease_key",
+        "PniDiseaseEvent.evidence_source"
+      ]
+    },
+    "disease_event_date": {
+      "fields": [
+        "PniDiseaseEvent.event_date"
+      ],
+      "unknown_date_allowed": true,
+      "future_event_allowed": false
+    },
+    "exposure_event_date": {
+      "fields": [
+        "PniAssessmentContext.exposure_events",
+        "PniExposureEvent.event_date"
+      ],
+      "future_event_allowed": false
+    },
+    "breastfeeding_status": {
+      "fields": [
+        "PniAssessmentContext.breastfeeding",
+        "PniBreastfeedingContext.status",
+        "PniBreastfeedingContext.youngest_breastfed_child_date_of_birth"
+      ],
+      "pregnancy_and_breastfeeding_merged": false
+    },
+    "travel_destination": {
+      "fields": [
+        "PniAssessmentContext.travel_contexts",
+        "PniTravelContext.destination_country",
+        "PniTravelContext.destination_federative_unit",
+        "PniTravelContext.destination_municipality"
+      ],
+      "destination_implies_risk_area": false
+    },
+    "travel_date": {
+      "fields": [
+        "PniTravelContext.departure_date",
+        "PniTravelContext.return_date"
+      ]
+    },
+    "recommendation_layer:travel_or_area_risk": {
+      "fields": [
+        "PniRecommendationLayer.travel_or_area_risk"
+      ],
+      "merged_with_routine": false
+    },
+    "current_weight_grams": {
+      "discovered_during": "BH8E6A0_BH8E6A1_BCG_preflight",
+      "fields": [
+        "PniAssessmentContext.current_weight_grams"
+      ],
+      "unit": "g",
+      "source_rule": "BCG is deferred in a term or preterm newborn weighing under 2,000 g until the infant reaches 2,000 g.",
+      "birth_weight_substitution_allowed": false,
+      "current_weight_inference_allowed": false,
+      "arbitrary_upper_bound_added": false
+    }
+  },
+  "source_support": [
+    {
+      "topic": "repeat_each_pregnancy",
+      "source": "2026 national normative calendar",
+      "source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+      "source_pages": [
+        2,
+        4
+      ],
+      "software_consequence": "Preserve current pregnancy episode separately from historical pregnancy-associated doses."
+    },
+    {
+      "topic": "maternal_hbsag",
+      "source": "2026 national normative calendar",
+      "source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+      "source_pages": [
+        6,
+        7,
+        8
+      ],
+      "software_consequence": "Positive and unavailable maternal HBsAg status must remain distinguishable from negative status."
+    },
+    {
+      "topic": "bcg_birth_weight_and_evidence",
+      "source": "2026 national normative calendar",
+      "source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+      "source_pages": [
+        9,
+        11
+      ],
+      "software_consequence": "Represent birth weight and BCG record/scar/palpable-nodule evidence explicitly."
+    },
+    {
+      "topic": "dengue_prior_infection_timing",
+      "source": "2026 national normative calendar",
+      "source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+      "source_pages": [
+        50,
+        51
+      ],
+      "software_consequence": "Represent disease event/date and breastfeeding without fabricating missing dates."
+    },
+    {
+      "topic": "yellow_fever_travel",
+      "source": "Ministério da Saúde — Viajantes e Febre Amarela",
+      "source_url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/f/febre-amarela/viajantes",
+      "software_consequence": "Represent destination and departure date while keeping risk-area classification external to the raw travel record."
+    }
+  ],
+  "manual_review_boundaries": [
+    "A travel destination alone does not prove that the destination is an officially designated risk area.",
+    "Unknown maternal HBsAg status must never be treated as a documented negative result.",
+    "Unassessed BCG scar/nodule evidence must remain different from assessed-and-absent evidence.",
+    "A reported disease event remains distinct from a documented disease event.",
+    "If a required disease/exposure date is unknown, the future rule must fail closed rather than invent a date.",
+    "Complex RIE/CRIE and risk-benefit branches may return special_pathway_review rather than automatic eligibility."
+  ],
+  "remaining_unresolved_model_gaps": [],
+  "rule_engine_implementation_allowed": true,
+  "rule_engine_scope": "Granular rule implementation may begin, provided high-context or unresolved clinical branches fail closed to context_required or special_pathway_review.",
+  "synthetic_vaccination_score_allowed": false,
+  "post_lock_gap_discoveries": [
+    {
+      "gap": "current_weight_grams",
+      "discovered_during": "BH8E6A0_BH8E6A1_BCG_preflight",
+      "reason": "Original BCG extraction retained birth weight but the live 2,000 g administration threshold requires current assessment weight.",
+      "state": "remediated_BH8E6A2"
+    }
+  ],
+  "post_lock_model_gap_state": "complete_after_BH8E6A2"
+}

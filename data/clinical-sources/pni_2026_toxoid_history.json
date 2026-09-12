@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI cross-vaccine diphtheria/tetanus toxoid history normalization",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "normalization_status": "locked_dtpa_rule_pending",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "primary_source_url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026",
+  "clinical_reason": {
+    "maternal_dtpa_from_week": 20,
+    "one_dtpa_each_pregnancy": true,
+    "basic_series_target_toxoid_doses": 3,
+    "recommended_interval_days": 60,
+    "minimum_interval_days_exceptional": 30,
+    "interval_applies_across": "vaccines containing both diphtheria and tetanus toxoid components",
+    "normalizer_applies_interval_rule": false
+  },
+  "canonical_vaccine_component_map": {
+    "dtpa": [
+      "diphtheria_toxoid",
+      "tetanus_toxoid",
+      "pertussis_antigen"
+    ],
+    "dt": [
+      "diphtheria_toxoid",
+      "tetanus_toxoid"
+    ],
+    "dtp": [
+      "diphtheria_toxoid",
+      "tetanus_toxoid",
+      "pertussis_antigen"
+    ],
+    "pentavalent": [
+      "diphtheria_toxoid",
+      "tetanus_toxoid",
+      "pertussis_antigen"
+    ],
+    "hexa_acellular_rie": [
+      "diphtheria_toxoid",
+      "tetanus_toxoid",
+      "pertussis_antigen"
+    ]
+  },
+  "canonical_mapping_sources": {
+    "dtpa": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026",
+    "dt": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dt",
+    "dtp": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dtp",
+    "pentavalent": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/p/pentavalente",
+    "hexa_acellular_rie": "https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/notas-tecnicas/2026/nota-tecnica-no-90-2026-cgici-dpni-svsa-ms.pdf/view"
+  },
+  "history_scope_contract": {
+    "complete": "Caller explicitly confirms that all relevant diphtheria/tetanus-containing vaccine history available for the patient has been reconciled.",
+    "partial": "Some relevant history is available but completeness cannot be asserted.",
+    "unknown": "Relevant cross-vaccine toxoid history has not been reliably established.",
+    "complete_scope_is_never_inferred": true
+  },
+  "normalization_outputs": [
+    "chronological_antigen_exposures",
+    "exposure_event_count",
+    "last_exposure_date",
+    "ambiguous_same_day_exposure_dates",
+    "unmapped_vaccine_keys",
+    "source_history_incomplete",
+    "safe_for_interval_evaluation",
+    "safe_for_basic_series_count"
+  ],
+  "fail_closed_boundaries": [
+    "Unknown or partial cross-vaccine history must not be converted into a complete basic-series count.",
+    "An unrecognized vaccine/product key is not silently assumed to contain or not contain D/T toxoids.",
+    "Potential duplicate D/T-containing records on the same administration date make interval/count evaluation unsafe.",
+    "Future administration dates are rejected.",
+    "The normalizer does not itself apply the 60-day recommended or 30-day exceptional interval.",
+    "The normalizer does not decide whether maternal dTpa is due."
+  ],
+  "dtpa_rule_implemented": false,
+  "synthetic_score_allowed": false
+}

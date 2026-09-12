@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI — pentavalent child basic series and homologous catch-up",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "rule_id": "PNI26-PENTAVALENT-CHILD-ROUTINE-001",
+  "vaccine_key": "pentavalent",
+  "official_acronym": "penta",
+  "layer": "routine",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 1,
+  "primary_source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+  "implementation_scope": "homologous_pentavalent_basic_series_and_catchup_under_7",
+  "antigen_components": [
+    "diphtheria_toxoid",
+    "tetanus_toxoid",
+    "pertussis_antigen",
+    "hepatitis_b",
+    "haemophilus_influenzae_type_b"
+  ],
+  "schedule": {
+    "routine_agenda_months": [
+      2,
+      4,
+      6
+    ],
+    "basic_series_dose_count": 3,
+    "routine_start_age_months": 2,
+    "exceptional_start": {
+      "minimum_age": {
+        "months": 1,
+        "days": 15
+      },
+      "requires_explicit_authorization": true
+    },
+    "maximum_age": "6_years_11_months_29_days",
+    "recommended_interval_days": 60,
+    "exceptional_minimum_interval_days": 30,
+    "exceptional_minimum_requires_explicit_authorization": true,
+    "dose_1_to_dose_3_minimum_calendar_months": 4,
+    "dose_3_minimum_age_months": 6
+  },
+  "counting_contract": {
+    "series_key": "pentavalent",
+    "pentavalent_history_counts_as_pentavalent_series": true,
+    "monovalent_hepatitis_b_counts_as_pentavalent_dose": false,
+    "dtp_counts_as_pentavalent_basic_dose": false,
+    "hexa_acellular_rie_counts_automatically": false,
+    "standalone_hib_key_present_in_current_model": false,
+    "mixed_product_antigen_reconstruction_implemented": false,
+    "reason": "routine evaluator remains homologous-product specific; shared antigen exposure is handled separately"
+  },
+  "toxoid_interoperability_boundary": {
+    "pentavalent_contributes_dt_pertussis_exposure": true,
+    "shared_antigen_exposure_changes_pentavalent_series_count": false
+  },
+  "history_contract": {
+    "documented_zero_dose": "evaluate_first_pentavalent_dose",
+    "one_documented_pentavalent_dose": "evaluate_second_dose",
+    "two_documented_pentavalent_doses": "evaluate_third_dose",
+    "three_valid_documented_pentavalent_doses": "basic_series_complete",
+    "unknown_or_partial": "history_required",
+    "undated_prior_doses": "history_required",
+    "more_than_three_pentavalent_doses": "special_pathway_review",
+    "historical_30_to_59_day_interval": "special_pathway_review_without_historical_exception_evidence"
+  },
+  "d1_exception_contract": {
+    "documented_d1_from_1m15d_to_before_2m": "accepted_only_when_explicit_early_start_authorization_is supplied",
+    "documented_d1_before_1m15d": "special_pathway_review"
+  },
+  "booster_boundary": {
+    "dtp_boosters_at_15_months_and_4_years": "separate_rule_family",
+    "pentavalent_as_dtp_substitute_in_specific_control_contexts": "deferred_nonroutine_pathway"
+  },
+  "special_pathway_boundary": {
+    "rie_hexa_acellular": "separate_special_pathway",
+    "severe_pertussis_component_aefi": "separate_special_pathway",
+    "crie_conditions": "separate_special_pathway"
+  },
+  "product_history_sensitive": false,
+  "special_condition_sensitive": false,
+  "simultaneous_administration": {
+    "inter_vaccine_spacing_rule_inferred": false
+  },
+  "localization_contract": {
+    "primary_language": "pt-BR",
+    "secondary_language": "en-GB",
+    "both_interpretations_required": true,
+    "language_neutral_decision_parity_required": true
+  },
+  "api_exposed": false,
+  "synthetic_score_allowed": false
+}

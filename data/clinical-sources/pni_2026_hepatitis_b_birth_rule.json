@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "feature": "Brazil 2026 PNI — hepatitis-B monovalent birth-dose rule",
+  "review_date": "2026-09-11",
+  "source_snapshot_date": "2026-09-11",
+  "rule_id": "PNI26-HB-BIRTH-ROUTINE-001",
+  "vaccine_key": "hepatitis_b",
+  "layer": "routine",
+  "implementation_scope": "monovalent_birth_dose_only",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "authority_rank": 2,
+  "primary_source_url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf",
+  "routine_rule": {
+    "dose_count": 1,
+    "product_layer": "monovalent_hepatitis_b",
+    "agenda": "immediately_after_birth_in_delivery_room_or_first_12_hours_in_maternity",
+    "exact_12_hour_computation_supported": false,
+    "reason_exact_12_hour_not_computed": "normalized PNI context currently records dates, not birth/assessment timestamps; this does not change whether the dose should be recommended now",
+    "latest_opportunity": "through_age_1_month",
+    "after_opportunity": "do_not_administer_delayed_birth_dose"
+  },
+  "later_infant_schedule_boundary": {
+    "implemented_in_this_rule": false,
+    "vaccine_key": "pentavalent",
+    "agenda_months": [
+      2,
+      4,
+      6
+    ],
+    "birth_dose_interchangeability_inferred": false,
+    "pentavalent_dose_counts_as_monovalent_birth_dose": false
+  },
+  "maternal_hbsag_boundary": {
+    "negative": "routine_birth_dose_layer",
+    "positive": "separate_perinatal_immunoprophylaxis_pathway",
+    "unknown_or_unavailable": "separate_perinatal_immunoprophylaxis_review",
+    "not_supplied_during_active_birth_window": "separate_perinatal_context_review",
+    "unknown_equals_negative": false,
+    "positive_pathway_requires_hbig": true,
+    "unknown_status_hbig_requirement_inferred": false,
+    "positive_pathway_implemented_in_this_rule": false,
+    "unknown_pathway_implemented_in_this_rule": false
+  },
+  "history_contract": {
+    "documented_birth_window_hepatitis_b_dose": "not_due_now",
+    "documented_zero_dose": "continue_to_context_and_safety_gates",
+    "unknown_history_during_active_window": "history_required",
+    "partial_history_during_active_window": "history_required",
+    "unknown_is_not_documented_zero": true,
+    "late_hepatitis_b_dose_retroactively_counts_as_birth_dose": false
+  },
+  "special_condition_boundary": {
+    "implemented_in_this_rule": false,
+    "explicit_special_condition_action": "special_pathway_review"
+  },
+  "simultaneous_administration": {
+    "spacing_from_other_current_cnv_vaccines_required": false
+  },
+  "administration_safety_boundary": {
+    "calendar_due_means_safe_to_administer": false,
+    "not_screened_action": "context_required",
+    "screened_concern_action": "special_pathway_review"
+  },
+  "localization_contract": {
+    "primary_language": "pt-BR",
+    "secondary_language": "en-GB",
+    "both_interpretations_required": true,
+    "language_neutral_decision_parity_required": true
+  },
+  "api_exposed": false,
+  "synthetic_score_allowed": false
+}

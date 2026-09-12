@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "rule_id": "PNI26-DT-ROUTINE-001",
+  "review_date": "2026-09-12",
+  "normative_position": 21,
+  "vaccine_key": "dt",
+  "official_acronym": "dT",
+  "layer": "routine",
+  "authority": "Ministério da Saúde / SVSA / DPNI",
+  "primary_source": {
+    "title": "Instrução Normativa do Calendário Nacional de Vacinação 2026",
+    "url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf/@@download/file"
+  },
+  "history_source": "PNI 2026 cross-vaccine D/T toxoid normalizer",
+  "history_normalizer": "normalize_diphtheria_tetanus_toxoid_history",
+  "age_scope": {
+    "start": "exact_7_years",
+    "upper_age_limit": null
+  },
+  "basic_series": {
+    "target_dt_containing_doses": 3,
+    "prospective_product": "dt",
+    "recommended_interval_days": 60,
+    "exceptional_minimum_interval_days": 30,
+    "minimum_requires_explicit_authorization": true,
+    "series_restart": false,
+    "historical_interpretation": {
+      "routine_subsequence_interval_days": 60,
+      "minimum_possible_subsequence_interval_days": 30,
+      "historical_30_59_without_exception_proof": "review_if_it_changes_incomplete_series_position",
+      "sub30_counts_as_next_primary_position": false,
+      "ordinary_completion_proven_when": "routine_subsequence_count_at_least_3"
+    },
+    "prospective_next_date": {
+      "ordinary": "max(last_counted_primary_plus_60d,latest_physical_dt_exposure_plus_30d)",
+      "authorized_exceptional": "max(last_counted_primary_plus_30d,latest_physical_dt_exposure_plus_30d)"
+    }
+  },
+  "booster": {
+    "anchor": "latest_physical_dt_containing_exposure_after_basic_series_proven",
+    "ordinary_interval": "10_calendar_years",
+    "exposure_risk_interval": "5_calendar_years",
+    "age14_agenda": "derives_from_age4_DTP_plus_10_calendar_years",
+    "exposure_risk_inferred": false
+  },
+  "pregnancy": {
+    "dt_contraindicated": false,
+    "pregnancy_calendar_uses_dt_and_dtpa": true,
+    "first_general_core_action_when_due_and_pregnant": "special_pathway_review",
+    "reason": "coordinate dT series completion with the separate maternal dTpa pathway",
+    "gestational_sequence_duplicated": false
+  },
+  "dtpa_priority_occupation": {
+    "screen_required_when_dt_otherwise_due": true,
+    "automatic_dtpa_occupational_evaluator_implemented": false,
+    "positive_action": "special_pathway_review",
+    "occupation_inferred": false
+  },
+  "arthus": {
+    "federal_precaution": "10_years_after_last_dose_before_booster",
+    "automatic_reaction_to_dose_date_model": false,
+    "first_core_action": "administration_safety_review"
+  },
+  "administration_safety": {
+    "due_time_only": true,
+    "unscreened_action": "context_required",
+    "documented_concern_action": "special_pathway_review",
+    "diagnosis_inferred": false
+  },
+  "coadministration": {
+    "other_current_CNV_vaccine_spacing_required": false,
+    "dedicated_interaction_context_required": false
+  },
+  "deferred": [
+    "maternal_dt_dtpa_joint_sequencing",
+    "occupational_dtpa_evaluator",
+    "tetanus_wound_prophylaxis",
+    "tetanus_immunoglobulin",
+    "diphtheria_contact_management",
+    "arthus_reaction_date_automation"
+  ],
+  "api_exposed": false,
+  "synthetic_score_allowed": false
+}
