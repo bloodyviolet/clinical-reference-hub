@@ -152,33 +152,51 @@ All 132 current `protocol_text` objects are therefore
 `public_verified` for redistribution while remaining unserved locally.
 `public_url` and `self_hosted_public_url` remain unset.
 
-This completes the **current protocol-text layer only**. Item 9 remains
-open for associated PCDT assets and historical/version recovery,
-including approval acts, annexes, amendments, rectifications, summaries,
-recommendation reports, consultation materials, Ministry publications,
-and explicit gap accounting.
+This completes the **current protocol-text layer only**.
+
+**v2 release-scope boundary.** For the v2.0.0 release, Item 9 is
+intentionally limited to the qualified current PCDT corpus, its
+represented current associated official documents, and structured
+revision metadata/assets already demonstrated by official sources.
+The 13 historical approval relationships already present in the
+registry are retained, but further historical protocol/version
+discovery and ingestion are explicitly deferred until after v2.0.0 is
+completed and deployed.
+
+Historical expansion is therefore post-v2 work. Before historical
+`protocol_text` documents are introduced, the registry will require
+explicit current-version semantics and validated supersession-graph
+relationships so that document role is not used to infer currentness.
+For the qualified v2 corpus, each of the 132 PCDTs continues to have
+exactly one current `protocol_text`-bearing approval version.
 
 No nginx route, API/browser/UI exposure, or PWA PDF bulk precaching is
 enabled by this step.
 
 ## Represented current associated-asset ingestion
 
-BH9A5 qualified all **243 associated current documents already
-represented in the registry**:
+BH9A5 originally qualified 243 associated current relationships.
+A subsequent metadata-integrity correction removed one misassociated
+approval-act relationship. The qualified current associated layer now
+contains **242 logical documents**:
 
-- 135 approval acts;
+- 134 approval acts;
 - 20 Ministry publications;
 - 88 protocol summaries.
 
-The 243 logical relationships resolve to 235 unique SHA-256 binaries.
-One binary already exists in the current protocol-text archive, so only
-234 additional immutable objects are required.
+The 242 logical relationships resolve to **234 unique SHA-256 binaries**.
+All 234 associated binaries are distinct from the 132 current
+protocol-text objects. The qualified current v2 corpus therefore resolves
+to **366 unique archive objects**, serving **374 current logical
+documents** (132 current protocol texts plus 242 represented associated
+documents).
 
-After ingestion the archive contains **366 unique objects**, serving
-**375 linked logical documents** (132 current protocol texts plus 243
-represented associated documents).
+The archive contains **376 immutable objects overall**: the 366 current
+objects plus 10 additional objects supporting the 13 historical approval
+relationships already retained in the registry.
 
-Qualification report SHA-256:
+Original BH9A5 qualification report SHA-256 (pre-correction tranche
+evidence):
 
 `f2d9752ae6424ba3acdc834281c3b2785b6314d773172b86780ef690aee63269`
 
