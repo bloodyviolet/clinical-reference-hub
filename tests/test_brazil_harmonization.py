@@ -543,3 +543,200 @@ def test_policy_contains_release_gate_language():
         "Items 7 onward"
         in text
     )
+
+
+def test_item9_current_corpus_governance_counts_match_registry():
+    registry_path = (
+        ROOT
+        / "data"
+        / "clinical-sources"
+        / "sus_pcdt_registry.json"
+    )
+
+    manifest_path = (
+        ROOT
+        / "data"
+        / "clinical-sources"
+        / "sus_pcdt_archive_manifest.json"
+    )
+
+    registry = json.loads(
+        registry_path.read_text(
+            encoding="utf-8"
+        )
+    )
+
+    manifest = json.loads(
+        manifest_path.read_text(
+            encoding="utf-8"
+        )
+    )
+
+    item9 = audit()[
+        "future_items"
+    ][
+        "9"
+    ]
+
+    versions = [
+        version
+        for pcdt in registry[
+            "pcdts"
+        ]
+        for version in pcdt[
+            "approval_versions"
+        ]
+    ]
+
+    current_versions = [
+        version
+        for version in versions
+        if any(
+            document[
+                "document_role"
+            ]
+            == "protocol_text"
+            for document in version[
+                "documents"
+            ]
+        )
+    ]
+
+    assert len(
+        current_versions
+    ) == len(
+        registry[
+            "pcdts"
+        ]
+    )
+
+    current_documents = [
+        document
+        for version in current_versions
+        for document in version[
+            "documents"
+        ]
+    ]
+
+    current_associated = [
+        document
+        for document in current_documents
+        if document[
+            "document_role"
+        ]
+        != "protocol_text"
+    ]
+
+    current_public_documents = [
+        document
+        for document in current_documents
+        if document.get(
+            "redistribution_state"
+        )
+        == "public_verified"
+    ]
+
+    current_object_ids = {
+        document[
+            "archive_object_id"
+        ]
+        for document in current_documents
+    }
+
+    current_public_object_ids = {
+        document[
+            "archive_object_id"
+        ]
+        for document in current_public_documents
+    }
+
+    current_associated_ids = {
+        document[
+            "archive_object_id"
+        ]
+        for document in current_associated
+    }
+
+    assert len(
+        current_documents
+    ) == 374
+
+    assert len(
+        current_public_documents
+    ) == 374
+
+    assert len(
+        current_object_ids
+    ) == 366
+
+    assert len(
+        current_public_object_ids
+    ) == 366
+
+    assert len(
+        current_associated
+    ) == 242
+
+    assert len(
+        current_associated_ids
+    ) == 234
+
+    assert item9[
+        "archive_license_state"
+    ] == (
+        "represented_current_corpus_"
+        "public_verified_"
+        "catalogue_completeness_pending"
+    )
+
+    assert item9[
+        "archive_object_count"
+    ] == len(
+        current_object_ids
+    )
+
+    assert item9[
+        "public_verified_object_count"
+    ] == len(
+        current_public_object_ids
+    )
+
+    assert item9[
+        "public_verified_logical_document_count"
+    ] == len(
+        current_public_documents
+    )
+
+    assert item9[
+        "represented_current_associated_document_count"
+    ] == len(
+        current_associated
+    )
+
+    assert item9[
+        "represented_current_associated_unique_hash_count"
+    ] == len(
+        current_associated_ids
+    )
+
+    # This is an ingestion-tranche fact, not a live
+    # current-corpus cardinality field.
+    assert item9[
+        "represented_current_associated_new_object_count"
+    ] == 234
+
+    # Historical objects are persisted in the archive
+    # without changing the current-corpus counters above.
+    assert len(
+        manifest[
+            "objects"
+        ]
+    ) == 376
+
+    assert item9[
+        "archive_object_count"
+    ] < len(
+        manifest[
+            "objects"
+        ]
+    )
