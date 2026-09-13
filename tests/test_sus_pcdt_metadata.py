@@ -658,10 +658,10 @@ def test_represented_current_associated_assets_are_archived_public_verified_and_
     manifest = load(MANIFEST_PATH)
     current_versions = [version for pcdt in registry['pcdts'] for version in pcdt['approval_versions'] if any((document['document_role'] == 'protocol_text' for document in version['documents']))]
     associated = [document for version in current_versions for document in version['documents'] if document['document_role'] != 'protocol_text']
-    assert len(associated) == 243
+    assert len(associated) == 242
     linked_ids = {document['archive_object_id'] for document in associated}
     assert None not in linked_ids
-    assert len(linked_ids) == 235
+    assert len(linked_ids) == 234
     manifest_ids = {obj['archive_object_id'] for obj in manifest['objects']}
     assert linked_ids <= manifest_ids
     for document in associated:

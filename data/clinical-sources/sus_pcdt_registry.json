@@ -13044,25 +13044,6 @@
             {
               "document_id": "trombocitopenia-imune-primaria--portaria-conjunta-saes-sctie-ms-41-2026--approval-act--001",
               "document_role": "approval_act",
-              "source_link_text": "(",
-              "canonical_source_url": "https://www.gov.br/conitec/pt-br/midias/protocolos/pcdt_transtornoafetivobipolar_tipoi.pdf/@@display-file/file",
-              "archive_object_id": "sha256:93252b2724fc0de45a45a800283973661764c6fefcbe520c5d8bc02566d4c536",
-              "self_hosted_public_url": null,
-              "availability_state": "archived",
-              "redistribution_state": "public_verified",
-              "license_evidence": {
-                "evidence_page_sha256": "c712e106c0c256ea5d746144aecb9550a562f8ddd0c7f79704fcbf81950e28c8",
-                "evidence_report_sha256": "f2d9752ae6424ba3acdc834281c3b2785b6314d773172b86780ef690aee63269",
-                "evidence_snapshot_date": "2026-09-12",
-                "evidence_type": "inherited_from_official_page",
-                "evidence_url": "https://www.gov.br/conitec/pt-br/midias/protocolos/pcdt_transtornoafetivobipolar_tipoi.pdf",
-                "label": "Creative Commons Atribuição-SemDerivações 3.0 Não Adaptada",
-                "upstream_bytes_reverified": true
-              }
-            },
-            {
-              "document_id": "trombocitopenia-imune-primaria--portaria-conjunta-saes-sctie-ms-41-2026--approval-act--002",
-              "document_role": "approval_act",
               "source_link_text": "27/02/2026",
               "canonical_source_url": "https://www.gov.br/conitec/pt-br/midias/relatorios/portaria/2026/portaria-conjunta-saes-sctie-no-41-de-25-de-fevereiro-de-2026.pdf/@@display-file/file",
               "archive_object_id": "sha256:92be079059068102a7fa43ca58de0d0f1e5f8876732e0677f92f4d54601c0109",
