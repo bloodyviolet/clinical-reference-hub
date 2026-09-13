@@ -114,6 +114,24 @@
 
     <!-- VIEW 3: Clinical Calculators -->
     <section id="view-calc" role="tabpanel" aria-labelledby="tab-btn-calc" class="hidden space-y-6">
+      <div
+        id="calc-subnav"
+        class="flex flex-wrap gap-2"
+        role="group"
+        aria-label="Grupos de calculadoras"
+      >
+        <button type="button" data-calc-group="drip" aria-pressed="true" data-i18n="calcNav.drip" class="calc-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-teal-600 text-white border border-teal-500 transition shadow-lg shadow-teal-600/20">Gotejamento</button>
+        <button type="button" data-calc-group="medication" aria-pressed="false" data-i18n="calcNav.medication" class="calc-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">Dosagem</button>
+        <button type="button" data-calc-group="bmi" aria-pressed="false" data-i18n="calcNav.bmi" class="calc-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">IMC</button>
+        <button type="button" data-calc-group="paediatrics" aria-pressed="false" data-i18n="calcNav.paediatrics" class="calc-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">Pediatria</button>
+        <button type="button" data-calc-group="renal" aria-pressed="false" data-i18n="calcNav.renal" class="calc-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">Renal</button>
+        <button type="button" data-calc-group="falls-function" aria-pressed="false" data-i18n="calcNav.falls" class="calc-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">Quedas / Função</button>
+        <button type="button" data-calc-group="metabolic" aria-pressed="false" data-i18n="calcNav.metabolic" class="calc-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">Ácido-base / Metabólico</button>
+        <button type="button" data-calc-group="oxygenation" aria-pressed="false" data-i18n="calcNav.oxygenation" class="calc-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">Oxigenação</button>
+        <button type="button" data-calc-group="hemodynamics" aria-pressed="false" data-i18n="calcNav.hemodynamics" class="calc-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">Hemodinâmica</button>
+        <button type="button" data-calc-group="obstetrics" aria-pressed="false" data-i18n="calcNav.obstetrics" class="calc-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">Obstetrícia</button>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
         <!-- Gotejamento -->
@@ -2312,6 +2330,17 @@
 
     <!-- VIEW 4: Escalas Clínicas -->
     <section id="view-scales" role="tabpanel" aria-labelledby="tab-btn-scales" class="hidden space-y-6">
+      <div
+        id="scale-subnav"
+        class="flex flex-wrap gap-2"
+        role="group"
+        aria-label="Grupos de escalas clínicas"
+      >
+        <button type="button" data-scale-group="news2" aria-pressed="true" data-i18n="scaleNav.news2" class="scale-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-teal-600 text-white border border-teal-500 transition shadow-lg shadow-teal-600/20">NEWS2</button>
+        <button type="button" data-scale-group="neurological" aria-pressed="false" data-i18n="scaleNav.neurological" class="scale-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">Neurológicas</button>
+        <button type="button" data-scale-group="apgar" aria-pressed="false" data-i18n="scaleNav.apgar" class="scale-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">Apgar</button>
+      </div>
+
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         <!-- NEWS2 -->
@@ -2624,7 +2653,7 @@
         <div>
           <h2 data-i18n="serial.title" class="text-lg font-bold text-white">Tendências seriadas</h2>
           <p data-i18n="serial.description" class="text-xs text-slate-400 mt-1">
-            Observações clínicas efêmeras da página atual. Recarregar ou sair da página apaga as séries.
+            Observações clínicas mantidas somente nesta sessão do navegador. Recarregar a página restaura a sessão; fechar a aba/sessão pode apagá-la.
           </p>
           <p data-i18n="serial.noIdentity" class="text-[11px] text-amber-300 mt-2">
             Não registre identificadores de paciente, encontro ou notas livres nesta camada.
@@ -2673,6 +2702,14 @@
         </div>
 
         <div class="flex flex-wrap gap-3">
+          <button id="serial-download-pdf" type="button" disabled data-i18n="serial.exportPdf" class="px-4 py-2 rounded-lg text-xs font-semibold border border-teal-700 bg-teal-950/30 text-teal-200 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed">
+            Baixar PDF
+          </button>
+
+          <button id="serial-download-docx" type="button" disabled data-i18n="serial.exportDocx" class="px-4 py-2 rounded-lg text-xs font-semibold border border-sky-700 bg-sky-950/30 text-sky-200 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed">
+            Baixar DOCX
+          </button>
+
           <button id="serial-clear-instrument" type="button" disabled data-i18n="serial.clearInstrument" class="px-4 py-2 rounded-lg text-xs font-semibold border border-slate-700 bg-slate-950 text-slate-300 hover:text-white disabled:opacity-50">
             Limpar série selecionada
           </button>
@@ -2740,6 +2777,7 @@
   <script src="/assets/clinical-tools.js" defer></script>
   <script src="/assets/growth-tools.js" defer></script>
   <script src="/assets/serial-trends-runtime.js" defer></script>
+  <script src="/assets/serial-trends-export.js" defer></script>
   <script src="/assets/app.js" defer></script>
 
   <!-- Footer -->

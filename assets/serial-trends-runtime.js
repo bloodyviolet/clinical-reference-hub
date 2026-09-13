@@ -392,9 +392,56 @@
   }
 
 
+  function normaliseCapturedAt(
+    capturedAt,
+    nowProvider
+  ) {
+    if (
+      capturedAt === undefined
+      || capturedAt === null
+    ) {
+      return normaliseNow(
+        nowProvider
+      );
+    }
+
+    if (
+      typeof capturedAt !== 'string'
+      || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/
+        .test(
+          capturedAt
+        )
+    ) {
+      fail(
+        'captured_at_must_be_rfc3339_utc'
+      );
+    }
+
+    const parsed =
+      new Date(
+        capturedAt
+      );
+
+    if (
+      !Number.isFinite(
+        parsed.getTime()
+      )
+      || parsed.toISOString()
+        !== capturedAt
+    ) {
+      fail(
+        'invalid_captured_at'
+      );
+    }
+
+    return parsed;
+  }
+
+
   function createObservation({
     instrumentKey,
     observedAt,
+    capturedAt,
     requestSnapshot,
     resultSnapshot,
     executionSource,
@@ -433,7 +480,8 @@
       );
 
     const capturedDate =
-      normaliseNow(
+      normaliseCapturedAt(
+        capturedAt,
         nowProvider
       );
 
@@ -500,6 +548,7 @@
     function addObservation({
       instrumentKey,
       observedAt,
+      capturedAt,
       requestSnapshot,
       resultSnapshot,
       executionSource
@@ -508,6 +557,7 @@
         createObservation({
           instrumentKey,
           observedAt,
+          capturedAt,
           requestSnapshot,
           resultSnapshot,
           executionSource,

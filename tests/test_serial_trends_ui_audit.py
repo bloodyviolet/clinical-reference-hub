@@ -72,11 +72,11 @@ EXPECTED_REGISTRY_SHA = (
 )
 
 EXPECTED_RUNTIME_SHA = (
-    "aa29106e2caa20eff1104ba853ecc59d0dc752ec18c5a272a2b0dfa06fe5f2b4"
+    "1afb14fdab49f08ce7721d231f6be584e9b73e5c188204a3db737ba3d8db0bbc"
 )
 
 CACHE_NAME = (
-    "clinical-reference-v25-v2-release-identity"
+    "clinical-reference-v26-v2-uat-remediation"
 )
 
 
@@ -328,13 +328,27 @@ def test_serial_time_identity_and_persistence_boundaries():
         "encounter_id",
         "person_id",
         "localStorage",
-        "sessionStorage",
         "indexedDB",
     ):
         assert (
             forbidden
             not in serial
         )
+
+    assert (
+        "sessionStorage"
+        in serial
+    )
+
+    assert (
+        "SERIAL_SESSION_STORAGE_KEY"
+        in serial
+    )
+
+    assert (
+        "capturedAt:"
+        in serial
+    )
 
 
 def test_serial_plot_and_capture_boundaries():
@@ -500,7 +514,7 @@ def test_serial_i18n_and_language_rerender_contract():
 
     assert len(
         counts
-    ) == 66
+    ) == 72
 
     assert all(
         count == 2
@@ -531,6 +545,13 @@ def test_serial_pwa_delivery_contract():
     assert (
         sw.count(
             "'/assets/serial-trends-runtime.js'"
+        )
+        == 1
+    )
+
+    assert (
+        sw.count(
+            "'/assets/serial-trends-export.js'"
         )
         == 1
     )

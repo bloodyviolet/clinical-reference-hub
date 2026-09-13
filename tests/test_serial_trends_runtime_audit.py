@@ -53,15 +53,15 @@ GOVERNANCE_PATH = (
 
 
 EXPECTED_RUNTIME_SHA256 = (
-    "aa29106e2caa20eff1104ba853ecc59d0dc752ec18c5a272a2b0dfa06fe5f2b4"
+    "1afb14fdab49f08ce7721d231f6be584e9b73e5c188204a3db737ba3d8db0bbc"
 )
 
 EXPECTED_JS_AUDIT_SHA256 = (
-    "0d3a8d62ef985f637896727418a30eaf6183f4d0819c08fa521b3a48ba16f8a7"
+    "6965b6e32a29dfac1d7b8f4c2524e4b189f914816d36cda28e8a158b4922a7f1"
 )
 
 EXPECTED_CONTRACT_SHA256 = (
-    "bbbda784fd6fd1e19b9eb41fd820f93febae772f7ba1f7af2fbcc88ea34347d4"
+    "bcd411588d02bf9c8c995a28e4d37e2216c3deaaba013cd6d87a1415908e129b"
 )
 
 
@@ -100,14 +100,14 @@ def test_qualified_runtime_artifact_hashes():
     )
 
 
-def test_runtime_contract_preserves_ephemeral_boundary():
+def test_runtime_contract_preserves_session_scoped_boundary():
     contract = load_json(
         CONTRACT_PATH
     )
 
     assert contract[
         "qualification_status"
-    ] == "runtime_semantics_candidate"
+    ] == "runtime_semantics_uat_remediation_candidate"
 
     persistence = contract[
         "persistence"
@@ -117,15 +117,37 @@ def test_runtime_contract_preserves_ephemeral_boundary():
         persistence[
             "memory_only"
         ]
+        is False
+    )
+
+    assert (
+        persistence[
+            "session_storage"
+        ]
+        is True
+    )
+
+    assert (
+        persistence[
+            "browser_session_only"
+        ]
+        is True
+    )
+
+    assert (
+        persistence[
+            "reload_restore_required"
+        ]
         is True
     )
 
     for key in (
         "local_storage",
-        "session_storage",
         "indexed_db",
         "service_worker_storage",
         "server_storage",
+        "patient_identifier_storage_allowed",
+        "free_text_clinical_note_storage_allowed",
     ):
         assert (
             persistence[key]
@@ -487,7 +509,7 @@ def test_qualified_js_runtime_audit_executes():
     )
 
     assert (
-        "memory-only isolation PASS"
+        "session-scoped isolation PASS"
         in output
     )
 

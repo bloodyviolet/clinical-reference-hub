@@ -212,6 +212,253 @@ function switchTab(tab) {
   document.getElementById(`tab-btn-${tab}`).className = "whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition";
 }
 
+const CALCULATOR_GROUP_FORMS =
+  Object.freeze({
+    drip: [
+      'drip-form'
+    ],
+
+    medication: [
+      'meds-form'
+    ],
+
+    bmi: [
+      'bmi-form'
+    ],
+
+    paediatrics: [
+      'ped-form',
+      'growth-form'
+    ],
+
+    renal: [
+      'crcl-form',
+      'renal-egfr-form',
+      'renal-ckd-form',
+      'renal-aki-form'
+    ],
+
+    'falls-function': [
+      'caderneta-falls-form',
+      'ivcf20-form',
+      'steadi-tug-form',
+      'steadi-chair-form',
+      'steadi-balance-form',
+      'steadi-orthostatic-form'
+    ],
+
+    metabolic: [
+      'metabolic-form',
+      'methanol-form'
+    ],
+
+    oxygenation: [
+      'oxygenation-form'
+    ],
+
+    hemodynamics: [
+      'hemodynamics-form'
+    ],
+
+    obstetrics: [
+      'naegele-form',
+      'mcdonald-form'
+    ]
+  });
+
+
+const SCALE_GROUP_FORMS =
+  Object.freeze({
+    news2: [
+      'news2-form'
+    ],
+
+    neurological: [
+      'glasgow-form',
+      'gcsp-form',
+      'four-form'
+    ],
+
+    apgar: [
+      'apgar-form'
+    ]
+  });
+
+
+function clinicalToolPanel(
+  formId
+) {
+  const form =
+    document.getElementById(
+      formId
+    );
+
+  return (
+    form?.closest?.(
+      'div.bg-slate-900'
+    )
+    || null
+  );
+}
+
+
+function setClinicalToolGroup(
+  kind,
+  selectedGroup
+) {
+  const mapping =
+    kind === 'calc'
+      ? CALCULATOR_GROUP_FORMS
+      : SCALE_GROUP_FORMS;
+
+  const buttonSelector =
+    kind === 'calc'
+      ? '[data-calc-group]'
+      : '[data-scale-group]';
+
+  const dataKey =
+    kind === 'calc'
+      ? 'calcGroup'
+      : 'scaleGroup';
+
+  if (
+    !Object.prototype
+      .hasOwnProperty.call(
+        mapping,
+        selectedGroup
+      )
+  ) {
+    return;
+  }
+
+  const allPanels =
+    new Set();
+
+  Object.values(
+    mapping
+  ).flat().forEach(
+    (formId) => {
+      const panel =
+        clinicalToolPanel(
+          formId
+        );
+
+      if (panel) {
+        allPanels.add(
+          panel
+        );
+      }
+    }
+  );
+
+  for (
+    const panel
+    of allPanels
+  ) {
+    panel.hidden = true;
+  }
+
+  for (
+    const formId
+    of mapping[
+      selectedGroup
+    ]
+  ) {
+    const panel =
+      clinicalToolPanel(
+        formId
+      );
+
+    if (panel) {
+      panel.hidden = false;
+    }
+  }
+
+  document
+    .querySelectorAll(
+      buttonSelector
+    )
+    .forEach(
+      (button) => {
+        const selected =
+          button.dataset[
+            dataKey
+          ]
+          === selectedGroup;
+
+        button.setAttribute(
+          'aria-pressed',
+          selected
+            ? 'true'
+            : 'false'
+        );
+
+        button.className =
+          selected
+            ? (
+                kind === 'calc'
+                  ? 'calc-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-teal-600 text-white border border-teal-500 transition shadow-lg shadow-teal-600/20'
+                  : 'scale-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-teal-600 text-white border border-teal-500 transition shadow-lg shadow-teal-600/20'
+              )
+            : (
+                kind === 'calc'
+                  ? 'calc-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition'
+                  : 'scale-subnav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition'
+              );
+      }
+    );
+}
+
+
+function wireClinicalToolSubnavigation() {
+  document
+    .querySelectorAll(
+      '[data-calc-group]'
+    )
+    .forEach(
+      (button) => {
+        button.addEventListener(
+          'click',
+          () =>
+            setClinicalToolGroup(
+              'calc',
+              button.dataset
+                .calcGroup
+            )
+        );
+      }
+    );
+
+  document
+    .querySelectorAll(
+      '[data-scale-group]'
+    )
+    .forEach(
+      (button) => {
+        button.addEventListener(
+          'click',
+          () =>
+            setClinicalToolGroup(
+              'scale',
+              button.dataset
+                .scaleGroup
+            )
+        );
+      }
+    );
+
+  setClinicalToolGroup(
+    'calc',
+    'drip'
+  );
+
+  setClinicalToolGroup(
+    'scale',
+    'news2'
+  );
+}
+
+
 async function checkApiHealth() {
   const badge = document.getElementById('api-status');
   const dot = document.getElementById('api-status-dot');
@@ -6833,6 +7080,599 @@ let serialRegistry = null;
 let serialRegistryByKey = new Map();
 let serialStore = null;
 
+const SERIAL_SESSION_STORAGE_KEY =
+  'clinical-reference-v2-serial-trends-session-v1';
+
+const SERIAL_SESSION_SCHEMA_VERSION = 1;
+
+
+function serialAllObservations() {
+  if (
+    !serialStore
+    || !serialRegistry
+  ) {
+    return [];
+  }
+
+  const observations = [];
+
+  for (
+    const instrument
+    of serialRegistry.instruments
+  ) {
+    for (
+      const group
+      of serialStore
+        .chronologyGroups(
+          instrument.key
+        )
+    ) {
+      for (
+        const observation
+        of group.observations
+      ) {
+        observations.push(
+          observation
+        );
+      }
+    }
+  }
+
+  return observations;
+}
+
+
+function serialTotalObservationCount() {
+  return serialAllObservations()
+    .length;
+}
+
+
+function serialSessionUiState() {
+  return {
+    instrument:
+      document
+        .getElementById(
+          'serial-instrument'
+        )?.value
+      || '',
+
+    observedAt:
+      document
+        .getElementById(
+          'serial-observed-at'
+        )?.value
+      || '',
+
+    offset:
+      document
+        .getElementById(
+          'serial-offset'
+        )?.value
+      || '',
+
+    plotField:
+      document
+        .getElementById(
+          'serial-plot-field'
+        )?.value
+      || ''
+  };
+}
+
+
+function serialClearPersistedSession() {
+  try {
+    globalThis
+      .sessionStorage
+      ?.removeItem(
+        SERIAL_SESSION_STORAGE_KEY
+      );
+
+    return true;
+
+  } catch (_) {
+    return false;
+  }
+}
+
+
+function serialPersistSession() {
+  try {
+    const observations =
+      serialAllObservations();
+
+    if (
+      observations.length
+      === 0
+    ) {
+      return (
+        serialClearPersistedSession()
+      );
+    }
+
+    const payload = {
+      schema_version:
+        SERIAL_SESSION_SCHEMA_VERSION,
+
+      release:
+        '2.0.0',
+
+      observations:
+        observations.map(
+          (observation) => ({
+            instrument_key:
+              observation
+                .instrument_key,
+
+            observed_at:
+              observation
+                .observed_at,
+
+            captured_at:
+              observation
+                .captured_at,
+
+            request_snapshot:
+              observation
+                .request_snapshot,
+
+            result_snapshot:
+              observation
+                .result_snapshot,
+
+            execution_source:
+              observation
+                .execution_source
+          })
+        ),
+
+      ui:
+        serialSessionUiState()
+    };
+
+    globalThis
+      .sessionStorage
+      ?.setItem(
+        SERIAL_SESSION_STORAGE_KEY,
+        JSON.stringify(
+          payload
+        )
+      );
+
+    return true;
+
+  } catch (_) {
+    return false;
+  }
+}
+
+
+function serialRestoreSession() {
+  let raw;
+
+  try {
+    raw =
+      globalThis
+        .sessionStorage
+        ?.getItem(
+          SERIAL_SESSION_STORAGE_KEY
+        );
+
+  } catch (_) {
+    return null;
+  }
+
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    const payload =
+      JSON.parse(
+        raw
+      );
+
+    if (
+      payload
+        ?.schema_version
+        !== SERIAL_SESSION_SCHEMA_VERSION
+      || payload.release
+        !== '2.0.0'
+      || !Array.isArray(
+        payload.observations
+      )
+    ) {
+      throw new Error(
+        'invalid_serial_session'
+      );
+    }
+
+    const restoredStore =
+      globalThis
+        .SerialTrendsRuntime
+        .createStore(
+          serialRegistry
+        );
+
+    for (
+      const observation
+      of payload.observations
+    ) {
+      restoredStore
+        .addObservation({
+          instrumentKey:
+            observation
+              .instrument_key,
+
+          observedAt:
+            observation
+              .observed_at,
+
+          capturedAt:
+            observation
+              .captured_at,
+
+          requestSnapshot:
+            observation
+              .request_snapshot,
+
+          resultSnapshot:
+            observation
+              .result_snapshot,
+
+          executionSource:
+            observation
+              .execution_source
+        });
+    }
+
+    serialStore =
+      restoredStore;
+
+    return {
+      ui:
+        payload.ui
+        || {},
+
+      observationCount:
+        payload
+          .observations
+          .length
+    };
+
+  } catch (_) {
+    serialClearPersistedSession();
+
+    return null;
+  }
+}
+
+
+function serialApplyRestoredUi(
+  restored
+) {
+  const ui =
+    restored?.ui;
+
+  if (!ui) {
+    serialPopulatePlotOptions();
+
+    return;
+  }
+
+  const instrument =
+    document.getElementById(
+      'serial-instrument'
+    );
+
+  if (
+    instrument
+    && typeof ui.instrument
+      === 'string'
+    && serialRegistryByKey.has(
+      ui.instrument
+    )
+  ) {
+    instrument.value =
+      ui.instrument;
+  }
+
+  const observedAt =
+    document.getElementById(
+      'serial-observed-at'
+    );
+
+  if (
+    observedAt
+    && typeof ui.observedAt
+      === 'string'
+  ) {
+    observedAt.value =
+      ui.observedAt;
+  }
+
+  const offset =
+    document.getElementById(
+      'serial-offset'
+    );
+
+  if (
+    offset
+    && typeof ui.offset
+      === 'string'
+  ) {
+    offset.value =
+      ui.offset;
+  }
+
+  serialPopulatePlotOptions();
+
+  const plotField =
+    document.getElementById(
+      'serial-plot-field'
+    );
+
+  if (
+    plotField
+    && typeof ui.plotField
+      === 'string'
+    && Array.from(
+      plotField.options
+      || []
+    ).some(
+      (option) =>
+        option.value
+        === ui.plotField
+    )
+  ) {
+    plotField.value =
+      ui.plotField;
+  }
+}
+
+
+function serialBuildExportReport() {
+  if (
+    !serialStore
+    || !serialRegistry
+  ) {
+    return null;
+  }
+
+  const instruments = [];
+
+  for (
+    const instrument
+    of serialRegistry.instruments
+  ) {
+    const groups =
+      serialStore
+        .chronologyGroups(
+          instrument.key
+        );
+
+    if (
+      groups.length
+      === 0
+    ) {
+      continue;
+    }
+
+    const observations = [];
+
+    for (
+      const group
+      of groups
+    ) {
+      for (
+        const observation
+        of group.observations
+      ) {
+        const model =
+          serialStore
+            .displayModel(
+              observation
+            );
+
+        observations.push({
+          observed_at:
+            observation
+              .observed_at,
+
+          captured_at:
+            observation
+              .captured_at,
+
+          execution_source:
+            observation
+              .execution_source,
+
+          equal_time_tie:
+            group
+              .equal_time_tie,
+
+          summary_fields:
+            model
+              .summary_fields,
+
+          component_fields:
+            model
+              .component_fields,
+
+          context_fields:
+            model
+              .context_fields,
+
+          request_snapshot:
+            observation
+              .request_snapshot,
+
+          result_snapshot:
+            observation
+              .result_snapshot
+        });
+      }
+    }
+
+    instruments.push({
+      key:
+        instrument.key,
+
+      label:
+        serialInstrumentLabel(
+          instrument.key
+        ),
+
+      observations
+    });
+  }
+
+  if (
+    instruments.length
+    === 0
+  ) {
+    return null;
+  }
+
+  return {
+    schema_version: 1,
+
+    release:
+      '2.0.0',
+
+    generated_at:
+      new Date()
+        .toISOString(),
+
+    language:
+      globalThis
+        .ClinicalI18n
+        ?.getLanguage?.()
+      || 'pt-BR',
+
+    title:
+      serialT(
+        'serial.title'
+      ),
+
+    privacy_notice:
+      serialT(
+        'serial.noIdentity'
+      ),
+
+    visualisation_boundary:
+      serialT(
+        'serial.plotBoundary'
+      ),
+
+    instruments
+  };
+}
+
+
+function serialExportFilename(
+  extension
+) {
+  const stamp =
+    new Date()
+      .toISOString()
+      .replace(
+        /[:.]/g,
+        '-'
+      );
+
+  return (
+    'clinical-reference-serial-trends-'
+    + stamp
+    + '.'
+    + extension
+  );
+}
+
+
+function serialDownloadExport(
+  kind
+) {
+  const report =
+    serialBuildExportReport();
+
+  if (!report) {
+    serialSetStatus(
+      serialT(
+        'serial.exportEmpty'
+      ),
+      'error'
+    );
+
+    return;
+  }
+
+  const exporter =
+    globalThis
+      .SerialTrendsExport;
+
+  if (!exporter) {
+    serialSetStatus(
+      serialT(
+        'serial.exportError'
+      ),
+      'error'
+    );
+
+    return;
+  }
+
+  try {
+    if (
+      kind === 'pdf'
+    ) {
+      exporter.downloadPdf(
+        report,
+        serialExportFilename(
+          'pdf'
+        )
+      );
+
+    } else if (
+      kind === 'docx'
+    ) {
+      exporter.downloadDocx(
+        report,
+        serialExportFilename(
+          'docx'
+        )
+      );
+
+    } else {
+      throw new Error(
+        'unsupported_export_type'
+      );
+    }
+
+    serialSetStatus(
+      (
+        kind === 'pdf'
+          ? serialT(
+              'serial.exportPdf'
+            )
+          : serialT(
+              'serial.exportDocx'
+            )
+      ) + ' ✓',
+      'success'
+    );
+
+  } catch (_) {
+    serialSetStatus(
+      serialT(
+        'serial.exportError'
+      ),
+      'error'
+    );
+  }
+}
+
 
 const serialCaptureBindings =
   Object.freeze({
@@ -7799,6 +8639,28 @@ function serialRenderPlot() {
 function serialRender() {
   if (!serialStore) return;
 
+  const hasObservations =
+    serialTotalObservationCount()
+    > 0;
+
+  for (
+    const id
+    of [
+      'serial-download-pdf',
+      'serial-download-docx'
+    ]
+  ) {
+    const element =
+      document.getElementById(
+        id
+      );
+
+    if (element) {
+      element.disabled =
+        !hasObservations;
+    }
+  }
+
   serialPopulatePlotOptions();
   serialRenderTable();
   serialRenderPlot();
@@ -7949,13 +8811,22 @@ function serialAddObservation() {
     return;
   }
 
+  const persisted =
+    serialPersistSession();
+
   serialRender();
 
   serialSetStatus(
-    serialT(
-      'serial.added'
-    ),
-    'success'
+    persisted
+      ? serialT(
+          'serial.added'
+        )
+      : serialT(
+          'serial.storageError'
+        ),
+    persisted
+      ? 'success'
+      : 'error'
   );
 }
 
@@ -7973,6 +8844,8 @@ function serialClearInstrument() {
       key
     );
 
+  serialPersistSession();
+
   serialRender();
 
   serialSetStatus(
@@ -7988,6 +8861,8 @@ function serialClearAll() {
   if (!serialStore) return;
 
   serialStore.clearAll();
+
+  serialClearPersistedSession();
 
   serialRender();
 
@@ -8007,7 +8882,10 @@ function wireSerialTrendEvents() {
     )
     ?.addEventListener(
       'change',
-      serialRender
+      () => {
+        serialRender();
+        serialPersistSession();
+      }
     );
 
   document
@@ -8016,8 +8894,28 @@ function wireSerialTrendEvents() {
     )
     ?.addEventListener(
       'change',
-      serialRenderPlot
+      () => {
+        serialRenderPlot();
+        serialPersistSession();
+      }
     );
+
+  for (
+    const id
+    of [
+      'serial-observed-at',
+      'serial-offset'
+    ]
+  ) {
+    document
+      .getElementById(
+        id
+      )
+      ?.addEventListener(
+        'change',
+        serialPersistSession
+      );
+  }
 
   document
     .getElementById(
@@ -8026,6 +8924,30 @@ function wireSerialTrendEvents() {
     ?.addEventListener(
       'click',
       serialAddObservation
+    );
+
+  document
+    .getElementById(
+      'serial-download-pdf'
+    )
+    ?.addEventListener(
+      'click',
+      () =>
+        serialDownloadExport(
+          'pdf'
+        )
+    );
+
+  document
+    .getElementById(
+      'serial-download-docx'
+    )
+    ?.addEventListener(
+      'click',
+      () =>
+        serialDownloadExport(
+          'docx'
+        )
     );
 
   document
@@ -8046,7 +8968,6 @@ function wireSerialTrendEvents() {
       serialClearAll
     );
 }
-
 
 async function initSerialTrends() {
   try {
@@ -8117,8 +9038,14 @@ async function initSerialTrends() {
           serialRegistry
         );
 
+    const restored =
+      serialRestoreSession();
+
     serialPopulateInstrumentOptions();
-    serialPopulatePlotOptions();
+
+    serialApplyRestoredUi(
+      restored
+    );
 
     for (
       const id
@@ -8139,10 +9066,25 @@ async function initSerialTrends() {
       }
     }
 
+    serialRender();
+
     serialSetStatus(
-      serialT(
-        'serial.ready'
-      )
+      restored
+      && restored
+        .observationCount
+        > 0
+        ? serialT(
+            'serial.restored'
+          )
+        : serialT(
+            'serial.ready'
+          ),
+      restored
+      && restored
+        .observationCount
+        > 0
+        ? 'success'
+        : 'neutral'
     );
 
   } catch (_) {
@@ -8237,6 +9179,7 @@ function wireUiEvents() {
 document.addEventListener('DOMContentLoaded', () => {
   registerServiceWorker();
   wireUiEvents();
+  wireClinicalToolSubnavigation();
   wireSerialTrendEvents();
   initSerialTrends();
   checkApiHealth();

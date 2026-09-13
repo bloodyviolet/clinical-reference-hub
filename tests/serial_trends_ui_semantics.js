@@ -126,6 +126,63 @@ const observationOne =
       'api'
   });
 
+const restoredStore =
+  runtime.createStore(
+    registry,
+    {
+      nowProvider: () =>
+        new Date(
+          '2026-09-13T15:00:00.000Z'
+        )
+    }
+  );
+
+
+const restoredOne =
+  restoredStore
+    .addObservation({
+      instrumentKey:
+        observationOne
+          .instrument_key,
+
+      observedAt:
+        observationOne
+          .observed_at,
+
+      capturedAt:
+        observationOne
+          .captured_at,
+
+      requestSnapshot:
+        observationOne
+          .request_snapshot,
+
+      resultSnapshot:
+        observationOne
+          .result_snapshot,
+
+      executionSource:
+        observationOne
+          .execution_source
+    });
+
+
+assert.strictEqual(
+  restoredOne.captured_at,
+  observationOne.captured_at
+);
+
+assert.deepStrictEqual(
+  restoredOne.request_snapshot,
+  observationOne.request_snapshot
+);
+
+assert.deepStrictEqual(
+  restoredOne.result_snapshot,
+  observationOne.result_snapshot
+);
+
+
 requestOne.eye = 1;
 resultOne.components.eye = 1;
 

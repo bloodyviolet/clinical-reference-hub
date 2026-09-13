@@ -26,6 +26,45 @@
       'nav.scales':
         'Escalas Clínicas',
 
+      'calcNav.drip':
+        'Gotejamento',
+
+      'calcNav.medication':
+        'Dosagem',
+
+      'calcNav.bmi':
+        'IMC',
+
+      'calcNav.paediatrics':
+        'Pediatria',
+
+      'calcNav.renal':
+        'Renal',
+
+      'calcNav.falls':
+        'Quedas / Função',
+
+      'calcNav.metabolic':
+        'Ácido-base / Metabólico',
+
+      'calcNav.oxygenation':
+        'Oxigenação',
+
+      'calcNav.hemodynamics':
+        'Hemodinâmica',
+
+      'calcNav.obstetrics':
+        'Obstetrícia',
+
+      'scaleNav.news2':
+        'NEWS2',
+
+      'scaleNav.neurological':
+        'Neurológicas',
+
+      'scaleNav.apgar':
+        'Apgar',
+
       'status.checking':
         'Verificando API...',
 
@@ -1316,11 +1355,29 @@
       "nav.trends":
         "Tendências seriadas",
 
+      'serial.exportPdf':
+        'Baixar PDF',
+
+      'serial.exportDocx':
+        'Baixar DOCX',
+
+      'serial.restored':
+        'Sessão de tendências restaurada após recarregamento.',
+
+      'serial.exportEmpty':
+        'Adicione ao menos uma observação antes de exportar.',
+
+      'serial.storageError':
+        'A observação foi adicionada, mas não foi possível preservar a sessão no navegador.',
+
+      'serial.exportError':
+        'Não foi possível gerar o arquivo localmente.',
+
       "serial.title":
         "Tendências seriadas",
 
       "serial.description":
-        "Observações clínicas efêmeras da página atual. Recarregar ou sair da página apaga as séries.",
+        "Observações clínicas mantidas somente nesta sessão do navegador. Recarregar restaura a sessão; fechar a aba/sessão pode apagá-la.",
 
       "serial.noIdentity":
         "Não registre identificadores de paciente, encontro ou notas livres nesta camada.",
@@ -1527,6 +1584,45 @@
 
       'nav.scales':
         'Clinical Scales',
+
+      'calcNav.drip':
+        'IV drip',
+
+      'calcNav.medication':
+        'Medication dose',
+
+      'calcNav.bmi':
+        'BMI',
+
+      'calcNav.paediatrics':
+        'Paediatrics',
+
+      'calcNav.renal':
+        'Renal',
+
+      'calcNav.falls':
+        'Falls / Function',
+
+      'calcNav.metabolic':
+        'Acid-base / Metabolic',
+
+      'calcNav.oxygenation':
+        'Oxygenation',
+
+      'calcNav.hemodynamics':
+        'Haemodynamics',
+
+      'calcNav.obstetrics':
+        'Obstetrics',
+
+      'scaleNav.news2':
+        'NEWS2',
+
+      'scaleNav.neurological':
+        'Neurological',
+
+      'scaleNav.apgar':
+        'Apgar',
 
       'status.checking':
         'Checking API...',
@@ -2818,11 +2914,29 @@
       "nav.trends":
         "Serial trends",
 
+      'serial.exportPdf':
+        'Download PDF',
+
+      'serial.exportDocx':
+        'Download DOCX',
+
+      'serial.restored':
+        'Serial-trend session restored after reload.',
+
+      'serial.exportEmpty':
+        'Add at least one observation before exporting.',
+
+      'serial.storageError':
+        'The observation was added, but the browser session could not be preserved.',
+
+      'serial.exportError':
+        'The local export file could not be generated.',
+
       "serial.title":
         "Serial trends",
 
       "serial.description":
-        "Ephemeral clinical observations for the current page only. Reloading or leaving the page clears every series.",
+        "Clinical observations are kept only in this browser session. Reloading restores the session; closing the tab/session may clear it.",
 
       "serial.noIdentity":
         "Do not enter patient identifiers, encounter identifiers or free-text clinical notes in this layer.",

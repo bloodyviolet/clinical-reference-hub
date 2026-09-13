@@ -276,7 +276,7 @@ assert(
 
 assert(
   sw.includes(
-    'clinical-reference-v25-v2-release-identity'
+    'clinical-reference-v26-v2-uat-remediation'
   )
 );
 

@@ -2,14 +2,19 @@
   "schema_version": 1,
   "item": 11,
   "feature": "Serial trends browser runtime",
-  "qualification_status": "runtime_semantics_candidate",
+  "qualification_status": "runtime_semantics_uat_remediation_candidate",
   "persistence": {
-    "memory_only": true,
+    "memory_only": false,
     "local_storage": false,
-    "session_storage": false,
+    "session_storage": true,
     "indexed_db": false,
     "service_worker_storage": false,
-    "server_storage": false
+    "server_storage": false,
+    "browser_session_only": true,
+    "reload_restore_required": true,
+    "tab_or_browser_session_close_may_clear": true,
+    "patient_identifier_storage_allowed": false,
+    "free_text_clinical_note_storage_allowed": false
   },
   "time": {
     "observed_at_source": "explicit_user_input",
@@ -55,5 +60,24 @@
     ],
     "required": true,
     "visible": true
+  },
+  "session_restore": {
+    "preserve_observed_at": true,
+    "preserve_captured_at": true,
+    "preserve_request_snapshot": true,
+    "preserve_result_snapshot": true,
+    "preserve_execution_source": true,
+    "preserve_runtime_key": false,
+    "invalid_session_payload_fails_closed": true
+  },
+  "client_export": {
+    "pdf": true,
+    "docx": true,
+    "client_side_only": true,
+    "server_upload": false,
+    "server_storage": false,
+    "chronological_observation_export": true,
+    "qualified_snapshots_preserved": true,
+    "automatic_trend_interpretation": false
   }
 }

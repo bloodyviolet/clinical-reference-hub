@@ -53,7 +53,19 @@ assert.strictEqual(
 assert.strictEqual(
   contract.persistence
     .memory_only,
+  false
+);
+
+assert.strictEqual(
+  contract.persistence
+    .session_storage,
   true
+);
+
+assert.strictEqual(
+  contract.persistence
+    .server_storage,
+  false
 );
 
 
@@ -207,6 +219,60 @@ assert.strictEqual(
 assert.strictEqual(
   first.result_snapshot.total,
   null
+);
+
+
+const restoredStore =
+  Runtime.createStore(
+    registry,
+    {
+      nowProvider:
+        fixedNow
+    }
+  );
+
+
+const restored =
+  restoredStore
+    .addObservation({
+      instrumentKey:
+        first.instrument_key,
+
+      observedAt:
+        first.observed_at,
+
+      capturedAt:
+        first.captured_at,
+
+      requestSnapshot:
+        first.request_snapshot,
+
+      resultSnapshot:
+        first.result_snapshot,
+
+      executionSource:
+        first.execution_source
+    });
+
+
+assert.strictEqual(
+  restored.captured_at,
+  first.captured_at
+);
+
+assert.strictEqual(
+  restored.observed_at,
+  first.observed_at
+);
+
+assert.deepStrictEqual(
+  restored.request_snapshot,
+  first.request_snapshot
+);
+
+assert.deepStrictEqual(
+  restored.result_snapshot,
+  first.result_snapshot
 );
 
 
@@ -740,5 +806,5 @@ console.log(
   'serial_trends_runtime_qc: '
   + 'RFC3339 time, immutable snapshots, '
   + 'tie groups, registry rendering and '
-  + 'memory-only isolation PASS'
+  + 'session-scoped isolation PASS'
 );

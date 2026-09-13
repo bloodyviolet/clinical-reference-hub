@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clinical-reference-v25-v2-release-identity';
+const CACHE_NAME = 'clinical-reference-v26-v2-uat-remediation';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [
@@ -9,6 +9,7 @@ const APP_SHELL = [
   '/assets/clinical-tools.js',
   '/assets/growth-tools.js',
   '/assets/serial-trends-runtime.js',
+  '/assets/serial-trends-export.js',
   '/assets/serial-trends-instrument-registry.json',
   '/assets/app.js',
   '/assets/icons/icon-192.png',
