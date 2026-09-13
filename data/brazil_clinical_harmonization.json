@@ -1191,8 +1191,8 @@
     },
     "9": {
       "feature": "SUS PCDT Registry & Public Document Repository",
-      "implementation_state": "current_protocol_text_and_represented_associated_assets_archived_public_verified_catalogue_completeness_pending",
-      "registry_state": "official_catalog_snapshot_implemented_targeted_qc_pending",
+      "implementation_state": "implementation_complete_release_recheck_pending",
+      "registry_state": "official_catalog_snapshot_implemented_targeted_qc_complete",
       "registry_source": "data/clinical-sources/sus_pcdt_registry.json",
       "archive_manifest_source": "data/clinical-sources/sus_pcdt_archive_manifest.json",
       "metadata_module": "clinical_tools/pcdt_metadata.py",
