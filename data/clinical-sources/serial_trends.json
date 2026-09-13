@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "item": 11,
+  "feature": "Serial trends",
+  "clinical_review_date": "2026-09-13",
+  "implementation_status": "architecture_review_complete_implementation_pending",
+  "dossier_role": "architecture_and_safety_boundary_not_new_scoring_authority",
+  "authority_model": {
+    "new_numeric_clinical_model": false,
+    "new_clinical_formula": false,
+    "new_clinical_threshold": false,
+    "new_prognostic_model": false,
+    "per_observation_authority": "existing_qualified_instrument_contract",
+    "trend_layer_role": "representation_and_comparison_only",
+    "trend_layer_may_change_instrument_arithmetic": false,
+    "trend_layer_may_override_instrument_interpretation": false,
+    "reuse_existing_tool_source_authority": true,
+    "brazil_context_must_be_preserved": true
+  },
+  "persistence_contract": {
+    "lifetime": "current_page_runtime_only",
+    "storage": "javascript_memory_only",
+    "server_persistence": false,
+    "browser_persistence": false,
+    "sqlite_storage": false,
+    "local_storage": false,
+    "session_storage": false,
+    "indexed_db": false,
+    "service_worker_storage": false,
+    "database_migration_required": false,
+    "new_api_storage_route_required": false
+  },
+  "privacy_contract": {
+    "patient_identifier": false,
+    "encounter_identifier": false,
+    "person_identifier": false,
+    "free_text_subject_identifier": false,
+    "free_text_clinical_note": false,
+    "patient_record_system_created": false,
+    "longitudinal_health_record_created": false,
+    "reload_clears_series": true,
+    "navigation_may_clear_series": true
+  },
+  "observation_envelope_contract": {
+    "required_fields": [
+      "instrument_key",
+      "observed_at",
+      "captured_at",
+      "request_snapshot",
+      "result_snapshot",
+      "execution_source"
+    ],
+    "instrument_key": {
+      "role": "series_identity",
+      "patient_identity": false,
+      "must_match_qualified_instrument_registry": true
+    },
+    "observed_at": {
+      "role": "clinical_observation_time",
+      "required": true,
+      "source": "explicit_user_input",
+      "format": "rfc3339_offset_aware",
+      "timezone_offset_required": true,
+      "may_default_from_capture_time": false,
+      "may_be_inferred_from_entry_order": false
+    },
+    "captured_at": {
+      "role": "browser_capture_metadata",
+      "required": true,
+      "source": "browser_generated",
+      "format": "rfc3339_utc",
+      "clinical_observation_time": false,
+      "may_replace_observed_at": false
+    },
+    "request_snapshot": {
+      "required": true,
+      "deep_copy_required": true,
+      "preserve_all_supplied_fields": true,
+      "may_be_reconstructed_from_result": false
+    },
+    "result_snapshot": {
+      "required": true,
+      "deep_copy_required": true,
+      "preserve_canonical_shape": true,
+      "preserve_components": true,
+      "preserve_context_fields": true,
+      "preserve_warnings": true,
+      "preserve_provenance": true,
+      "may_be_recalculated_by_trend_layer": false
+    },
+    "execution_source": {
+      "required": true,
+      "allowed_values": [
+        "api",
+        "offline"
+      ],
+      "must_remain_visible": true
+    },
+    "runtime_key": {
+      "allowed": true,
+      "clinical_identity": false,
+      "persistence_allowed": false,
+      "may_define_clinical_chronology": false
+    }
+  },
+  "time_contract": {
+    "chronology_source": "observed_at",
+    "entry_order_is_clinical_order": false,
+    "capture_order_is_clinical_order": false,
+    "timezone_must_not_be_silently_invented": true,
+    "offset_aware_observation_time_required": true,
+    "equal_observed_at_values_may_coexist": true,
+    "equal_time_records_must_not_gain_invented_clinical_order": true,
+    "future_timestamp_validation_required": true
+  },
+  "series_contract": {
+    "one_series_one_instrument": true,
+    "instrument_mixing": false,
+    "cross_instrument_axis": false,
+    "cross_instrument_synthetic_score": false,
+    "gcs_gcsp_four_must_remain_independent": true,
+    "falls_instruments_must_remain_independent": true,
+    "renal_outputs_must_not_be_merged_into_one_score": true,
+    "steadi_instruments_must_remain_independent": true,
+    "request_snapshot_retained_per_observation": true,
+    "result_snapshot_retained_per_observation": true,
+    "execution_source_retained_per_observation": true
+  },
+  "incomplete_state_contract": {
+    "nt_must_be_preserved": true,
+    "null_must_be_preserved": true,
+    "non_evaluable_observation_must_be_preserved": true,
+    "unavailable_component_must_be_preserved": true,
+    "numeric_coercion_of_nt": false,
+    "numeric_coercion_of_null": false,
+    "non_numeric_observation_removed_from_timeline": false,
+    "non_numeric_plot_value": null
+  },
+  "visualisation_contract": {
+    "chronological_table_required": true,
+    "table_must_preserve_component_values": true,
+    "table_must_preserve_execution_source": true,
+    "discrete_numeric_points_allowed": true,
+    "connecting_line_required": false,
+    "interpolation_allowed": false,
+    "smoothing_allowed": false,
+    "regression_allowed": false,
+    "forecasting_allowed": false,
+    "automatic_slope_interpretation_allowed": false,
+    "automatic_improvement_deterioration_label_allowed": false,
+    "numeric_field_auto_discovery_allowed": false,
+    "qualified_plot_field_registry_required": true,
+    "cross_instrument_plot_allowed": false,
+    "non_numeric_observation_visibility_required": true
+  },
+  "instrument_registry_contract": {
+    "current_post_tool_route_count_at_review": 18,
+    "automatic_all_tool_opt_in": false,
+    "explicit_instrument_registry_required_before_ui_implementation": true,
+    "explicit_display_field_registry_required_before_plotting": true,
+    "registry_must_identify_request_contract": true,
+    "registry_must_identify_result_contract": true,
+    "registry_must_identify_component_fields": true,
+    "registry_must_identify_plot_eligible_fields": true,
+    "registry_must_identify_context_fields_to_preserve": true,
+    "registry_must_not_define_new_clinical_thresholds": true,
+    "registry_must_not_define_new_prognosis": true
+  },
+  "brazil_context_contract": {
+    "existing_brazil_context_fields_must_be_preserved": true,
+    "existing_brazil_applicability_must_not_be_reclassified": true,
+    "international_and_brazilian_authority_roles_must_not_be_collapsed": true,
+    "trend_layer_may_not_promote_contextual_rule_to_universal_rule": true,
+    "release_source_recheck_required": true
+  },
+  "safety_boundaries": {
+    "SERIAL-PERSIST-01": "Serial observations are ephemeral current-page runtime data only; no browser or server persistence is introduced in v2.",
+    "SERIAL-IDENTITY-02": "No patient, encounter or person identity is introduced by the serial-trend layer.",
+    "SERIAL-COMPONENTS-03": "Each observation preserves the complete request snapshot and canonical result snapshot, including components and context.",
+    "SERIAL-TIME-04": "Clinical chronology uses an explicit offset-aware observed_at value and is not inferred from entry or capture order.",
+    "SERIAL-INCOMPLETE-05": "NT, null, unavailable and non-evaluable findings remain visible and are never coerced to zero or another numeric value.",
+    "SERIAL-INSTRUMENT-06": "A series contains one qualified instrument only; cross-instrument synthetic trend scores are forbidden.",
+    "SERIAL-PLOT-07": "Plot fields require an explicit qualified registry; arbitrary numeric response fields are never auto-selected.",
+    "SERIAL-INFERENCE-08": "The trend layer does not add smoothing, regression, forecasting, slope interpretation, prognosis or clinical thresholds.",
+    "SERIAL-BRAZIL-09": "Brazilian applicability and contextual fields from each underlying instrument remain attached to the observation.",
+    "SERIAL-PRIVACY-10": "The v2 serial layer does not accept free-text subject identifiers or create a longitudinal patient record."
+  },
+  "implementation_boundaries": {
+    "architecture_dossier_this_tranche": true,
+    "governance_state_transition_this_tranche": true,
+    "clinical_core_this_tranche": false,
+    "schemas_this_tranche": false,
+    "api_this_tranche": false,
+    "browser_this_tranche": false,
+    "ui_this_tranche": false,
+    "pwa_this_tranche": false,
+    "database_this_tranche": false,
+    "migration_this_tranche": false,
+    "instrument_registry_this_tranche": false,
+    "plot_field_registry_this_tranche": false,
+    "patient_identity_this_tranche": false
+  },
+  "governance_lifecycle": {
+    "initial_state": "must_preserve_each_component_brazil_context",
+    "architecture_qualified_state": "architecture_review_complete_implementation_pending",
+    "implementation_complete_state": "implementation_complete_release_recheck_pending"
+  },
+  "next_qualification": {
+    "required": true,
+    "name": "instrument_and_display_field_registry",
+    "purpose": "Explicitly qualify which existing instruments participate in serial trends and which fields may be displayed or plotted without creating new clinical inference."
+  }
+}
