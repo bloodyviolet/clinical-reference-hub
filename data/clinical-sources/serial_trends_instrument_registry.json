@@ -1,0 +1,1859 @@
+{
+  "schema_version": 1,
+  "item": 11,
+  "feature": "Serial trends",
+  "registry_status": "instrument_registry_qualified_implementation_pending",
+  "global_contract": {
+    "all_series_ephemeral": true,
+    "all_table_enabled_instruments_preserve_full_request_snapshot": true,
+    "all_table_enabled_instruments_preserve_full_result_snapshot": true,
+    "execution_source_visible": true,
+    "one_series_one_instrument": true,
+    "numeric_auto_discovery": false,
+    "ordinal_auto_plot": false,
+    "threshold_auto_plot": false,
+    "reference_constant_auto_plot": false,
+    "null_numeric_policy": "gap",
+    "nt_numeric_policy": "gap",
+    "connect_points": false,
+    "interpolation": false,
+    "smoothing": false,
+    "regression": false,
+    "forecasting": false,
+    "automatic_direction_interpretation": false,
+    "cross_instrument_plot": false
+  },
+  "instruments": [
+    {
+      "key": "acid_base_metabolic",
+      "route": "/api/v1/tools/acid-base-metabolic",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "anion_gap_meq_l"
+        },
+        {
+          "source": "response",
+          "path": "albumin_corrected_anion_gap_meq_l"
+        },
+        {
+          "source": "response",
+          "path": "calculated_osmolality_mosm_kg"
+        },
+        {
+          "source": "response",
+          "path": "corrected_sodium_meq_l"
+        },
+        {
+          "source": "response",
+          "path": "winter_compensation_status"
+        },
+        {
+          "source": "response",
+          "path": "delta_ratio"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "sodium_meq_l"
+        },
+        {
+          "source": "response",
+          "path": "chloride_meq_l"
+        },
+        {
+          "source": "response",
+          "path": "bicarbonate_meq_l"
+        },
+        {
+          "source": "response",
+          "path": "albumin_g_dl"
+        },
+        {
+          "source": "response",
+          "path": "glucose_mg_dl"
+        },
+        {
+          "source": "response",
+          "path": "bun_mg_dl"
+        },
+        {
+          "source": "response",
+          "path": "paco2_mm_hg"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "validity_notes_pt"
+        },
+        {
+          "source": "response",
+          "path": "validity_notes_en"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_pt"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "sodium",
+          "unit": "mEq/L",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "sodium_meq_l"
+            },
+            {
+              "source": "response",
+              "path": "corrected_sodium_meq_l"
+            }
+          ]
+        },
+        {
+          "group_id": "anion_gap",
+          "unit": "mEq/L",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "anion_gap_meq_l"
+            },
+            {
+              "source": "response",
+              "path": "albumin_corrected_anion_gap_meq_l"
+            }
+          ]
+        },
+        {
+          "group_id": "osmolality",
+          "unit": "mOsm/kg",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "calculated_osmolality_mosm_kg"
+            }
+          ]
+        },
+        {
+          "group_id": "paco2",
+          "unit": "mmHg",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "paco2_mm_hg"
+            }
+          ]
+        },
+        {
+          "group_id": "delta_ratio",
+          "unit": "ratio",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "delta_ratio"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "brazil_caderneta_falls",
+      "route": "/api/v1/tools/brazil-caderneta-falls",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "positive_items_count"
+        },
+        {
+          "source": "response",
+          "path": "positive_items"
+        },
+        {
+          "source": "response",
+          "path": "assessment_indicated"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "positive_items"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "any_yes_rule_applied"
+        },
+        {
+          "source": "response",
+          "path": "weighted_score_applied"
+        },
+        {
+          "source": "response",
+          "path": "foreign_weighted_score_imported"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_pt"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_en"
+        }
+      ],
+      "plot_groups": [],
+      "plot_exclusion_reason": "Positive item count is not a validated weighted longitudinal score."
+    },
+    {
+      "key": "brazil_methanol",
+      "route": "/api/v1/tools/brazil-methanol",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "ministry_anion_gap_mmol_l"
+        },
+        {
+          "source": "response",
+          "path": "ministry_calculated_osmolality_mosm_kg"
+        },
+        {
+          "source": "response",
+          "path": "osmolar_gap_mosm_kg"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "sodium_mmol_l"
+        },
+        {
+          "source": "response",
+          "path": "potassium_mmol_l"
+        },
+        {
+          "source": "response",
+          "path": "chloride_mmol_l"
+        },
+        {
+          "source": "response",
+          "path": "bicarbonate_mmol_l"
+        },
+        {
+          "source": "response",
+          "path": "glucose_mmol_l"
+        },
+        {
+          "source": "response",
+          "path": "urea_mmol_l"
+        },
+        {
+          "source": "response",
+          "path": "measured_osmolality_mosm_kg"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "explicit_methanol_context"
+        },
+        {
+          "source": "response",
+          "path": "thresholds_contextual_only"
+        },
+        {
+          "source": "response",
+          "path": "validity_notes_pt"
+        },
+        {
+          "source": "response",
+          "path": "validity_notes_en"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_pt"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "electrolytes",
+          "unit": "mmol/L",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "sodium_mmol_l"
+            },
+            {
+              "source": "response",
+              "path": "potassium_mmol_l"
+            },
+            {
+              "source": "response",
+              "path": "chloride_mmol_l"
+            },
+            {
+              "source": "response",
+              "path": "bicarbonate_mmol_l"
+            }
+          ]
+        },
+        {
+          "group_id": "anion_gap",
+          "unit": "mmol/L",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "ministry_anion_gap_mmol_l"
+            }
+          ]
+        },
+        {
+          "group_id": "osmolality",
+          "unit": "mOsm/kg",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "measured_osmolality_mosm_kg"
+            },
+            {
+              "source": "response",
+              "path": "ministry_calculated_osmolality_mosm_kg"
+            },
+            {
+              "source": "response",
+              "path": "osmolar_gap_mosm_kg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ckd_classification",
+      "route": "/api/v1/tools/ckd-classification",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "gfr_category"
+        },
+        {
+          "source": "response",
+          "path": "albuminuria_category"
+        },
+        {
+          "source": "response",
+          "path": "ga_classification"
+        },
+        {
+          "source": "response",
+          "path": "ckd_status_code"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "request",
+          "path": "egfr_ml_min_1_73m2"
+        },
+        {
+          "source": "request",
+          "path": "acr"
+        },
+        {
+          "source": "request",
+          "path": "acr_unit"
+        },
+        {
+          "source": "request",
+          "path": "chronicity_at_least_3_months"
+        },
+        {
+          "source": "request",
+          "path": "other_kidney_damage_marker"
+        },
+        {
+          "source": "request",
+          "path": "on_dialysis"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "brazil_pcdt_context.pcdt_ckd_status_code"
+        },
+        {
+          "source": "response",
+          "path": "brazil_pcdt_context.pcdt_ckd_status_pt"
+        },
+        {
+          "source": "response",
+          "path": "brazil_pcdt_context.pcdt_ckd_status_en"
+        },
+        {
+          "source": "response",
+          "path": "brazil_pcdt_context.source_version"
+        },
+        {
+          "source": "response",
+          "path": "classification_note_pt"
+        },
+        {
+          "source": "response",
+          "path": "classification_note_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "egfr",
+          "unit": "mL/min/1.73m2",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "request",
+              "path": "egfr_ml_min_1_73m2"
+            }
+          ]
+        }
+      ],
+      "plot_excluded_fields": {
+        "request.acr": "ACR unit is selectable; no silent cross-unit plotting.",
+        "response.gfr_category": "Ordinal category; table-only.",
+        "response.albuminuria_category": "Ordinal category; table-only."
+      }
+    },
+    {
+      "key": "egfr_ckd_epi_2021",
+      "route": "/api/v1/tools/egfr-ckd-epi-2021",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "creatinine_mg_dl"
+        },
+        {
+          "source": "response",
+          "path": "egfr_ml_min_1_73m2"
+        },
+        {
+          "source": "response",
+          "path": "gfr_category"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "age_years"
+        },
+        {
+          "source": "response",
+          "path": "sex"
+        },
+        {
+          "source": "response",
+          "path": "creatinine_mg_dl"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "equation"
+        },
+        {
+          "source": "response",
+          "path": "race_coefficient_used"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_pt"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "creatinine",
+          "unit": "mg/dL",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "creatinine_mg_dl"
+            }
+          ]
+        },
+        {
+          "group_id": "egfr",
+          "unit": "mL/min/1.73m2",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "egfr_ml_min_1_73m2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "four_score",
+      "route": "/api/v1/tools/four-score",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "evaluable"
+        },
+        {
+          "source": "response",
+          "path": "total"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "components.eye"
+        },
+        {
+          "source": "response",
+          "path": "components.motor"
+        },
+        {
+          "source": "response",
+          "path": "components.brainstem"
+        },
+        {
+          "source": "response",
+          "path": "components.respiration"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "missing_domains"
+        },
+        {
+          "source": "response",
+          "path": "incomplete_reason"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "four_total",
+          "unit": "points",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "total"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "gcs",
+      "route": "/api/v1/tools/gcs",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "evaluable"
+        },
+        {
+          "source": "response",
+          "path": "total"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "components.eye"
+        },
+        {
+          "source": "response",
+          "path": "components.verbal"
+        },
+        {
+          "source": "response",
+          "path": "components.motor"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "nt_components"
+        },
+        {
+          "source": "response",
+          "path": "incomplete_reason"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "gcs_total",
+          "unit": "points",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "total"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "gcs_p",
+      "route": "/api/v1/tools/gcs-p",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "evaluable"
+        },
+        {
+          "source": "response",
+          "path": "total"
+        },
+        {
+          "source": "response",
+          "path": "gcs_total"
+        },
+        {
+          "source": "response",
+          "path": "unreactive_pupils"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "gcs.components.eye"
+        },
+        {
+          "source": "response",
+          "path": "gcs.components.verbal"
+        },
+        {
+          "source": "response",
+          "path": "gcs.components.motor"
+        },
+        {
+          "source": "response",
+          "path": "pupil_reactivity_score"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "gcs.nt_components"
+        },
+        {
+          "source": "response",
+          "path": "incomplete_reasons"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "gcsp_total",
+          "unit": "points",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "total"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "hemodynamics",
+      "route": "/api/v1/tools/hemodynamics",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "systolic_bp_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "diastolic_bp_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "heart_rate_bpm"
+        },
+        {
+          "source": "response",
+          "path": "mean_arterial_pressure_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "pulse_pressure_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "shock_index"
+        },
+        {
+          "source": "response",
+          "path": "modified_shock_index"
+        }
+      ],
+      "component_fields": [],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "clinical_context"
+        },
+        {
+          "source": "response",
+          "path": "brazil_context_guidance_applied"
+        },
+        {
+          "source": "response",
+          "path": "brazil_context_rule_code"
+        },
+        {
+          "source": "response",
+          "path": "brazil_context_rule_met"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_pt"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "blood_pressure",
+          "unit": "mmHg",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "systolic_bp_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "diastolic_bp_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "mean_arterial_pressure_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "pulse_pressure_mm_hg"
+            }
+          ]
+        },
+        {
+          "group_id": "heart_rate",
+          "unit": "bpm",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "heart_rate_bpm"
+            }
+          ]
+        },
+        {
+          "group_id": "shock_indices",
+          "unit": "ratio",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "shock_index"
+            },
+            {
+              "source": "response",
+              "path": "modified_shock_index"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ivcf20",
+      "route": "/api/v1/tools/ivcf20",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "total_score"
+        },
+        {
+          "source": "response",
+          "path": "classification_code"
+        },
+        {
+          "source": "response",
+          "path": "classification_pt"
+        },
+        {
+          "source": "response",
+          "path": "classification_en"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "dimension_scores.age"
+        },
+        {
+          "source": "response",
+          "path": "dimension_scores.health_perception"
+        },
+        {
+          "source": "response",
+          "path": "dimension_scores.instrumental_adl"
+        },
+        {
+          "source": "response",
+          "path": "dimension_scores.basic_adl"
+        },
+        {
+          "source": "response",
+          "path": "dimension_scores.cognition"
+        },
+        {
+          "source": "response",
+          "path": "dimension_scores.mood"
+        },
+        {
+          "source": "response",
+          "path": "dimension_scores.upper_limb_mobility"
+        },
+        {
+          "source": "response",
+          "path": "dimension_scores.aerobic_muscular_capacity"
+        },
+        {
+          "source": "response",
+          "path": "dimension_scores.gait"
+        },
+        {
+          "source": "response",
+          "path": "dimension_scores.continence"
+        },
+        {
+          "source": "response",
+          "path": "dimension_scores.vision"
+        },
+        {
+          "source": "response",
+          "path": "dimension_scores.hearing"
+        },
+        {
+          "source": "response",
+          "path": "dimension_scores.multiple_comorbidities"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "altered_dimensions"
+        },
+        {
+          "source": "response",
+          "path": "reapply_after_sentinel_event"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_pt"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "ivcf20_total",
+          "unit": "points",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "total_score"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "kdigo_aki",
+      "route": "/api/v1/tools/kdigo-aki",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "evaluable"
+        },
+        {
+          "source": "response",
+          "path": "aki_criteria_met"
+        },
+        {
+          "source": "response",
+          "path": "stage"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "creatinine_stage"
+        },
+        {
+          "source": "response",
+          "path": "urine_output_stage"
+        },
+        {
+          "source": "response",
+          "path": "rrt_stage"
+        },
+        {
+          "source": "response",
+          "path": "current_creatinine_mg_dl"
+        },
+        {
+          "source": "response",
+          "path": "creatinine_ratio"
+        },
+        {
+          "source": "response",
+          "path": "creatinine_delta_mg_dl"
+        },
+        {
+          "source": "response",
+          "path": "urine_output_ml_kg_h"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "criteria_codes"
+        },
+        {
+          "source": "response",
+          "path": "criteria_pt"
+        },
+        {
+          "source": "response",
+          "path": "criteria_en"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_pt"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "current_creatinine",
+          "unit": "mg/dL",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "current_creatinine_mg_dl"
+            }
+          ]
+        },
+        {
+          "group_id": "creatinine_delta",
+          "unit": "mg/dL",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "creatinine_delta_mg_dl"
+            }
+          ]
+        },
+        {
+          "group_id": "creatinine_ratio",
+          "unit": "ratio",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "creatinine_ratio"
+            }
+          ]
+        },
+        {
+          "group_id": "urine_output",
+          "unit": "mL/kg/h",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "urine_output_ml_kg_h"
+            }
+          ]
+        }
+      ],
+      "plot_excluded_fields": {
+        "response.stage": "KDIGO stage is ordinal and remains table-only."
+      }
+    },
+    {
+      "key": "news2",
+      "route": "/api/v1/tools/news2",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "total"
+        },
+        {
+          "source": "response",
+          "path": "aggregate_band"
+        },
+        {
+          "source": "response",
+          "path": "trigger_code"
+        },
+        {
+          "source": "response",
+          "path": "monitoring_code"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "components.respiration_rate"
+        },
+        {
+          "source": "response",
+          "path": "components.spo2"
+        },
+        {
+          "source": "response",
+          "path": "components.supplemental_oxygen"
+        },
+        {
+          "source": "response",
+          "path": "components.systolic_bp"
+        },
+        {
+          "source": "response",
+          "path": "components.pulse"
+        },
+        {
+          "source": "response",
+          "path": "components.consciousness"
+        },
+        {
+          "source": "response",
+          "path": "components.temperature"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "clinical_judgement_note_pt"
+        },
+        {
+          "source": "response",
+          "path": "clinical_judgement_note_en"
+        },
+        {
+          "source": "response",
+          "path": "response_pt"
+        },
+        {
+          "source": "response",
+          "path": "response_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "news2_total",
+          "unit": "points",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "total"
+            }
+          ]
+        },
+        {
+          "group_id": "respiration_rate",
+          "unit": "breaths/min",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "request",
+              "path": "respiration_rate"
+            }
+          ]
+        },
+        {
+          "group_id": "spo2",
+          "unit": "%",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "request",
+              "path": "spo2"
+            }
+          ]
+        },
+        {
+          "group_id": "systolic_bp",
+          "unit": "mmHg",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "request",
+              "path": "systolic_bp"
+            }
+          ]
+        },
+        {
+          "group_id": "pulse",
+          "unit": "bpm",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "request",
+              "path": "pulse"
+            }
+          ]
+        },
+        {
+          "group_id": "temperature",
+          "unit": "°C",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "request",
+              "path": "temperature"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "oxygenation",
+      "route": "/api/v1/tools/oxygenation",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "pf_ratio_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "sf_ratio"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "fio2_percent"
+        },
+        {
+          "source": "response",
+          "path": "pao2_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "spo2_percent"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "sf_spo2_above_97_caution"
+        },
+        {
+          "source": "response",
+          "path": "global_ards_sf_threshold_applicable"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_pt"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "pao2",
+          "unit": "mmHg",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "pao2_mm_hg"
+            }
+          ]
+        },
+        {
+          "group_id": "spo2",
+          "unit": "%",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "spo2_percent"
+            }
+          ]
+        },
+        {
+          "group_id": "fio2",
+          "unit": "%",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "fio2_percent"
+            }
+          ]
+        },
+        {
+          "group_id": "pf_ratio",
+          "unit": "mmHg",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "pf_ratio_mm_hg"
+            }
+          ]
+        },
+        {
+          "group_id": "sf_ratio",
+          "unit": "ratio",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "sf_ratio"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "steadi_chair_stand_30s",
+      "route": "/api/v1/tools/steadi-chair-stand-30s",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "recorded_repetitions"
+        },
+        {
+          "source": "response",
+          "path": "below_average"
+        },
+        {
+          "source": "response",
+          "path": "increased_fall_risk"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "arms_required_to_stand"
+        },
+        {
+          "source": "response",
+          "path": "test_stopped_due_to_arm_use"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "source_role"
+        },
+        {
+          "source": "response",
+          "path": "reference_age_band"
+        },
+        {
+          "source": "response",
+          "path": "below_average_threshold"
+        },
+        {
+          "source": "response",
+          "path": "threshold_comparison"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_pt"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "repetitions",
+          "unit": "count",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "recorded_repetitions"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "steadi_four_stage_balance",
+      "route": "/api/v1/tools/steadi-four-stage-balance",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "last_stage_attempted"
+        },
+        {
+          "source": "response",
+          "path": "increased_fall_risk"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "side_by_side_seconds"
+        },
+        {
+          "source": "response",
+          "path": "semi_tandem_seconds"
+        },
+        {
+          "source": "response",
+          "path": "tandem_seconds"
+        },
+        {
+          "source": "response",
+          "path": "one_leg_seconds"
+        },
+        {
+          "source": "response",
+          "path": "assistive_device_used"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "source_role"
+        },
+        {
+          "source": "response",
+          "path": "tandem_held_10_seconds"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_pt"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "stage_duration",
+          "unit": "seconds",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "side_by_side_seconds"
+            },
+            {
+              "source": "response",
+              "path": "semi_tandem_seconds"
+            },
+            {
+              "source": "response",
+              "path": "tandem_seconds"
+            },
+            {
+              "source": "response",
+              "path": "one_leg_seconds"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "steadi_orthostatic_bp",
+      "route": "/api/v1/tools/steadi-orthostatic-bp",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "maximum_systolic_drop_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "maximum_diastolic_drop_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "abnormal_steadi_orthostatic_assessment"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "supine_sbp_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "supine_dbp_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "supine_pulse_bpm"
+        },
+        {
+          "source": "response",
+          "path": "standing_1m_sbp_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "standing_1m_dbp_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "standing_1m_pulse_bpm"
+        },
+        {
+          "source": "response",
+          "path": "standing_3m_sbp_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "standing_3m_dbp_mm_hg"
+        },
+        {
+          "source": "response",
+          "path": "standing_3m_pulse_bpm"
+        },
+        {
+          "source": "response",
+          "path": "lightheaded_or_dizzy"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "source_role"
+        },
+        {
+          "source": "response",
+          "path": "systolic_threshold_met"
+        },
+        {
+          "source": "response",
+          "path": "diastolic_threshold_met"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_pt"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "blood_pressure",
+          "unit": "mmHg",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "supine_sbp_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "supine_dbp_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "standing_1m_sbp_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "standing_1m_dbp_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "standing_3m_sbp_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "standing_3m_dbp_mm_hg"
+            }
+          ]
+        },
+        {
+          "group_id": "pulse",
+          "unit": "bpm",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "supine_pulse_bpm"
+            },
+            {
+              "source": "response",
+              "path": "standing_1m_pulse_bpm"
+            },
+            {
+              "source": "response",
+              "path": "standing_3m_pulse_bpm"
+            }
+          ]
+        },
+        {
+          "group_id": "pressure_drop",
+          "unit": "mmHg",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "systolic_drop_1m_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "systolic_drop_3m_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "diastolic_drop_1m_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "diastolic_drop_3m_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "maximum_systolic_drop_mm_hg"
+            },
+            {
+              "source": "response",
+              "path": "maximum_diastolic_drop_mm_hg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "steadi_tug",
+      "route": "/api/v1/tools/steadi-tug",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "time_seconds"
+        },
+        {
+          "source": "response",
+          "path": "increased_fall_risk"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "response",
+          "path": "walking_aid_used"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "source_role"
+        },
+        {
+          "source": "response",
+          "path": "threshold_comparison"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_pt"
+        },
+        {
+          "source": "response",
+          "path": "interpretation_en"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "tug_time",
+          "unit": "seconds",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "time_seconds"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "who_growth",
+      "route": "/api/v1/tools/who-growth",
+      "table_enabled": true,
+      "summary_fields": [
+        {
+          "source": "response",
+          "path": "who_age_months"
+        },
+        {
+          "source": "response",
+          "path": "bmi_kg_m2"
+        },
+        {
+          "source": "response",
+          "path": "indicators.weight_for_age"
+        },
+        {
+          "source": "response",
+          "path": "indicators.length_height_for_age"
+        },
+        {
+          "source": "response",
+          "path": "indicators.weight_for_length_height"
+        },
+        {
+          "source": "response",
+          "path": "indicators.bmi_for_age"
+        },
+        {
+          "source": "response",
+          "path": "indicators.head_circumference_for_age"
+        }
+      ],
+      "component_fields": [
+        {
+          "source": "request",
+          "path": "weight_kg"
+        },
+        {
+          "source": "request",
+          "path": "length_height_cm"
+        },
+        {
+          "source": "request",
+          "path": "head_circumference_cm"
+        },
+        {
+          "source": "request",
+          "path": "measurement_position"
+        },
+        {
+          "source": "response",
+          "path": "length_height_effective_cm"
+        },
+        {
+          "source": "response",
+          "path": "oedema"
+        }
+      ],
+      "context_fields": [
+        {
+          "source": "response",
+          "path": "warnings_pt"
+        },
+        {
+          "source": "response",
+          "path": "warnings_en"
+        },
+        {
+          "source": "response",
+          "path": "provenance.who2006_commit"
+        },
+        {
+          "source": "response",
+          "path": "provenance.who2007_commit"
+        },
+        {
+          "source": "response",
+          "path": "provenance.brazil_policy"
+        }
+      ],
+      "plot_groups": [
+        {
+          "group_id": "weight",
+          "unit": "kg",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "request",
+              "path": "weight_kg"
+            }
+          ]
+        },
+        {
+          "group_id": "length_height",
+          "unit": "cm",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "request",
+              "path": "length_height_cm"
+            }
+          ]
+        },
+        {
+          "group_id": "head_circumference",
+          "unit": "cm",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "request",
+              "path": "head_circumference_cm"
+            }
+          ]
+        },
+        {
+          "group_id": "bmi",
+          "unit": "kg/m2",
+          "render": "discrete_points",
+          "connect_points": false,
+          "null_policy": "gap",
+          "fields": [
+            {
+              "source": "response",
+              "path": "bmi_kg_m2"
+            }
+          ]
+        }
+      ],
+      "plot_excluded_fields": {
+        "response.indicators.*": "Indicator object leaves require separate schema/UI qualification; no generic object-field plotting."
+      }
+    }
+  ]
+}

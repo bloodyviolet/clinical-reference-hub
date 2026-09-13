@@ -541,18 +541,21 @@ def test_item11_governance_has_advanced_from_initial_constraint():
         ]
     )
 
+    # This source dossier records the architecture tranche.
+    # Later qualified intermediate states are governed by their own
+    # durable audit artifacts and must not require rewriting history.
     assert (
-        item11[
-            "implementation_state"
+        lifecycle[
+            "architecture_qualified_state"
         ]
-        in {
-            lifecycle[
-                "architecture_qualified_state"
-            ],
-            lifecycle[
-                "implementation_complete_state"
-            ],
-        }
+        == "architecture_review_complete_implementation_pending"
+    )
+
+    assert (
+        lifecycle[
+            "implementation_complete_state"
+        ]
+        == "implementation_complete_release_recheck_pending"
     )
 
     assert (
