@@ -80,7 +80,7 @@ for (const key of [
 
 assert(
   swSource.includes(
-    'clinical-reference-v24-v2-serial-trends-ui'
+    'clinical-reference-v25-v2-release-identity'
   )
 );
 

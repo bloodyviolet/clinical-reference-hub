@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clinical-reference-v24-v2-serial-trends-ui';
+const CACHE_NAME = 'clinical-reference-v25-v2-release-identity';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [

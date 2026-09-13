@@ -181,7 +181,8 @@ class PolicyIndexResponse(BaseModel):
 
 # ---------------------------------------------------------------------------
 # v2 clinical-tool language/provenance contract.
-# API_VERSION remains 1.4.5 until final v2.0.0 qualification.
+# API_VERSION is 2.0.0 in the repository release candidate.
+# Production remains 1.4.5 until Phase 7 acceptance and deployment.
 # ---------------------------------------------------------------------------
 
 TranslationStatus = Literal[

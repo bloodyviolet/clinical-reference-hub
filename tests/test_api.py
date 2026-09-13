@@ -19,7 +19,7 @@ def test_v1_healthcheck_reaches_database():
     assert payload['status'] == 'ok'
     assert payload['database'] == 'ok'
     assert payload['assets'] == 'ok'
-    assert payload['api_version'] == '1.4.5'
+    assert payload['api_version'] == '2.0.0'
     assert payload['database_revision'] == '0007'
     assert payload['sae_enabled'] is True
     assert payload['clinical_content'] == 'certified'
@@ -296,7 +296,7 @@ def test_all_contextual_links_are_bilingual_and_current_edition_audited():
 def test_liveness_readiness_request_id_and_cache_policy():
     live = client.get('/api/v1/livez')
     assert live.status_code == 200
-    assert live.json() == {'status': 'ok', 'api_version': '1.4.5'}
+    assert live.json() == {'status': 'ok', 'api_version': '2.0.0'}
     assert live.headers['cache-control'] == 'no-store'
     assert live.headers.get('x-request-id')
 

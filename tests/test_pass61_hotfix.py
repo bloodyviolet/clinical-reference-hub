@@ -38,10 +38,10 @@ def test_offline_bundles_are_complete_and_match_database():
     sae = json.loads((ROOT / "assets/offline/sae.json").read_text(encoding="utf-8"))
     policies = json.loads((ROOT / "assets/offline/policies.json").read_text(encoding="utf-8"))
 
-    assert sae["api_version"] == "1.4.5"
+    assert sae["api_version"] == "2.0.0"
     assert sae["database_revision"] == "0007"
     assert sae["count"] == len(sae["items"]) == 277
-    assert policies["api_version"] == "1.4.5"
+    assert policies["api_version"] == "2.0.0"
     assert policies["database_revision"] == "0007"
     assert policies["count"] == 54
     assert sum(group["returned"] for group in policies["policies"].values()) == 54
@@ -69,7 +69,7 @@ def test_offline_bundles_are_complete_and_match_database():
 
 def test_service_worker_precaches_offline_data_and_local_icons():
     sw = (ROOT / "sw.js").read_text(encoding="utf-8")
-    assert "clinical-reference-v24-v2-serial-trends-ui" in sw
+    assert "clinical-reference-v25-v2-release-identity" in sw
     assert "clinical-reference-v20-v2-brazil-methanol" not in sw
     for path in (
         "/assets/offline/sae.json",
@@ -105,4 +105,4 @@ def test_pass61_static_assets_are_served_same_origin():
         ):
             response = client.get(path)
             assert response.status_code == 200, path
-        assert client.get("/api/v1/readyz").json()["api_version"] == "1.4.5"
+        assert client.get("/api/v1/readyz").json()["api_version"] == "2.0.0"

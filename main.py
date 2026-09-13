@@ -76,7 +76,7 @@ FAVICON_FILE = ASSET_DIR / "icons" / "favicon.ico"
 CLINICAL_CONTENT_MANIFEST_FILE = (
     BASE_DIR / "data" / "clinical_content_manifest.json"
 )
-API_VERSION = "1.4.5"
+API_VERSION = "2.0.0"
 
 _CLINICAL_CONTENT_CERTIFICATION: dict | None = None
 settings = load_settings()

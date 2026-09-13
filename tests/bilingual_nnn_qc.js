@@ -22,7 +22,7 @@ const sae = JSON.parse(
 
 assert.strictEqual(
   sae.api_version,
-  '1.4.5'
+  '2.0.0'
 );
 
 assert.strictEqual(
@@ -74,7 +74,7 @@ for (const token of [
 
 assert(
   sw.includes(
-    'clinical-reference-v24-v2-serial-trends-ui'
+    'clinical-reference-v25-v2-release-identity'
   ),
   'service-worker cache version not bumped'
 );
