@@ -83,6 +83,10 @@ PCDT_REGISTRY_FILE = (
 PCDT_ARCHIVE_MANIFEST_FILE = (
     BASE_DIR / "data" / "clinical-sources" / "sus_pcdt_archive_manifest.json"
 )
+
+PCDT_LOCALISATION_FILE = (
+    BASE_DIR / "data" / "clinical-sources" / "sus_pcdt_localisation_en.json"
+)
 API_VERSION = "2.0.0"
 
 _CLINICAL_CONTENT_CERTIFICATION: dict | None = None
@@ -93,6 +97,7 @@ logger = logging.getLogger("medical_api")
 PCDT_REPOSITORY = PCDTRepository.from_files(
     PCDT_REGISTRY_FILE,
     PCDT_ARCHIVE_MANIFEST_FILE,
+    PCDT_LOCALISATION_FILE,
 )
 
 # Compatibility aliases retained for existing tests/deployments that introspect these flags.
@@ -127,6 +132,7 @@ def _assert_runtime_files() -> None:
         CLINICAL_CONTENT_MANIFEST_FILE,
         PCDT_REGISTRY_FILE,
         PCDT_ARCHIVE_MANIFEST_FILE,
+        PCDT_LOCALISATION_FILE,
         ASSET_DIR / "pcdt-repository.js",
         ASSET_DIR / "icons" / "icon-192.png", ASSET_DIR / "icons" / "icon-512.png",
         ASSET_DIR / "icons" / "apple-touch-icon.png", ASSET_DIR / "icons" / "favicon.ico",

@@ -10469,7 +10469,26 @@ function registerServiceWorker() {
 
 function wireUiEvents() {
   document.querySelectorAll('[data-tab]').forEach((button) => {
-    button.addEventListener('click', () => switchTab(button.dataset.tab));
+    button.addEventListener('click', () => {
+      const tab = button.dataset.tab;
+
+      if (
+        tab === 'pcdt'
+        && button.getAttribute('aria-selected') === 'true'
+      ) {
+        const repository =
+          globalThis.ClinicalPcdtRepository;
+
+        if (
+          typeof repository?.goHome === 'function'
+        ) {
+          void repository.goHome();
+          return;
+        }
+      }
+
+      switchTab(tab);
+    });
   });
   document.querySelectorAll('[data-policy]').forEach((button) => {
     button.addEventListener('click', () => loadPolicy(button.dataset.policy));

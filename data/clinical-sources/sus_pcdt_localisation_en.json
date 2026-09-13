@@ -1,0 +1,853 @@
+{
+  "entries": [
+    {
+      "aliases_en": [
+        "acute ischemic stroke",
+        "ischaemic stroke",
+        "ischemic stroke",
+        "stroke"
+      ],
+      "canonical_title_pt": "Acidente Vascular Cerebral (AVC) Isquêmico Agudo",
+      "pcdt_id": "acidente-vascular-cerebral-avc-isquemico-agudo",
+      "title_en": "Acute Ischaemic Stroke"
+    },
+    {
+      "aliases_en": [
+        "scorpion sting",
+        "scorpion stings",
+        "scorpion envenomation"
+      ],
+      "canonical_title_pt": "Acidentes Escorpiônicos",
+      "pcdt_id": "acidentes-escorpionicos",
+      "title_en": "Scorpion Envenomation"
+    },
+    {
+      "aliases_en": [
+        "snakebite",
+        "snake bite",
+        "snakebites",
+        "snake bites",
+        "snake envenomation"
+      ],
+      "canonical_title_pt": "Acidentes Ofídicos",
+      "pcdt_id": "acidentes-ofidicos",
+      "title_en": "Snakebite Envenomation"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Acromegalia",
+      "pcdt_id": "acromegalia",
+      "title_en": "Acromegaly"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Adenocarcinoma de Cólon e Reto",
+      "pcdt_id": "adenocarcinoma-de-colon-e-reto",
+      "title_en": "Colon and Rectal Adenocarcinoma"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Amiloidoses Associadas à Transtirretina",
+      "pcdt_id": "amiloidoses-associadas-a-transtirretina",
+      "title_en": "Transthyretin-Associated Amyloidoses"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Anemia Hemolítica Autoimune",
+      "pcdt_id": "anemia-hemolitica-autoimune",
+      "title_en": "Autoimmune Haemolytic Anaemia"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Anemia na Doença Renal Crônica - Alfaepoetina",
+      "pcdt_id": "anemia-na-doenca-renal-cronica-alfaepoetina",
+      "title_en": "Anaemia in Chronic Kidney Disease – Epoetin Alfa"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Anemia na Doença Renal Crônica - Reposição de Ferro",
+      "pcdt_id": "anemia-na-doenca-renal-cronica-reposicao-de-ferro",
+      "title_en": "Anaemia in Chronic Kidney Disease – Iron Replacement"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Anemia por Deficiência de Ferro",
+      "pcdt_id": "anemia-por-deficiencia-de-ferro",
+      "title_en": "Iron Deficiency Anaemia"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Angioedema associado à deficiência de C1 esterase",
+      "pcdt_id": "angioedema-associado-a-deficiencia-de-c1-esterase",
+      "title_en": "Angioedema Associated with C1 Esterase Inhibitor Deficiency"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Artrite Idiopática Juvenil (AIJ)",
+      "pcdt_id": "artrite-idiopatica-juvenil-aij",
+      "title_en": "Juvenile Idiopathic Arthritis (JIA)"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Artrite Psoriásica",
+      "pcdt_id": "artrite-psoriasica",
+      "title_en": "Psoriatic Arthritis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Artrite Reativa",
+      "pcdt_id": "artrite-reativa",
+      "title_en": "Reactive Arthritis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Artrite Reumatoide",
+      "pcdt_id": "artrite-reumatoide",
+      "title_en": "Rheumatoid Arthritis"
+    },
+    {
+      "aliases_en": [
+        "bronchial asthma"
+      ],
+      "canonical_title_pt": "Asma",
+      "pcdt_id": "asma",
+      "title_en": "Asthma"
+    },
+    {
+      "aliases_en": [
+        "STI",
+        "STIs",
+        "sexually transmitted infection",
+        "sexually transmitted infections"
+      ],
+      "canonical_title_pt": "Atenção Integral às Pessoas com Infecções Sexualmente Transmissíveis (IST)",
+      "pcdt_id": "atencao-integral-as-pessoas-com-infeccoes-sexualmente-transmissiveis-ist",
+      "title_en": "Comprehensive Care for People with Sexually Transmitted Infections (STIs)"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Atrofia Muscular Espinhal 5q Tipos I e II",
+      "pcdt_id": "atrofia-muscular-espinhal-5q-tipos-i-e-ii",
+      "title_en": "5q Spinal Muscular Atrophy, Types I and II"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Brucelose Humana",
+      "pcdt_id": "brucelose-humana",
+      "title_en": "Human Brucellosis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Câncer de Mama",
+      "pcdt_id": "cancer-de-mama",
+      "title_en": "Breast Cancer"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Carcinoma diferenciado da Tireóide",
+      "pcdt_id": "carcinoma-diferenciado-da-tireoide",
+      "title_en": "Differentiated Thyroid Carcinoma"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Colangite Biliar Primária",
+      "pcdt_id": "colangite-biliar-primaria",
+      "title_en": "Primary Biliary Cholangitis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Comportamento Agressivo no Transtorno do Espectro do Autismo",
+      "pcdt_id": "comportamento-agressivo-no-transtorno-do-espectro-do-autismo",
+      "title_en": "Aggressive Behaviour in Autism Spectrum Disorder"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Deficiência de Biotinidase",
+      "pcdt_id": "deficiencia-de-biotinidase",
+      "title_en": "Biotinidase Deficiency"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Deficiência de Hormônio do Crescimento - Hipopituitarismo",
+      "pcdt_id": "deficiencia-de-hormonio-do-crescimento-hipopituitarismo",
+      "title_en": "Growth Hormone Deficiency – Hypopituitarism"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Degeneração Macular Relacionada à Idade (forma neovascular)",
+      "pcdt_id": "degeneracao-macular-relacionada-a-idade-forma-neovascular",
+      "title_en": "Age-Related Macular Degeneration (Neovascular Form)"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Dermatite Atópica",
+      "pcdt_id": "dermatite-atopica",
+      "title_en": "Atopic Dermatitis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Diabete Melito Tipo 1",
+      "pcdt_id": "diabete-melito-tipo-1",
+      "title_en": "Type 1 Diabetes Mellitus"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Diabete Melito Tipo 2",
+      "pcdt_id": "diabete-melito-tipo-2",
+      "title_en": "Type 2 Diabetes Mellitus"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Diabetes Insípido",
+      "pcdt_id": "diabetes-insipido",
+      "title_en": "Diabetes Insipidus"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Dislipidemia: prevenção de eventos cardiovasculares e pancreatite",
+      "pcdt_id": "dislipidemia-prevencao-de-eventos-cardiovasculares-e-pancreatite",
+      "title_en": "Dyslipidaemia: Prevention of Cardiovascular Events and Pancreatitis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Distonias e Espasmo Hemifacial",
+      "pcdt_id": "distonias-e-espasmo-hemifacial",
+      "title_en": "Dystonias and Hemifacial Spasm"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Distúrbio Mineral Ósseo na Doença Renal Crônica",
+      "pcdt_id": "disturbio-mineral-osseo-na-doenca-renal-cronica",
+      "title_en": "Mineral and Bone Disorder in Chronic Kidney Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Doença Celíaca",
+      "pcdt_id": "doenca-celiaca",
+      "title_en": "Coeliac Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Doença de Alzheimer",
+      "pcdt_id": "doenca-de-alzheimer",
+      "title_en": "Alzheimer's Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Doença de Chagas",
+      "pcdt_id": "doenca-de-chagas",
+      "title_en": "Chagas Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Doença de Crohn",
+      "pcdt_id": "doenca-de-crohn",
+      "title_en": "Crohn's Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Doença de Fabry",
+      "pcdt_id": "doenca-de-fabry",
+      "title_en": "Fabry Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Doença de Gaucher",
+      "pcdt_id": "doenca-de-gaucher",
+      "title_en": "Gaucher Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Doença de Paget",
+      "pcdt_id": "doenca-de-paget",
+      "title_en": "Paget's Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Doença de Parkinson",
+      "pcdt_id": "doenca-de-parkinson",
+      "title_en": "Parkinson's Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Doença de Pompe",
+      "pcdt_id": "doenca-de-pompe",
+      "title_en": "Pompe Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Doença de Wilson",
+      "pcdt_id": "doenca-de-wilson",
+      "title_en": "Wilson's Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Doença Falciforme",
+      "pcdt_id": "doenca-falciforme",
+      "title_en": "Sickle Cell Disease"
+    },
+    {
+      "aliases_en": [
+        "COPD"
+      ],
+      "canonical_title_pt": "Doença Pulmonar Obstrutiva Crônica",
+      "pcdt_id": "doenca-pulmonar-obstrutiva-cronica",
+      "title_en": "Chronic Obstructive Pulmonary Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Dor Crônica",
+      "pcdt_id": "dor-cronica",
+      "title_en": "Chronic Pain"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Endometriose",
+      "pcdt_id": "endometriose",
+      "title_en": "Endometriosis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Epilepsia",
+      "pcdt_id": "epilepsia",
+      "title_en": "Epilepsy"
+    },
+    {
+      "aliases_en": [
+        "ALS",
+        "motor neurone disease",
+        "motor neuron disease"
+      ],
+      "canonical_title_pt": "Esclerose Lateral Amiotrófica",
+      "pcdt_id": "esclerose-lateral-amiotrofica",
+      "title_en": "Amyotrophic Lateral Sclerosis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Esclerose Múltipla",
+      "pcdt_id": "esclerose-multipla",
+      "title_en": "Multiple Sclerosis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Esclerose Sistêmica",
+      "pcdt_id": "esclerose-sistemica",
+      "title_en": "Systemic Sclerosis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Espasticidade",
+      "pcdt_id": "espasticidade",
+      "title_en": "Spasticity"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Espondilite Ancilosante",
+      "pcdt_id": "espondilite-ancilosante",
+      "title_en": "Ankylosing Spondylitis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Esquizofrenia",
+      "pcdt_id": "esquizofrenia",
+      "title_en": "Schizophrenia"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Estratégias para Atenuar a Progressão da Doença Renal Crônica",
+      "pcdt_id": "estrategias-para-atenuar-a-progressao-da-doenca-renal-cronica",
+      "title_en": "Strategies to Slow the Progression of Chronic Kidney Disease"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Fenilcetonúria",
+      "pcdt_id": "fenilcetonuria",
+      "title_en": "Phenylketonuria"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Fibrose Cística",
+      "pcdt_id": "fibrose-cistica",
+      "title_en": "Cystic Fibrosis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Glaucoma",
+      "pcdt_id": "glaucoma",
+      "title_en": "Glaucoma"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Hanseníase",
+      "pcdt_id": "hanseniase",
+      "title_en": "Leprosy"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Hemangioma Infantil",
+      "pcdt_id": "hemangioma-infantil",
+      "title_en": "Infantile Haemangioma"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Hemoglobinúria Paroxística Noturna",
+      "pcdt_id": "hemoglobinuria-paroxistica-noturna",
+      "title_en": "Paroxysmal Nocturnal Haemoglobinuria"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Hepatite Autoimune",
+      "pcdt_id": "hepatite-autoimune",
+      "title_en": "Autoimmune Hepatitis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Hepatite B e Coinfecções",
+      "pcdt_id": "hepatite-b-e-coinfeccoes",
+      "title_en": "Hepatitis B and Coinfections"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Hepatite C e coinfecções",
+      "pcdt_id": "hepatite-c-e-coinfeccoes",
+      "title_en": "Hepatitis C and Coinfections"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Hidradenite Supurativa",
+      "pcdt_id": "hidradenite-supurativa",
+      "title_en": "Hidradenitis Suppurativa"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Hiperplasia Adrenal Congênita",
+      "pcdt_id": "hiperplasia-adrenal-congenita",
+      "title_en": "Congenital Adrenal Hyperplasia"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Hiperprolactinemia",
+      "pcdt_id": "hiperprolactinemia",
+      "title_en": "Hyperprolactinaemia"
+    },
+    {
+      "aliases_en": [
+        "hypertension",
+        "high blood pressure"
+      ],
+      "canonical_title_pt": "Hipertensão Arterial Sistêmica",
+      "pcdt_id": "hipertensao-arterial-sistemica",
+      "title_en": "Systemic Arterial Hypertension"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Hipertensão Pulmonar",
+      "pcdt_id": "hipertensao-pulmonar",
+      "title_en": "Pulmonary Hypertension"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Hipoparatireoidismo",
+      "pcdt_id": "hipoparatireoidismo",
+      "title_en": "Hypoparathyroidism"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Hipotireoidismo Congênito",
+      "pcdt_id": "hipotireoidismo-congenito",
+      "title_en": "Congenital Hypothyroidism"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Homocistinúria Clássica",
+      "pcdt_id": "homocistinuria-classica",
+      "title_en": "Classical Homocystinuria"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Ictioses Hereditárias",
+      "pcdt_id": "ictioses-hereditarias",
+      "title_en": "Inherited Ichthyoses"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Imunodeficiência Primária com predominância de defeitos de anticorpos",
+      "pcdt_id": "imunodeficiencia-primaria-com-predominancia-de-defeitos-de-anticorpos",
+      "title_en": "Primary Immunodeficiency Predominantly Affecting Antibody Production"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Imunossupressão em Transplante Renal",
+      "pcdt_id": "imunossupressao-em-transplante-renal",
+      "title_en": "Immunosuppression in Kidney Transplantation"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Imunossupressão no Transplante Cardíaco",
+      "pcdt_id": "imunossupressao-no-transplante-cardiaco",
+      "title_en": "Immunosuppression in Heart Transplantation"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Imunossupressão no Transplante Hepático em Adulto",
+      "pcdt_id": "imunossupressao-no-transplante-hepatico-em-adulto",
+      "title_en": "Immunosuppression in Adult Liver Transplantation"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Imunossupressão no Transplante Hepático em Pediatria",
+      "pcdt_id": "imunossupressao-no-transplante-hepatico-em-pediatria",
+      "title_en": "Immunosuppression in Paediatric Liver Transplantation"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Incontinência Urinária não Neurogênica",
+      "pcdt_id": "incontinencia-urinaria-nao-neurogenica",
+      "title_en": "Non-Neurogenic Urinary Incontinence"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Insuficiência Adrenal",
+      "pcdt_id": "insuficiencia-adrenal",
+      "title_en": "Adrenal Insufficiency"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Insuficiência Cardíaca com Fração de Ejeção Reduzida",
+      "pcdt_id": "insuficiencia-cardiaca-com-fracao-de-ejecao-reduzida",
+      "title_en": "Heart Failure with Reduced Ejection Fraction"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Insuficiência Pancreática Exócrina",
+      "pcdt_id": "insuficiencia-pancreatica-exocrina",
+      "title_en": "Exocrine Pancreatic Insufficiency"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Leiomioma de útero",
+      "pcdt_id": "leiomioma-de-utero",
+      "title_en": "Uterine Leiomyoma"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Leucemia Mieloide Crônica - Crianças e Adolescentes",
+      "pcdt_id": "leucemia-mieloide-cronica-criancas-e-adolescentes",
+      "title_en": "Chronic Myeloid Leukaemia – Children and Adolescents"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Leucemia Mieloide Crônica do Adulto",
+      "pcdt_id": "leucemia-mieloide-cronica-do-adulto",
+      "title_en": "Chronic Myeloid Leukaemia in Adults"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Linfangioleiomiomatose",
+      "pcdt_id": "linfangioleiomiomatose",
+      "title_en": "Lymphangioleiomyomatosis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Linfoma de Hodgkin no Adulto",
+      "pcdt_id": "linfoma-de-hodgkin-no-adulto",
+      "title_en": "Hodgkin Lymphoma in Adults"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Linfoma Difuso de Grandes Células B",
+      "pcdt_id": "linfoma-difuso-de-grandes-celulas-b",
+      "title_en": "Diffuse Large B-Cell Lymphoma"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Lipofuscinose Ceroide Neuronal tipo 2",
+      "pcdt_id": "lipofuscinose-ceroide-neuronal-tipo-2",
+      "title_en": "Neuronal Ceroid Lipofuscinosis Type 2"
+    },
+    {
+      "aliases_en": [
+        "SLE",
+        "lupus"
+      ],
+      "canonical_title_pt": "Lúpus Eritematoso Sistêmico",
+      "pcdt_id": "lupus-eritematoso-sistemico",
+      "title_en": "Systemic Lupus Erythematosus"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Manejo da infecção pelo HIV em adultos",
+      "pcdt_id": "manejo-da-infeccao-pelo-hiv-em-adultos",
+      "title_en": "Management of HIV Infection in Adults"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Manejo da Infecção pelo HIV em Adultos: Módulo 1 - Tratamento",
+      "pcdt_id": "manejo-da-infeccao-pelo-hiv-em-adultos-modulo-1-tratamento",
+      "title_en": "Management of HIV Infection in Adults: Module 1 – Treatment"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Manejo da Infecção pelo HIV em Adultos: Módulo 2 - Coinfecções e Infecções Oportunistas",
+      "pcdt_id": "manejo-da-infeccao-pelo-hiv-em-adultos-modulo-2-coinfeccoes-e-infeccoes-oportunistas",
+      "title_en": "Management of HIV Infection in Adults: Module 2 – Coinfections and Opportunistic Infections"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Manejo da infecção pelo HIV em crianças e adolescentes",
+      "pcdt_id": "manejo-da-infeccao-pelo-hiv-em-criancas-e-adolescentes",
+      "title_en": "Management of HIV Infection in Children and Adolescents"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Manejo da Infecção pelo HIV em Crianças e Adolescentes - Módulo 1 - Diagnóstico, Manejo e Acompanhamento de Crianças Expostas ao HIV",
+      "pcdt_id": "manejo-da-infeccao-pelo-hiv-em-criancas-e-adolescentes-modulo-1-diagnostico-manejo-e-acompanhamento-de-criancas-expostas-ao-hiv",
+      "title_en": "Management of HIV Infection in Children and Adolescents – Module 1 – Diagnosis, Management and Follow-up of Children Exposed to HIV"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Manejo da Infecção pelo HIV em Crianças e Adolescentes - Módulo 2 - Diagnóstico, Manejo e Tratamento de Crianças e Adolescentes Vivendo com HIV",
+      "pcdt_id": "manejo-da-infeccao-pelo-hiv-em-criancas-e-adolescentes-modulo-2-diagnostico-manejo-e-tratamento-de-criancas-e-adolescentes-vivendo-com-hiv",
+      "title_en": "Management of HIV Infection in Children and Adolescents – Module 2 – Diagnosis, Management and Treatment of Children and Adolescents Living with HIV"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Miastenia Gravis",
+      "pcdt_id": "miastenia-gravis",
+      "title_en": "Myasthenia Gravis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Miopatias Inflamatórias",
+      "pcdt_id": "miopatias-inflamatorias",
+      "title_en": "Inflammatory Myopathies"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Mucopolissacaridose tipo I",
+      "pcdt_id": "mucopolissacaridose-tipo-i",
+      "title_en": "Mucopolysaccharidosis Type I"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Mucopolissacaridose tipo II",
+      "pcdt_id": "mucopolissacaridose-tipo-ii",
+      "title_en": "Mucopolysaccharidosis Type II"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Mucopolissacaridose tipo IV A",
+      "pcdt_id": "mucopolissacaridose-tipo-iv-a",
+      "title_en": "Mucopolysaccharidosis Type IVA"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Mucopolissacaridose tipo VI",
+      "pcdt_id": "mucopolissacaridose-tipo-vi",
+      "title_en": "Mucopolysaccharidosis Type VI"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Mucopolissacaridose tipo VII",
+      "pcdt_id": "mucopolissacaridose-tipo-vii",
+      "title_en": "Mucopolysaccharidosis Type VII"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Osteogênese Imperfeita",
+      "pcdt_id": "osteogenese-imperfeita",
+      "title_en": "Osteogenesis Imperfecta"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Osteoporose",
+      "pcdt_id": "osteoporose",
+      "title_en": "Osteoporosis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Porfirias",
+      "pcdt_id": "porfirias",
+      "title_en": "Porphyrias"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Prevenção da Transmissão Vertical do HIV, Sífilis e Hepatites Virais",
+      "pcdt_id": "prevencao-da-transmissao-vertical-do-hiv-sifilis-e-hepatites-virais",
+      "title_en": "Prevention of Vertical Transmission of HIV, Syphilis and Viral Hepatitis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Prevenção de Tromboembolismo Venoso em Gestantes com Trombofilia",
+      "pcdt_id": "prevencao-de-tromboembolismo-venoso-em-gestantes-com-trombofilia",
+      "title_en": "Prevention of Venous Thromboembolism in Pregnant Women with Thrombophilia"
+    },
+    {
+      "aliases_en": [
+        "PEP",
+        "post exposure prophylaxis"
+      ],
+      "canonical_title_pt": "Profilaxia Pós-Exposição de Risco (PEP) à Infecção pelo HIV, IST e Hepatites Virais.",
+      "pcdt_id": "profilaxia-pos-exposicao-de-risco-pep-a-infeccao-pelo-hiv-ist-e-hepatites-virais",
+      "title_en": "Post-Exposure Prophylaxis (PEP) for HIV Infection, STIs and Viral Hepatitis"
+    },
+    {
+      "aliases_en": [
+        "PrEP",
+        "pre exposure prophylaxis"
+      ],
+      "canonical_title_pt": "Profilaxia PréExposição (PrEP) Oral à Infecção pelo HIV",
+      "pcdt_id": "profilaxia-preexposicao-prep-oral-a-infeccao-pelo-hiv",
+      "title_en": "Oral Pre-Exposure Prophylaxis (PrEP) for HIV Infection"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Psoríase",
+      "pcdt_id": "psoriase",
+      "title_en": "Psoriasis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Puberdade Precoce Central",
+      "pcdt_id": "puberdade-precoce-central",
+      "title_en": "Central Precocious Puberty"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Raquitismo e Osteomalácia",
+      "pcdt_id": "raquitismo-e-osteomalacia",
+      "title_en": "Rickets and Osteomalacia"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Retinopatia Diabética",
+      "pcdt_id": "retinopatia-diabetica",
+      "title_en": "Diabetic Retinopathy"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Retocolite Ulcerativa",
+      "pcdt_id": "retocolite-ulcerativa",
+      "title_en": "Ulcerative Colitis"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Síndrome de Falência Medular",
+      "pcdt_id": "sindrome-de-falencia-medular",
+      "title_en": "Bone Marrow Failure Syndrome"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Síndrome de Guillain-Barré",
+      "pcdt_id": "sindrome-de-guillain-barre",
+      "title_en": "Guillain–Barré Syndrome"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Síndrome de Ovários Policísticos",
+      "pcdt_id": "sindrome-de-ovarios-policisticos",
+      "title_en": "Polycystic Ovary Syndrome"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Síndrome de Turner",
+      "pcdt_id": "sindrome-de-turner",
+      "title_en": "Turner Syndrome"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Síndrome Mielodisplásica de Baixo Risco",
+      "pcdt_id": "sindrome-mielodisplasica-de-baixo-risco",
+      "title_en": "Low-Risk Myelodysplastic Syndrome"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Síndrome Nefrótica Primária em Adultos",
+      "pcdt_id": "sindrome-nefrotica-primaria-em-adultos",
+      "title_en": "Primary Nephrotic Syndrome in Adults"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Síndrome Nefrótica Primária em Crianças e Adolescentes",
+      "pcdt_id": "sindrome-nefrotica-primaria-em-criancas-e-adolescentes",
+      "title_en": "Primary Nephrotic Syndrome in Children and Adolescents"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Sobrecarga de Ferro",
+      "pcdt_id": "sobrecarga-de-ferro",
+      "title_en": "Iron Overload"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Sobrepeso e Obesidade em Adultos",
+      "pcdt_id": "sobrepeso-e-obesidade-em-adultos",
+      "title_en": "Overweight and Obesity in Adults"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Tabagismo",
+      "pcdt_id": "tabagismo",
+      "title_en": "Tobacco Use (Smoking)"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Transtorno Afetivo Bipolar do tipo I",
+      "pcdt_id": "transtorno-afetivo-bipolar-do-tipo-i",
+      "title_en": "Bipolar I Disorder"
+    },
+    {
+      "aliases_en": [
+        "ADHD"
+      ],
+      "canonical_title_pt": "Transtorno do Déficit de Atenção com Hiperatividade",
+      "pcdt_id": "transtorno-do-deficit-de-atencao-com-hiperatividade",
+      "title_en": "Attention-Deficit/Hyperactivity Disorder"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Transtorno Esquizoafetivo",
+      "pcdt_id": "transtorno-esquizoafetivo",
+      "title_en": "Schizoaffective Disorder"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Trombocitopenia Imune Primária",
+      "pcdt_id": "trombocitopenia-imune-primaria",
+      "title_en": "Primary Immune Thrombocytopenia"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Tumor do Estroma Gastrointestinal",
+      "pcdt_id": "tumor-do-estroma-gastrointestinal",
+      "title_en": "Gastrointestinal Stromal Tumour"
+    },
+    {
+      "aliases_en": [],
+      "canonical_title_pt": "Uveítes Não-Infecciosas",
+      "pcdt_id": "uveites-nao-infecciosas",
+      "title_en": "Non-Infectious Uveitis"
+    },
+    {
+      "aliases_en": [
+        "ANCA-associated vasculitis",
+        "ANCA vasculitis"
+      ],
+      "canonical_title_pt": "Vasculite Associada aos Anticorpos Anti-citoplasma de Neutrófilos",
+      "pcdt_id": "vasculite-associada-aos-anticorpos-anti-citoplasma-de-neutrofilos",
+      "title_en": "Antineutrophil Cytoplasmic Antibody-Associated Vasculitis"
+    }
+  ],
+  "language": "en-GB",
+  "localisation_id": "sus-pcdt-en-gb-product-localisation-v1",
+  "schema_version": "1.0",
+  "semantics": {
+    "aliases_en": "derived product search aliases; not official source terminology",
+    "canonical_title_pt": "authoritative Ministry/Conitec source title; must match registry exactly",
+    "title_en": "derived product localisation; not an official Ministry/Conitec translation"
+  },
+  "source_registry": {
+    "inventory_sha256": "536302620bd917ffef0458a1cae7dd811491067c20af4ef757f2ad9303308b99",
+    "pcdt_count": 132
+  }
+}

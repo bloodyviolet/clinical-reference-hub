@@ -84,7 +84,7 @@ def test_bilingual_runtime_assets_declared():
     )
 
     assert (
-        "/manifest.json?v=29"
+        "/manifest.json?v=30"
         in index
     )
 
@@ -99,7 +99,7 @@ def test_bilingual_runtime_assets_declared():
     )
 
     assert (
-        "clinical-reference-v29-v2-pcdt-repository"
+        "clinical-reference-v30-v2-pcdt-ux-bilingual"
         in sw
     )
 

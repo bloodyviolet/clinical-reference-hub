@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#5A0B32">
-  <link rel="manifest" href="/manifest.json?v=29">
+  <link rel="manifest" href="/manifest.json?v=30">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
@@ -166,9 +166,10 @@
           aria-live="polite"
           class="text-xs text-slate-400"
         ></div>
+<div id="pcdt-recent" aria-live="polite" class="mt-3"></div>
       </div>
 
-      <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-6">
+      <div class="grid grid-cols-1 gap-3">
         <div
           id="pcdt-results"
           aria-live="polite"
@@ -184,7 +185,9 @@
 
         <div
           id="pcdt-detail"
-          aria-live="polite"
+          hidden
+aria-hidden="true"
+aria-live="polite"
           class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl min-h-48"
         >
           <p

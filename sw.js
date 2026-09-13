@@ -1,9 +1,9 @@
-const CACHE_NAME = 'clinical-reference-v29-v2-pcdt-repository';
+const CACHE_NAME = 'clinical-reference-v30-v2-pcdt-ux-bilingual';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [
   '/',
-  '/manifest.json?v=29',
+  '/manifest.json?v=30',
   '/assets/app.css',
   '/assets/bloodviolet-theme.css',
   '/assets/i18n.js',

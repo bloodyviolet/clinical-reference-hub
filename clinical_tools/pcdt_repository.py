@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from hashlib import sha256
 from pathlib import Path
 from typing import Any
@@ -63,6 +64,7 @@ class PCDTRepository:
         self,
         registry: dict[str, Any],
         manifest: dict[str, Any],
+        localisation: dict[str, Any] | None = None,
     ) -> None:
         manifest_summary = validate_manifest(
             manifest
@@ -73,11 +75,165 @@ class PCDTRepository:
             manifest=manifest,
         )
 
-        self._registry = registry
+        working_registry = deepcopy(
+            registry
+        )
+
+        if localisation is not None:
+            if localisation.get(
+                "language"
+            ) != "en-GB":
+                raise ValueError(
+                    "PCDT localisation language must be en-GB."
+                )
+
+            entries = localisation.get(
+                "entries"
+            )
+
+            if not isinstance(
+                entries,
+                list,
+            ):
+                raise ValueError(
+                    "PCDT localisation entries must be a list."
+                )
+
+            source_by_id = {
+                item["pcdt_id"]:
+                    item
+                for item
+                in registry["pcdts"]
+            }
+
+            localisation_by_id = {}
+
+            for item in entries:
+                if not isinstance(
+                    item,
+                    dict,
+                ):
+                    raise ValueError(
+                        "PCDT localisation entries must be objects."
+                    )
+
+                pcdt_id = item.get(
+                    "pcdt_id"
+                )
+
+                if (
+                    not isinstance(
+                        pcdt_id,
+                        str,
+                    )
+                    or not pcdt_id
+                    or pcdt_id
+                    in localisation_by_id
+                ):
+                    raise ValueError(
+                        "PCDT localisation contains an invalid or duplicate pcdt_id."
+                    )
+
+                localisation_by_id[
+                    pcdt_id
+                ] = item
+
+            if set(
+                localisation_by_id
+            ) != set(
+                source_by_id
+            ):
+                raise ValueError(
+                    "PCDT localisation must cover the registry exactly."
+                )
+
+            for pcdt_id, source in source_by_id.items():
+                localised = localisation_by_id[
+                    pcdt_id
+                ]
+
+                if localised.get(
+                    "canonical_title_pt"
+                ) != source.get(
+                    "canonical_title_pt"
+                ):
+                    raise ValueError(
+                        "PCDT localisation canonical_title_pt mismatch: "
+                        + pcdt_id
+                    )
+
+                title_en = localised.get(
+                    "title_en"
+                )
+
+                if (
+                    not isinstance(
+                        title_en,
+                        str,
+                    )
+                    or not title_en.strip()
+                ):
+                    raise ValueError(
+                        "PCDT localisation title_en must be nonblank: "
+                        + pcdt_id
+                    )
+
+                aliases_en = localised.get(
+                    "aliases_en",
+                    [],
+                )
+
+                if (
+                    not isinstance(
+                        aliases_en,
+                        list,
+                    )
+                    or not all(
+                        isinstance(
+                            alias,
+                            str,
+                        )
+                        and bool(
+                            alias.strip()
+                        )
+                        for alias
+                        in aliases_en
+                    )
+                ):
+                    raise ValueError(
+                        "PCDT localisation aliases_en must contain nonblank strings: "
+                        + pcdt_id
+                    )
+
+            for pcdt in working_registry[
+                "pcdts"
+            ]:
+                localised = localisation_by_id[
+                    pcdt[
+                        "pcdt_id"
+                    ]
+                ]
+
+                pcdt[
+                    "title_en"
+                ] = localised[
+                    "title_en"
+                ]
+
+                pcdt[
+                    "aliases_en"
+                ] = list(
+                    localised.get(
+                        "aliases_en",
+                        [],
+                    )
+                )
+
+        self._registry = working_registry
         self._manifest = manifest
 
         self._pcdts = tuple(
-            registry[
+            working_registry[
                 "pcdts"
             ]
         )
@@ -86,7 +242,7 @@ class PCDTRepository:
             pcdt[
                 "pcdt_id"
             ]:
-            pcdt
+                pcdt
             for pcdt
             in self._pcdts
         }
@@ -101,7 +257,7 @@ class PCDTRepository:
             obj[
                 "archive_object_id"
             ]:
-            obj
+                obj
             for obj
             in self._objects
         }
@@ -110,7 +266,7 @@ class PCDTRepository:
             obj[
                 "sha256"
             ]:
-            obj
+                obj
             for obj
             in self._objects
         }
@@ -188,11 +344,13 @@ class PCDTRepository:
         }
 
 
+
     @classmethod
     def from_files(
         cls,
         registry_path: Path,
         manifest_path: Path,
+        localisation_path: Path | None = None,
     ) -> "PCDTRepository":
         registry = json.loads(
             registry_path.read_text(
@@ -206,10 +364,23 @@ class PCDTRepository:
             )
         )
 
+        localisation = (
+            json.loads(
+                localisation_path.read_text(
+                    encoding="utf-8"
+                )
+            )
+            if localisation_path
+            is not None
+            else None
+        )
+
         return cls(
             registry,
             manifest,
+            localisation=localisation,
         )
+
 
 
     def summary(
@@ -244,6 +415,11 @@ class PCDTRepository:
 
             *pcdt.get(
                 "historical_titles_pt",
+                [],
+            ),
+
+            *pcdt.get(
+                "aliases_en",
                 [],
             ),
         ]
@@ -297,6 +473,72 @@ class PCDTRepository:
         return tuple(
             values
         )
+
+
+    def _match_score(
+        self,
+        pcdt: dict[str, Any],
+        needle: str,
+    ) -> int | None:
+        """
+        Lower is stronger.
+
+        0: exact field match
+        1: whole-term / whole-phrase boundary match
+        2: field-prefix match
+        3: interior-substring fallback
+
+        If any record has an exact or whole-boundary match,
+        weaker interior matches are suppressed globally.
+        """
+
+        best: int | None = None
+
+        boundary = re.compile(
+            r"(?<!\w)"
+            + re.escape(
+                needle
+            )
+            + r"(?!\w)"
+        )
+
+        for value in self._search_values(
+            pcdt
+        ):
+            haystack = _normalise(
+                value
+            )
+
+            if not haystack:
+                continue
+
+            if haystack == needle:
+                score = 0
+
+            elif boundary.search(
+                haystack
+            ):
+                score = 1
+
+            elif haystack.startswith(
+                needle
+            ):
+                score = 2
+
+            elif needle in haystack:
+                score = 3
+
+            else:
+                continue
+
+            if (
+                best is None
+                or score < best
+            ):
+                best = score
+
+        return best
+
 
 
     def _index_item(
@@ -423,10 +665,13 @@ class PCDTRepository:
                 "offset cannot be negative."
             )
 
-        query = str(
-            q
-            or ""
-        ).strip()
+        query = (
+            str(
+                q
+                or ""
+            )
+            .strip()
+        )
 
         if len(
             query
@@ -440,20 +685,55 @@ class PCDTRepository:
         )
 
         if needle:
+            scored = []
+
+            for pcdt in self._pcdts:
+                score = self._match_score(
+                    pcdt,
+                    needle,
+                )
+
+                if score is not None:
+                    scored.append(
+                        (
+                            score,
+                            pcdt,
+                        )
+                    )
+
+            if scored:
+                strongest = min(
+                    score
+                    for score, _
+                    in scored
+                )
+
+                if strongest <= 1:
+                    scored = [
+                        (
+                            score,
+                            pcdt,
+                        )
+                        for score, pcdt
+                        in scored
+                        if score <= 1
+                    ]
+
+            scored.sort(
+                key=lambda row: (
+                    row[0],
+                    _normalise(
+                        row[1][
+                            "canonical_title_pt"
+                        ]
+                    ),
+                )
+            )
+
             selected = [
                 pcdt
-                for pcdt
-                in self._pcdts
-                if any(
-                    needle
-                    in _normalise(
-                        value
-                    )
-                    for value
-                    in self._search_values(
-                        pcdt
-                    )
-                )
+                for _, pcdt
+                in scored
             ]
 
         else:
@@ -461,14 +741,14 @@ class PCDTRepository:
                 self._pcdts
             )
 
-        selected.sort(
-            key=lambda item:
-                _normalise(
-                    item[
-                        "canonical_title_pt"
-                    ]
-                )
-        )
+            selected.sort(
+                key=lambda item:
+                    _normalise(
+                        item[
+                            "canonical_title_pt"
+                        ]
+                    )
+            )
 
         page = selected[
             offset:
@@ -505,6 +785,7 @@ class PCDTRepository:
                     in page
                 ],
         }
+
 
 
     def _require_pcdt(

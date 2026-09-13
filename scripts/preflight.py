@@ -90,6 +90,7 @@ def main() -> int:
         pcdt_repository = PCDTRepository.from_files(
             ROOT / "data" / "clinical-sources" / "sus_pcdt_registry.json",
             ROOT / "data" / "clinical-sources" / "sus_pcdt_archive_manifest.json",
+        ROOT / "data" / "clinical-sources" / "sus_pcdt_localisation_en.json",
         )
 
         pcdt_summary = pcdt_repository.summary()

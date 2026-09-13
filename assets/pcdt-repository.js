@@ -4,12 +4,18 @@
   const STORAGE_KEY =
     'clinical-reference-v2-pcdt-repository-v1';
 
+  const RECENT_STORAGE_KEY =
+    'clinical-reference-v2-pcdt-recent-v1';
+
   const state = {
     query: '',
     selectedPcdtId: null,
     indexPayload: null,
     detailPayload: null,
     documentsPayload: null,
+
+    recentPcdts: [],
+    searchEpoch: 0,
   };
 
 
@@ -171,6 +177,247 @@
   }
 
 
+  function validPcdtId(
+    value
+  ) {
+    return (
+      typeof value === 'string'
+      && /^[a-z0-9][a-z0-9-]{0,199}$/
+        .test(
+          value
+        )
+    );
+  }
+
+
+  function displayTitle(
+    item
+  ) {
+    if (!item) {
+      return '';
+    }
+
+    if (
+      language() === 'en-GB'
+      && typeof item.title_en
+        === 'string'
+      && item.title_en.trim()
+    ) {
+      return item.title_en;
+    }
+
+    return (
+      item.canonical_title_pt
+      || item.pcdt_id
+      || ''
+    );
+  }
+
+
+  function loadRecentSession() {
+    try {
+      const payload =
+        JSON.parse(
+          sessionStorage.getItem(
+            RECENT_STORAGE_KEY
+          )
+          || '[]'
+        );
+
+      if (!Array.isArray(payload)) {
+        return;
+      }
+
+      state.recentPcdts =
+        payload
+          .filter(
+            item =>
+              item
+              && validPcdtId(
+                item.pcdtId
+              )
+              && typeof item.canonical_title_pt
+                === 'string'
+              && item.canonical_title_pt
+                .trim()
+              && (
+                item.title_en === null
+                || typeof item.title_en
+                  === 'string'
+              )
+          )
+          .slice(
+            0,
+            3
+          );
+
+    } catch (_) {
+      state.recentPcdts = [];
+    }
+  }
+
+
+  function saveRecentSession() {
+    try {
+      sessionStorage.setItem(
+        RECENT_STORAGE_KEY,
+        JSON.stringify(
+          state.recentPcdts
+            .slice(
+              0,
+              3
+            )
+        )
+      );
+
+    } catch (_) {}
+  }
+
+
+  function rememberRecent(
+    pcdt
+  ) {
+    if (
+      !pcdt
+      || !validPcdtId(
+        pcdt.pcdt_id
+      )
+    ) {
+      return;
+    }
+
+    const entry = {
+      pcdtId:
+        pcdt.pcdt_id,
+
+      canonical_title_pt:
+        String(
+          pcdt.canonical_title_pt
+          || pcdt.pcdt_id
+        )
+          .trim()
+          .slice(
+            0,
+            500
+          ),
+
+      title_en:
+        (
+          typeof pcdt.title_en
+            === 'string'
+          && pcdt.title_en.trim()
+        )
+          ? pcdt.title_en
+              .trim()
+              .slice(
+                0,
+                500
+              )
+          : null,
+    };
+
+    state.recentPcdts = [
+      entry,
+
+      ...state.recentPcdts
+        .filter(
+          item =>
+            item.pcdtId
+            !== entry.pcdtId
+        ),
+    ]
+      .slice(
+        0,
+        3
+      );
+
+    saveRecentSession();
+  }
+
+
+  function renderRecent() {
+    const target =
+      document.getElementById(
+        'pcdt-recent'
+      );
+
+    if (!target) {
+      return;
+    }
+
+    if (
+      state.recentPcdts.length
+      === 0
+    ) {
+      target.innerHTML = '';
+      return;
+    }
+
+    target.innerHTML = `
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[10px] uppercase font-semibold text-slate-500">
+          ${escapeHtml(
+            t(
+              'pcdt.recent',
+              'PCDTs recentes',
+              'Recent PCDTs'
+            )
+          )}
+        </span>
+
+        ${
+          state.recentPcdts
+            .map(
+              item => `
+                <button
+                  type="button"
+                  data-pcdt-recent="${escapeHtml(item.pcdtId)}"
+                  class="text-xs px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-teal-300 hover:border-teal-600 hover:text-teal-200 transition"
+                  title="${escapeHtml(displayTitle(item))}"
+                >
+                  ${escapeHtml(displayTitle(item))}
+                </button>
+              `
+            )
+            .join('')
+        }
+      </div>
+    `;
+  }
+
+
+  function clearExpandedState({
+    persist = true,
+  } = {}) {
+    state.selectedPcdtId =
+      null;
+
+    state.detailPayload =
+      null;
+
+    state.documentsPayload =
+      null;
+
+    if (persist) {
+      saveSession();
+    }
+  }
+
+
+  function detailContainerFor(
+    pcdtId
+  ) {
+    if (!validPcdtId(
+      pcdtId
+    )) {
+      return null;
+    }
+
+    return document.querySelector(
+      `[data-pcdt-inline-detail="${pcdtId}"]`
+    );
+  }
+
   function localiseChrome() {
     const input =
       document.getElementById(
@@ -314,71 +561,124 @@
             item.pcdt_id
             === state.selectedPcdtId;
 
+          const title =
+            displayTitle(
+              item
+            );
+
           return `
-            <button
-              type="button"
-              data-pcdt-open="${escapeHtml(item.pcdt_id)}"
-              class="w-full text-left bg-slate-900 border ${
+            <article
+              class="bg-slate-900 border ${
                 selected
                 ? 'border-teal-500'
                 : 'border-slate-800'
-              } rounded-xl p-4 hover:border-teal-700 transition shadow-lg"
+              } rounded-xl shadow-lg overflow-hidden"
             >
-              <div class="flex items-start justify-between gap-3">
-                <div>
-                  <p class="text-sm font-semibold text-white">
-                    ${escapeHtml(
-                      item.canonical_title_pt
-                    )}
-                  </p>
+              <button
+                type="button"
+                data-pcdt-toggle="${escapeHtml(item.pcdt_id)}"
+                aria-expanded="${selected ? 'true' : 'false'}"
+                aria-controls="pcdt-panel-${escapeHtml(item.pcdt_id)}"
+                class="w-full text-left p-4 hover:bg-slate-800/40 transition"
+              >
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex items-start gap-3 min-w-0">
+                    <span
+                      aria-hidden="true"
+                      class="text-teal-300 text-lg leading-5 shrink-0 transition-transform"
+                      style="${
+                        selected
+                        ? 'transform: rotate(90deg);'
+                        : ''
+                      } transform-origin: center;"
+                    >&gt;</span>
 
-                  <p class="text-[10px] text-slate-500 mt-1 font-mono break-all">
-                    ${escapeHtml(
-                      item.pcdt_id
-                    )}
-                  </p>
+                    <div class="min-w-0">
+                      <p class="text-sm font-semibold text-white">
+                        ${escapeHtml(title)}
+                      </p>
+
+                      ${
+                        language() === 'en-GB'
+                        && item.title_en
+                        && item.canonical_title_pt
+                        ? `
+                          <p class="text-[10px] text-slate-500 mt-1">
+                            ${escapeHtml(
+                              t(
+                                'pcdt.officialPtShort',
+                                'Título oficial PT-BR',
+                                'Official PT-BR title'
+                              )
+                            )}:
+                            ${escapeHtml(item.canonical_title_pt)}
+                          </p>
+                        `
+                        : ''
+                      }
+
+                      <p class="text-[10px] text-slate-500 mt-1 font-mono break-all">
+                        ${escapeHtml(item.pcdt_id)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <span class="text-[10px] px-2 py-1 rounded border border-slate-700 text-slate-300 shrink-0">
+                    ${escapeHtml(item.document_count)} docs
+                  </span>
                 </div>
 
-                <span class="text-[10px] px-2 py-1 rounded border border-slate-700 text-slate-300">
-                  ${escapeHtml(
-                    item.document_count
-                  )} docs
-                </span>
-              </div>
+                <div class="mt-3 pl-7 text-[11px] text-slate-400 flex flex-wrap gap-x-4 gap-y-1">
+                  <span>
+                    ${escapeHtml(
+                      t(
+                        'pcdt.versions',
+                        'Versões / atos de aprovação',
+                        'Versions / approval instruments'
+                      )
+                    )}:
+                    ${escapeHtml(item.approval_version_count)}
+                  </span>
 
-              <div class="mt-3 text-[11px] text-slate-400 flex flex-wrap gap-x-4 gap-y-1">
-                <span>
-                  ${escapeHtml(
-                    t(
-                      'pcdt.versions',
-                      'Versões / atos de aprovação',
-                      'Versions / approval instruments'
-                    )
-                  )}:
-                  ${escapeHtml(
-                    item.approval_version_count
-                  )}
-                </span>
+                  <span>
+                    ${escapeHtml(
+                      t(
+                        'pcdt.approvalState',
+                        'Situação de aprovação',
+                        'Approval status'
+                      )
+                    )}:
+                    ${escapeHtml(item.approval_state)}
+                  </span>
+                </div>
+              </button>
 
-                <span>
-                  ${escapeHtml(
-                    t(
-                      'pcdt.approvalState',
-                      'Situação de aprovação',
-                      'Approval status'
-                    )
-                  )}:
-                  ${escapeHtml(
-                    item.approval_state
-                  )}
-                </span>
-              </div>
-            </button>
+              ${
+                selected
+                ? `
+                  <div
+                    id="pcdt-panel-${escapeHtml(item.pcdt_id)}"
+                    data-pcdt-inline-detail="${escapeHtml(item.pcdt_id)}"
+                    class="border-t border-slate-800 p-5"
+                  >
+                    <p class="text-sm text-slate-400">
+                      ${escapeHtml(
+                        t(
+                          'pcdt.loading',
+                          'Carregando repositório PCDT...',
+                          'Loading PCDT repository...'
+                        )
+                      )}
+                    </p>
+                  </div>
+                `
+                : ''
+              }
+            </article>
           `;
         }
       ).join('');
   }
-
 
   function revisionText(
     event
@@ -751,8 +1051,8 @@
 
   function renderDetail() {
     const target =
-      document.getElementById(
-        'pcdt-detail'
+      detailContainerFor(
+        state.selectedPcdtId
       );
 
     if (!target) {
@@ -775,10 +1075,23 @@
     const documents =
       state.documentsPayload;
 
-    const aliases = [
-      ...(pcdt.aliases_pt || []),
-      ...(pcdt.historical_titles_pt || []),
-    ];
+    const english =
+      language() === 'en-GB';
+
+    const primaryTitle =
+      displayTitle(
+        pcdt
+      );
+
+    const aliases =
+      english
+      ? [
+          ...(pcdt.aliases_en || []),
+        ]
+      : [
+          ...(pcdt.aliases_pt || []),
+          ...(pcdt.historical_titles_pt || []),
+        ];
 
     const catalogUrl =
       safeExternalUrl(
@@ -791,21 +1104,51 @@
         <div>
           <p class="text-[10px] uppercase tracking-wider text-teal-300 font-semibold">
             ${escapeHtml(
-              t(
-                'pcdt.officialTitle',
-                'Título oficial',
-                'Official title'
-              )
-            )} · PT-BR
+              english
+              ? t(
+                  'pcdt.productLocalisation',
+                  'Localização do produto',
+                  'Product localisation'
+                )
+              : t(
+                  'pcdt.officialTitle',
+                  'Título oficial',
+                  'Official title'
+                )
+            )} · ${english ? 'EN-GB' : 'PT-BR'}
           </p>
 
           <h2 class="text-xl font-bold text-white mt-1">
             ${escapeHtml(
-              pcdt.canonical_title_pt
+              primaryTitle
             )}
           </h2>
 
-          <p class="text-[10px] text-slate-500 font-mono mt-1 break-all">
+          ${
+            english
+            ? `
+              <div class="mt-3 rounded-lg border border-slate-800 bg-slate-950/50 p-3">
+                <p class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">
+                  ${escapeHtml(
+                    t(
+                      'pcdt.officialPortugueseSourceTitle',
+                      'Título oficial da fonte · PT-BR',
+                      'Official source title · PT-BR'
+                    )
+                  )}
+                </p>
+
+                <p class="text-sm text-slate-200 mt-1">
+                  ${escapeHtml(
+                    pcdt.canonical_title_pt
+                  )}
+                </p>
+              </div>
+            `
+            : ''
+          }
+
+          <p class="text-[10px] text-slate-500 font-mono mt-2 break-all">
             ${escapeHtml(
               pcdt.pcdt_id
             )}
@@ -947,7 +1290,6 @@
     `;
   }
 
-
   function renderError(
     error
   ) {
@@ -974,20 +1316,33 @@
     `;
   }
 
-
   async function loadIndex(
-    query = ''
+    query = '',
+    {
+      preserveSelection = false,
+    } = {}
   ) {
     const clean =
       String(
         query
         || ''
       )
-      .trim()
-      .slice(
-        0,
-        120
-      );
+        .trim()
+        .slice(
+          0,
+          120
+        );
+
+    state.searchEpoch += 1;
+
+    const requestEpoch =
+      state.searchEpoch;
+
+    if (!preserveSelection) {
+      clearExpandedState({
+        persist: false,
+      });
+    }
 
     state.query =
       clean;
@@ -1010,54 +1365,14 @@
       );
     }
 
-    try {
-      state.indexPayload =
-        await fetchJson(
-          `/api/v1/pcdt?${params.toString()}`
-        );
-
-      renderIndex();
-
-    } catch (error) {
-      renderError(
-        error
-      );
-    }
-  }
-
-
-  async function loadDetail(
-    pcdtId
-  ) {
-    const key =
-      String(
-        pcdtId
-        || ''
-      );
-
-    if (
-      !/^[a-z0-9][a-z0-9-]{0,199}$/
-        .test(
-          key
-        )
-    ) {
-      return;
-    }
-
-    state.selectedPcdtId =
-      key;
-
-    saveSession();
-    renderIndex();
-
     const target =
       document.getElementById(
-        'pcdt-detail'
+        'pcdt-results'
       );
 
     if (target) {
       target.innerHTML = `
-        <p class="text-sm text-slate-400">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 text-sm text-slate-400">
           ${escapeHtml(
             t(
               'pcdt.loading',
@@ -1065,9 +1380,92 @@
               'Loading PCDT repository...'
             )
           )}
-        </p>
+        </div>
       `;
     }
+
+    try {
+      const payload =
+        await fetchJson(
+          `/api/v1/pcdt?${params.toString()}`
+        );
+
+      if (
+        requestEpoch
+        !== state.searchEpoch
+      ) {
+        return;
+      }
+
+      state.indexPayload =
+        payload;
+
+      if (
+        preserveSelection
+        && state.selectedPcdtId
+        && !payload.items
+          .some(
+            item =>
+              item.pcdt_id
+              === state.selectedPcdtId
+          )
+      ) {
+        clearExpandedState();
+      }
+
+      renderIndex();
+
+    } catch (error) {
+      if (
+        requestEpoch
+        !== state.searchEpoch
+      ) {
+        return;
+      }
+
+      renderError(
+        error
+      );
+    }
+  }
+
+  async function loadDetail(
+    pcdtId,
+    {
+      remember = true,
+    } = {}
+  ) {
+    const key =
+      String(
+        pcdtId
+        || ''
+      );
+
+    if (!validPcdtId(
+      key
+    )) {
+      return;
+    }
+
+    const detailEpoch =
+      state.searchEpoch;
+
+    state.selectedPcdtId =
+      key;
+
+    state.detailPayload =
+      null;
+
+    state.documentsPayload =
+      null;
+
+    saveSession();
+    renderIndex();
+
+    const initialTarget =
+      detailContainerFor(
+        key
+      );
 
     try {
       const [
@@ -1083,15 +1481,50 @@
         ),
       ]);
 
+      if (
+        state.selectedPcdtId
+        !== key
+        || state.searchEpoch
+          !== detailEpoch
+      ) {
+        return;
+      }
+
       state.detailPayload =
         detail;
 
       state.documentsPayload =
         documents;
 
+      if (
+        remember
+        && detail?.pcdt
+      ) {
+        rememberRecent(
+          detail.pcdt
+        );
+
+        renderRecent();
+      }
+
       renderDetail();
 
     } catch (error) {
+      if (
+        state.selectedPcdtId
+        !== key
+        || state.searchEpoch
+          !== detailEpoch
+      ) {
+        return;
+      }
+
+      const target =
+        detailContainerFor(
+          key
+        )
+        || initialTarget;
+
       if (target) {
         target.innerHTML = `
           <div class="bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-rose-300 text-sm">
@@ -1109,7 +1542,6 @@
     }
   }
 
-
   function wireEvents() {
     document
       .getElementById(
@@ -1119,15 +1551,6 @@
         'submit',
         event => {
           event.preventDefault();
-
-          state.selectedPcdtId =
-            null;
-
-          state.detailPayload =
-            null;
-
-          state.documentsPayload =
-            null;
 
           const value =
             document
@@ -1154,24 +1577,115 @@
           const target =
             event.target
               ?.closest?.(
-                '[data-pcdt-open]'
+                '[data-pcdt-toggle]'
               );
 
           if (!target) {
             return;
           }
 
+          const pcdtId =
+            target.dataset
+              .pcdtToggle;
+
+          if (
+            state.selectedPcdtId
+            === pcdtId
+          ) {
+            clearExpandedState();
+            renderIndex();
+            return;
+          }
+
           void loadDetail(
-            target.dataset.pcdtOpen
+            pcdtId
           );
+        }
+      );
+
+
+    document
+      .getElementById(
+        'pcdt-recent'
+      )
+      ?.addEventListener(
+        'click',
+        event => {
+          const target =
+            event.target
+              ?.closest?.(
+                '[data-pcdt-recent]'
+              );
+
+          if (!target) {
+            return;
+          }
+
+          const pcdtId =
+            target.dataset
+              .pcdtRecent;
+
+          const recent =
+            state.recentPcdts
+              .find(
+                item =>
+                  item.pcdtId
+                  === pcdtId
+              );
+
+          if (!recent) {
+            return;
+          }
+
+          void (
+            async () => {
+              const query =
+                displayTitle(
+                  recent
+                );
+
+              const input =
+                document.getElementById(
+                  'pcdt-search-input'
+                );
+
+              if (input) {
+                input.value =
+                  query;
+              }
+
+              await loadIndex(
+                query
+              );
+
+              if (
+                state.indexPayload
+                  ?.items
+                  ?.some(
+                    item =>
+                      item.pcdt_id
+                      === pcdtId
+                  )
+              ) {
+                await loadDetail(
+                  pcdtId
+                );
+              }
+            }
+          )();
         }
       );
   }
 
-
   async function initialise() {
     loadSession();
+    loadRecentSession();
+
+    const restoredPcdtId =
+      state.selectedPcdtId;
+
     localiseChrome();
+    renderRecent();
     wireEvents();
 
     const input =
@@ -1185,18 +1699,49 @@
     }
 
     await loadIndex(
-      state.query
+      state.query,
+      {
+        preserveSelection: true,
+      }
     );
 
     if (
-      state.selectedPcdtId
+      restoredPcdtId
+      && state.selectedPcdtId
+        === restoredPcdtId
     ) {
       await loadDetail(
-        state.selectedPcdtId
+        restoredPcdtId,
+        {
+          remember: false,
+        }
       );
     }
   }
 
+
+  async function goHome() {
+    const input =
+      document.getElementById(
+        'pcdt-search-input'
+      );
+
+    if (input) {
+      input.value = '';
+    }
+
+    clearExpandedState({
+      persist: false,
+    });
+
+    await loadIndex(
+      ''
+    );
+
+    renderRecent();
+
+    input?.focus?.();
+  }
 
   document.addEventListener(
     'DOMContentLoaded',
@@ -1210,6 +1755,7 @@
     'clinical-language-change',
     () => {
       localiseChrome();
+      renderRecent();
       renderIndex();
       renderDetail();
     }
@@ -1220,5 +1766,6 @@
     Object.freeze({
       loadIndex,
       loadDetail,
+      goHome,
     });
 })();

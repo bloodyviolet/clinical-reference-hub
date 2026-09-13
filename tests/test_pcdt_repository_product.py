@@ -341,3 +341,244 @@ def test_repository_source_preserves_clinical_firewall():
         "eligibility_rule"
         not in source
     )
+
+
+
+# ---------------------------------------------------------------------------
+# v30 PCDT product localisation / search remediation
+# ---------------------------------------------------------------------------
+
+LOCALISATION_V30 = (
+    ROOT
+    / "data"
+    / "clinical-sources"
+    / "sus_pcdt_localisation_en.json"
+)
+
+
+def localised_repository_v30():
+    return PCDTRepository.from_files(
+        REGISTRY,
+        MANIFEST,
+        LOCALISATION_V30,
+    )
+
+
+def test_v30_localisation_overlay_is_exact_and_nonblank():
+    json_module = __import__(
+        "json"
+    )
+
+    registry = json_module.loads(
+        REGISTRY.read_text(
+            encoding="utf-8"
+        )
+    )
+
+    localisation = json_module.loads(
+        LOCALISATION_V30.read_text(
+            encoding="utf-8"
+        )
+    )
+
+    source = {
+        item["pcdt_id"]:
+            item
+        for item
+        in registry["pcdts"]
+    }
+
+    overlay = {
+        item["pcdt_id"]:
+            item
+        for item
+        in localisation["entries"]
+    }
+
+    assert len(source) == 132
+    assert len(overlay) == 132
+    assert set(source) == set(overlay)
+
+    for pcdt_id, source_item in source.items():
+        item = overlay[pcdt_id]
+
+        assert (
+            item["canonical_title_pt"]
+            ==
+            source_item["canonical_title_pt"]
+        )
+
+        assert item["title_en"].strip()
+
+
+def test_v30_bilingual_title_search_contract():
+    repo = localised_repository_v30()
+
+    pt = repo.search(
+        q="asma",
+        limit=100,
+        offset=0,
+    )
+
+    accented = repo.search(
+        q="ásma",
+        limit=100,
+        offset=0,
+    )
+
+    en = repo.search(
+        q="asthma",
+        limit=100,
+        offset=0,
+    )
+
+    assert [
+        item["pcdt_id"]
+        for item
+        in pt["items"]
+    ] == ["asma"]
+
+    assert [
+        item["pcdt_id"]
+        for item
+        in accented["items"]
+    ] == ["asma"]
+
+    assert [
+        item["pcdt_id"]
+        for item
+        in en["items"]
+    ] == ["asma"]
+
+    assert (
+        en["items"][0]["title_en"]
+        == "Asthma"
+    )
+
+
+def test_v30_asma_does_not_match_citoplasma_when_strong_match_exists():
+    repo = localised_repository_v30()
+
+    result = repo.search(
+        q="asma",
+        limit=100,
+        offset=0,
+    )
+
+    ids = [
+        item["pcdt_id"]
+        for item
+        in result["items"]
+    ]
+
+    assert ids == ["asma"]
+
+    assert (
+        "vasculite-associada-aos-anticorpos-anti-citoplasma-de-neutrofilos"
+        not in ids
+    )
+
+
+def test_v30_english_alias_search_contract():
+    repo = localised_repository_v30()
+
+    cases = {
+        "snake bite":
+            "acidentes-ofidicos",
+
+        "snakebite":
+            "acidentes-ofidicos",
+
+        "COPD":
+            "doenca-pulmonar-obstrutiva-cronica",
+
+        "ADHD":
+            "transtorno-do-deficit-de-atencao-com-hiperatividade",
+
+        "osteoporosis":
+            "osteoporose",
+    }
+
+    for query, expected_id in cases.items():
+        result = repo.search(
+            q=query,
+            limit=100,
+            offset=0,
+        )
+
+        assert result["returned"] >= 1
+
+        assert (
+            result["items"][0]["pcdt_id"]
+            == expected_id
+        )
+
+
+def test_v30_detail_has_derived_english_title_and_official_pt_title():
+    repo = localised_repository_v30()
+
+    detail = repo.detail(
+        "asma"
+    )
+
+    assert (
+        detail["pcdt"]["canonical_title_pt"]
+        == "Asma"
+    )
+
+    assert (
+        detail["pcdt"]["title_en"]
+        == "Asthma"
+    )
+
+    assert (
+        "bronchial asthma"
+        in detail["pcdt"]["aliases_en"]
+    )
+
+
+def test_v30_http_bilingual_search_contract():
+    with TestClient(
+        main.app
+    ) as client:
+        pt = client.get(
+            "/api/v1/pcdt",
+            params={
+                "q":
+                    "asma",
+
+                "limit":
+                    100,
+            },
+        )
+
+        en = client.get(
+            "/api/v1/pcdt",
+            params={
+                "q":
+                    "asthma",
+
+                "limit":
+                    100,
+            },
+        )
+
+        assert pt.status_code == 200
+        assert en.status_code == 200
+
+        assert [
+            item["pcdt_id"]
+            for item
+            in pt.json()["items"]
+        ] == ["asma"]
+
+        assert [
+            item["pcdt_id"]
+            for item
+            in en.json()["items"]
+        ] == ["asma"]
+
+        assert (
+            en.json()["items"][0]["title_en"]
+            == "Asthma"
+        )

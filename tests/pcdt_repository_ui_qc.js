@@ -179,13 +179,13 @@ assert(
 
 assert(
   sw.includes(
-    'clinical-reference-v29-v2-pcdt-repository'
+    'clinical-reference-v30-v2-pcdt-ux-bilingual'
   )
 );
 
 assert(
   html.includes(
-    '/manifest.json?v=29'
+    '/manifest.json?v=30'
   )
 );
 
@@ -220,4 +220,160 @@ assert(
 
 console.log(
   'pcdt_repository_ui_qc: repository navigation, bilingual chrome, safe links and PDF cache isolation passed'
+);
+
+
+
+assert(
+  html.includes(
+    'id="pcdt-recent"'
+  )
+);
+
+assert(
+  html.includes(
+    'id="pcdt-detail"'
+  )
+);
+
+assert(
+  html.includes(
+    'aria-hidden="true"'
+  )
+);
+
+assert(
+  !html.includes(
+    'xl:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]'
+  )
+);
+
+assert(
+  app.includes(
+    "tab === 'pcdt'"
+  )
+);
+
+assert(
+  app.includes(
+    "repository.goHome()"
+  )
+);
+
+assert(
+  ui.includes(
+    'RECENT_STORAGE_KEY'
+  )
+);
+
+assert(
+  ui.includes(
+    'clinical-reference-v2-pcdt-recent-v1'
+  )
+);
+
+assert(
+  ui.includes(
+    'data-pcdt-toggle'
+  )
+);
+
+assert(
+  ui.includes(
+    'data-pcdt-inline-detail'
+  )
+);
+
+assert(
+  ui.includes(
+    'data-pcdt-recent'
+  )
+);
+
+assert(
+  ui.includes(
+    'aria-expanded='
+  )
+);
+
+assert(
+  ui.includes(
+    'rotate(90deg)'
+  )
+);
+
+assert(
+  ui.includes(
+    'clearExpandedState'
+  )
+);
+
+assert(
+  ui.includes(
+    'searchEpoch'
+  )
+);
+
+assert(
+  ui.includes(
+    'preserveSelection'
+  )
+);
+
+assert(
+  ui.includes(
+    'displayTitle'
+  )
+);
+
+assert(
+  ui.includes(
+    'title_en'
+  )
+);
+
+assert(
+  ui.includes(
+    'aliases_en'
+  )
+);
+
+assert(
+  ui.includes(
+    'Product localisation'
+  )
+);
+
+assert(
+  ui.includes(
+    'Official source title · PT-BR'
+  )
+);
+
+assert(
+  ui.includes(
+    'async function goHome'
+  )
+);
+
+assert(
+  ui.includes(
+    'goHome,'
+  )
+);
+
+assert(
+  !ui.includes(
+    'data-pcdt-open'
+  )
+);
+
+assert(
+  !ui.includes(
+    "'pcdt-detail'"
+  )
+);
+
+console.log(
+  'V30_PCDT_UX_CONTRACT=PASS'
 );

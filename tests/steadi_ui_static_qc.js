@@ -252,7 +252,7 @@ for (const token of [
 
 assert(
   sw.includes(
-    'clinical-reference-v29-v2-pcdt-repository'
+    'clinical-reference-v30-v2-pcdt-ux-bilingual'
   )
 );
 
