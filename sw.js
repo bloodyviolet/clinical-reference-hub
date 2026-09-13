@@ -1,10 +1,11 @@
-const CACHE_NAME = 'clinical-reference-v26-v2-uat-remediation';
+const CACHE_NAME = 'clinical-reference-v27-v2-bloodviolet-persistent-ux';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [
   '/',
-  '/manifest.json?v=611',
+  '/manifest.json?v=27',
   '/assets/app.css',
+  '/assets/bloodviolet-theme.css',
   '/assets/i18n.js',
   '/assets/clinical-tools.js',
   '/assets/growth-tools.js',
@@ -12,6 +13,7 @@ const APP_SHELL = [
   '/assets/serial-trends-export.js',
   '/assets/serial-trends-instrument-registry.json',
   '/assets/app.js',
+  '/assets/ui-session.js',
   '/assets/icons/icon-192.png',
   '/assets/icons/icon-512.png',
   '/assets/icons/apple-touch-icon.png',

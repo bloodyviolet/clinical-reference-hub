@@ -115,7 +115,7 @@ for (const key of [
 
 assert(
   swSource.includes(
-    'clinical-reference-v26-v2-uat-remediation'
+    'clinical-reference-v27-v2-bloodviolet-persistent-ux'
   )
 );
 

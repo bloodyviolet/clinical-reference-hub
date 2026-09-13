@@ -1,0 +1,492 @@
+:root {
+  color-scheme: dark;
+
+  --bv-ink: #09030f;
+  --bv-deep: #12051e;
+  --bv-plum: #1d082d;
+  --bv-plum-raised: #2a0d3b;
+  --bv-plum-soft: #37154a;
+  --bv-border: #5b2a69;
+
+  --bv-violet-deep: #3b0764;
+  --bv-violet: #5b21a6;
+  --bv-violet-bright: #8b5cf6;
+  --bv-violet-light: #d8c4ff;
+
+  --bv-blood-deep: #42000f;
+  --bv-blood-dark: #690019;
+  --bv-blood: #860020;
+  --bv-blood-main: #a40a2f;
+  --bv-blood-bright: #cf1744;
+  --bv-crimson: #e22954;
+
+  --bv-text: #fff9ff;
+  --bv-text-soft: #eee3f5;
+  --bv-text-muted: #c9b5d6;
+  --bv-text-dim: #a48daf;
+
+
+  /*
+   * Structural slate -> black/plum.
+   */
+
+  --color-slate-50: #fff9ff;
+  --color-slate-100: #f7eefb;
+  --color-slate-200: #eee3f5;
+  --color-slate-300: #dbcbe6;
+  --color-slate-400: #c1accf;
+  --color-slate-500: #9f88ac;
+  --color-slate-600: #745c81;
+  --color-slate-700: #53365f;
+  --color-slate-800: #2f123f;
+  --color-slate-900: #180823;
+  --color-slate-950: #09030f;
+
+
+  /*
+   * Existing teal action family -> Bloodviolet blood-red.
+   */
+
+  --color-teal-50: #fff5f7;
+  --color-teal-100: #ffe4e9;
+  --color-teal-200: #ffc8d2;
+  --color-teal-300: #ff9aad;
+  --color-teal-400: #f75c7c;
+  --color-teal-500: #cf1744;
+  --color-teal-600: #a40a2f;
+  --color-teal-700: #860020;
+  --color-teal-800: #690019;
+  --color-teal-900: #4d0013;
+  --color-teal-950: #2b000b;
+
+
+  /*
+   * Cyan / indigo / violet -> violet secondary family.
+   */
+
+  --color-cyan-50: #fbf7ff;
+  --color-cyan-100: #f1e7ff;
+  --color-cyan-200: #dfc9ff;
+  --color-cyan-300: #caa3ff;
+  --color-cyan-400: #a970f5;
+  --color-cyan-500: #8a46d8;
+  --color-cyan-600: #6d28b5;
+  --color-cyan-700: #571d91;
+  --color-cyan-800: #40156b;
+  --color-cyan-900: #2c0d4c;
+  --color-cyan-950: #180526;
+
+  --color-indigo-50: #fbf8ff;
+  --color-indigo-100: #f0e8ff;
+  --color-indigo-200: #dfceff;
+  --color-indigo-300: #c8abff;
+  --color-indigo-400: #a87bf5;
+  --color-indigo-500: #8652dd;
+  --color-indigo-600: #6932bd;
+  --color-indigo-700: #522592;
+  --color-indigo-800: #3d1a6d;
+  --color-indigo-900: #2a104e;
+  --color-indigo-950: #160725;
+
+  --color-violet-50: #fbf8ff;
+  --color-violet-100: #f1e8ff;
+  --color-violet-200: #dfceff;
+  --color-violet-300: #c6a8ff;
+  --color-violet-400: #a477f3;
+  --color-violet-500: #8348d8;
+  --color-violet-600: #662ab4;
+  --color-violet-700: #501d8f;
+  --color-violet-800: #3c146b;
+  --color-violet-900: #290c4b;
+  --color-violet-950: #150523;
+
+
+  /*
+   * Former fuchsia/rose accents become crimson/red, not pink.
+   */
+
+  --color-fuchsia-50: #fff6f7;
+  --color-fuchsia-100: #ffe3e8;
+  --color-fuchsia-200: #ffc6d0;
+  --color-fuchsia-300: #ff96aa;
+  --color-fuchsia-400: #f55c7d;
+  --color-fuchsia-500: #d51f4e;
+  --color-fuchsia-600: #aa0c34;
+  --color-fuchsia-700: #870022;
+  --color-fuchsia-800: #690019;
+  --color-fuchsia-900: #4c0012;
+  --color-fuchsia-950: #2a000a;
+
+  /*
+   * Rose stays a recognisable error/destructive red,
+   * deliberately brighter than the ordinary primary-action blood red.
+   */
+
+  --color-rose-50: #fff5f7;
+  --color-rose-100: #ffe1e7;
+  --color-rose-200: #ffc3cf;
+  --color-rose-300: #ff91a7;
+  --color-rose-400: #f45b78;
+  --color-rose-500: #e33a5c;
+  --color-rose-600: #c52247;
+  --color-rose-700: #a10f34;
+  --color-rose-800: #7b0927;
+  --color-rose-900: #57051a;
+  --color-rose-950: #31020e;
+}
+
+
+html,
+body {
+  background-color:
+    var(--bv-ink);
+
+  color:
+    var(--bv-text);
+}
+
+
+body {
+  min-height:
+    100%;
+
+  background-image:
+    radial-gradient(
+      circle at 14% -10%,
+      rgb(91 33 166 / 0.24),
+      transparent 36rem
+    ),
+    radial-gradient(
+      circle at 92% 2%,
+      rgb(164 10 47 / 0.20),
+      transparent 34rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--bv-ink) 0%,
+      #100419 52%,
+      #09030f 100%
+    );
+
+  background-attachment:
+    fixed;
+}
+
+
+header {
+  box-shadow:
+    0 1px 0
+      rgb(207 23 68 / 0.14),
+    0 12px 34px
+      rgb(0 0 0 / 0.22);
+}
+
+
+::selection {
+  background:
+    var(--bv-blood-main);
+
+  color:
+    #ffffff;
+}
+
+
+:focus-visible {
+  outline:
+    2px solid
+      #f4dcff;
+
+  outline-offset:
+    3px;
+}
+
+
+input,
+select,
+textarea {
+  caret-color:
+    var(--bv-crimson);
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color:
+    var(--bv-blood-bright) !important;
+}
+
+
+a {
+  text-underline-offset:
+    0.18em;
+}
+
+
+.bloodviolet-brand-home {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    0.75rem;
+
+  min-width:
+    0;
+
+  border-radius:
+    0.85rem;
+
+  color:
+    var(--bv-text);
+
+  text-decoration:
+    none;
+
+  transition:
+    transform 150ms ease,
+    filter 150ms ease,
+    background-color 150ms ease;
+}
+
+
+.bloodviolet-brand-home:hover {
+  filter:
+    brightness(1.10);
+}
+
+
+.bloodviolet-brand-home:active {
+  transform:
+    translateY(1px);
+}
+
+
+.bloodviolet-brand-icon {
+  width:
+    2.65rem;
+
+  height:
+    2.65rem;
+
+  flex:
+    none;
+
+  border-radius:
+    0.8rem;
+
+  object-fit:
+    cover;
+
+  box-shadow:
+    0 0 0 1px
+      rgb(216 196 255 / 0.20),
+    0 0 18px
+      rgb(139 92 246 / 0.26),
+    0 0 26px
+      rgb(207 23 68 / 0.14);
+}
+
+
+.bloodviolet-brand-copy {
+  min-width:
+    0;
+
+  line-height:
+    1.05;
+}
+
+
+.bloodviolet-brand-title {
+  margin:
+    0;
+
+  color:
+    var(--bv-text);
+
+  font-size:
+    1.125rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    -0.015em;
+}
+
+
+.bloodviolet-brand-subtitle {
+  margin-top:
+    0.18rem;
+
+  color:
+    var(--bv-text-muted);
+
+  font-size:
+    0.72rem;
+
+  line-height:
+    1.2;
+}
+
+
+.clinical-tool-reset-row {
+  display:
+    flex;
+
+  grid-column:
+    1 / -1;
+
+  justify-content:
+    flex-end;
+
+  width:
+    100%;
+
+  margin-top:
+    0.8rem;
+
+  padding-top:
+    0.7rem;
+
+  border-top:
+    1px solid
+      rgb(91 42 105 / 0.44);
+}
+
+
+.clinical-tool-reset-button {
+  appearance:
+    none;
+
+  border:
+    1px solid
+      var(--bv-border);
+
+  border-radius:
+    0.7rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      #32123f,
+      #21102d
+    );
+
+  color:
+    var(--bv-text-soft);
+
+  padding:
+    0.48rem 0.8rem;
+
+  font-size:
+    0.75rem;
+
+  font-weight:
+    700;
+
+  line-height:
+    1;
+
+  cursor:
+    pointer;
+
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
+}
+
+
+.clinical-tool-reset-button:hover {
+  border-color:
+    var(--bv-blood-bright);
+
+  background:
+    linear-gradient(
+      180deg,
+      #4a122d,
+      #321020
+    );
+
+  box-shadow:
+    0 0 0 1px
+      rgb(207 23 68 / 0.18);
+}
+
+
+.clinical-tool-reset-button:active {
+  transform:
+    translateY(1px);
+}
+
+
+.clinical-tool-reset-button:focus-visible,
+.bloodviolet-brand-home:focus-visible {
+  outline:
+    2px solid
+      #f4dcff;
+
+  outline-offset:
+    3px;
+}
+
+
+.bg-slate-900,
+.bg-slate-950 {
+  box-shadow:
+    inset 0 1px 0
+      rgb(255 255 255 / 0.012);
+}
+
+
+.text-emerald-300,
+.text-emerald-400 {
+  text-shadow:
+    0 0 14px
+      rgb(52 211 153 / 0.08);
+}
+
+
+.text-amber-200,
+.text-amber-300 {
+  text-shadow:
+    0 0 14px
+      rgb(251 191 36 / 0.06);
+}
+
+
+@media (max-width: 640px) {
+  .bloodviolet-brand-icon {
+    width:
+      2.35rem;
+
+    height:
+      2.35rem;
+  }
+
+  .bloodviolet-brand-title {
+    font-size:
+      0.98rem;
+  }
+
+  .bloodviolet-brand-subtitle {
+    max-width:
+      13rem;
+
+    font-size:
+      0.62rem;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .bloodviolet-brand-home,
+  .clinical-tool-reset-button {
+    transition:
+      none;
+  }
+}

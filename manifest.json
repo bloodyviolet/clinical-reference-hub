@@ -3,8 +3,8 @@
   "short_name": "Clinical Hub",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#020617",
-  "theme_color": "#0d9488",
+  "background_color": "#09030F",
+  "theme_color": "#5A0B32",
   "icons": [
     {
       "src": "/assets/icons/icon-192.png",

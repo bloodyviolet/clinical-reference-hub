@@ -3,29 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0d9488">
-  <link rel="manifest" href="/manifest.json?v=611">
+  <meta name="theme-color" content="#5A0B32">
+  <link rel="manifest" href="/manifest.json?v=27">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
   <title>Clinical Reference & SUS Dashboard</title>
   <link rel="stylesheet" href="/assets/app.css">
+  <link rel="stylesheet" href="/assets/bloodviolet-theme.css">
 </head>
 <body class="h-full flex flex-col font-sans antialiased selection:bg-teal-500 selection:text-white">
 
   <!-- Navigation Bar -->
   <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/20 font-bold text-white text-lg">
-          Rx
+      <a
+        id="brand-home"
+        href="/"
+        class="bloodviolet-brand-home"
+        aria-label="Clinical Reference Hub · Home"
+      >
+        <img
+          src="/assets/icons/icon-192.png"
+          alt=""
+          aria-hidden="true"
+          class="bloodviolet-brand-icon"
+        />
+        <div class="bloodviolet-brand-copy">
+          <h1 class="bloodviolet-brand-title">Clinical Reference Hub</h1>
+          <p
+            data-i18n="nav.subtitle"
+            class="bloodviolet-brand-subtitle"
+          >SAE / NNN & Políticas Nacionais do SUS</p>
         </div>
-        <div>
-          <h1 class="text-lg font-bold tracking-tight text-white">Clinical Reference Hub</h1>
-          <p data-i18n="nav.subtitle" class="text-[10px] sm:text-xs text-slate-400">SAE / NNN & Políticas Nacionais do SUS</p>
-        </div>
-      </div>
+      </a>
       <div class="flex items-center space-x-2 text-xs font-medium">
         <div class="inline-flex items-center rounded-lg border border-slate-700 bg-slate-950/70 p-0.5" role="group" aria-label="Language">
           <button type="button" data-language="pt-BR" aria-pressed="true" class="px-2 py-1 rounded-md bg-teal-600 text-white font-bold">PT-BR</button>
@@ -2779,6 +2791,7 @@
   <script src="/assets/serial-trends-runtime.js" defer></script>
   <script src="/assets/serial-trends-export.js" defer></script>
   <script src="/assets/app.js" defer></script>
+  <script src="/assets/ui-session.js" defer></script>
 
   <!-- Footer -->
   <footer class="mt-12 border-t border-slate-800 bg-slate-900/30 py-6">

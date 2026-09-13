@@ -65,6 +65,9 @@
       'scaleNav.apgar':
         'Apgar',
 
+      'tool.reset':
+        'Redefinir',
+
       'status.checking':
         'Verificando API...',
 
@@ -1623,6 +1626,9 @@
 
       'scaleNav.apgar':
         'Apgar',
+
+      'tool.reset':
+        'Reset',
 
       'status.checking':
         'Checking API...',

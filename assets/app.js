@@ -10,6 +10,12 @@ function escapeHtml(value) {
 function showError(elementId, message) {
   const res = document.getElementById(elementId);
   res.classList.remove('hidden');
+
+  if (res.dataset) {
+    res.dataset.clinicalResultStatus =
+      'error';
+  }
+
   res.innerHTML = `<p class="text-sm font-medium text-rose-300">${escapeHtml(message)}</p>`;
 }
 
@@ -210,6 +216,13 @@ function switchTab(tab) {
   document.getElementById(`tab-btn-${tab}`).setAttribute('aria-selected', 'true');
   document.getElementById(`tab-btn-${tab}`).setAttribute('tabindex', '0');
   document.getElementById(`tab-btn-${tab}`).className = "whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition";
+
+  globalThis
+    .ClinicalUiSession
+    ?.setNavigation?.(
+      'tab',
+      tab
+    );
 }
 
 const CALCULATOR_GROUP_FORMS =
@@ -407,6 +420,16 @@ function setClinicalToolGroup(
               );
       }
     );
+
+  globalThis
+    .ClinicalUiSession
+    ?.setNavigation?.(
+      kind === 'calc'
+        ? 'calc_group'
+        : 'scale_group',
+      selectedGroup
+    );
+
 }
 
 
@@ -449,12 +472,22 @@ function wireClinicalToolSubnavigation() {
 
   setClinicalToolGroup(
     'calc',
-    'drip'
+    globalThis
+      .ClinicalUiSession
+      ?.getNavigation?.(
+        'calc_group'
+      )
+    || 'drip'
   );
 
   setClinicalToolGroup(
     'scale',
-    'news2'
+    globalThis
+      .ClinicalUiSession
+      ?.getNavigation?.(
+        'scale_group'
+      )
+    || 'news2'
   );
 }
 
@@ -587,6 +620,13 @@ async function searchSAE(event) {
 }
 
 async function loadPolicy(policyName) {
+  globalThis
+    .ClinicalUiSession
+    ?.setNavigation?.(
+      'policy',
+      policyName
+    );
+
   const container = document.getElementById('policy-results');
   const loader = document.getElementById('policy-loading');
   const pdfBtn = document.getElementById('pdf-link');
@@ -7769,6 +7809,253 @@ const serialCaptureBindings =
   });
 
 
+const serialCaptureRestoreBindings =
+  Object.freeze({
+    "acid_base_metabolic":
+      (capture) => {
+        lastMetabolicRequest =
+          capture?.request ?? null;
+        lastMetabolicResult =
+          capture?.result ?? null;
+        lastMetabolicSource =
+          capture?.source ?? null;
+      },
+
+    "brazil_caderneta_falls":
+      (capture) => {
+        lastCadernetaFallsRequest =
+          capture?.request ?? null;
+        lastCadernetaFallsResult =
+          capture?.result ?? null;
+        lastCadernetaFallsSource =
+          capture?.source ?? null;
+      },
+
+    "brazil_methanol":
+      (capture) => {
+        lastMethanolRequest =
+          capture?.request ?? null;
+        lastMethanolResult =
+          capture?.result ?? null;
+        lastMethanolSource =
+          capture?.source ?? null;
+      },
+
+    "ckd_classification":
+      (capture) => {
+        lastCkdRequest =
+          capture?.request ?? null;
+        lastCkdResult =
+          capture?.result ?? null;
+        lastCkdSource =
+          capture?.source ?? null;
+      },
+
+    "egfr_ckd_epi_2021":
+      (capture) => {
+        lastEgfrRequest =
+          capture?.request ?? null;
+        lastEgfrResult =
+          capture?.result ?? null;
+        lastEgfrSource =
+          capture?.source ?? null;
+      },
+
+    "four_score":
+      (capture) => {
+        lastFourRequest =
+          capture?.request ?? null;
+        lastFourResult =
+          capture?.result ?? null;
+        lastFourSource =
+          capture?.source ?? null;
+      },
+
+    "gcs":
+      (capture) => {
+        lastGcsRequest =
+          capture?.request ?? null;
+        lastGcsResult =
+          capture?.result ?? null;
+        lastGcsSource =
+          capture?.source ?? null;
+      },
+
+    "gcs_p":
+      (capture) => {
+        lastGcspRequest =
+          capture?.request ?? null;
+        lastGcspResult =
+          capture?.result ?? null;
+        lastGcspSource =
+          capture?.source ?? null;
+      },
+
+    "hemodynamics":
+      (capture) => {
+        lastHemodynamicsRequest =
+          capture?.request ?? null;
+        lastHemodynamicsResult =
+          capture?.result ?? null;
+        lastHemodynamicsSource =
+          capture?.source ?? null;
+      },
+
+    "ivcf20":
+      (capture) => {
+        lastIvcf20Request =
+          capture?.request ?? null;
+        lastIvcf20Result =
+          capture?.result ?? null;
+        lastIvcf20Source =
+          capture?.source ?? null;
+      },
+
+    "kdigo_aki":
+      (capture) => {
+        lastAkiRequest =
+          capture?.request ?? null;
+        lastAkiResult =
+          capture?.result ?? null;
+        lastAkiSource =
+          capture?.source ?? null;
+      },
+
+    "news2":
+      (capture) => {
+        lastNews2Request =
+          capture?.request ?? null;
+        lastNews2Result =
+          capture?.result ?? null;
+        lastNews2Source =
+          capture?.source ?? null;
+      },
+
+    "oxygenation":
+      (capture) => {
+        lastOxygenationRequest =
+          capture?.request ?? null;
+        lastOxygenationResult =
+          capture?.result ?? null;
+        lastOxygenationSource =
+          capture?.source ?? null;
+      },
+
+    "steadi_chair_stand_30s":
+      (capture) => {
+        lastSteadiChairRequest =
+          capture?.request ?? null;
+        lastSteadiChairResult =
+          capture?.result ?? null;
+        lastSteadiChairSource =
+          capture?.source ?? null;
+      },
+
+    "steadi_four_stage_balance":
+      (capture) => {
+        lastSteadiBalanceRequest =
+          capture?.request ?? null;
+        lastSteadiBalanceResult =
+          capture?.result ?? null;
+        lastSteadiBalanceSource =
+          capture?.source ?? null;
+      },
+
+    "steadi_orthostatic_bp":
+      (capture) => {
+        lastSteadiOrthostaticRequest =
+          capture?.request ?? null;
+        lastSteadiOrthostaticResult =
+          capture?.result ?? null;
+        lastSteadiOrthostaticSource =
+          capture?.source ?? null;
+      },
+
+    "steadi_tug":
+      (capture) => {
+        lastSteadiTugRequest =
+          capture?.request ?? null;
+        lastSteadiTugResult =
+          capture?.result ?? null;
+        lastSteadiTugSource =
+          capture?.source ?? null;
+      },
+
+    "who_growth":
+      (capture) => {
+        lastGrowthRequest =
+          capture?.request ?? null;
+        lastGrowthResult =
+          capture?.result ?? null;
+        lastGrowthSource =
+          capture?.source ?? null;
+      }
+  });
+
+
+function serialRestoreCapture(
+  instrumentKey,
+  capture
+) {
+  const restore =
+    serialCaptureRestoreBindings[
+      instrumentKey
+    ];
+
+  if (!restore) {
+    return false;
+  }
+
+  if (capture === null) {
+    restore(null);
+
+    return true;
+  }
+
+  if (
+    !capture
+    || ![
+      'api',
+      'offline'
+    ].includes(
+      capture.source
+    )
+    || capture.request === null
+    || capture.request === undefined
+    || capture.result === null
+    || capture.result === undefined
+  ) {
+    return false;
+  }
+
+  const request =
+    serialSnapshotRequestPayload(
+      capture.request
+    );
+
+  const result =
+    serialSnapshotRequestPayload(
+      capture.result
+    );
+
+  if (
+    request === null
+    || result === null
+  ) {
+    return false;
+  }
+
+  restore({
+    request,
+    result,
+    source:
+      capture.source
+  });
+
+  return true;
+}
+
+
 function serialT(key) {
   return (
     globalThis.ClinicalI18n
@@ -8703,7 +8990,7 @@ function serialRender() {
 }
 
 
-function serialCaptureFor(
+function serialLiveCaptureFor(
   instrumentKey
 ) {
   const binding =
@@ -8717,6 +9004,58 @@ function serialCaptureFor(
 
   return binding();
 }
+
+
+function serialCaptureFor(
+  instrumentKey
+) {
+  const live =
+    serialLiveCaptureFor(
+      instrumentKey
+    );
+
+  if (
+    live
+    && live.request !== null
+    && live.request !== undefined
+    && live.result !== null
+    && live.result !== undefined
+    && [
+      'api',
+      'offline'
+    ].includes(
+      live.source
+    )
+  ) {
+    return live;
+  }
+
+  return (
+    globalThis
+      .ClinicalUiSession
+      ?.getSerialCapture?.(
+        instrumentKey
+      )
+    || live
+  );
+}
+
+
+globalThis.ClinicalSerialCaptureBridge =
+  Object.freeze({
+    currentLive:
+      serialLiveCaptureFor,
+
+    restore:
+      serialRestoreCapture,
+
+    clear:
+      (instrumentKey) =>
+        serialRestoreCapture(
+          instrumentKey,
+          null
+        )
+  });
 
 
 function serialAddObservation() {
@@ -9180,6 +9519,11 @@ document.addEventListener('DOMContentLoaded', () => {
   registerServiceWorker();
   wireUiEvents();
   wireClinicalToolSubnavigation();
+
+  globalThis
+    .ClinicalUiSession
+    ?.restoreNavigation?.();
+
   wireSerialTrendEvents();
   initSerialTrends();
   checkApiHealth();

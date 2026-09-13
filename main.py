@@ -93,6 +93,8 @@ def _assert_runtime_files() -> None:
     required = (
         INDEX_FILE, MANIFEST_FILE, SERVICE_WORKER_FILE,
         ASSET_DIR / "app.css", ASSET_DIR / "app.js",
+        ASSET_DIR / "bloodviolet-theme.css",
+        ASSET_DIR / "ui-session.js",
         ASSET_DIR / "growth-tools.js",
         ASSET_DIR / "offline" / "sae.json", ASSET_DIR / "offline" / "policies.json",
         ASSET_DIR / "reference" / "who-growth" / "who2006_weight_for_age.json",

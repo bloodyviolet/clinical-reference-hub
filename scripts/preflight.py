@@ -27,6 +27,8 @@ def main() -> int:
         required = [
             ROOT / "index.html", ROOT / "manifest.json", ROOT / "sw.js",
             ROOT / "assets" / "app.css", ROOT / "assets" / "app.js",
+            ROOT / "assets" / "bloodviolet-theme.css",
+            ROOT / "assets" / "ui-session.js",
             ROOT / "assets" / "offline" / "sae.json",
             ROOT / "assets" / "offline" / "policies.json",
             ROOT / "data" / "clinical_content_manifest.json",
