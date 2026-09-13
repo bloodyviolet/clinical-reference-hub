@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, model_validator
 
@@ -177,6 +177,40 @@ class PolicyIndexItem(BaseModel):
 
 class PolicyIndexResponse(BaseModel):
     items: list[PolicyIndexItem]
+
+
+class PCDTIndexItem(BaseModel):
+    pcdt_id: str
+    canonical_title_pt: str
+    title_en: str | None = None
+    aliases_pt: list[str]
+    historical_titles_pt: list[str]
+    approval_state: str
+    discovery_state: str
+    approval_version_count: int = Field(ge=0)
+    current_approval_version_ids: list[str]
+    document_count: int = Field(ge=0)
+    current_protocol_document_count: int = Field(ge=0)
+
+
+class PCDTIndexResponse(BaseModel):
+    query: str | None = None
+    total: int = Field(ge=0)
+    limit: int = Field(ge=1, le=100)
+    offset: int = Field(ge=0)
+    returned: int = Field(ge=0)
+    items: list[PCDTIndexItem]
+
+
+class PCDTDetailResponse(BaseModel):
+    pcdt: dict[str, Any]
+    approval_versions: list[dict[str, Any]]
+
+
+class PCDTDocumentsResponse(BaseModel):
+    pcdt_id: str
+    returned: int = Field(ge=0)
+    items: list[dict[str, Any]]
 
 
 # ---------------------------------------------------------------------------

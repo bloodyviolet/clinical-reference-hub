@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#5A0B32">
-  <link rel="manifest" href="/manifest.json?v=28">
+  <link rel="manifest" href="/manifest.json?v=29">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
@@ -35,7 +35,7 @@
           <p
             data-i18n="nav.subtitle"
             class="bloodviolet-brand-subtitle"
-          >SAE / NNN & Políticas Nacionais do SUS</p>
+          >SAE / NNN, PCDT & Políticas Nacionais do SUS</p>
         </div>
       </a>
       <div class="flex items-center space-x-2 text-xs font-medium">
@@ -61,6 +61,9 @@
       </button>
       <button id="tab-btn-policy" role="tab" aria-controls="view-policy" aria-selected="false" data-tab="policy" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition" data-i18n="nav.policy" tabindex="-1">
         Políticas (SUS)
+      </button>
+      <button id="tab-btn-pcdt" role="tab" aria-controls="view-pcdt" aria-selected="false" data-tab="pcdt" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition" data-i18n="nav.pcdt" tabindex="-1">
+        Repositório PCDT
       </button>
       <button id="tab-btn-calc" role="tab" aria-controls="view-calc" aria-selected="false" data-tab="calc" class="whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition" data-i18n="nav.calc" tabindex="-1">
         Calculadoras
@@ -123,6 +126,76 @@
                <div id="policy-loading" aria-live="polite" class="hidden text-center py-12 text-slate-400 text-sm">Carregando diretrizes...</div>
                <div id="policy-results" aria-live="polite" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
              </section>
+
+
+    <!-- VIEW: SUS PCDT Repository -->
+    <section id="view-pcdt" role="tabpanel" aria-labelledby="tab-btn-pcdt" class="hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div>
+          <h2 class="text-base font-semibold text-white" data-i18n="pcdt.title">Repositório de PCDT do SUS</h2>
+          <p class="text-xs text-slate-400 mt-1" data-i18n="pcdt.description">
+            Consulte metadados, versões, atos de aprovação, revisões e documentos oficiais arquivados. Este repositório não é um motor de decisão clínica.
+          </p>
+        </div>
+
+        <form id="pcdt-search-form" class="space-y-2 pt-3 border-t border-slate-800">
+          <label for="pcdt-search-input" class="block text-xs font-semibold text-slate-300" data-i18n="pcdt.searchLabel">Buscar PCDT</label>
+
+          <div class="flex flex-col sm:flex-row gap-3">
+            <input
+              type="search"
+              id="pcdt-search-input"
+              maxlength="120"
+              autocomplete="off"
+              placeholder="Ex: asma, osteoporose, AVC..."
+              class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+            />
+
+            <button
+              type="submit"
+              class="bg-teal-600 hover:bg-teal-500 text-white font-medium px-5 py-2.5 rounded-xl text-sm transition shadow-lg shadow-teal-600/20 active:scale-95"
+              data-i18n="pcdt.search"
+            >
+              Buscar
+            </button>
+          </div>
+        </form>
+
+        <div
+          id="pcdt-meta"
+          aria-live="polite"
+          class="text-xs text-slate-400"
+        ></div>
+      </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-6">
+        <div
+          id="pcdt-results"
+          aria-live="polite"
+          class="space-y-3"
+        >
+          <div
+            class="bg-slate-900 border border-slate-800 rounded-xl p-5 text-sm text-slate-400"
+            data-i18n="pcdt.loading"
+          >
+            Carregando repositório PCDT...
+          </div>
+        </div>
+
+        <div
+          id="pcdt-detail"
+          aria-live="polite"
+          class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl min-h-48"
+        >
+          <p
+            class="text-sm text-slate-400"
+            data-i18n="pcdt.description"
+          >
+            Consulte metadados, versões, atos de aprovação, revisões e documentos oficiais arquivados. Este repositório não é um motor de decisão clínica.
+          </p>
+        </div>
+      </div>
+    </section>
 
     <!-- VIEW 3: Clinical Calculators -->
     <section id="view-calc" role="tabpanel" aria-labelledby="tab-btn-calc" class="hidden space-y-6">
@@ -2794,6 +2867,7 @@
   <script src="/assets/serial-trends-export.js" defer></script>
   <script src="/assets/app.js" defer></script>
   <script src="/assets/ui-session.js" defer></script>
+  <script src="/assets/pcdt-repository.js" defer></script>
 
   <!-- Footer -->
   <footer class="mt-12 border-t border-slate-800 bg-slate-900/30 py-6">

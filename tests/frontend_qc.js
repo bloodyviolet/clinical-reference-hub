@@ -156,13 +156,13 @@ assert(manifest.icons.length >= 2);
 assert(manifest.icons.every((icon) => icon.src.startsWith('/assets/icons/')));
 assert(manifest.icons.every((icon) => !icon.src.includes('://')));
 const sw = fs.readFileSync('sw.js', 'utf8');
-assert(sw.includes("clinical-reference-v28-v2-bilingual-completeness"));
+assert(sw.includes("clinical-reference-v29-v2-pcdt-repository"));
 assert(sw.includes('/assets/offline/sae.json'));
 assert(sw.includes('/assets/offline/policies.json'));
 assert(sw.includes("cache: 'reload'"));
 assert(sw.includes('offlineSaeSearch'));
 assert(sw.includes('offlinePolicy'));
-assert(html.includes('/manifest.json?v=28'));
+assert(html.includes('/manifest.json?v=29'));
 assert(appScript.includes('responseFromOfflineCache'));
 assert(appScript.includes("X-Clinical-Offline"));
 assert(appScript.includes('async function searchSaeOffline'));
@@ -191,7 +191,7 @@ assert(appScript.includes('PT-BR:'));
 assert(appScript.includes('EN-GB:'));
 
 assert(
-  sw.includes('clinical-reference-v28-v2-bilingual-completeness')
+  sw.includes('clinical-reference-v29-v2-pcdt-repository')
 );
 
 console.log(

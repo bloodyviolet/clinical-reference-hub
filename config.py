@@ -80,6 +80,9 @@ class Settings:
 
     sqlite_busy_timeout_ms: int = 5_000
     backup_directory: Path = field(default_factory=lambda: BASE_DIR / "backups")
+    pcdt_archive_root: Path = field(
+        default_factory=lambda: Path("/var/lib/medical-api/documents/pcdt")
+    )
 
     @property
     def is_production(self) -> bool:
@@ -109,6 +112,10 @@ class Settings:
         if self.search_rate_limit_per_minute > self.api_rate_limit_per_minute:
             warnings.append("Search rate limit exceeds the general API rate limit; the lower effective limit wins.")
         if self.is_production:
+            if not self.pcdt_archive_root.is_absolute():
+                errors.append(
+                    "MEDICAL_API_PCDT_ARCHIVE_ROOT must be an absolute path in production."
+                )
             if "*" in self.allowed_hosts:
                 errors.append("Wildcard MEDICAL_API_ALLOWED_HOSTS is forbidden in production.")
             if any(proxy == "*" for proxy in self.trusted_proxies):
@@ -161,6 +168,17 @@ class Settings:
         backup_raw = env.get("MEDICAL_API_BACKUP_DIR", "").strip()
         backup_dir = Path(backup_raw).expanduser() if backup_raw else BASE_DIR / "backups"
 
+        pcdt_archive_raw = env.get(
+            "MEDICAL_API_PCDT_ARCHIVE_ROOT",
+            "",
+        ).strip()
+
+        pcdt_archive_root = (
+            Path(pcdt_archive_raw).expanduser()
+            if pcdt_archive_raw
+            else Path("/var/lib/medical-api/documents/pcdt")
+        )
+
         return cls(
             environment=environment,
             enable_api_docs=_bool(env.get("MEDICAL_API_ENABLE_DOCS"), default_docs),
@@ -186,6 +204,7 @@ class Settings:
             keep_alive_seconds=_int(env.get("MEDICAL_API_KEEP_ALIVE_SECONDS"), 5, minimum=1, maximum=120),
             sqlite_busy_timeout_ms=_int(env.get("MEDICAL_API_SQLITE_BUSY_TIMEOUT_MS"), 5_000, minimum=100, maximum=120_000),
             backup_directory=backup_dir,
+            pcdt_archive_root=pcdt_archive_root,
         )
 
 

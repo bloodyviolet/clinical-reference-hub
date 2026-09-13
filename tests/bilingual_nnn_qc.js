@@ -74,7 +74,7 @@ for (const token of [
 
 assert(
   sw.includes(
-    'clinical-reference-v28-v2-bilingual-completeness'
+    'clinical-reference-v29-v2-pcdt-repository'
   ),
   'service-worker cache version not bumped'
 );

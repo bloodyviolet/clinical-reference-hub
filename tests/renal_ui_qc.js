@@ -80,7 +80,7 @@ for (const key of [
 
 assert(
   swSource.includes(
-    'clinical-reference-v28-v2-bilingual-completeness'
+    'clinical-reference-v29-v2-pcdt-repository'
   )
 );
 

@@ -62,6 +62,7 @@ from clinical_tools.four_gcsp import (
     score_gcs,
     score_gcsp,
 )
+from clinical_tools.pcdt_repository import PCDTRepository
 from config import load_settings
 from observability import RateLimitMiddleware, RequestContextMiddleware, configure_logging
 from scripts.clinical_content import file_hash, validate_release_content
@@ -76,12 +77,23 @@ FAVICON_FILE = ASSET_DIR / "icons" / "favicon.ico"
 CLINICAL_CONTENT_MANIFEST_FILE = (
     BASE_DIR / "data" / "clinical_content_manifest.json"
 )
+PCDT_REGISTRY_FILE = (
+    BASE_DIR / "data" / "clinical-sources" / "sus_pcdt_registry.json"
+)
+PCDT_ARCHIVE_MANIFEST_FILE = (
+    BASE_DIR / "data" / "clinical-sources" / "sus_pcdt_archive_manifest.json"
+)
 API_VERSION = "2.0.0"
 
 _CLINICAL_CONTENT_CERTIFICATION: dict | None = None
 settings = load_settings()
 configure_logging(level=settings.log_level, json_logs=settings.json_logs)
 logger = logging.getLogger("medical_api")
+
+PCDT_REPOSITORY = PCDTRepository.from_files(
+    PCDT_REGISTRY_FILE,
+    PCDT_ARCHIVE_MANIFEST_FILE,
+)
 
 # Compatibility aliases retained for existing tests/deployments that introspect these flags.
 ENABLE_API_DOCS = settings.enable_api_docs
@@ -113,6 +125,9 @@ def _assert_runtime_files() -> None:
         ASSET_DIR / "reference" / "who-growth" / "NOTICE.txt",
         ASSET_DIR / "reference" / "who-growth" / "GPL-3.0.txt",
         CLINICAL_CONTENT_MANIFEST_FILE,
+        PCDT_REGISTRY_FILE,
+        PCDT_ARCHIVE_MANIFEST_FILE,
+        ASSET_DIR / "pcdt-repository.js",
         ASSET_DIR / "icons" / "icon-192.png", ASSET_DIR / "icons" / "icon-512.png",
         ASSET_DIR / "icons" / "apple-touch-icon.png", ASSET_DIR / "icons" / "favicon.ico",
         ASSET_DIR / "icons" / "favicon-32.png", ASSET_DIR / "icons" / "favicon-16.png",
@@ -187,6 +202,21 @@ async def lifespan(_: FastAPI):
     for warning in warnings:
         logger.warning(warning, extra={"event": "configuration_warning"})
     _assert_runtime_files()
+
+    if settings.is_production:
+        pcdt_archive_state = PCDT_REPOSITORY.validate_archive_root(
+            settings.pcdt_archive_root,
+            verify_hashes=False,
+        )
+
+        logger.info(
+            "pcdt_archive_ready",
+            extra={
+                "event": "pcdt_archive_ready",
+                "pcdt_archive_objects": pcdt_archive_state["object_count"],
+            },
+        )
+
     database.assert_database_health(quick_check=True)
     revision = database.assert_schema_current()
 
@@ -219,7 +249,7 @@ async def lifespan(_: FastAPI):
 app = FastAPI(
     lifespan=lifespan,
     title="Clinical Reference API & Dashboard",
-    description="Bilingual SAE Diagnostics and Brazilian Public Health Policies",
+    description="Bilingual SAE Diagnostics, SUS PCDT Repository and Brazilian Public Health Policies",
     version=API_VERSION,
     docs_url="/api/docs" if ENABLE_API_DOCS else None,
     redoc_url="/api/redoc" if ENABLE_API_DOCS else None,
@@ -678,6 +708,109 @@ def api_policy_index(db: Session = Depends(get_db)):
 def api_get_policy(policy_name: str, db: Session = Depends(get_db)):
     name, results = _get_policy_rows(policy_name, db)
     return {"policy_name": name, "returned": len(results), "items": results}
+
+
+@api_v1.get(
+    "/pcdt",
+    response_model=schemas.PCDTIndexResponse,
+)
+def api_pcdt_index(
+    q: str | None = Query(None, max_length=120),
+    limit: int = Query(20, ge=1, le=100),
+    offset: int = Query(0, ge=0),
+):
+    try:
+        return PCDT_REPOSITORY.search(
+            q=q,
+            limit=limit,
+            offset=offset,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.get(
+    "/pcdt/{pcdt_id}",
+    response_model=schemas.PCDTDetailResponse,
+)
+def api_pcdt_detail(
+    pcdt_id: str,
+):
+    try:
+        return PCDT_REPOSITORY.detail(
+            pcdt_id
+        )
+    except KeyError as exc:
+        raise HTTPException(
+            status_code=404,
+            detail="PCDT not found.",
+        ) from exc
+
+
+@api_v1.get(
+    "/pcdt/{pcdt_id}/documents",
+    response_model=schemas.PCDTDocumentsResponse,
+)
+def api_pcdt_documents(
+    pcdt_id: str,
+):
+    try:
+        return PCDT_REPOSITORY.documents(
+            pcdt_id
+        )
+    except KeyError as exc:
+        raise HTTPException(
+            status_code=404,
+            detail="PCDT not found.",
+        ) from exc
+
+
+@app.get(
+    "/documents/pcdt/{digest}.pdf",
+    include_in_schema=False,
+)
+def read_pcdt_document(
+    digest: str,
+):
+    try:
+        path, metadata = PCDT_REPOSITORY.resolve_document(
+            digest,
+            settings.pcdt_archive_root,
+        )
+
+    except (KeyError, ValueError) as exc:
+        raise HTTPException(
+            status_code=404,
+            detail="PCDT document not found.",
+        ) from exc
+
+    except (OSError, RuntimeError) as exc:
+        logger.error(
+            "pcdt_archive_document_unavailable",
+            extra={
+                "event": "pcdt_archive_document_unavailable",
+                "pcdt_sha256": digest,
+            },
+        )
+
+        raise HTTPException(
+            status_code=503,
+            detail="PCDT archive object is unavailable.",
+        ) from exc
+
+    return FileResponse(
+        path,
+        media_type="application/pdf",
+        headers={
+            "Cache-Control": "public, max-age=31536000, immutable",
+            "ETag": f'"sha256-{digest}"',
+            "Content-Disposition": f'inline; filename="{digest}.pdf"',
+            "X-PCDT-Archive-Object": metadata["archive_object_id"],
+        },
+    )
 
 
 @api_v1.get(

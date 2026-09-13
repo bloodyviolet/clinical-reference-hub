@@ -12,13 +12,106 @@
   const messages = {
     'pt-BR': {
       'nav.subtitle':
-        'SAE / NNN & Políticas Nacionais do SUS',
+        'SAE / NNN, PCDT & Políticas Nacionais do SUS',
 
       'nav.sae':
         'Diagnósticos SAE',
 
       'nav.policy':
         'Políticas (SUS)',
+
+      'nav.pcdt':
+        'Repositório PCDT',
+
+      'pcdt.title':
+        'Repositório de PCDT do SUS',
+
+      'pcdt.description':
+        'Consulte metadados, versões, atos de aprovação, revisões e documentos oficiais arquivados. Este repositório não é um motor de decisão clínica.',
+
+      'pcdt.searchLabel':
+        'Buscar PCDT',
+
+      'pcdt.placeholder':
+        'Ex: asma, osteoporose, AVC...',
+
+      'pcdt.search':
+        'Buscar',
+
+      'pcdt.loading':
+        'Carregando repositório PCDT...',
+
+      'pcdt.noResults':
+        'Nenhum PCDT encontrado.',
+
+      'pcdt.showing':
+        'Exibindo',
+
+      'pcdt.officialTitle':
+        'Título oficial',
+
+      'pcdt.aliases':
+        'Sinônimos / títulos relacionados',
+
+      'pcdt.approvalState':
+        'Situação de aprovação',
+
+      'pcdt.developmentState':
+        'Situação de desenvolvimento',
+
+      'pcdt.versions':
+        'Versões / atos de aprovação',
+
+      'pcdt.documents':
+        'Documentos relacionados',
+
+      'pcdt.current':
+        'Atual',
+
+      'pcdt.historical':
+        'Histórico',
+
+      'pcdt.approvalAct':
+        'Ato de aprovação',
+
+      'pcdt.published':
+        'Publicação',
+
+      'pcdt.revisionEvents':
+        'Eventos de revisão',
+
+      'pcdt.noRevisionEvents':
+        'Nenhum evento de revisão estruturado nesta versão.',
+
+      'pcdt.source':
+        'Fonte oficial',
+
+      'pcdt.officialPdf':
+        'Abrir PDF arquivado',
+
+      'pcdt.officialSource':
+        'Abrir fonte oficial',
+
+      'pcdt.provenance':
+        'Proveniência',
+
+      'pcdt.unavailable':
+        'Documento não disponível para abertura local.',
+
+      'pcdt.error':
+        'Não foi possível carregar o repositório PCDT.',
+
+      'pcdt.role.protocol_text':
+        'Texto do protocolo',
+
+      'pcdt.role.approval_act':
+        'Ato de aprovação',
+
+      'pcdt.role.protocol_summary':
+        'PCDT resumido',
+
+      'pcdt.role.ministry_publication':
+        'Publicação do Ministério',
 
       'nav.calc':
         'Calculadoras',
@@ -1574,13 +1667,106 @@
 
     'en-GB': {
       'nav.subtitle':
-        'SAE / NNN & Brazilian National Health Policies',
+        'SAE / NNN, PCDT & Brazilian National Health Policies',
 
       'nav.sae':
         'SAE Diagnoses',
 
       'nav.policy':
         'Policies (SUS)',
+
+      'nav.pcdt':
+        'PCDT Repository',
+
+      'pcdt.title':
+        'SUS PCDT Repository',
+
+      'pcdt.description':
+        'Browse metadata, versions, approval instruments, revision events and archived official documents. This repository is not a clinical decision engine.',
+
+      'pcdt.searchLabel':
+        'Search PCDT',
+
+      'pcdt.placeholder':
+        'e.g. asma, osteoporose, AVC...',
+
+      'pcdt.search':
+        'Search',
+
+      'pcdt.loading':
+        'Loading PCDT repository...',
+
+      'pcdt.noResults':
+        'No PCDT found.',
+
+      'pcdt.showing':
+        'Showing',
+
+      'pcdt.officialTitle':
+        'Official title',
+
+      'pcdt.aliases':
+        'Aliases / related titles',
+
+      'pcdt.approvalState':
+        'Approval status',
+
+      'pcdt.developmentState':
+        'Development status',
+
+      'pcdt.versions':
+        'Versions / approval instruments',
+
+      'pcdt.documents':
+        'Related documents',
+
+      'pcdt.current':
+        'Current',
+
+      'pcdt.historical':
+        'Historical',
+
+      'pcdt.approvalAct':
+        'Approval instrument',
+
+      'pcdt.published':
+        'Publication',
+
+      'pcdt.revisionEvents':
+        'Revision events',
+
+      'pcdt.noRevisionEvents':
+        'No structured revision event is recorded for this version.',
+
+      'pcdt.source':
+        'Official source',
+
+      'pcdt.officialPdf':
+        'Open archived PDF',
+
+      'pcdt.officialSource':
+        'Open official source',
+
+      'pcdt.provenance':
+        'Provenance',
+
+      'pcdt.unavailable':
+        'Document is not available for local opening.',
+
+      'pcdt.error':
+        'Unable to load the PCDT repository.',
+
+      'pcdt.role.protocol_text':
+        'Protocol text',
+
+      'pcdt.role.approval_act':
+        'Approval instrument',
+
+      'pcdt.role.protocol_summary':
+        'PCDT summary',
+
+      'pcdt.role.ministry_publication':
+        'Ministry publication',
 
       'nav.calc':
         'Calculators',

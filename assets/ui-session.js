@@ -13,6 +13,7 @@
         new Set([
           'sae',
           'policy',
+          'pcdt',
           'calc',
           'scales',
           'trends'

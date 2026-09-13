@@ -12,6 +12,7 @@ sys.path.insert(0, str(ROOT))
 import database
 from config import load_settings
 from scripts.check_dependencies import dependency_status
+from clinical_tools.pcdt_repository import PCDTRepository
 from scripts.clinical_content import validate_release_content
 
 
@@ -34,6 +35,9 @@ def main() -> int:
             ROOT / "assets" / "offline" / "sae.json",
             ROOT / "assets" / "offline" / "policies.json",
             ROOT / "data" / "clinical_content_manifest.json",
+            ROOT / "data" / "clinical-sources" / "sus_pcdt_registry.json",
+            ROOT / "data" / "clinical-sources" / "sus_pcdt_archive_manifest.json",
+            ROOT / "assets" / "pcdt-repository.js",
             ROOT / "assets" / "icons" / "icon-192.png",
             ROOT / "assets" / "icons" / "icon-512.png",
             ROOT / "assets" / "icons" / "apple-touch-icon.png",
@@ -83,12 +87,36 @@ def main() -> int:
             fail("Offline SAE bundle is missing NANDA 00068 regression sample.")
         if str(sample.get("description_en", "")).lower() in str(sample.get("intervention_pt", "")).lower():
             fail("Offline SAE bundle contains English diagnosis leakage in Portuguese intervention text.")
+        pcdt_repository = PCDTRepository.from_files(
+            ROOT / "data" / "clinical-sources" / "sus_pcdt_registry.json",
+            ROOT / "data" / "clinical-sources" / "sus_pcdt_archive_manifest.json",
+        )
+
+        pcdt_summary = pcdt_repository.summary()
+
+        pcdt_archive_check = "not_enforced"
+
+        if settings.is_production:
+            archive_state = pcdt_repository.validate_archive_root(
+                settings.pcdt_archive_root,
+                verify_hashes=False,
+            )
+
+            pcdt_archive_check = (
+                "ok:"
+                + str(archive_state["object_count"])
+            )
+
     except Exception as exc:
         fail(str(exc))
     result = {
         "status": "ok", "environment": settings.environment, "revision": revision,
         "sae_records": sae, "classification_links": links, "policy_directives": policies,
-        "dependency_lock": dependency_lock, "warnings": warnings,
+        "dependency_lock": dependency_lock,
+        "pcdt_records": pcdt_summary["pcdt_count"],
+        "pcdt_archive_objects": pcdt_summary["archive_object_count"],
+        "pcdt_archive_check": pcdt_archive_check,
+        "warnings": warnings,
     }
     print(json.dumps(result, ensure_ascii=False))
     return 0

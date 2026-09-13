@@ -203,7 +203,7 @@ const DRIP_FACTORS = Object.freeze({
 });
 
 function switchTab(tab) {
-  const views = ['sae', 'policy', 'calc', 'scales', 'trends'];
+  const views = ['sae', 'policy', 'pcdt', 'calc', 'scales', 'trends'];
   views.forEach(v => {
     const view = document.getElementById(`view-${v}`);
     const button = document.getElementById(`tab-btn-${v}`);

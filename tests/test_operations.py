@@ -66,6 +66,37 @@ def test_production_preflight_is_non_mutating_and_passes(tmp_path):
     db = tmp_path / 'runtime.db'
     shutil.copy2(PROJECT_ROOT / 'medical.db', db)
     before = sha256_file(db)
+
+    # Production preflight requires the PCDT archive to exist.
+    # Build a disposable manifest-shaped archive fixture rather
+    # than traversing the privileged production object store.
+    pcdt_root = tmp_path / 'pcdt'
+    pcdt_manifest = __import__('json').loads(
+        (
+            PROJECT_ROOT
+            / 'data'
+            / 'clinical-sources'
+            / 'sus_pcdt_archive_manifest.json'
+        ).read_text(encoding='utf-8')
+    )
+
+    assert len(pcdt_manifest['objects']) == 376
+
+    for archive_object in pcdt_manifest['objects']:
+        object_path = (
+            pcdt_root
+            / archive_object['local_relative_path']
+        )
+        object_path.parent.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+        with object_path.open('wb') as handle:
+            handle.write(b'%PDF-')
+            handle.truncate(
+                archive_object['size_bytes']
+            )
+
     env = os.environ.copy()
     env.update({
         'MEDICAL_API_ENV': 'production',
@@ -78,6 +109,7 @@ def test_production_preflight_is_non_mutating_and_passes(tmp_path):
         'MEDICAL_API_TRUSTED_PROXIES': '127.0.0.1,::1',
         'MEDICAL_API_DATABASE_URL': f'sqlite:///{db}',
         'MEDICAL_API_BACKUP_DIR': str(tmp_path / 'backups'),
+        'MEDICAL_API_PCDT_ARCHIVE_ROOT': str(pcdt_root),
     })
     result = subprocess.run(
         [sys.executable, 'scripts/preflight.py'], cwd=PROJECT_ROOT, env=env,

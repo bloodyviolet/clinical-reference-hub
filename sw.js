@@ -1,9 +1,9 @@
-const CACHE_NAME = 'clinical-reference-v28-v2-bilingual-completeness';
+const CACHE_NAME = 'clinical-reference-v29-v2-pcdt-repository';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [
   '/',
-  '/manifest.json?v=28',
+  '/manifest.json?v=29',
   '/assets/app.css',
   '/assets/bloodviolet-theme.css',
   '/assets/i18n.js',
@@ -15,6 +15,7 @@ const APP_SHELL = [
   '/assets/serial-trends-export.js',
   '/assets/serial-trends-instrument-registry.json',
   '/assets/app.js',
+  '/assets/pcdt-repository.js',
   '/assets/ui-session.js',
   '/assets/icons/icon-192.png',
   '/assets/icons/icon-512.png',
@@ -154,6 +155,15 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(event.request.url);
   const sameOrigin = url.origin === self.location.origin;
+
+  // PCDT PDFs are intentionally excluded from Cache Storage.
+  if (
+    sameOrigin
+    && url.pathname.startsWith('/documents/pcdt/')
+  ) {
+    return;
+  }
+
   const isApiRequest = sameOrigin && (
     url.pathname.startsWith('/api/v1/') ||
     url.pathname.startsWith('/sae/') ||
