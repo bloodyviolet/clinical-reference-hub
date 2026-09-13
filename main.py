@@ -57,6 +57,11 @@ from clinical_tools.steadi import (
     calculate_steadi_orthostatic_bp,
     calculate_steadi_tug,
 )
+from clinical_tools.four_gcsp import (
+    score_four,
+    score_gcs,
+    score_gcsp,
+)
 from config import load_settings
 from observability import RateLimitMiddleware, RequestContextMiddleware, configure_logging
 from scripts.clinical_content import file_hash, validate_release_content
@@ -1294,6 +1299,74 @@ def api_calculate_steadi_orthostatic_bp(
             standard_5_1_3_protocol_confirmed=(
                 payload.standard_5_1_3_protocol_confirmed
             ),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.post(
+    "/tools/gcs",
+    response_model=schemas.GCSResponse,
+)
+def api_score_gcs(
+    payload: schemas.GCSInput,
+):
+    try:
+        return score_gcs(
+            eye=payload.eye,
+            verbal=payload.verbal,
+            motor=payload.motor,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.post(
+    "/tools/gcs-p",
+    response_model=schemas.GCSPResponse,
+)
+def api_score_gcsp(
+    payload: schemas.GCSPInput,
+):
+    try:
+        gcs_result = score_gcs(
+            eye=payload.eye,
+            verbal=payload.verbal,
+            motor=payload.motor,
+        )
+
+        return score_gcsp(
+            gcs_result=gcs_result,
+            unreactive_pupils=(
+                payload.unreactive_pupils
+            ),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+
+@api_v1.post(
+    "/tools/four-score",
+    response_model=schemas.FOURResponse,
+)
+def api_score_four(
+    payload: schemas.FOURInput,
+):
+    try:
+        return score_four(
+            eye=payload.eye,
+            motor=payload.motor,
+            brainstem=payload.brainstem,
+            respiration=payload.respiration,
         )
     except ValueError as exc:
         raise HTTPException(

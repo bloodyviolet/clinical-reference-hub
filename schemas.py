@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, model_validator
 
@@ -1686,6 +1686,233 @@ class SteadiOrthostaticBPResponse(BaseModel):
     interpretation_pt: str
     interpretation_en: str
 
+
+
+# ---------------------------------------------------------------------------
+# v2 Item 10 — Glasgow Coma Scale, GCS-P, and FOUR Score API contracts.
+#
+# The HTTP boundary accepts raw observations only.
+# GCS-P does not accept a client-derived GCS total/result as its authority;
+# the API constructs the canonical GCS result server-side.
+#
+# Explicit unavailable states remain distinct from invalid supplied values:
+# - GCS uses "NT";
+# - pupil reactivity may be explicit null;
+# - FOUR domains may be explicit null.
+# ---------------------------------------------------------------------------
+
+GCSComponentName = Literal[
+    "eye",
+    "verbal",
+    "motor",
+]
+
+GCSEyeScore = Annotated[
+    int,
+    Field(
+        strict=True,
+        ge=1,
+        le=4,
+    ),
+]
+
+GCSVerbalScore = Annotated[
+    int,
+    Field(
+        strict=True,
+        ge=1,
+        le=5,
+    ),
+]
+
+GCSMotorScore = Annotated[
+    int,
+    Field(
+        strict=True,
+        ge=1,
+        le=6,
+    ),
+]
+
+GCSEyeValue = (
+    GCSEyeScore
+    | Literal["NT"]
+)
+
+GCSVerbalValue = (
+    GCSVerbalScore
+    | Literal["NT"]
+)
+
+GCSMotorValue = (
+    GCSMotorScore
+    | Literal["NT"]
+)
+
+GCSIncompleteReason = Literal[
+    "not_testable_component",
+]
+
+
+class GCSInput(BaseModel):
+    eye: GCSEyeValue
+    verbal: GCSVerbalValue
+    motor: GCSMotorValue
+
+
+class GCSComponents(BaseModel):
+    eye: GCSEyeValue
+    verbal: GCSVerbalValue
+    motor: GCSMotorValue
+
+
+class GCSResponse(BaseModel):
+    tool: Literal[
+        "gcs"
+    ]
+
+    evaluable: bool
+
+    total: int | None = Field(
+        ge=3,
+        le=15,
+    )
+
+    components: GCSComponents
+
+    nt_components: list[
+        GCSComponentName
+    ]
+
+    incomplete_reason: (
+        GCSIncompleteReason
+        | None
+    )
+
+
+GCSIncompleteGCSPReason = Literal[
+    "gcs_not_numeric",
+    "pupil_reactivity_unknown",
+]
+
+
+PupilReactivityValue = Annotated[
+    int,
+    Field(
+        strict=True,
+        ge=0,
+        le=2,
+    ),
+]
+
+
+class GCSPInput(BaseModel):
+    eye: GCSEyeValue
+    verbal: GCSVerbalValue
+    motor: GCSMotorValue
+
+    # Required field, but explicit null is a valid
+    # clinical "unknown/unavailable" state.
+    unreactive_pupils: (
+        PupilReactivityValue
+        | None
+    )
+
+
+class GCSPResponse(BaseModel):
+    tool: Literal[
+        "gcs_p"
+    ]
+
+    evaluable: bool
+
+    total: int | None = Field(
+        ge=1,
+        le=15,
+    )
+
+    gcs: GCSResponse
+
+    gcs_total: int | None = Field(
+        ge=3,
+        le=15,
+    )
+
+    unreactive_pupils: (
+        PupilReactivityValue
+        | None
+    )
+
+    pupil_reactivity_score: (
+        PupilReactivityValue
+        | None
+    )
+
+    incomplete_reasons: list[
+        GCSIncompleteGCSPReason
+    ]
+
+
+FOURDomainName = Literal[
+    "eye",
+    "motor",
+    "brainstem",
+    "respiration",
+]
+
+FOURDomainValue = Annotated[
+    int,
+    Field(
+        strict=True,
+        ge=0,
+        le=4,
+    ),
+]
+
+FOURIncompleteReason = Literal[
+    "domain_unavailable",
+]
+
+
+class FOURInput(BaseModel):
+    # Each field is required at the HTTP boundary.
+    # Explicit null means that domain is unavailable
+    # and therefore prevents a numeric total.
+    eye: FOURDomainValue | None
+    motor: FOURDomainValue | None
+    brainstem: FOURDomainValue | None
+    respiration: FOURDomainValue | None
+
+
+class FOURComponents(BaseModel):
+    eye: FOURDomainValue | None
+    motor: FOURDomainValue | None
+    brainstem: FOURDomainValue | None
+    respiration: FOURDomainValue | None
+
+
+class FOURResponse(BaseModel):
+    tool: Literal[
+        "four"
+    ]
+
+    evaluable: bool
+
+    total: int | None = Field(
+        ge=0,
+        le=16,
+    )
+
+    components: FOURComponents
+
+    missing_domains: list[
+        FOURDomainName
+    ]
+
+    incomplete_reason: (
+        FOURIncompleteReason
+        | None
+    )
 
 
 # ---------------------------------------------------------------------------
