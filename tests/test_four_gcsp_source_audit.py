@@ -49,15 +49,17 @@ def test_source_dossier_and_verification_document_exist():
     assert DOC_PATH.is_file()
 
 
-def test_item10_source_review_is_complete_but_implementation_pending():
+def test_item10_source_dossier_and_current_governance_states_are_distinct():
     data = source()
+    governance_data = governance()
 
+    # The source dossier records the historical provenance tranche.
     assert (
         data["implementation_status"]
         == "source_review_complete_implementation_pending"
     )
 
-    item10 = governance()[
+    item10 = governance_data[
         "future_items"
     ][
         "10"
@@ -68,9 +70,20 @@ def test_item10_source_review_is_complete_but_implementation_pending():
         == "FOUR Score + GCS-P"
     )
 
+    # Current roadmap state advances after implementation closure.
     assert (
         item10["implementation_state"]
-        == "source_review_complete_implementation_pending"
+        == "implementation_complete_release_recheck_pending"
+    )
+
+    # Closure does not retire the project-wide final release recheck.
+    assert (
+        governance_data[
+            "release_gate"
+        ][
+            "final_recheck_required_before_v2_release"
+        ]
+        is True
     )
 
 
