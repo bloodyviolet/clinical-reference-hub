@@ -4777,6 +4777,414 @@
   }
 
 
+  // -----------------------------------------------------------------------
+  // v2 Item 10 — qualified offline mirrors for GCS, GCS-P and FOUR.
+  //
+  // Canonical authority remains the Python clinical core exposed through
+  // the typed API. These functions exist only so runClinicalCalculator()
+  // can preserve the established PWA offline contract.
+  // -----------------------------------------------------------------------
+
+  function requireGcsComponent(
+    name,
+    value,
+    minimum,
+    maximum
+  ) {
+    if (value === 'NT') {
+      return value;
+    }
+
+    if (
+      !Number.isInteger(value)
+      || value < minimum
+      || value > maximum
+    ) {
+      throw new Error(
+        `${name}_invalid_gcs_component`
+      );
+    }
+
+    return value;
+  }
+
+
+  function calculateGcs(
+    input
+  ) {
+    if (
+      !input
+      || typeof input !== 'object'
+      || Array.isArray(input)
+    ) {
+      throw new Error(
+        'invalid_gcs_input'
+      );
+    }
+
+    const components = {
+      eye:
+        requireGcsComponent(
+          'eye',
+          input.eye,
+          1,
+          4
+        ),
+
+      verbal:
+        requireGcsComponent(
+          'verbal',
+          input.verbal,
+          1,
+          5
+        ),
+
+      motor:
+        requireGcsComponent(
+          'motor',
+          input.motor,
+          1,
+          6
+        )
+    };
+
+    const ntComponents =
+      Object
+        .entries(
+          components
+        )
+        .filter(
+          (
+            [
+              _,
+              value
+            ]
+          ) =>
+            value === 'NT'
+        )
+        .map(
+          (
+            [
+              name
+            ]
+          ) =>
+            name
+        );
+
+    if (ntComponents.length) {
+      return {
+        tool:
+          'gcs',
+
+        evaluable:
+          false,
+
+        total:
+          null,
+
+        components,
+
+        nt_components:
+          ntComponents,
+
+        incomplete_reason:
+          'not_testable_component'
+      };
+    }
+
+    const total =
+      (
+        components.eye
+        + components.verbal
+        + components.motor
+      );
+
+    return {
+      tool:
+        'gcs',
+
+      evaluable:
+        true,
+
+      total,
+
+      components,
+
+      nt_components:
+        [],
+
+      incomplete_reason:
+        null
+    };
+  }
+
+
+  function requirePupilCategory(
+    value
+  ) {
+    if (value === null) {
+      return null;
+    }
+
+    if (
+      !Number.isInteger(value)
+      || ![
+        0,
+        1,
+        2
+      ].includes(value)
+    ) {
+      throw new Error(
+        'invalid_unreactive_pupils'
+      );
+    }
+
+    return value;
+  }
+
+
+  function calculateGcsp(
+    input
+  ) {
+    if (
+      !input
+      || typeof input !== 'object'
+      || Array.isArray(input)
+    ) {
+      throw new Error(
+        'invalid_gcsp_input'
+      );
+    }
+
+    // Public browser/offline contract mirrors the HTTP contract:
+    // raw E/V/M observations are composed into canonical GCS locally.
+    // Client-derived totals/results are never used as authority.
+    const gcs =
+      calculateGcs({
+        eye:
+          input.eye,
+
+        verbal:
+          input.verbal,
+
+        motor:
+          input.motor
+      });
+
+    const unreactivePupils =
+      requirePupilCategory(
+        input.unreactive_pupils
+      );
+
+    const incompleteReasons =
+      [];
+
+    if (!gcs.evaluable) {
+      incompleteReasons.push(
+        'gcs_not_numeric'
+      );
+    }
+
+    if (
+      unreactivePupils === null
+    ) {
+      incompleteReasons.push(
+        'pupil_reactivity_unknown'
+      );
+    }
+
+    if (incompleteReasons.length) {
+      return {
+        tool:
+          'gcs_p',
+
+        evaluable:
+          false,
+
+        total:
+          null,
+
+        gcs,
+
+        gcs_total:
+          gcs.total,
+
+        unreactive_pupils:
+          unreactivePupils,
+
+        pupil_reactivity_score:
+          unreactivePupils,
+
+        incomplete_reasons:
+          incompleteReasons
+      };
+    }
+
+    const total =
+      (
+        gcs.total
+        - unreactivePupils
+      );
+
+    return {
+      tool:
+        'gcs_p',
+
+      evaluable:
+        true,
+
+      total,
+
+      gcs,
+
+      gcs_total:
+        gcs.total,
+
+      unreactive_pupils:
+        unreactivePupils,
+
+      pupil_reactivity_score:
+        unreactivePupils,
+
+      incomplete_reasons:
+        []
+    };
+  }
+
+
+  function requireFourDomain(
+    name,
+    value
+  ) {
+    if (value === null) {
+      return null;
+    }
+
+    if (
+      !Number.isInteger(value)
+      || value < 0
+      || value > 4
+    ) {
+      throw new Error(
+        `${name}_invalid_four_domain`
+      );
+    }
+
+    return value;
+  }
+
+
+  function calculateFour(
+    input
+  ) {
+    if (
+      !input
+      || typeof input !== 'object'
+      || Array.isArray(input)
+    ) {
+      throw new Error(
+        'invalid_four_input'
+      );
+    }
+
+    const components = {
+      eye:
+        requireFourDomain(
+          'eye',
+          input.eye
+        ),
+
+      motor:
+        requireFourDomain(
+          'motor',
+          input.motor
+        ),
+
+      brainstem:
+        requireFourDomain(
+          'brainstem',
+          input.brainstem
+        ),
+
+      respiration:
+        requireFourDomain(
+          'respiration',
+          input.respiration
+        )
+    };
+
+    const missingDomains =
+      Object
+        .entries(
+          components
+        )
+        .filter(
+          (
+            [
+              _,
+              value
+            ]
+          ) =>
+            value === null
+        )
+        .map(
+          (
+            [
+              name
+            ]
+          ) =>
+            name
+        );
+
+    if (missingDomains.length) {
+      return {
+        tool:
+          'four',
+
+        evaluable:
+          false,
+
+        total:
+          null,
+
+        components,
+
+        missing_domains:
+          missingDomains,
+
+        incomplete_reason:
+          'domain_unavailable'
+      };
+    }
+
+    const total =
+      (
+        components.eye
+        + components.motor
+        + components.brainstem
+        + components.respiration
+      );
+
+    return {
+      tool:
+        'four',
+
+      evaluable:
+        true,
+
+      total,
+
+      components,
+
+      missing_domains:
+        [],
+
+      incomplete_reason:
+        null
+    };
+  }
+
+
   globalThis.ClinicalTools =
     Object.freeze({
       calculateNews2,
@@ -4793,6 +5201,9 @@
       calculateSteadiTug,
       calculateSteadiChairStand30s,
       calculateSteadiFourStageBalance,
-      calculateSteadiOrthostaticBp
+      calculateSteadiOrthostaticBp,
+      calculateGcs,
+      calculateGcsp,
+      calculateFour
     });
 })();

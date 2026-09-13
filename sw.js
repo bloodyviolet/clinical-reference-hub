@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clinical-reference-v22-v2-steadi-complementary';
+const CACHE_NAME = 'clinical-reference-v23-v2-four-gcsp-ui';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [

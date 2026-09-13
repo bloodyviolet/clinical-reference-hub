@@ -71,19 +71,32 @@ const mcResult = set('mcdonald-result');
 calculateMcDonald(event);
 assert(!mcResult.innerHTML.includes('7 dias'));
 
-// GCS starts incomplete and supports NT without a numeric total.
-set('glasgow-e', '');
-set('glasgow-v', '');
-set('glasgow-m', '');
-const gcsTotal = set('glasgow-total');
-set('glasgow-note');
-scoreGlasgow();
-assert.strictEqual(gcsTotal.textContent, '—');
-elements.get('glasgow-e').value = '4';
-elements.get('glasgow-v').value = 'NT';
-elements.get('glasgow-m').value = '6';
-scoreGlasgow();
-assert.strictEqual(gcsTotal.textContent, 'NT');
+// Item 10 clinical arithmetic is no longer implemented by legacy
+// scoreGlasgow(); the browser uses API-first controllers with the
+// qualified ClinicalTools mirror only as an offline fallback.
+assert(
+  !appScript.includes(
+    'function scoreGlasgow()'
+  )
+);
+
+assert(
+  appScript.includes(
+    'function calculateGcsTool('
+  )
+);
+
+assert(
+  appScript.includes(
+    'function calculateGcspTool('
+  )
+);
+
+assert(
+  appScript.includes(
+    'function calculateFourTool('
+  )
+);
 
 // Apgar starts incomplete rather than silently displaying 10.
 set('apgar-time', '');
@@ -137,7 +150,7 @@ assert(manifest.icons.length >= 2);
 assert(manifest.icons.every((icon) => icon.src.startsWith('/assets/icons/')));
 assert(manifest.icons.every((icon) => !icon.src.includes('://')));
 const sw = fs.readFileSync('sw.js', 'utf8');
-assert(sw.includes("clinical-reference-v22-v2-steadi-complementary"));
+assert(sw.includes("clinical-reference-v23-v2-four-gcsp-ui"));
 assert(sw.includes('/assets/offline/sae.json'));
 assert(sw.includes('/assets/offline/policies.json'));
 assert(sw.includes("cache: 'reload'"));
@@ -172,7 +185,7 @@ assert(appScript.includes('PT-BR:'));
 assert(appScript.includes('EN-GB:'));
 
 assert(
-  sw.includes('clinical-reference-v22-v2-steadi-complementary')
+  sw.includes('clinical-reference-v23-v2-four-gcsp-ui')
 );
 
 console.log(

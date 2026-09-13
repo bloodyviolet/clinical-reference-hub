@@ -2391,27 +2391,197 @@
           </div>
         </div>
 
-        <!-- Glasgow -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-          <h2 class="text-base font-semibold text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-500"></span>Escala de Coma de Glasgow</h2>
-          <form id="glasgow-form" class="space-y-4 pt-2 border-t border-slate-800">
+        <!-- GCS / GCS-P / FOUR -->
+        <div class="space-y-5">
+
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
             <div>
-              <label for="glasgow-e" class="block text-xs font-semibold text-slate-300 mb-1">Abertura Ocular</label>
-              <select id="glasgow-e" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-purple-500"><option value="" selected disabled>Selecione...</option><option value="4">4 - Espontânea</option><option value="3">3 - À voz</option><option value="2">2 - À pressão</option><option value="1">1 - Nenhuma</option><option value="NT">NT - Não testável</option></select>
+              <h2 data-i18n="neuro.gcs.title" class="text-base font-semibold text-white">Escala de Coma de Glasgow</h2>
+              <p data-i18n="neuro.gcs.description" class="text-xs text-slate-400 mt-1">Registre E/V/M individualmente. Um componente NT impede total numérico.</p>
             </div>
-            <div>
-              <label for="glasgow-v" class="block text-xs font-semibold text-slate-300 mb-1">Resposta Verbal</label>
-              <select id="glasgow-v" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-purple-500"><option value="" selected disabled>Selecione...</option><option value="5">5 - Orientada</option><option value="4">4 - Confusa</option><option value="3">3 - Palavras</option><option value="2">2 - Sons</option><option value="1">1 - Nenhuma</option><option value="NT">NT - Não testável (ex: tubo traqueal)</option></select>
-            </div>
-            <div>
-              <label for="glasgow-m" class="block text-xs font-semibold text-slate-300 mb-1">Resposta Motora</label>
-              <select id="glasgow-m" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-purple-500"><option value="" selected disabled>Selecione...</option><option value="6">6 - Obedece a comandos</option><option value="5">5 - Localiza estímulo</option><option value="4">4 - Flexão normal (retirada)</option><option value="3">3 - Flexão anormal</option><option value="2">2 - Extensão</option><option value="1">1 - Nenhuma</option><option value="NT">NT - Não testável</option></select>
-            </div>
-          </form>
-          <div class="mt-4 p-4 rounded-xl bg-purple-900/20 border border-purple-500/30 text-center">
-            <p class="text-xs text-purple-300 uppercase tracking-wide font-bold">Pontuação Total</p>
-            <p id="glasgow-total" aria-live="polite" class="text-4xl font-black text-white mt-1">—</p><p id="glasgow-note" aria-live="polite" class="text-[11px] text-slate-400 mt-2">Selecione todos os componentes.</p>
+
+            <form id="glasgow-form" class="space-y-4 pt-2 border-t border-slate-800">
+              <div>
+                <label data-i18n="neuro.gcs.eye" for="glasgow-e" class="block text-xs font-semibold text-slate-300 mb-1">Abertura ocular</label>
+                <select id="glasgow-e" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="" selected disabled data-i18n="neuro.select">Selecione...</option>
+                  <option value="4" data-i18n="neuro.gcs.eye4">4 - Espontânea</option>
+                  <option value="3" data-i18n="neuro.gcs.eye3">3 - À voz</option>
+                  <option value="2" data-i18n="neuro.gcs.eye2">2 - À pressão</option>
+                  <option value="1" data-i18n="neuro.gcs.eye1">1 - Nenhuma</option>
+                  <option value="NT" data-i18n="neuro.gcs.nt">NT - Não testável</option>
+                </select>
+              </div>
+
+              <div>
+                <label data-i18n="neuro.gcs.verbal" for="glasgow-v" class="block text-xs font-semibold text-slate-300 mb-1">Resposta verbal</label>
+                <select id="glasgow-v" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="" selected disabled data-i18n="neuro.select">Selecione...</option>
+                  <option value="5" data-i18n="neuro.gcs.verbal5">5 - Orientada</option>
+                  <option value="4" data-i18n="neuro.gcs.verbal4">4 - Confusa</option>
+                  <option value="3" data-i18n="neuro.gcs.verbal3">3 - Palavras</option>
+                  <option value="2" data-i18n="neuro.gcs.verbal2">2 - Sons</option>
+                  <option value="1" data-i18n="neuro.gcs.verbal1">1 - Nenhuma</option>
+                  <option value="NT" data-i18n="neuro.gcs.nt">NT - Não testável</option>
+                </select>
+              </div>
+
+              <div>
+                <label data-i18n="neuro.gcs.motor" for="glasgow-m" class="block text-xs font-semibold text-slate-300 mb-1">Resposta motora</label>
+                <select id="glasgow-m" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="" selected disabled data-i18n="neuro.select">Selecione...</option>
+                  <option value="6" data-i18n="neuro.gcs.motor6">6 - Obedece a comandos</option>
+                  <option value="5" data-i18n="neuro.gcs.motor5">5 - Localiza estímulo</option>
+                  <option value="4" data-i18n="neuro.gcs.motor4">4 - Flexão normal (retirada)</option>
+                  <option value="3" data-i18n="neuro.gcs.motor3">3 - Flexão anormal</option>
+                  <option value="2" data-i18n="neuro.gcs.motor2">2 - Extensão</option>
+                  <option value="1" data-i18n="neuro.gcs.motor1">1 - Nenhuma</option>
+                  <option value="NT" data-i18n="neuro.gcs.nt">NT - Não testável</option>
+                </select>
+              </div>
+
+              <button type="submit" data-i18n="neuro.gcs.calculate" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular GCS</button>
+            </form>
+
+            <div id="glasgow-result" aria-live="polite" class="hidden rounded-xl border border-purple-500/30 bg-purple-900/20 p-4"></div>
           </div>
+
+
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+            <div>
+              <h2 data-i18n="neuro.gcsp.title" class="text-base font-semibold text-white">GCS-P · Glasgow-Pupilas</h2>
+              <p data-i18n="neuro.gcsp.description" class="text-xs text-slate-400 mt-1">GCS-P = GCS numérico − escore de reatividade pupilar. Não gera prognóstico automático.</p>
+            </div>
+
+            <form id="gcsp-form" class="space-y-4 pt-2 border-t border-slate-800">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <label data-i18n="neuro.gcs.eye" for="gcsp-e" class="block text-xs font-semibold text-slate-300 mb-1">Abertura ocular</label>
+                  <select id="gcsp-e" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                    <option value="" selected disabled data-i18n="neuro.select">Selecione...</option>
+                    <option value="4" data-i18n="neuro.gcs.eye4">4 - Espontânea</option>
+                    <option value="3" data-i18n="neuro.gcs.eye3">3 - À voz</option>
+                    <option value="2" data-i18n="neuro.gcs.eye2">2 - À pressão</option>
+                    <option value="1" data-i18n="neuro.gcs.eye1">1 - Nenhuma</option>
+                    <option value="NT" data-i18n="neuro.gcs.nt">NT - Não testável</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label data-i18n="neuro.gcs.verbal" for="gcsp-v" class="block text-xs font-semibold text-slate-300 mb-1">Resposta verbal</label>
+                  <select id="gcsp-v" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                    <option value="" selected disabled data-i18n="neuro.select">Selecione...</option>
+                    <option value="5" data-i18n="neuro.gcs.verbal5">5 - Orientada</option>
+                    <option value="4" data-i18n="neuro.gcs.verbal4">4 - Confusa</option>
+                    <option value="3" data-i18n="neuro.gcs.verbal3">3 - Palavras</option>
+                    <option value="2" data-i18n="neuro.gcs.verbal2">2 - Sons</option>
+                    <option value="1" data-i18n="neuro.gcs.verbal1">1 - Nenhuma</option>
+                    <option value="NT" data-i18n="neuro.gcs.nt">NT - Não testável</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label data-i18n="neuro.gcs.motor" for="gcsp-m" class="block text-xs font-semibold text-slate-300 mb-1">Resposta motora</label>
+                  <select id="gcsp-m" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                    <option value="" selected disabled data-i18n="neuro.select">Selecione...</option>
+                    <option value="6" data-i18n="neuro.gcs.motor6">6 - Obedece a comandos</option>
+                    <option value="5" data-i18n="neuro.gcs.motor5">5 - Localiza estímulo</option>
+                    <option value="4" data-i18n="neuro.gcs.motor4">4 - Flexão normal (retirada)</option>
+                    <option value="3" data-i18n="neuro.gcs.motor3">3 - Flexão anormal</option>
+                    <option value="2" data-i18n="neuro.gcs.motor2">2 - Extensão</option>
+                    <option value="1" data-i18n="neuro.gcs.motor1">1 - Nenhuma</option>
+                    <option value="NT" data-i18n="neuro.gcs.nt">NT - Não testável</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label data-i18n="neuro.gcsp.pupils" for="gcsp-pupils" class="block text-xs font-semibold text-slate-300 mb-1">Pupilas não reativas</label>
+                <select id="gcsp-pupils" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="" selected disabled data-i18n="neuro.select">Selecione...</option>
+                  <option value="0" data-i18n="neuro.gcsp.pupil0">0 - Nenhuma</option>
+                  <option value="1" data-i18n="neuro.gcsp.pupil1">1 - Uma pupila</option>
+                  <option value="2" data-i18n="neuro.gcsp.pupil2">2 - Duas pupilas</option>
+                  <option value="UNKNOWN" data-i18n="neuro.gcsp.pupilUnknown">Reatividade desconhecida / não avaliável</option>
+                </select>
+              </div>
+
+              <button type="submit" data-i18n="neuro.gcsp.calculate" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular GCS-P</button>
+            </form>
+
+            <div id="gcsp-result" aria-live="polite" class="hidden rounded-xl border border-indigo-500/30 bg-indigo-900/20 p-4"></div>
+          </div>
+
+
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+            <div>
+              <h2 data-i18n="neuro.four.title" class="text-base font-semibold text-white">FOUR Score</h2>
+              <p data-i18n="neuro.four.description" class="text-xs text-slate-400 mt-1">Quatro domínios independentes de 0–4. Domínio indisponível impede total numérico.</p>
+            </div>
+
+            <form id="four-form" class="space-y-4 pt-2 border-t border-slate-800">
+              <div>
+                <label data-i18n="neuro.four.eye" for="four-eye" class="block text-xs font-semibold text-slate-300 mb-1">Resposta ocular</label>
+                <select id="four-eye" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="" selected disabled data-i18n="neuro.select">Selecione...</option>
+                  <option value="4" data-i18n="neuro.four.eye4">4 - Pálpebras abertas, olhos acompanham ou piscam ao comando verbal</option>
+                  <option value="3" data-i18n="neuro.four.eye3">3 - Pálpebras abertas, mas não acompanha com o olhar</option>
+                  <option value="2" data-i18n="neuro.four.eye2">2 - Pálpebras fechadas, mas abre ao ouvir voz alta</option>
+                  <option value="1" data-i18n="neuro.four.eye1">1 - Pálpebras fechadas, mas abre em resposta ao estímulo doloroso</option>
+                  <option value="0" data-i18n="neuro.four.eye0">0 - Pálpebras permanecem fechadas ao estímulo doloroso</option>
+                  <option value="UNAVAILABLE" data-i18n="neuro.unavailable">Indisponível / não avaliável</option>
+                </select>
+              </div>
+
+              <div>
+                <label data-i18n="neuro.four.motor" for="four-motor" class="block text-xs font-semibold text-slate-300 mb-1">Resposta motora</label>
+                <select id="four-motor" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="" selected disabled data-i18n="neuro.select">Selecione...</option>
+                  <option value="4" data-i18n="neuro.four.motor4">4 - Levanta o polegar ou o punho ou sinal da paz</option>
+                  <option value="3" data-i18n="neuro.four.motor3">3 - Localiza a dor</option>
+                  <option value="2" data-i18n="neuro.four.motor2">2 - Flexão em resposta ao estímulo doloroso</option>
+                  <option value="1" data-i18n="neuro.four.motor1">1 - Extensão em resposta ao estímulo doloroso</option>
+                  <option value="0" data-i18n="neuro.four.motor0">0 - Sem resposta ao estímulo doloroso ou mioclonias generalizadas</option>
+                  <option value="UNAVAILABLE" data-i18n="neuro.unavailable">Indisponível / não avaliável</option>
+                </select>
+              </div>
+
+              <div>
+                <label data-i18n="neuro.four.brainstem" for="four-brainstem" class="block text-xs font-semibold text-slate-300 mb-1">Reflexos do tronco encefálico</label>
+                <select id="four-brainstem" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="" selected disabled data-i18n="neuro.select">Selecione...</option>
+                  <option value="4" data-i18n="neuro.four.brainstem4">4 - Reflexos pupilares e corneanos presentes</option>
+                  <option value="3" data-i18n="neuro.four.brainstem3">3 - Uma pupila dilatada e fixa</option>
+                  <option value="2" data-i18n="neuro.four.brainstem2">2 - Reflexos pupilares ou corneanos ausentes</option>
+                  <option value="1" data-i18n="neuro.four.brainstem1">1 - Reflexos pupilares e corneanos ausentes</option>
+                  <option value="0" data-i18n="neuro.four.brainstem0">0 - Reflexos pupilares, corneanos e de tosse ausentes</option>
+                  <option value="UNAVAILABLE" data-i18n="neuro.unavailable">Indisponível / não avaliável</option>
+                </select>
+              </div>
+
+              <div>
+                <label data-i18n="neuro.four.respiration" for="four-respiration" class="block text-xs font-semibold text-slate-300 mb-1">Padrão respiratório</label>
+                <select id="four-respiration" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                  <option value="" selected disabled data-i18n="neuro.select">Selecione...</option>
+                  <option value="4" data-i18n="neuro.four.resp4">4 - Não intubado, padrão respiratório regular</option>
+                  <option value="3" data-i18n="neuro.four.resp3">3 - Não intubado, padrão respiratório de Cheyne-Stokes</option>
+                  <option value="2" data-i18n="neuro.four.resp2">2 - Não intubado, padrão respiração irregular</option>
+                  <option value="1" data-i18n="neuro.four.resp1">1 - Respira acima da frequência do ventilador</option>
+                  <option value="0" data-i18n="neuro.four.resp0">0 - Apneia ou respira na frequência do ventilador</option>
+                  <option value="UNAVAILABLE" data-i18n="neuro.unavailable">Indisponível / não avaliável</option>
+                </select>
+              </div>
+
+              <button type="submit" data-i18n="neuro.four.calculate" class="w-full bg-violet-600 hover:bg-violet-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Calcular FOUR</button>
+            </form>
+
+            <div id="four-result" aria-live="polite" class="hidden rounded-xl border border-violet-500/30 bg-violet-900/20 p-4"></div>
+
+            <div class="border-t border-slate-800 pt-3 text-[10px] text-slate-500 space-y-1">
+              <p data-i18n="neuro.four.source">FOUR: modelo numérico canônico de Wijdicks et al.; terminologia PT-BR alinhada à adaptação/validação brasileira.</p>
+            </div>
+          </div>
+
         </div>
 
         <!-- Apgar -->

@@ -6038,30 +6038,585 @@ async function calculateSteadiOrthostaticTool(
 }
 
 
-function scoreGlasgow() {
-  const ids = ['glasgow-e', 'glasgow-v', 'glasgow-m'];
-  const values = ids.map((id) => document.getElementById(id).value);
-  const total = document.getElementById('glasgow-total');
-  const note = document.getElementById('glasgow-note');
+let lastGcsResult = null;
+let lastGcsSource = 'api';
 
-  if (values.some((value) => value === '')) {
-    total.textContent = '—';
-    note.textContent = 'Selecione todos os componentes.';
-    return;
+let lastGcspResult = null;
+let lastGcspSource = 'api';
+
+let lastFourResult = null;
+let lastFourSource = 'api';
+
+
+function item10OfflineNotice(
+  source
+) {
+  if (source !== 'offline') {
+    return '';
   }
 
-  const labels = ['E', 'V', 'M'];
-  const components = values.map((value, index) => `${labels[index]}${value}`).join(' ');
-  if (values.includes('NT')) {
-    total.textContent = 'NT';
-    note.textContent = `${components}. Quando um componente não é testável, registre os componentes e não reporte um total numérico.`;
-    return;
-  }
-
-  const score = values.reduce((sum, value) => sum + Number.parseInt(value, 10), 0);
-  total.textContent = String(score);
-  note.textContent = components;
+  return `
+    <p class="text-[11px] text-amber-300 mt-3">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('neuro.offline')
+        || clinicalText(
+          'Resultado calculado localmente em modo offline a partir do espelho qualificado do núcleo clínico.',
+          'Result calculated locally while offline using the qualified mirror of the clinical core.'
+        )
+      )}
+    </p>
+  `;
 }
+
+
+function item10GcsComponent(
+  id
+) {
+  const raw =
+    document
+      .getElementById(id)
+      .value;
+
+  if (raw === '') {
+    return undefined;
+  }
+
+  if (raw === 'NT') {
+    return 'NT';
+  }
+
+  const value =
+    Number(raw);
+
+  return Number.isInteger(value)
+    ? value
+    : undefined;
+}
+
+
+function item10ExplicitNullableInteger(
+  id,
+  unavailableToken
+) {
+  const raw =
+    document
+      .getElementById(id)
+      .value;
+
+  if (raw === '') {
+    return undefined;
+  }
+
+  if (raw === unavailableToken) {
+    return null;
+  }
+
+  const value =
+    Number(raw);
+
+  return Number.isInteger(value)
+    ? value
+    : undefined;
+}
+
+
+function renderGcsResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'glasgow-result'
+    );
+
+  if (!res || !result) {
+    return;
+  }
+
+  const totalDisplay =
+    result.evaluable
+      ? String(result.total)
+      : (
+          result.incomplete_reason
+          === 'not_testable_component'
+            ? 'NT'
+            : '—'
+        );
+
+  const components =
+    (
+      `E${result.components.eye} `
+      + `V${result.components.verbal} `
+      + `M${result.components.motor}`
+    );
+
+  const incomplete =
+    result.evaluable
+      ? ''
+      : `
+        <p class="text-[11px] text-amber-300 mt-2">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('neuro.gcs.incomplete')
+            || clinicalText(
+              'Há componente não testável: preserve os componentes individuais e não reporte total numérico.',
+              'A component is not testable: preserve the individual components and do not report a numeric total.'
+            )
+          )}
+        </p>
+      `;
+
+  res.classList.remove(
+    'hidden'
+  );
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('neuro.gcs.result')
+        || clinicalText(
+          'Resultado · Glasgow',
+          'Result · Glasgow'
+        )
+      )}
+    </p>
+
+    <p class="text-4xl font-black text-white mt-1">
+      ${escapeHtml(totalDisplay)}
+    </p>
+
+    <p class="text-[11px] text-slate-400 mt-2">
+      ${escapeHtml(components)}
+    </p>
+
+    ${incomplete}
+    ${item10OfflineNotice(source)}
+  `;
+}
+
+
+async function calculateGcsTool(
+  event
+) {
+  event.preventDefault();
+
+  const eye =
+    item10GcsComponent(
+      'glasgow-e'
+    );
+
+  const verbal =
+    item10GcsComponent(
+      'glasgow-v'
+    );
+
+  const motor =
+    item10GcsComponent(
+      'glasgow-m'
+    );
+
+  if (
+    eye === undefined
+    || verbal === undefined
+    || motor === undefined
+  ) {
+    return showError(
+      'glasgow-result',
+      globalThis.ClinicalI18n
+        ?.t?.('neuro.gcs.invalid')
+      || clinicalText(
+        'Selecione todos os componentes da Escala de Coma de Glasgow.',
+        'Select all Glasgow Coma Scale components.'
+      )
+    );
+  }
+
+  const payload = {
+    eye,
+    verbal,
+    motor
+  };
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/gcs',
+      payload,
+      globalThis
+        .ClinicalTools
+        .calculateGcs
+    );
+
+    lastGcsResult =
+      result;
+
+    lastGcsSource =
+      source;
+
+    renderGcsResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'glasgow-result',
+      error.message
+    );
+  }
+}
+
+
+function renderGcspResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'gcsp-result'
+    );
+
+  if (!res || !result) {
+    return;
+  }
+
+  const totalDisplay =
+    result.evaluable
+      ? String(result.total)
+      : '—';
+
+  const gcsDisplay =
+    result.gcs_total === null
+      ? 'NT'
+      : String(
+          result.gcs_total
+        );
+
+  const prsDisplay =
+    result.pupil_reactivity_score
+    === null
+      ? (
+          globalThis.ClinicalI18n
+            ?.t?.('neuro.unknown')
+          || clinicalText(
+            'desconhecido',
+            'unknown'
+          )
+        )
+      : String(
+          result.pupil_reactivity_score
+        );
+
+  const incomplete =
+    result.evaluable
+      ? ''
+      : `
+        <p class="text-[11px] text-amber-300 mt-2">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('neuro.gcsp.incomplete')
+            || clinicalText(
+              'GCS-P sem resultado numérico: é necessário GCS numérico e reatividade pupilar conhecida.',
+              'No numeric GCS-P result: a numeric GCS and known pupil reactivity are required.'
+            )
+          )}
+        </p>
+      `;
+
+  res.classList.remove(
+    'hidden'
+  );
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('neuro.gcsp.result')
+        || 'GCS-P'
+      )}
+    </p>
+
+    <p class="text-4xl font-black text-white mt-1">
+      ${escapeHtml(totalDisplay)}
+    </p>
+
+    <p class="text-[11px] text-slate-400 mt-2">
+      GCS:
+      ${escapeHtml(gcsDisplay)}
+      · PRS:
+      ${escapeHtml(prsDisplay)}
+    </p>
+
+    ${incomplete}
+
+    <p class="text-[11px] text-slate-500 mt-2">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('neuro.gcsp.noPrognosis')
+        || clinicalText(
+          'Nenhuma probabilidade prognóstica é inferida por esta ferramenta.',
+          'This tool does not infer prognostic probabilities.'
+        )
+      )}
+    </p>
+
+    ${item10OfflineNotice(source)}
+  `;
+}
+
+
+async function calculateGcspTool(
+  event
+) {
+  event.preventDefault();
+
+  const eye =
+    item10GcsComponent(
+      'gcsp-e'
+    );
+
+  const verbal =
+    item10GcsComponent(
+      'gcsp-v'
+    );
+
+  const motor =
+    item10GcsComponent(
+      'gcsp-m'
+    );
+
+  const unreactivePupils =
+    item10ExplicitNullableInteger(
+      'gcsp-pupils',
+      'UNKNOWN'
+    );
+
+  if (
+    eye === undefined
+    || verbal === undefined
+    || motor === undefined
+    || unreactivePupils === undefined
+  ) {
+    return showError(
+      'gcsp-result',
+      globalThis.ClinicalI18n
+        ?.t?.('neuro.gcsp.invalid')
+      || clinicalText(
+        'Selecione todos os componentes do GCS e informe o estado pupilar.',
+        'Select all GCS components and provide the pupil state.'
+      )
+    );
+  }
+
+  const payload = {
+    eye,
+    verbal,
+    motor,
+    unreactive_pupils:
+      unreactivePupils
+  };
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/gcs-p',
+      payload,
+      globalThis
+        .ClinicalTools
+        .calculateGcsp
+    );
+
+    lastGcspResult =
+      result;
+
+    lastGcspSource =
+      source;
+
+    renderGcspResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'gcsp-result',
+      error.message
+    );
+  }
+}
+
+
+function renderFourResult(
+  result,
+  source = 'api'
+) {
+  const res =
+    document.getElementById(
+      'four-result'
+    );
+
+  if (!res || !result) {
+    return;
+  }
+
+  const totalDisplay =
+    result.evaluable
+      ? String(result.total)
+      : '—';
+
+  const components =
+    (
+      `E${result.components.eye ?? '—'} `
+      + `M${result.components.motor ?? '—'} `
+      + `B${result.components.brainstem ?? '—'} `
+      + `R${result.components.respiration ?? '—'}`
+    );
+
+  const incomplete =
+    result.evaluable
+      ? ''
+      : `
+        <p class="text-[11px] text-amber-300 mt-2">
+          ${escapeHtml(
+            globalThis.ClinicalI18n
+              ?.t?.('neuro.four.incomplete')
+            || clinicalText(
+              'Um ou mais domínios estão indisponíveis; não reporte total numérico.',
+              'One or more domains are unavailable; do not report a numeric total.'
+            )
+          )}
+        </p>
+      `;
+
+  res.classList.remove(
+    'hidden'
+  );
+
+  res.innerHTML = `
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('neuro.four.result')
+        || 'FOUR Score'
+      )}
+    </p>
+
+    <p class="text-4xl font-black text-white mt-1">
+      ${escapeHtml(totalDisplay)}
+    </p>
+
+    <p class="text-[11px] text-slate-400 mt-2">
+      ${escapeHtml(components)}
+    </p>
+
+    ${incomplete}
+
+    <p class="text-[11px] text-slate-500 mt-2">
+      ${escapeHtml(
+        globalThis.ClinicalI18n
+          ?.t?.('neuro.four.noCutoff')
+        || clinicalText(
+          'Nenhum limiar de mortalidade, tratamento ou disposição é inferido.',
+          'No mortality, treatment or disposition threshold is inferred.'
+        )
+      )}
+    </p>
+
+    ${item10OfflineNotice(source)}
+  `;
+}
+
+
+async function calculateFourTool(
+  event
+) {
+  event.preventDefault();
+
+  const eye =
+    item10ExplicitNullableInteger(
+      'four-eye',
+      'UNAVAILABLE'
+    );
+
+  const motor =
+    item10ExplicitNullableInteger(
+      'four-motor',
+      'UNAVAILABLE'
+    );
+
+  const brainstem =
+    item10ExplicitNullableInteger(
+      'four-brainstem',
+      'UNAVAILABLE'
+    );
+
+  const respiration =
+    item10ExplicitNullableInteger(
+      'four-respiration',
+      'UNAVAILABLE'
+    );
+
+  if (
+    eye === undefined
+    || motor === undefined
+    || brainstem === undefined
+    || respiration === undefined
+  ) {
+    return showError(
+      'four-result',
+      globalThis.ClinicalI18n
+        ?.t?.('neuro.four.invalid')
+      || clinicalText(
+        'Selecione um estado explícito para todos os quatro domínios FOUR.',
+        'Select an explicit state for all four FOUR domains.'
+      )
+    );
+  }
+
+  const payload = {
+    eye,
+    motor,
+    brainstem,
+    respiration
+  };
+
+  try {
+    const {
+      result,
+      source
+    } = await runClinicalCalculator(
+      '/api/v1/tools/four-score',
+      payload,
+      globalThis
+        .ClinicalTools
+        .calculateFour
+    );
+
+    lastFourResult =
+      result;
+
+    lastFourSource =
+      source;
+
+    renderFourResult(
+      result,
+      source
+    );
+
+  } catch (error) {
+    showError(
+      'four-result',
+      error.message
+    );
+  }
+}
+
 
 function scoreApgar() {
   const time = document.getElementById('apgar-time').value;
@@ -6100,6 +6655,9 @@ function wireUiEvents() {
   const submitHandlers = {
     'sae-search-form': searchSAE,
     'news2-form': calculateNews2,
+    'glasgow-form': calculateGcsTool,
+    'gcsp-form': calculateGcspTool,
+    'four-form': calculateFourTool,
     'renal-egfr-form': calculateEgfrTool,
     'renal-ckd-form': calculateCkdTool,
     'renal-aki-form': calculateAkiTool,
@@ -6125,7 +6683,6 @@ function wireUiEvents() {
   Object.entries(submitHandlers).forEach(([id, handler]) => {
     document.getElementById(id)?.addEventListener('submit', handler);
   });
-  document.getElementById('glasgow-form')?.addEventListener('change', scoreGlasgow);
   document.getElementById('apgar-form')?.addEventListener('change', scoreApgar);
 
   const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
@@ -6264,6 +6821,30 @@ globalThis.addEventListener?.(
       renderSteadiOrthostaticResult(
         lastSteadiOrthostaticResult,
         lastSteadiOrthostaticSource
+      );
+    }
+
+
+    if (lastGcsResult) {
+      renderGcsResult(
+        lastGcsResult,
+        lastGcsSource
+      );
+    }
+
+
+    if (lastGcspResult) {
+      renderGcspResult(
+        lastGcspResult,
+        lastGcspSource
+      );
+    }
+
+
+    if (lastFourResult) {
+      renderFourResult(
+        lastFourResult,
+        lastFourSource
       );
     }
 

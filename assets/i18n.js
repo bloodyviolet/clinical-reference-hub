@@ -965,6 +965,225 @@
       "steadi.ortho.boundary":
         "O protocolo 5/1/3 min e os critérios 20/10 mmHg são STEADI complementar; não são apresentados como regra numérica da Caderneta/SUS.",
 
+      'neuro.select':
+        'Selecione...',
+
+      'neuro.unavailable':
+        'Indisponível / não avaliável',
+
+      'neuro.unknown':
+        'desconhecido',
+
+      'neuro.offline':
+        'Resultado calculado localmente em modo offline a partir do espelho qualificado do núcleo clínico.',
+
+      'neuro.gcs.title':
+        'Escala de Coma de Glasgow',
+
+      'neuro.gcs.description':
+        'Registre E/V/M individualmente. Um componente NT impede total numérico.',
+
+      'neuro.gcs.eye':
+        'Abertura ocular',
+
+      'neuro.gcs.verbal':
+        'Resposta verbal',
+
+      'neuro.gcs.motor':
+        'Resposta motora',
+
+      'neuro.gcs.eye4':
+        '4 - Espontânea',
+
+      'neuro.gcs.eye3':
+        '3 - À voz',
+
+      'neuro.gcs.eye2':
+        '2 - À pressão',
+
+      'neuro.gcs.eye1':
+        '1 - Nenhuma',
+
+      'neuro.gcs.verbal5':
+        '5 - Orientada',
+
+      'neuro.gcs.verbal4':
+        '4 - Confusa',
+
+      'neuro.gcs.verbal3':
+        '3 - Palavras',
+
+      'neuro.gcs.verbal2':
+        '2 - Sons',
+
+      'neuro.gcs.verbal1':
+        '1 - Nenhuma',
+
+      'neuro.gcs.motor6':
+        '6 - Obedece a comandos',
+
+      'neuro.gcs.motor5':
+        '5 - Localiza estímulo',
+
+      'neuro.gcs.motor4':
+        '4 - Flexão normal (retirada)',
+
+      'neuro.gcs.motor3':
+        '3 - Flexão anormal',
+
+      'neuro.gcs.motor2':
+        '2 - Extensão',
+
+      'neuro.gcs.motor1':
+        '1 - Nenhuma',
+
+      'neuro.gcs.nt':
+        'NT - Não testável',
+
+      'neuro.gcs.calculate':
+        'Calcular GCS',
+
+      'neuro.gcs.result':
+        'Resultado · Glasgow',
+
+      'neuro.gcs.invalid':
+        'Selecione todos os componentes da Escala de Coma de Glasgow.',
+
+      'neuro.gcs.incomplete':
+        'Há componente não testável: preserve os componentes individuais e não reporte total numérico.',
+
+      'neuro.gcsp.title':
+        'GCS-P · Glasgow-Pupilas',
+
+      'neuro.gcsp.description':
+        'GCS-P = GCS numérico − escore de reatividade pupilar. Não gera prognóstico automático.',
+
+      'neuro.gcsp.pupils':
+        'Pupilas não reativas',
+
+      'neuro.gcsp.pupil0':
+        '0 - Nenhuma',
+
+      'neuro.gcsp.pupil1':
+        '1 - Uma pupila',
+
+      'neuro.gcsp.pupil2':
+        '2 - Duas pupilas',
+
+      'neuro.gcsp.pupilUnknown':
+        'Reatividade desconhecida / não avaliável',
+
+      'neuro.gcsp.calculate':
+        'Calcular GCS-P',
+
+      'neuro.gcsp.result':
+        'Resultado · GCS-P',
+
+      'neuro.gcsp.invalid':
+        'Selecione todos os componentes do GCS e informe o estado pupilar.',
+
+      'neuro.gcsp.incomplete':
+        'GCS-P sem resultado numérico: é necessário GCS numérico e reatividade pupilar conhecida.',
+
+      'neuro.gcsp.noPrognosis':
+        'Nenhuma probabilidade prognóstica é inferida por esta ferramenta.',
+
+      'neuro.four.title':
+        'FOUR Score',
+
+      'neuro.four.description':
+        'Quatro domínios independentes de 0–4. Domínio indisponível impede total numérico.',
+
+      'neuro.four.eye':
+        'Resposta ocular',
+
+      'neuro.four.motor':
+        'Resposta motora',
+
+      'neuro.four.brainstem':
+        'Reflexos do tronco encefálico',
+
+      'neuro.four.respiration':
+        'Padrão respiratório',
+
+      'neuro.four.eye4':
+        '4 - Pálpebras abertas, olhos acompanham ou piscam ao comando verbal',
+
+      'neuro.four.eye3':
+        '3 - Pálpebras abertas, mas não acompanha com o olhar',
+
+      'neuro.four.eye2':
+        '2 - Pálpebras fechadas, mas abre ao ouvir voz alta',
+
+      'neuro.four.eye1':
+        '1 - Pálpebras fechadas, mas abre em resposta ao estímulo doloroso',
+
+      'neuro.four.eye0':
+        '0 - Pálpebras permanecem fechadas ao estímulo doloroso',
+
+      'neuro.four.motor4':
+        '4 - Levanta o polegar ou o punho ou sinal da paz',
+
+      'neuro.four.motor3':
+        '3 - Localiza a dor',
+
+      'neuro.four.motor2':
+        '2 - Flexão em resposta ao estímulo doloroso',
+
+      'neuro.four.motor1':
+        '1 - Extensão em resposta ao estímulo doloroso',
+
+      'neuro.four.motor0':
+        '0 - Sem resposta ao estímulo doloroso ou mioclonias generalizadas',
+
+      'neuro.four.brainstem4':
+        '4 - Reflexos pupilares e corneanos presentes',
+
+      'neuro.four.brainstem3':
+        '3 - Uma pupila dilatada e fixa',
+
+      'neuro.four.brainstem2':
+        '2 - Reflexos pupilares ou corneanos ausentes',
+
+      'neuro.four.brainstem1':
+        '1 - Reflexos pupilares e corneanos ausentes',
+
+      'neuro.four.brainstem0':
+        '0 - Reflexos pupilares, corneanos e de tosse ausentes',
+
+      'neuro.four.resp4':
+        '4 - Não intubado, padrão respiratório regular',
+
+      'neuro.four.resp3':
+        '3 - Não intubado, padrão respiratório de Cheyne-Stokes',
+
+      'neuro.four.resp2':
+        '2 - Não intubado, padrão respiração irregular',
+
+      'neuro.four.resp1':
+        '1 - Respira acima da frequência do ventilador',
+
+      'neuro.four.resp0':
+        '0 - Apneia ou respira na frequência do ventilador',
+
+      'neuro.four.calculate':
+        'Calcular FOUR',
+
+      'neuro.four.result':
+        'Resultado · FOUR Score',
+
+      'neuro.four.invalid':
+        'Selecione um estado explícito para todos os quatro domínios FOUR.',
+
+      'neuro.four.incomplete':
+        'Um ou mais domínios estão indisponíveis; não reporte total numérico.',
+
+      'neuro.four.noCutoff':
+        'Nenhum limiar de mortalidade, tratamento ou disposição é inferido.',
+
+      'neuro.four.source':
+        'FOUR: modelo numérico canônico de Wijdicks et al.; terminologia PT-BR alinhada à adaptação/validação brasileira.',
+
       'growth.title':
         'Crescimento pediátrico · WHO / SISVAN',
 
@@ -2049,6 +2268,225 @@
 
       "steadi.ortho.boundary":
         "The 5/1/3-minute protocol and 20/10-mmHg criteria are complementary STEADI guidance; they are not presented as a Caderneta/SUS numeric rule.",
+
+      'neuro.select':
+        'Select...',
+
+      'neuro.unavailable':
+        'Unavailable / not assessable',
+
+      'neuro.unknown':
+        'unknown',
+
+      'neuro.offline':
+        'Result calculated locally while offline using the qualified mirror of the clinical core.',
+
+      'neuro.gcs.title':
+        'Glasgow Coma Scale',
+
+      'neuro.gcs.description':
+        'Record E/V/M individually. An NT component prevents a numeric total.',
+
+      'neuro.gcs.eye':
+        'Eye response',
+
+      'neuro.gcs.verbal':
+        'Verbal response',
+
+      'neuro.gcs.motor':
+        'Motor response',
+
+      'neuro.gcs.eye4':
+        '4 - Spontaneous',
+
+      'neuro.gcs.eye3':
+        '3 - To sound',
+
+      'neuro.gcs.eye2':
+        '2 - To pressure',
+
+      'neuro.gcs.eye1':
+        '1 - None',
+
+      'neuro.gcs.verbal5':
+        '5 - Orientated',
+
+      'neuro.gcs.verbal4':
+        '4 - Confused',
+
+      'neuro.gcs.verbal3':
+        '3 - Words',
+
+      'neuro.gcs.verbal2':
+        '2 - Sounds',
+
+      'neuro.gcs.verbal1':
+        '1 - None',
+
+      'neuro.gcs.motor6':
+        '6 - Obeys commands',
+
+      'neuro.gcs.motor5':
+        '5 - Localising',
+
+      'neuro.gcs.motor4':
+        '4 - Normal flexion',
+
+      'neuro.gcs.motor3':
+        '3 - Abnormal flexion',
+
+      'neuro.gcs.motor2':
+        '2 - Extension',
+
+      'neuro.gcs.motor1':
+        '1 - None',
+
+      'neuro.gcs.nt':
+        'NT - Not testable',
+
+      'neuro.gcs.calculate':
+        'Calculate GCS',
+
+      'neuro.gcs.result':
+        'Result · Glasgow',
+
+      'neuro.gcs.invalid':
+        'Select all Glasgow Coma Scale components.',
+
+      'neuro.gcs.incomplete':
+        'A component is not testable: preserve the individual components and do not report a numeric total.',
+
+      'neuro.gcsp.title':
+        'GCS-P · Glasgow-Pupils',
+
+      'neuro.gcsp.description':
+        'GCS-P = numeric GCS − Pupil Reactivity Score. No automatic prognosis is generated.',
+
+      'neuro.gcsp.pupils':
+        'Unreactive pupils',
+
+      'neuro.gcsp.pupil0':
+        '0 - Neither pupil',
+
+      'neuro.gcsp.pupil1':
+        '1 - One pupil',
+
+      'neuro.gcsp.pupil2':
+        '2 - Both pupils',
+
+      'neuro.gcsp.pupilUnknown':
+        'Reactivity unknown / not assessable',
+
+      'neuro.gcsp.calculate':
+        'Calculate GCS-P',
+
+      'neuro.gcsp.result':
+        'Result · GCS-P',
+
+      'neuro.gcsp.invalid':
+        'Select all GCS components and provide the pupil state.',
+
+      'neuro.gcsp.incomplete':
+        'No numeric GCS-P result: a numeric GCS and known pupil reactivity are required.',
+
+      'neuro.gcsp.noPrognosis':
+        'This tool does not infer prognostic probabilities.',
+
+      'neuro.four.title':
+        'FOUR Score',
+
+      'neuro.four.description':
+        'Four independent domains scored 0–4. An unavailable domain prevents a numeric total.',
+
+      'neuro.four.eye':
+        'Eye response',
+
+      'neuro.four.motor':
+        'Motor response',
+
+      'neuro.four.brainstem':
+        'Brainstem reflexes',
+
+      'neuro.four.respiration':
+        'Respiration pattern',
+
+      'neuro.four.eye4':
+        '4 - Eyelids open or opened, tracking or blinking to command',
+
+      'neuro.four.eye3':
+        '3 - Eyelids open but not tracking',
+
+      'neuro.four.eye2':
+        '2 - Eyelids closed but open to loud voice',
+
+      'neuro.four.eye1':
+        '1 - Eyelids closed but open to pain',
+
+      'neuro.four.eye0':
+        '0 - Eyelids remain closed with pain',
+
+      'neuro.four.motor4':
+        '4 - Thumbs-up, fist or peace sign',
+
+      'neuro.four.motor3':
+        '3 - Localises pain',
+
+      'neuro.four.motor2':
+        '2 - Flexion response to pain',
+
+      'neuro.four.motor1':
+        '1 - Extension response to pain',
+
+      'neuro.four.motor0':
+        '0 - No response to pain or generalised myoclonus',
+
+      'neuro.four.brainstem4':
+        '4 - Pupil and corneal reflexes present',
+
+      'neuro.four.brainstem3':
+        '3 - One pupil wide and fixed',
+
+      'neuro.four.brainstem2':
+        '2 - Pupil or corneal reflex absent',
+
+      'neuro.four.brainstem1':
+        '1 - Pupil and corneal reflexes absent',
+
+      'neuro.four.brainstem0':
+        '0 - Pupil, corneal and cough reflexes absent',
+
+      'neuro.four.resp4':
+        '4 - Not intubated, regular breathing pattern',
+
+      'neuro.four.resp3':
+        '3 - Not intubated, Cheyne-Stokes breathing',
+
+      'neuro.four.resp2':
+        '2 - Not intubated, irregular breathing',
+
+      'neuro.four.resp1':
+        '1 - Breathes above ventilator rate',
+
+      'neuro.four.resp0':
+        '0 - Breathes at ventilator rate or apnoea',
+
+      'neuro.four.calculate':
+        'Calculate FOUR',
+
+      'neuro.four.result':
+        'Result · FOUR Score',
+
+      'neuro.four.invalid':
+        'Select an explicit state for all four FOUR domains.',
+
+      'neuro.four.incomplete':
+        'One or more domains are unavailable; do not report a numeric total.',
+
+      'neuro.four.noCutoff':
+        'No mortality, treatment or disposition threshold is inferred.',
+
+      'neuro.four.source':
+        'FOUR: canonical numeric model from Wijdicks et al.; PT-BR terminology follows the Brazilian adaptation/validation.',
 
       'growth.title':
         'Paediatric growth · WHO / SISVAN',
