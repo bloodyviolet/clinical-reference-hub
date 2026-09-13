@@ -397,8 +397,9 @@ def test_plot_groups_are_discrete_and_nulls_are_gaps():
         )
 
 
-def test_architecture_dossier_remains_historical_after_registry_state():
+def test_registry_artifact_remains_historical_after_later_item11_states():
     source = architecture()
+    registry_data = registry()
     gov = governance()
 
     assert (
@@ -409,14 +410,23 @@ def test_architecture_dossier_remains_historical_after_registry_state():
     )
 
     assert (
-        gov[
-            "future_items"
-        ][
-            "11"
-        ][
-            "implementation_state"
+        registry_data[
+            "registry_status"
         ]
         == "instrument_registry_qualified_implementation_pending"
+    )
+
+    item11 = gov[
+        "future_items"
+    ][
+        "11"
+    ]
+
+    assert (
+        item11[
+            "feature"
+        ]
+        == "Serial trends"
     )
 
     assert (

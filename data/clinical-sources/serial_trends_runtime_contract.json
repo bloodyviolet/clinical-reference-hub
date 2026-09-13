@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "item": 11,
+  "feature": "Serial trends browser runtime",
+  "qualification_status": "runtime_semantics_candidate",
+  "persistence": {
+    "memory_only": true,
+    "local_storage": false,
+    "session_storage": false,
+    "indexed_db": false,
+    "service_worker_storage": false,
+    "server_storage": false
+  },
+  "time": {
+    "observed_at_source": "explicit_user_input",
+    "observed_at_format": "rfc3339_offset_aware",
+    "naive_datetime_allowed": false,
+    "date_only_allowed": false,
+    "future_observation_allowed": false,
+    "captured_at_source": "browser_clock",
+    "captured_at_format": "rfc3339_utc",
+    "captured_at_defines_clinical_order": false,
+    "equal_instants_form_tie_group": true,
+    "tie_breaker_has_clinical_meaning": false
+  },
+  "snapshot": {
+    "json_only": true,
+    "deep_copy_required": true,
+    "deep_freeze_required": true,
+    "request_reconstruction_allowed": false,
+    "result_recalculation_allowed": false
+  },
+  "series": {
+    "one_series_one_instrument": true,
+    "duplicate_observations_allowed": true,
+    "automatic_deduplication": false,
+    "cross_instrument_merge": false,
+    "runtime_key_is_clinical_identity": false,
+    "runtime_key_is_persistent": false
+  },
+  "rendering": {
+    "registry_only": true,
+    "numeric_auto_discovery": false,
+    "plot_only_registered_fields": true,
+    "null_plot_policy": "gap",
+    "nt_plot_policy": "gap",
+    "connect_points": false,
+    "interpolation": false,
+    "forecasting": false
+  },
+  "execution_source": {
+    "allowed": [
+      "api",
+      "offline"
+    ],
+    "required": true,
+    "visible": true
+  }
+}
