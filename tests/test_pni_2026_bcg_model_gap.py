@@ -320,7 +320,7 @@ def test_governance_records_model_remediation_after_rule_transition():
         item8[
             "bcg_child_rule_state"
         ]
-        == "python_core_implemented_targeted_qc_pending"
+        == "python_core_implemented_targeted_qc_complete"
     )
 
     assert (

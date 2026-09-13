@@ -442,7 +442,7 @@ def test_harmonization_gate_matches_source_contract():
         item8[
             "implementation_state"
         ]
-        == "rule_implementation_in_progress"
+        == "implementation_complete_release_recheck_pending"
     )
 
     assert (

@@ -719,7 +719,7 @@ def test_living_governance_records_locked_normalization():
         item8[
             "implementation_state"
         ]
-        == "rule_implementation_in_progress"
+        == "implementation_complete_release_recheck_pending"
     )
 
     assert (

@@ -806,7 +806,7 @@ def test_historical_matrix_block_and_living_remediation_state():
         item8[
             "implementation_state"
         ]
-        == "rule_implementation_in_progress"
+        == "implementation_complete_release_recheck_pending"
     )
 
     assert (
