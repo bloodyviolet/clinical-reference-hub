@@ -490,7 +490,7 @@ def test_item7_brazil_source_review_precedes_implementation():
         item7[
             "implementation_state"
         ]
-        == "source_review_complete_implementation_pending"
+        == "implementation_complete_release_recheck_pending"
     )
 
     assert (

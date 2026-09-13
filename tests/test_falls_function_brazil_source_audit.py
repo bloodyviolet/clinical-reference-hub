@@ -348,7 +348,7 @@ def test_item7_governance_is_ready_for_brazil_first_implementation():
 
     assert (
         item7["implementation_state"]
-        == "source_review_complete_implementation_pending"
+        == "implementation_complete_release_recheck_pending"
     )
 
     assert (

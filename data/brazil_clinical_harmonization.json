@@ -451,7 +451,7 @@
   "future_items": {
     "7": {
       "feature": "Falls / function",
-      "implementation_state": "source_review_complete_implementation_pending",
+      "implementation_state": "implementation_complete_release_recheck_pending",
       "brazil_applicability_status": "national_standard",
       "source_review_date": "2026-09-11",
       "primary_brazil_layer": "Caderneta Brasileira da Pessoa Idosa 2026 + IVCF-20 / e-SUS APS",
