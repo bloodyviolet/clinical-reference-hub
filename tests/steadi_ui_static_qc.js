@@ -252,7 +252,7 @@ for (const token of [
 
 assert(
   sw.includes(
-    'clinical-reference-v23-v2-four-gcsp-ui'
+    'clinical-reference-v24-v2-serial-trends-ui'
   )
 );
 
@@ -265,5 +265,5 @@ assert(
 
 
 console.log(
-  'steadi_ui_static_qc: bilingual complementary STEADI DOM + v23 cache PASS'
+  'steadi_ui_static_qc: bilingual complementary STEADI DOM + current cache PASS'
 );

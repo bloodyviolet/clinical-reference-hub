@@ -197,16 +197,18 @@ const DRIP_FACTORS = Object.freeze({
 });
 
 function switchTab(tab) {
-  const views = ['sae', 'policy', 'calc', 'scales'];
+  const views = ['sae', 'policy', 'calc', 'scales', 'trends'];
   views.forEach(v => {
     const view = document.getElementById(`view-${v}`);
     const button = document.getElementById(`tab-btn-${v}`);
     view.classList.add('hidden');
     button.setAttribute('aria-selected', 'false');
+    button.setAttribute('tabindex', '-1');
     button.className = "whitespace-nowrap pb-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition";
   });
   document.getElementById(`view-${tab}`).classList.remove('hidden');
   document.getElementById(`tab-btn-${tab}`).setAttribute('aria-selected', 'true');
+  document.getElementById(`tab-btn-${tab}`).setAttribute('tabindex', '0');
   document.getElementById(`tab-btn-${tab}`).className = "whitespace-nowrap pb-3 text-sm font-semibold border-b-2 border-teal-400 text-teal-300 transition";
 }
 
@@ -623,6 +625,7 @@ function calculateMcDonald(e) {
 }
 
 
+let lastNews2Request = null;
 let lastNews2Result = null;
 let lastNews2Source = null;
 
@@ -922,6 +925,11 @@ async function calculateNews2(event) {
   }
 
 
+  const serialRequestSnapshot =
+    serialSnapshotRequestPayload(
+      payload
+    );
+
   let result;
   let source = 'api';
 
@@ -1005,6 +1013,9 @@ async function calculateNews2(event) {
   }
 
 
+  lastNews2Request =
+    serialRequestSnapshot;
+
   lastNews2Result =
     result;
 
@@ -1020,12 +1031,15 @@ async function calculateNews2(event) {
 
 
 
+let lastEgfrRequest = null;
 let lastEgfrResult = null;
 let lastEgfrSource = null;
 
+let lastCkdRequest = null;
 let lastCkdResult = null;
 let lastCkdSource = null;
 
+let lastAkiRequest = null;
 let lastAkiResult = null;
 let lastAkiSource = null;
 
@@ -1048,6 +1062,29 @@ function nullableClinicalNumber(id) {
   return Number.isFinite(parsed)
     ? parsed
     : null;
+}
+
+
+function serialSnapshotRequestPayload(
+  payload
+) {
+  const runtime =
+    globalThis
+      .SerialTrendsRuntime;
+
+  if (
+    !runtime
+    || typeof runtime
+      .snapshotClinicalJson
+      !== 'function'
+  ) {
+    return null;
+  }
+
+  return runtime
+    .snapshotClinicalJson(
+      payload
+    );
 }
 
 
@@ -1280,6 +1317,11 @@ async function calculateEgfrTool(event) {
 
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -1290,6 +1332,9 @@ async function calculateEgfrTool(event) {
         .calculateEgfrCkdEpi2021
     );
 
+
+    lastEgfrRequest =
+      serialRequestSnapshot;
 
     lastEgfrResult =
       result;
@@ -1619,6 +1664,11 @@ async function calculateCkdTool(event) {
 
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -1629,6 +1679,9 @@ async function calculateCkdTool(event) {
         .classifyCkd
     );
 
+
+    lastCkdRequest =
+      serialRequestSnapshot;
 
     lastCkdResult =
       result;
@@ -1891,6 +1944,11 @@ async function calculateAkiTool(event) {
 
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -1901,6 +1959,9 @@ async function calculateAkiTool(event) {
         .calculateKdigoAki
     );
 
+
+    lastAkiRequest =
+      serialRequestSnapshot;
 
     lastAkiResult =
       result;
@@ -1924,6 +1985,7 @@ async function calculateAkiTool(event) {
 
 
 
+let lastHemodynamicsRequest = null;
 let lastHemodynamicsResult = null;
 let lastHemodynamicsSource = null;
 
@@ -2247,6 +2309,11 @@ async function calculateHemodynamicsTool(
 
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -2257,6 +2324,9 @@ async function calculateHemodynamicsTool(
         .calculateHemodynamics
     );
 
+
+    lastHemodynamicsRequest =
+      serialRequestSnapshot;
 
     lastHemodynamicsResult =
       result;
@@ -2280,6 +2350,7 @@ async function calculateHemodynamicsTool(
 
 
 
+let lastOxygenationRequest = null;
 let lastOxygenationResult = null;
 let lastOxygenationSource = null;
 
@@ -2521,6 +2592,11 @@ async function calculateOxygenationTool(
 
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -2531,6 +2607,9 @@ async function calculateOxygenationTool(
         .calculateOxygenation
     );
 
+
+    lastOxygenationRequest =
+      serialRequestSnapshot;
 
     lastOxygenationResult =
       result;
@@ -2554,6 +2633,7 @@ async function calculateOxygenationTool(
 
 
 
+let lastMetabolicRequest = null;
 let lastMetabolicResult = null;
 let lastMetabolicSource = null;
 
@@ -3074,6 +3154,11 @@ async function calculateMetabolicTool(
 
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -3084,6 +3169,9 @@ async function calculateMetabolicTool(
         .calculateMetabolicToolkit
     );
 
+
+    lastMetabolicRequest =
+      serialRequestSnapshot;
 
     lastMetabolicResult =
       result;
@@ -3107,6 +3195,7 @@ async function calculateMetabolicTool(
 
 
 
+let lastMethanolRequest = null;
 let lastMethanolResult = null;
 let lastMethanolSource = null;
 
@@ -3670,6 +3759,11 @@ async function calculateBrazilMethanolTool(
 
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -3680,6 +3774,9 @@ async function calculateBrazilMethanolTool(
         .calculateBrazilMethanolContext
     );
 
+
+    lastMethanolRequest =
+      serialRequestSnapshot;
 
     lastMethanolResult =
       result;
@@ -3703,6 +3800,7 @@ async function calculateBrazilMethanolTool(
 
 
 
+let lastGrowthRequest = null;
 let lastGrowthResult = null;
 let lastGrowthSource = null;
 
@@ -4246,6 +4344,11 @@ async function calculateGrowthTool(
 
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -4257,6 +4360,9 @@ async function calculateGrowthTool(
         .calculateWhoGrowth
     );
 
+
+    lastGrowthRequest =
+      serialRequestSnapshot;
 
     lastGrowthResult =
       result;
@@ -4383,6 +4489,7 @@ function booleanSelectPayload(
 }
 
 
+let lastCadernetaFallsRequest = null;
 let lastCadernetaFallsResult = null;
 let lastCadernetaFallsSource = null;
 
@@ -4581,6 +4688,11 @@ async function calculateCadernetaFallsTool(
   };
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -4591,6 +4703,9 @@ async function calculateCadernetaFallsTool(
         .ClinicalTools
         .calculateCadernetaFallsCheckup
     );
+
+    lastCadernetaFallsRequest =
+      serialRequestSnapshot;
 
     lastCadernetaFallsResult =
       result;
@@ -4612,6 +4727,7 @@ async function calculateCadernetaFallsTool(
 }
 
 
+let lastIvcf20Request = null;
 let lastIvcf20Result = null;
 let lastIvcf20Source = null;
 
@@ -4988,6 +5104,11 @@ async function calculateIvcf20Tool(
   };
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -4998,6 +5119,9 @@ async function calculateIvcf20Tool(
         .ClinicalTools
         .calculateIvcf20
     );
+
+    lastIvcf20Request =
+      serialRequestSnapshot;
 
     lastIvcf20Result =
       result;
@@ -5020,15 +5144,19 @@ async function calculateIvcf20Tool(
 
 
 
+let lastSteadiTugRequest = null;
 let lastSteadiTugResult = null;
 let lastSteadiTugSource = null;
 
+let lastSteadiChairRequest = null;
 let lastSteadiChairResult = null;
 let lastSteadiChairSource = null;
 
+let lastSteadiBalanceRequest = null;
 let lastSteadiBalanceResult = null;
 let lastSteadiBalanceSource = null;
 
+let lastSteadiOrthostaticRequest = null;
 let lastSteadiOrthostaticResult = null;
 let lastSteadiOrthostaticSource = null;
 
@@ -5268,6 +5396,11 @@ async function calculateSteadiTugTool(
   };
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -5278,6 +5411,9 @@ async function calculateSteadiTugTool(
         .ClinicalTools
         .calculateSteadiTug
     );
+
+    lastSteadiTugRequest =
+      serialRequestSnapshot;
 
     lastSteadiTugResult =
       result;
@@ -5536,6 +5672,11 @@ async function calculateSteadiChairStandTool(
   };
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -5546,6 +5687,9 @@ async function calculateSteadiChairStandTool(
         .ClinicalTools
         .calculateSteadiChairStand30s
     );
+
+    lastSteadiChairRequest =
+      serialRequestSnapshot;
 
     lastSteadiChairResult =
       result;
@@ -5746,6 +5890,11 @@ async function calculateSteadiBalanceTool(
   };
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -5756,6 +5905,9 @@ async function calculateSteadiBalanceTool(
         .ClinicalTools
         .calculateSteadiFourStageBalance
     );
+
+    lastSteadiBalanceRequest =
+      serialRequestSnapshot;
 
     lastSteadiBalanceResult =
       result;
@@ -6007,6 +6159,11 @@ async function calculateSteadiOrthostaticTool(
   };
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -6017,6 +6174,9 @@ async function calculateSteadiOrthostaticTool(
         .ClinicalTools
         .calculateSteadiOrthostaticBp
     );
+
+    lastSteadiOrthostaticRequest =
+      serialRequestSnapshot;
 
     lastSteadiOrthostaticResult =
       result;
@@ -6038,12 +6198,15 @@ async function calculateSteadiOrthostaticTool(
 }
 
 
+let lastGcsRequest = null;
 let lastGcsResult = null;
 let lastGcsSource = 'api';
 
+let lastGcspRequest = null;
 let lastGcspResult = null;
 let lastGcspSource = 'api';
 
+let lastFourRequest = null;
 let lastFourResult = null;
 let lastFourSource = 'api';
 
@@ -6240,6 +6403,11 @@ async function calculateGcsTool(
   };
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -6250,6 +6418,9 @@ async function calculateGcsTool(
         .ClinicalTools
         .calculateGcs
     );
+
+    lastGcsRequest =
+      serialRequestSnapshot;
 
     lastGcsResult =
       result;
@@ -6421,6 +6592,11 @@ async function calculateGcspTool(
   };
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -6431,6 +6607,9 @@ async function calculateGcspTool(
         .ClinicalTools
         .calculateGcsp
     );
+
+    lastGcspRequest =
+      serialRequestSnapshot;
 
     lastGcspResult =
       result;
@@ -6587,6 +6766,11 @@ async function calculateFourTool(
   };
 
   try {
+    const serialRequestSnapshot =
+      serialSnapshotRequestPayload(
+        payload
+      );
+
     const {
       result,
       source
@@ -6597,6 +6781,9 @@ async function calculateFourTool(
         .ClinicalTools
         .calculateFour
     );
+
+    lastFourRequest =
+      serialRequestSnapshot;
 
     lastFourResult =
       result;
@@ -6635,6 +6822,1352 @@ function scoreApgar() {
   total.textContent = String(score);
   note.textContent = `Avaliação aos ${time} min. O Apgar descreve a condição do recém-nascido e não deve ser usado isoladamente para decidir o início da reanimação.`;
 }
+
+
+// ITEM11_SERIAL_TRENDS_UI_START
+
+const SERIAL_REGISTRY_URL =
+  '/assets/serial-trends-instrument-registry.json';
+
+let serialRegistry = null;
+let serialRegistryByKey = new Map();
+let serialStore = null;
+
+
+const serialCaptureBindings =
+  Object.freeze({
+  "acid_base_metabolic": () => ({
+    request: lastMetabolicRequest,
+    result: lastMetabolicResult,
+    source: lastMetabolicSource
+  }),
+  "brazil_caderneta_falls": () => ({
+    request: lastCadernetaFallsRequest,
+    result: lastCadernetaFallsResult,
+    source: lastCadernetaFallsSource
+  }),
+  "brazil_methanol": () => ({
+    request: lastMethanolRequest,
+    result: lastMethanolResult,
+    source: lastMethanolSource
+  }),
+  "ckd_classification": () => ({
+    request: lastCkdRequest,
+    result: lastCkdResult,
+    source: lastCkdSource
+  }),
+  "egfr_ckd_epi_2021": () => ({
+    request: lastEgfrRequest,
+    result: lastEgfrResult,
+    source: lastEgfrSource
+  }),
+  "four_score": () => ({
+    request: lastFourRequest,
+    result: lastFourResult,
+    source: lastFourSource
+  }),
+  "gcs": () => ({
+    request: lastGcsRequest,
+    result: lastGcsResult,
+    source: lastGcsSource
+  }),
+  "gcs_p": () => ({
+    request: lastGcspRequest,
+    result: lastGcspResult,
+    source: lastGcspSource
+  }),
+  "hemodynamics": () => ({
+    request: lastHemodynamicsRequest,
+    result: lastHemodynamicsResult,
+    source: lastHemodynamicsSource
+  }),
+  "ivcf20": () => ({
+    request: lastIvcf20Request,
+    result: lastIvcf20Result,
+    source: lastIvcf20Source
+  }),
+  "kdigo_aki": () => ({
+    request: lastAkiRequest,
+    result: lastAkiResult,
+    source: lastAkiSource
+  }),
+  "news2": () => ({
+    request: lastNews2Request,
+    result: lastNews2Result,
+    source: lastNews2Source
+  }),
+  "oxygenation": () => ({
+    request: lastOxygenationRequest,
+    result: lastOxygenationResult,
+    source: lastOxygenationSource
+  }),
+  "steadi_chair_stand_30s": () => ({
+    request: lastSteadiChairRequest,
+    result: lastSteadiChairResult,
+    source: lastSteadiChairSource
+  }),
+  "steadi_four_stage_balance": () => ({
+    request: lastSteadiBalanceRequest,
+    result: lastSteadiBalanceResult,
+    source: lastSteadiBalanceSource
+  }),
+  "steadi_orthostatic_bp": () => ({
+    request: lastSteadiOrthostaticRequest,
+    result: lastSteadiOrthostaticResult,
+    source: lastSteadiOrthostaticSource
+  }),
+  "steadi_tug": () => ({
+    request: lastSteadiTugRequest,
+    result: lastSteadiTugResult,
+    source: lastSteadiTugSource
+  }),
+  "who_growth": () => ({
+    request: lastGrowthRequest,
+    result: lastGrowthResult,
+    source: lastGrowthSource
+  })
+  });
+
+
+function serialT(key) {
+  return (
+    globalThis.ClinicalI18n
+      ?.t?.(key)
+    || key
+  );
+}
+
+
+function serialInstrumentLabel(key) {
+  return serialT(
+    `serial.instrument.${key}`
+  );
+}
+
+
+function serialSetStatus(
+  message,
+  tone = 'neutral'
+) {
+  const element =
+    document.getElementById(
+      'serial-status'
+    );
+
+  if (!element) return;
+
+  element.textContent =
+    message;
+
+  element.className = (
+    tone === 'error'
+      ? 'text-xs text-rose-300'
+      : tone === 'success'
+        ? 'text-xs text-emerald-300'
+        : 'text-xs text-slate-400'
+  );
+}
+
+
+function serialRuntimeErrorMessage(
+  error
+) {
+  if (
+    error?.message
+    === 'future_observed_at'
+  ) {
+    return serialT(
+      'serial.futureError'
+    );
+  }
+
+  return serialT(
+    'serial.invalidTime'
+  );
+}
+
+
+function serialBuildObservedAt() {
+  const local =
+    document.getElementById(
+      'serial-observed-at'
+    )?.value?.trim();
+
+  const offset =
+    document.getElementById(
+      'serial-offset'
+    )?.value?.trim();
+
+  if (
+    !local
+    || !offset
+  ) {
+    throw new Error(
+      'serial_time_missing'
+    );
+  }
+
+  const localPattern =
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?$/;
+
+  const offsetPattern =
+    /^(?:Z|[+-]\d{2}:\d{2})$/;
+
+  if (
+    !localPattern.test(local)
+    || !offsetPattern.test(offset)
+  ) {
+    throw new Error(
+      'serial_time_invalid'
+    );
+  }
+
+  const normalised =
+    local.length === 16
+      ? `${local}:00`
+      : local;
+
+  return (
+    normalised
+    + offset
+  );
+}
+
+
+function serialFormatValue(value) {
+  if (
+    value === null
+    || value === undefined
+  ) {
+    return '—';
+  }
+
+  if (typeof value === 'boolean') {
+    return value
+      ? serialT('serial.yes')
+      : serialT('serial.no');
+  }
+
+  if (
+    Array.isArray(value)
+    || typeof value === 'object'
+  ) {
+    return JSON.stringify(value);
+  }
+
+  return String(value);
+}
+
+
+function serialRenderFields(fields) {
+  if (
+    !Array.isArray(fields)
+    || fields.length === 0
+  ) {
+    return '—';
+  }
+
+  return fields
+    .map(
+      (field) => `
+        <div class="mb-1">
+          <code class="text-[10px] text-slate-500">
+            ${escapeHtml(field.path)}
+          </code>
+          <span class="text-xs text-slate-200">
+            ${escapeHtml(
+              field.present
+                ? serialFormatValue(
+                    field.value
+                  )
+                : '—'
+            )}
+          </span>
+        </div>
+      `
+    )
+    .join('');
+}
+
+
+function serialPopulateInstrumentOptions() {
+  const select =
+    document.getElementById(
+      'serial-instrument'
+    );
+
+  if (
+    !select
+    || !serialRegistry
+  ) {
+    return;
+  }
+
+  const previous =
+    select.value;
+
+  select.innerHTML = `
+    <option value="">
+      ${escapeHtml(
+        serialT(
+          'serial.selectInstrument'
+        )
+      )}
+    </option>
+  `;
+
+  for (
+    const instrument
+    of serialRegistry.instruments
+  ) {
+    const option =
+      document.createElement(
+        'option'
+      );
+
+    option.value =
+      instrument.key;
+
+    option.textContent =
+      serialInstrumentLabel(
+        instrument.key
+      );
+
+    select.appendChild(
+      option
+    );
+  }
+
+  if (
+    previous
+    && serialRegistryByKey.has(
+      previous
+    )
+  ) {
+    select.value =
+      previous;
+  }
+}
+
+
+function serialSelectedInstrument() {
+  return (
+    document.getElementById(
+      'serial-instrument'
+    )?.value
+    || ''
+  );
+}
+
+
+function serialPopulatePlotOptions() {
+  const select =
+    document.getElementById(
+      'serial-plot-field'
+    );
+
+  if (!select) return;
+
+  const previous =
+    select.value;
+
+  select.innerHTML = `
+    <option value="">
+      ${escapeHtml(
+        serialT(
+          'serial.selectPlot'
+        )
+      )}
+    </option>
+  `;
+
+  const key =
+    serialSelectedInstrument();
+
+  const instrument =
+    serialRegistryByKey.get(
+      key
+    );
+
+  if (!instrument) {
+    select.disabled = true;
+    return;
+  }
+
+  let optionCount = 0;
+
+  (
+    instrument.plot_groups
+    || []
+  ).forEach(
+    (
+      group,
+      groupIndex
+    ) => {
+      (
+        group.fields
+        || []
+      ).forEach(
+        (
+          field,
+          fieldIndex
+        ) => {
+          const option =
+            document.createElement(
+              'option'
+            );
+
+          option.value =
+            `${groupIndex}:${fieldIndex}`;
+
+          option.textContent =
+            `${field.path} · ${group.unit}`;
+
+          select.appendChild(
+            option
+          );
+
+          optionCount += 1;
+        }
+      );
+    }
+  );
+
+  select.disabled =
+    optionCount === 0;
+
+  if (
+    previous
+    && Array.from(
+      select.options
+    ).some(
+      (option) =>
+        option.value
+        === previous
+    )
+  ) {
+    select.value =
+      previous;
+  }
+}
+
+
+function serialRenderTable() {
+  const body =
+    document.getElementById(
+      'serial-table-body'
+    );
+
+  if (!body) return;
+
+  if (
+    !serialStore
+    || !serialSelectedInstrument()
+  ) {
+    body.innerHTML = '';
+    return;
+  }
+
+  const key =
+    serialSelectedInstrument();
+
+  const groups =
+    serialStore
+      .chronologyGroups(
+        key
+      );
+
+  const rows = [];
+
+  for (
+    const group
+    of groups
+  ) {
+    for (
+      const observation
+      of group.observations
+    ) {
+      const model =
+        serialStore
+          .displayModel(
+            observation
+          );
+
+      const sourceLabel =
+        model.execution_source
+        === 'offline'
+          ? serialT(
+              'serial.sourceOffline'
+            )
+          : serialT(
+              'serial.sourceApi'
+            );
+
+      const tie =
+        group.equal_time_tie
+          ? serialT(
+              'serial.tie'
+            )
+          : '—';
+
+      const snapshots = `
+        <details>
+          <summary class="cursor-pointer text-teal-300 text-xs">
+            ${escapeHtml(
+              serialT(
+                'serial.snapshots'
+              )
+            )}
+          </summary>
+          <div class="mt-2 space-y-2">
+            <div>
+              <div class="text-[10px] uppercase text-slate-500">
+                ${escapeHtml(
+                  serialT(
+                    'serial.request'
+                  )
+                )}
+              </div>
+              <pre class="text-[10px] whitespace-pre-wrap break-all text-slate-300">${escapeHtml(
+                JSON.stringify(
+                  observation
+                    .request_snapshot,
+                  null,
+                  2
+                )
+              )}</pre>
+            </div>
+            <div>
+              <div class="text-[10px] uppercase text-slate-500">
+                ${escapeHtml(
+                  serialT(
+                    'serial.result'
+                  )
+                )}
+              </div>
+              <pre class="text-[10px] whitespace-pre-wrap break-all text-slate-300">${escapeHtml(
+                JSON.stringify(
+                  observation
+                    .result_snapshot,
+                  null,
+                  2
+                )
+              )}</pre>
+            </div>
+          </div>
+        </details>
+      `;
+
+      rows.push(`
+        <tr class="border-t border-slate-800 align-top">
+          <td class="p-3 text-xs text-slate-200 whitespace-nowrap">
+            ${escapeHtml(
+              observation
+                .observed_at
+            )}
+          </td>
+          <td class="p-3 text-xs text-amber-200">
+            ${escapeHtml(tie)}
+          </td>
+          <td class="p-3 text-xs text-slate-200">
+            ${escapeHtml(
+              sourceLabel
+            )}
+          </td>
+          <td class="p-3">
+            ${serialRenderFields(
+              model.summary_fields
+            )}
+          </td>
+          <td class="p-3">
+            ${serialRenderFields(
+              model.component_fields
+            )}
+          </td>
+          <td class="p-3">
+            ${serialRenderFields(
+              model.context_fields
+            )}
+          </td>
+          <td class="p-3 text-xs text-slate-400 whitespace-nowrap">
+            ${escapeHtml(
+              observation
+                .captured_at
+            )}
+          </td>
+          <td class="p-3">
+            ${snapshots}
+          </td>
+        </tr>
+      `);
+    }
+  }
+
+  body.innerHTML =
+    rows.join('');
+}
+
+
+function serialRenderPlot() {
+  const container =
+    document.getElementById(
+      'serial-plot'
+    );
+
+  const fieldSelect =
+    document.getElementById(
+      'serial-plot-field'
+    );
+
+  if (
+    !container
+    || !fieldSelect
+  ) {
+    return;
+  }
+
+  const key =
+    serialSelectedInstrument();
+
+  const instrument =
+    serialRegistryByKey.get(
+      key
+    );
+
+  if (
+    !serialStore
+    || !instrument
+  ) {
+    container.textContent =
+      serialT(
+        'serial.noPlot'
+      );
+
+    return;
+  }
+
+  if (
+    !Array.isArray(
+      instrument.plot_groups
+    )
+    || instrument
+      .plot_groups
+      .length === 0
+  ) {
+    container.textContent =
+      serialT(
+        'serial.noPlot'
+      );
+
+    return;
+  }
+
+  const selected =
+    fieldSelect.value;
+
+  if (!selected) {
+    container.textContent =
+      serialT(
+        'serial.selectPlot'
+      );
+
+    return;
+  }
+
+  const [
+    groupIndexRaw,
+    fieldIndexRaw
+  ] = selected.split(':');
+
+  const groupIndex =
+    Number.parseInt(
+      groupIndexRaw,
+      10
+    );
+
+  const fieldIndex =
+    Number.parseInt(
+      fieldIndexRaw,
+      10
+    );
+
+  const registryGroup =
+    instrument
+      .plot_groups[
+        groupIndex
+      ];
+
+  const registryField =
+    registryGroup
+      ?.fields[
+        fieldIndex
+      ];
+
+  if (
+    !registryGroup
+    || !registryField
+  ) {
+    container.textContent =
+      serialT(
+        'serial.noPlot'
+      );
+
+    return;
+  }
+
+  const chronology =
+    serialStore
+      .chronologyGroups(
+        key
+      );
+
+  if (
+    chronology.length === 0
+  ) {
+    container.textContent =
+      serialT(
+        'serial.empty'
+      );
+
+    return;
+  }
+
+  const allTimes =
+    chronology.map(
+      (group) =>
+        group
+          .observed_at_epoch_ms
+    );
+
+  const points = [];
+
+  for (
+    const group
+    of chronology
+  ) {
+    for (
+      const observation
+      of group.observations
+    ) {
+      const model =
+        serialStore
+          .displayModel(
+            observation
+          );
+
+      const plotGroup =
+        model.plot_groups[
+          groupIndex
+        ];
+
+      const plotField =
+        plotGroup
+          ?.fields[
+            fieldIndex
+          ];
+
+      if (
+        plotField
+        && Number.isFinite(
+          plotField.plot_value
+        )
+      ) {
+        points.push({
+          time:
+            group
+              .observed_at_epoch_ms,
+          value:
+            plotField
+              .plot_value,
+          observedAt:
+            observation
+              .observed_at
+        });
+      }
+    }
+  }
+
+  if (
+    points.length === 0
+  ) {
+    container.textContent =
+      serialT(
+        'serial.noNumeric'
+      );
+
+    return;
+  }
+
+  const width = 720;
+  const height = 260;
+
+  const left = 64;
+  const right = 20;
+  const top = 20;
+  const bottom = 42;
+
+  const xMin =
+    Math.min(...allTimes);
+
+  const xMax =
+    Math.max(...allTimes);
+
+  let yMin =
+    Math.min(
+      ...points.map(
+        (point) =>
+          point.value
+      )
+    );
+
+  let yMax =
+    Math.max(
+      ...points.map(
+        (point) =>
+          point.value
+      )
+    );
+
+  if (yMin === yMax) {
+    const pad =
+      Math.max(
+        1,
+        Math.abs(yMin) * 0.05
+      );
+
+    yMin -= pad;
+    yMax += pad;
+  }
+
+  const x =
+    (value) =>
+      xMax === xMin
+        ? (
+            left
+            + (
+              width
+              - left
+              - right
+            ) / 2
+          )
+        : (
+            left
+            + (
+              (
+                value
+                - xMin
+              )
+              / (
+                xMax
+                - xMin
+              )
+            )
+            * (
+              width
+              - left
+              - right
+            )
+          );
+
+  const y =
+    (value) =>
+      top
+      + (
+        1
+        - (
+          (
+            value
+            - yMin
+          )
+          / (
+            yMax
+            - yMin
+          )
+        )
+      )
+      * (
+        height
+        - top
+        - bottom
+      );
+
+  const circles =
+    points.map(
+      (point) => `
+        <circle
+          cx="${x(point.time).toFixed(2)}"
+          cy="${y(point.value).toFixed(2)}"
+          r="5"
+          fill="currentColor"
+        >
+          <title>${escapeHtml(
+            `${point.observedAt} · ${registryField.path}: ${point.value} ${registryGroup.unit}`
+          )}</title>
+        </circle>
+      `
+    ).join('');
+
+  container.innerHTML = `
+    <div class="overflow-x-auto">
+      <svg
+        viewBox="0 0 ${width} ${height}"
+        role="img"
+        aria-label="${escapeHtml(
+          serialT(
+            'serial.plotTitle'
+          )
+        )}"
+        class="min-w-[640px] w-full text-teal-300"
+      >
+        <line
+          x1="${left}"
+          y1="${height - bottom}"
+          x2="${width - right}"
+          y2="${height - bottom}"
+          stroke="currentColor"
+          opacity="0.35"
+        />
+        <line
+          x1="${left}"
+          y1="${top}"
+          x2="${left}"
+          y2="${height - bottom}"
+          stroke="currentColor"
+          opacity="0.35"
+        />
+        ${circles}
+        <text
+          x="${left - 8}"
+          y="${top + 4}"
+          text-anchor="end"
+          fill="currentColor"
+          font-size="11"
+        >${escapeHtml(
+          yMax.toFixed(2)
+        )}</text>
+        <text
+          x="${left - 8}"
+          y="${height - bottom}"
+          text-anchor="end"
+          fill="currentColor"
+          font-size="11"
+        >${escapeHtml(
+          yMin.toFixed(2)
+        )}</text>
+        <text
+          x="${left}"
+          y="${height - 12}"
+          fill="currentColor"
+          font-size="10"
+        >${escapeHtml(
+          new Date(
+            xMin
+          ).toISOString()
+        )}</text>
+        <text
+          x="${width - right}"
+          y="${height - 12}"
+          text-anchor="end"
+          fill="currentColor"
+          font-size="10"
+        >${escapeHtml(
+          new Date(
+            xMax
+          ).toISOString()
+        )}</text>
+      </svg>
+    </div>
+    <p class="text-[10px] text-slate-500 mt-2">
+      ${escapeHtml(
+        registryField.path
+      )}
+      ·
+      ${escapeHtml(
+        registryGroup.unit
+      )}
+      ·
+      ${escapeHtml(
+        serialT(
+          'serial.pointsOnly'
+        )
+      )}
+    </p>
+  `;
+}
+
+
+function serialRender() {
+  if (!serialStore) return;
+
+  serialPopulatePlotOptions();
+  serialRenderTable();
+  serialRenderPlot();
+
+  const key =
+    serialSelectedInstrument();
+
+  if (!key) {
+    serialSetStatus(
+      serialT(
+        'serial.selectInstrument'
+      )
+    );
+
+    return;
+  }
+
+  const count =
+    serialStore
+      .chronologyGroups(
+        key
+      )
+      .reduce(
+        (
+          total,
+          group
+        ) =>
+          total
+          + group
+            .observations
+            .length,
+        0
+      );
+
+  serialSetStatus(
+    `${serialT(
+      'serial.countLabel'
+    )}: ${count}`
+  );
+}
+
+
+function serialCaptureFor(
+  instrumentKey
+) {
+  const binding =
+    serialCaptureBindings[
+      instrumentKey
+    ];
+
+  if (!binding) {
+    return null;
+  }
+
+  return binding();
+}
+
+
+function serialAddObservation() {
+  if (!serialStore) {
+    serialSetStatus(
+      serialT(
+        'serial.registryError'
+      ),
+      'error'
+    );
+
+    return;
+  }
+
+  const key =
+    serialSelectedInstrument();
+
+  if (!key) {
+    serialSetStatus(
+      serialT(
+        'serial.selectInstrument'
+      ),
+      'error'
+    );
+
+    return;
+  }
+
+  const capture =
+    serialCaptureFor(
+      key
+    );
+
+  if (
+    !capture
+    || capture.request === null
+    || capture.result === null
+    || ![
+      'api',
+      'offline'
+    ].includes(
+      capture.source
+    )
+  ) {
+    serialSetStatus(
+      serialT(
+        'serial.noResult'
+      ),
+      'error'
+    );
+
+    return;
+  }
+
+  let observedAt;
+
+  try {
+    observedAt =
+      serialBuildObservedAt();
+  } catch (_) {
+    serialSetStatus(
+      serialT(
+        'serial.invalidTime'
+      ),
+      'error'
+    );
+
+    return;
+  }
+
+  try {
+    serialStore
+      .addObservation({
+        instrumentKey:
+          key,
+        observedAt,
+        requestSnapshot:
+          capture.request,
+        resultSnapshot:
+          capture.result,
+        executionSource:
+          capture.source
+      });
+  } catch (error) {
+    serialSetStatus(
+      serialRuntimeErrorMessage(
+        error
+      ),
+      'error'
+    );
+
+    return;
+  }
+
+  serialRender();
+
+  serialSetStatus(
+    serialT(
+      'serial.added'
+    ),
+    'success'
+  );
+}
+
+
+function serialClearInstrument() {
+  if (!serialStore) return;
+
+  const key =
+    serialSelectedInstrument();
+
+  if (!key) return;
+
+  serialStore
+    .clearInstrument(
+      key
+    );
+
+  serialRender();
+
+  serialSetStatus(
+    serialT(
+      'serial.cleared'
+    ),
+    'success'
+  );
+}
+
+
+function serialClearAll() {
+  if (!serialStore) return;
+
+  serialStore.clearAll();
+
+  serialRender();
+
+  serialSetStatus(
+    serialT(
+      'serial.clearAllDone'
+    ),
+    'success'
+  );
+}
+
+
+function wireSerialTrendEvents() {
+  document
+    .getElementById(
+      'serial-instrument'
+    )
+    ?.addEventListener(
+      'change',
+      serialRender
+    );
+
+  document
+    .getElementById(
+      'serial-plot-field'
+    )
+    ?.addEventListener(
+      'change',
+      serialRenderPlot
+    );
+
+  document
+    .getElementById(
+      'serial-add'
+    )
+    ?.addEventListener(
+      'click',
+      serialAddObservation
+    );
+
+  document
+    .getElementById(
+      'serial-clear-instrument'
+    )
+    ?.addEventListener(
+      'click',
+      serialClearInstrument
+    );
+
+  document
+    .getElementById(
+      'serial-clear-all'
+    )
+    ?.addEventListener(
+      'click',
+      serialClearAll
+    );
+}
+
+
+async function initSerialTrends() {
+  try {
+    if (
+      !globalThis
+        .SerialTrendsRuntime
+    ) {
+      throw new Error(
+        'serial runtime unavailable'
+      );
+    }
+
+    let response =
+      await responseFromOfflineCache(
+        SERIAL_REGISTRY_URL
+      );
+
+    if (!response) {
+      response =
+        await fetch(
+          SERIAL_REGISTRY_URL,
+          {
+            cache:
+              'no-cache'
+          }
+        );
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        'serial registry unavailable'
+      );
+    }
+
+    serialRegistry =
+      await response.json();
+
+    if (
+      !Array.isArray(
+        serialRegistry
+          .instruments
+      )
+      || serialRegistry
+        .instruments
+        .length !== 18
+    ) {
+      throw new Error(
+        'serial registry invalid'
+      );
+    }
+
+    serialRegistryByKey =
+      new Map(
+        serialRegistry
+          .instruments
+          .map(
+            (instrument) => [
+              instrument.key,
+              instrument
+            ]
+          )
+      );
+
+    serialStore =
+      globalThis
+        .SerialTrendsRuntime
+        .createStore(
+          serialRegistry
+        );
+
+    serialPopulateInstrumentOptions();
+    serialPopulatePlotOptions();
+
+    for (
+      const id
+      of [
+        'serial-add',
+        'serial-clear-instrument',
+        'serial-clear-all'
+      ]
+    ) {
+      const element =
+        document.getElementById(
+          id
+        );
+
+      if (element) {
+        element.disabled =
+          false;
+      }
+    }
+
+    serialSetStatus(
+      serialT(
+        'serial.ready'
+      )
+    );
+
+  } catch (_) {
+    serialSetStatus(
+      serialT(
+        'serial.registryError'
+      ),
+      'error'
+    );
+  }
+}
+
+
+globalThis.addEventListener?.(
+  'clinical-language-change',
+  () => {
+    if (!serialRegistry) return;
+
+    serialPopulateInstrumentOptions();
+    serialPopulatePlotOptions();
+    serialRender();
+  }
+);
+
+// ITEM11_SERIAL_TRENDS_UI_END
 
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
@@ -6704,6 +8237,8 @@ function wireUiEvents() {
 document.addEventListener('DOMContentLoaded', () => {
   registerServiceWorker();
   wireUiEvents();
+  wireSerialTrendEvents();
+  initSerialTrends();
   checkApiHealth();
   if (typeof window !== 'undefined') {
     window.addEventListener('online', checkApiHealth);

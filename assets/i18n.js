@@ -1311,7 +1311,205 @@
         'A WHO não endossa este aplicativo nem seus resultados.',
 
       'growth.attribution':
-        'Tabelas e proveniência: assets/reference/who-growth/NOTICE.txt.'
+        'Tabelas e proveniência: assets/reference/who-growth/NOTICE.txt.',
+
+      "nav.trends":
+        "Tendências seriadas",
+
+      "serial.title":
+        "Tendências seriadas",
+
+      "serial.description":
+        "Observações clínicas efêmeras da página atual. Recarregar ou sair da página apaga as séries.",
+
+      "serial.noIdentity":
+        "Não registre identificadores de paciente, encontro ou notas livres nesta camada.",
+
+      "serial.instrument":
+        "Instrumento",
+
+      "serial.selectInstrument":
+        "Selecione o instrumento...",
+
+      "serial.observedAt":
+        "Data/hora clínica observada",
+
+      "serial.offset":
+        "Offset UTC explícito",
+
+      "serial.offsetNote":
+        "Informe explicitamente Z ou um offset RFC3339, por exemplo -03:00.",
+
+      "serial.add":
+        "Adicionar observação",
+
+      "serial.clearInstrument":
+        "Limpar série selecionada",
+
+      "serial.clearAll":
+        "Limpar todas as séries",
+
+      "serial.loading":
+        "Carregando registro qualificado...",
+
+      "serial.ready":
+        "Camada de tendências pronta. Selecione um instrumento.",
+
+      "serial.registryError":
+        "Não foi possível inicializar a camada de tendências seriadas.",
+
+      "serial.noResult":
+        "Calcule primeiro este instrumento com sucesso nesta página.",
+
+      "serial.invalidTime":
+        "Informe data/hora clínica e offset RFC3339 explícitos válidos.",
+
+      "serial.futureError":
+        "A data/hora clínica observada não pode estar no futuro.",
+
+      "serial.added":
+        "Observação adicionada à série efêmera.",
+
+      "serial.cleared":
+        "Série selecionada apagada.",
+
+      "serial.clearAllDone":
+        "Todas as séries efêmeras foram apagadas.",
+
+      "serial.countLabel":
+        "Observações",
+
+      "serial.tableTitle":
+        "Tabela cronológica",
+
+      "serial.tablePrimary":
+        "Esta tabela é a representação acessível primária. Empates de horário não recebem ordem clínica inventada.",
+
+      "serial.colObserved":
+        "Horário clínico",
+
+      "serial.colTie":
+        "Empate temporal",
+
+      "serial.colSource":
+        "Fonte",
+
+      "serial.colSummary":
+        "Resumo",
+
+      "serial.colComponents":
+        "Componentes",
+
+      "serial.colContext":
+        "Contexto",
+
+      "serial.colCaptured":
+        "Capturado em",
+
+      "serial.colSnapshots":
+        "Snapshots",
+
+      "serial.snapshots":
+        "Ver snapshots",
+
+      "serial.request":
+        "Requisição",
+
+      "serial.result":
+        "Resultado",
+
+      "serial.sourceApi":
+        "API",
+
+      "serial.sourceOffline":
+        "Offline",
+
+      "serial.tie":
+        "Mesmo instante clínico; a ordem visual não implica ordem clínica.",
+
+      "serial.plotTitle":
+        "Pontos seriados qualificados",
+
+      "serial.plotBoundary":
+        "Apenas campos explicitamente autorizados pelo registro. Sem linhas, interpolação, regressão, previsão ou interpretação automática de direção.",
+
+      "serial.plotField":
+        "Campo de plotagem",
+
+      "serial.selectPlot":
+        "Selecione um campo qualificado...",
+
+      "serial.noPlot":
+        "Este instrumento não possui campo de plotagem longitudinal qualificado.",
+
+      "serial.noNumeric":
+        "Não há valor numérico avaliável para este campo nas observações atuais.",
+
+      "serial.pointsOnly":
+        "Pontos discretos; sem conexão ou inferência de tendência.",
+
+      "serial.empty":
+        "Nenhuma observação nesta série.",
+
+      "serial.yes":
+        "Sim",
+
+      "serial.no":
+        "Não",
+
+      "serial.instrument.acid_base_metabolic":
+        "Ácido-base e metabólico",
+
+      "serial.instrument.brazil_caderneta_falls":
+        "Caderneta da Pessoa Idosa · quedas",
+
+      "serial.instrument.brazil_methanol":
+        "Metanol · contexto Brasil",
+
+      "serial.instrument.ckd_classification":
+        "DRC · classificação",
+
+      "serial.instrument.egfr_ckd_epi_2021":
+        "TFGe CKD-EPI 2021",
+
+      "serial.instrument.four_score":
+        "FOUR Score",
+
+      "serial.instrument.gcs":
+        "Escala de Coma de Glasgow",
+
+      "serial.instrument.gcs_p":
+        "GCS-P",
+
+      "serial.instrument.hemodynamics":
+        "Hemodinâmica",
+
+      "serial.instrument.ivcf20":
+        "IVCF-20",
+
+      "serial.instrument.kdigo_aki":
+        "KDIGO · lesão renal aguda",
+
+      "serial.instrument.news2":
+        "NEWS2",
+
+      "serial.instrument.oxygenation":
+        "Oxigenação",
+
+      "serial.instrument.steadi_chair_stand_30s":
+        "STEADI · sentar-levantar 30 s",
+
+      "serial.instrument.steadi_four_stage_balance":
+        "STEADI · equilíbrio em 4 estágios",
+
+      "serial.instrument.steadi_orthostatic_bp":
+        "STEADI · pressão ortostática",
+
+      "serial.instrument.steadi_tug":
+        "STEADI · Timed Up & Go",
+
+      "serial.instrument.who_growth":
+        "Crescimento pediátrico · OMS/SISVAN"
     },
 
     'en-GB': {
@@ -2615,7 +2813,205 @@
         'WHO does not endorse this application or its outputs.',
 
       'growth.attribution':
-        'Tables and provenance: assets/reference/who-growth/NOTICE.txt.'
+        'Tables and provenance: assets/reference/who-growth/NOTICE.txt.',
+
+      "nav.trends":
+        "Serial trends",
+
+      "serial.title":
+        "Serial trends",
+
+      "serial.description":
+        "Ephemeral clinical observations for the current page only. Reloading or leaving the page clears every series.",
+
+      "serial.noIdentity":
+        "Do not enter patient identifiers, encounter identifiers or free-text clinical notes in this layer.",
+
+      "serial.instrument":
+        "Instrument",
+
+      "serial.selectInstrument":
+        "Select an instrument...",
+
+      "serial.observedAt":
+        "Observed clinical date/time",
+
+      "serial.offset":
+        "Explicit UTC offset",
+
+      "serial.offsetNote":
+        "Enter Z or an explicit RFC3339 offset, for example -03:00.",
+
+      "serial.add":
+        "Add observation",
+
+      "serial.clearInstrument":
+        "Clear selected series",
+
+      "serial.clearAll":
+        "Clear all series",
+
+      "serial.loading":
+        "Loading qualified registry...",
+
+      "serial.ready":
+        "Serial-trend layer ready. Select an instrument.",
+
+      "serial.registryError":
+        "The serial-trend layer could not be initialized.",
+
+      "serial.noResult":
+        "First calculate this instrument successfully on the current page.",
+
+      "serial.invalidTime":
+        "Enter a valid clinical date/time and an explicit RFC3339 offset.",
+
+      "serial.futureError":
+        "The observed clinical date/time cannot be in the future.",
+
+      "serial.added":
+        "Observation added to the ephemeral series.",
+
+      "serial.cleared":
+        "Selected series cleared.",
+
+      "serial.clearAllDone":
+        "All ephemeral series cleared.",
+
+      "serial.countLabel":
+        "Observations",
+
+      "serial.tableTitle":
+        "Chronological table",
+
+      "serial.tablePrimary":
+        "This table is the primary accessible representation. Equal clinical times do not gain an invented clinical order.",
+
+      "serial.colObserved":
+        "Clinical time",
+
+      "serial.colTie":
+        "Time tie",
+
+      "serial.colSource":
+        "Source",
+
+      "serial.colSummary":
+        "Summary",
+
+      "serial.colComponents":
+        "Components",
+
+      "serial.colContext":
+        "Context",
+
+      "serial.colCaptured":
+        "Captured at",
+
+      "serial.colSnapshots":
+        "Snapshots",
+
+      "serial.snapshots":
+        "View snapshots",
+
+      "serial.request":
+        "Request",
+
+      "serial.result":
+        "Result",
+
+      "serial.sourceApi":
+        "API",
+
+      "serial.sourceOffline":
+        "Offline",
+
+      "serial.tie":
+        "Same clinical instant; visual order does not imply clinical order.",
+
+      "serial.plotTitle":
+        "Qualified serial points",
+
+      "serial.plotBoundary":
+        "Only fields explicitly authorized by the registry. No connecting lines, interpolation, regression, forecasting or automatic direction interpretation.",
+
+      "serial.plotField":
+        "Plot field",
+
+      "serial.selectPlot":
+        "Select a qualified field...",
+
+      "serial.noPlot":
+        "This instrument has no qualified longitudinal plot field.",
+
+      "serial.noNumeric":
+        "There is no evaluable numeric value for this field in the current observations.",
+
+      "serial.pointsOnly":
+        "Discrete points only; no connection or trend inference.",
+
+      "serial.empty":
+        "No observations in this series.",
+
+      "serial.yes":
+        "Yes",
+
+      "serial.no":
+        "No",
+
+      "serial.instrument.acid_base_metabolic":
+        "Acid-base and metabolic",
+
+      "serial.instrument.brazil_caderneta_falls":
+        "Brazil older-person booklet · falls",
+
+      "serial.instrument.brazil_methanol":
+        "Methanol · Brazil context",
+
+      "serial.instrument.ckd_classification":
+        "CKD · classification",
+
+      "serial.instrument.egfr_ckd_epi_2021":
+        "eGFR CKD-EPI 2021",
+
+      "serial.instrument.four_score":
+        "FOUR Score",
+
+      "serial.instrument.gcs":
+        "Glasgow Coma Scale",
+
+      "serial.instrument.gcs_p":
+        "GCS-P",
+
+      "serial.instrument.hemodynamics":
+        "Haemodynamics",
+
+      "serial.instrument.ivcf20":
+        "IVCF-20",
+
+      "serial.instrument.kdigo_aki":
+        "KDIGO · acute kidney injury",
+
+      "serial.instrument.news2":
+        "NEWS2",
+
+      "serial.instrument.oxygenation":
+        "Oxygenation",
+
+      "serial.instrument.steadi_chair_stand_30s":
+        "STEADI · 30-second chair stand",
+
+      "serial.instrument.steadi_four_stage_balance":
+        "STEADI · four-stage balance",
+
+      "serial.instrument.steadi_orthostatic_bp":
+        "STEADI · orthostatic blood pressure",
+
+      "serial.instrument.steadi_tug":
+        "STEADI · Timed Up & Go",
+
+      "serial.instrument.who_growth":
+        "Paediatric growth · WHO/SISVAN"
     }
   };
 

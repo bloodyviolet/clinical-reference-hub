@@ -74,7 +74,7 @@ for (const token of [
 
 assert(
   sw.includes(
-    'clinical-reference-v23-v2-four-gcsp-ui'
+    'clinical-reference-v24-v2-serial-trends-ui'
   ),
   'service-worker cache version not bumped'
 );

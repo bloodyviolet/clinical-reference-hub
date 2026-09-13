@@ -166,7 +166,7 @@ assert(
 
 assert(
   sw.includes(
-    'clinical-reference-v23-v2-four-gcsp-ui'
+    'clinical-reference-v24-v2-serial-trends-ui'
   )
 );
 
@@ -186,5 +186,5 @@ assert(
 
 console.log(
   'four_gcsp_ui_static_qc: '
-  + 'DOM + API authority + bilingual keys + v23 cache PASS'
+  + 'DOM + API authority + bilingual keys + current cache PASS'
 );
