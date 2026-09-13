@@ -252,7 +252,7 @@ for (const token of [
 
 assert(
   sw.includes(
-    'clinical-reference-v27-v2-bloodviolet-persistent-ux'
+    'clinical-reference-v28-v2-bilingual-completeness'
   )
 );
 

@@ -1,12 +1,14 @@
-const CACHE_NAME = 'clinical-reference-v27-v2-bloodviolet-persistent-ux';
+const CACHE_NAME = 'clinical-reference-v28-v2-bilingual-completeness';
 const OFFLINE_SAE_URL = '/assets/offline/sae.json';
 const OFFLINE_POLICIES_URL = '/assets/offline/policies.json';
 const APP_SHELL = [
   '/',
-  '/manifest.json?v=27',
+  '/manifest.json?v=28',
   '/assets/app.css',
   '/assets/bloodviolet-theme.css',
   '/assets/i18n.js',
+  '/assets/policy-translations-en.js',
+  '/assets/bilingual-presentation.js',
   '/assets/clinical-tools.js',
   '/assets/growth-tools.js',
   '/assets/serial-trends-runtime.js',

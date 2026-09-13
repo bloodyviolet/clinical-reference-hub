@@ -627,52 +627,309 @@ async function loadPolicy(policyName) {
       policyName
     );
 
-  const container = document.getElementById('policy-results');
-  const loader = document.getElementById('policy-loading');
-  const pdfBtn = document.getElementById('pdf-link');
-  pdfBtn.classList.remove('hidden');
-  pdfBtn.classList.add('inline-flex');
-  pdfBtn.href = `/docs/${encodeURIComponent(policyName)}.pdf`;
+  const container =
+    document.getElementById(
+      'policy-results'
+    );
 
-  document.querySelectorAll('.policy-btn').forEach(btn => {
-    if (btn.innerText.includes(policyName)) {
-      btn.className = "policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-teal-600 text-white border border-teal-500 transition shadow-lg shadow-teal-600/20";
-    } else {
-      btn.className = "policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition";
-    }
-  });
+  const loader =
+    document.getElementById(
+      'policy-loading'
+    );
+
+  const pdfBtn =
+    document.getElementById(
+      'pdf-link'
+    );
+
+  pdfBtn.classList.remove(
+    'hidden'
+  );
+
+  pdfBtn.classList.add(
+    'inline-flex'
+  );
+
+  pdfBtn.href =
+    `/docs/${encodeURIComponent(policyName)}.pdf`;
+
+  document
+    .querySelectorAll(
+      '.policy-btn'
+    )
+    .forEach(
+      (btn) => {
+        if (
+          btn.innerText.includes(
+            policyName
+          )
+        ) {
+          btn.className =
+            "policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-teal-600 text-white border border-teal-500 transition shadow-lg shadow-teal-600/20";
+        } else {
+          btn.className =
+            "policy-btn px-3.5 py-1.5 mt-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition";
+        }
+      }
+    );
 
   container.innerHTML = '';
-  loader.classList.remove('hidden');
+
+  loader.classList.remove(
+    'hidden'
+  );
+
   try {
     let data;
     let source = 'api';
+
     try {
-      const response = await fetch(`/api/v1/policies/${encodeURIComponent(policyName)}`);
+      const response =
+        await fetch(
+          `/api/v1/policies/${encodeURIComponent(policyName)}`
+        );
+
       if (!response.ok) {
-        let message = 'Não foi possível carregar as diretrizes.';
-        try { message = (await response.json()).detail || message; } catch (_) {}
-        const error = new Error(message);
-        error.httpStatus = response.status;
+        let message =
+          clinicalText(
+            'Não foi possível carregar as diretrizes.',
+            'Unable to load policy guidance.'
+          );
+
+        if (
+          uiLanguage()
+          !== 'en-GB'
+        ) {
+          try {
+            message =
+              (
+                await response.json()
+              ).detail
+              || message;
+          } catch (_) {}
+        }
+
+        const error =
+          new Error(
+            message
+          );
+
+        error.httpStatus =
+          response.status;
+
         throw error;
       }
-      data = await response.json();
-      if (response.headers?.get?.('X-Clinical-Offline') === '1') source = 'offline';
+
+      data =
+        await response.json();
+
+      if (
+        response.headers
+          ?.get?.(
+            'X-Clinical-Offline'
+          )
+        === '1'
+      ) {
+        source =
+          'offline';
+      }
+
     } catch (error) {
-      if (error.httpStatus && error.httpStatus !== 503) throw error;
-      data = await policyOffline(policyName);
-      source = 'offline';
+      if (
+        error.httpStatus
+        && error.httpStatus
+        !== 503
+      ) {
+        throw error;
+      }
+
+      data =
+        await policyOffline(
+          policyName
+        );
+
+      source =
+        'offline';
     }
-    loader.classList.add('hidden');
-    const sourceNotice = source === 'offline'
-      ? '<div class="col-span-full bg-amber-950/30 border border-amber-700/50 p-3 rounded-xl text-amber-200 text-xs">Modo offline: diretrizes fornecidas pela base local empacotada nesta versão. Links/PDFs externos podem exigir conexão.</div>'
+
+
+    if (
+      !Array.isArray(
+        data?.items
+      )
+    ) {
+      throw new Error(
+        clinicalText(
+          'Resposta de política inválida.',
+          'Invalid policy response.'
+        )
+      );
+    }
+
+
+    const language =
+      uiLanguage();
+
+
+    const items =
+      data.items.map(
+        (rawItem) => {
+          if (
+            language
+            !== 'en-GB'
+          ) {
+            return rawItem;
+          }
+
+          const translated =
+            globalThis
+              .ClinicalPolicyTranslations
+              ?.translateItem?.(
+                rawItem,
+                'en-GB'
+              );
+
+          if (!translated) {
+            throw new Error(
+              'English policy presentation is unavailable for this row.'
+            );
+          }
+
+          return translated;
+        }
+      );
+
+
+    const labels = {
+      source:
+        clinicalText(
+          'Fonte',
+          'Source'
+        ),
+
+      version:
+        clinicalText(
+          'Versão',
+          'Version'
+        ),
+
+      locator:
+        clinicalText(
+          'Localizador',
+          'Locator'
+        ),
+
+      evidence:
+        clinicalText(
+          'Evidência',
+          'Evidence'
+        ),
+
+      review:
+        clinicalText(
+          'Revisão clínica',
+          'Clinical review'
+        )
+    };
+
+
+    const evidenceLabel =
+      (value) => {
+        const dictionary = {
+          current_override:
+            clinicalText(
+              'orientação vigente substitutiva',
+              'current implementation override'
+            ),
+
+          pinpoint_policy:
+            clinicalText(
+              'suporte pontual na política',
+              'pinpoint policy support'
+            ),
+
+          policy_context:
+            clinicalText(
+              'interpretação de contexto da política',
+              'policy-context interpretation'
+            ),
+
+          policy_level:
+            clinicalText(
+              'proveniência em nível de política',
+              'policy-level provenance'
+            )
+        };
+
+        return (
+          dictionary[
+            value
+          ]
+          || value
+          || '—'
+        );
+      };
+
+
+    const statusLabel =
+      (value) => {
+        const dictionary = {
+          current:
+            clinicalText(
+              'atual',
+              'current'
+            )
+        };
+
+        return (
+          dictionary[
+            value
+          ]
+          || value
+          || '—'
+        );
+      };
+
+
+    loader.classList.add(
+      'hidden'
+    );
+
+
+    const sourceNotice =
+      source === 'offline'
+      ? (
+          '<div class="col-span-full bg-amber-950/30 border border-amber-700/50 p-3 rounded-xl text-amber-200 text-xs">'
+          + escapeHtml(
+              clinicalText(
+                'Modo offline: diretrizes fornecidas pela base local empacotada nesta versão. Links/PDFs externos podem exigir conexão.',
+                'Offline mode: guidance is being provided from the local data packaged with this release. External links/PDFs may require a connection.'
+              )
+            )
+          + '</div>'
+        )
       : '';
-    container.innerHTML = sourceNotice + data.items.map(item => {
-      const sourceUrl = safeExternalUrl(item.source_url);
-      const sourceLink = sourceUrl
-        ? `<a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer" class="text-teal-300 hover:text-teal-200 underline underline-offset-2">${escapeHtml(item.source_title)}</a>`
-        : `<span>${escapeHtml(item.source_title)}</span>`;
-      return `
+
+
+    container.innerHTML =
+      sourceNotice
+      + items.map(
+          (item) => {
+            const sourceUrl =
+              safeExternalUrl(
+                item.source_url
+              );
+
+            const sourceLink =
+              sourceUrl
+              ? (
+                  `<a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer" class="text-teal-300 hover:text-teal-200 underline underline-offset-2">${escapeHtml(item.source_title)}</a>`
+                )
+              : (
+                  `<span>${escapeHtml(item.source_title)}</span>`
+                );
+
+            return `
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 shadow-lg hover:border-slate-700 transition flex flex-col justify-between">
         <div class="space-y-2">
           <div class="flex items-center justify-between gap-2">
@@ -683,53 +940,169 @@ async function loadPolicy(policyName) {
           <p class="text-xs text-slate-300 leading-relaxed">${escapeHtml(item.clinical_guideline)}</p>
         </div>
         <div class="pt-3 mt-1 border-t border-slate-800 text-[11px] text-slate-500 leading-relaxed">
-          <div><span class="font-semibold text-slate-400">Fonte:</span> ${sourceLink}</div>
-          ${item.source_version ? `<div><span class="font-semibold text-slate-400">Versão:</span> ${escapeHtml(item.source_version)}</div>` : ''}
-          ${item.source_page ? `<div><span class="font-semibold text-slate-400">Localizador:</span> ${escapeHtml(item.source_page)}</div>` : ''}
-          <div><span class="font-semibold text-slate-400">Evidência:</span> ${escapeHtml(item.evidence_level || 'policy_level')}</div>
-          <div><span class="font-semibold text-slate-400">Revisão clínica:</span> ${escapeHtml(item.last_clinical_review)} · <span class="uppercase">${escapeHtml(item.status)}</span></div>
+          <div><span class="font-semibold text-slate-400">${escapeHtml(labels.source)}:</span> ${sourceLink}</div>
+          ${item.source_version ? `<div><span class="font-semibold text-slate-400">${escapeHtml(labels.version)}:</span> ${escapeHtml(item.source_version)}</div>` : ''}
+          ${item.source_page ? `<div><span class="font-semibold text-slate-400">${escapeHtml(labels.locator)}:</span> ${escapeHtml(item.source_page)}</div>` : ''}
+          <div><span class="font-semibold text-slate-400">${escapeHtml(labels.evidence)}:</span> ${escapeHtml(evidenceLabel(item.evidence_level))}</div>
+          <div><span class="font-semibold text-slate-400">${escapeHtml(labels.review)}:</span> ${escapeHtml(item.last_clinical_review)} · <span class="uppercase">${escapeHtml(statusLabel(item.status))}</span></div>
         </div>
       </div>`;
-    }).join('');
+          }
+        ).join(
+          ''
+        );
+
   } catch (err) {
-    loader.classList.add('hidden');
-    container.innerHTML = `<div class="col-span-full bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-rose-300 text-sm text-center">${escapeHtml(err.message)}</div>`;
+    loader.classList.add(
+      'hidden'
+    );
+
+    const message =
+      (
+        uiLanguage()
+        === 'en-GB'
+      )
+      ? (
+          String(
+            err?.message
+            || ''
+          ).startsWith(
+            'English policy presentation'
+          )
+          ? err.message
+          : 'Unable to load policy guidance.'
+        )
+      : (
+          err?.message
+          || 'Não foi possível carregar as diretrizes.'
+        );
+
+    container.innerHTML =
+      `<div class="col-span-full bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-rose-300 text-sm text-center">${escapeHtml(message)}</div>`;
   }
 }
 
 function calculateDrip(e) {
   e.preventDefault();
-  const v = Number.parseFloat(document.getElementById('drip-v').value);
-  const t = Number.parseFloat(document.getElementById('drip-t').value);
-  const u = document.getElementById('drip-u').value;
-  if (!isPositiveFinite(v, t)) return showError('drip-result', 'Volume e tempo devem ser maiores que zero.');
 
-  const minutes = u === 'h' ? t * 60 : t;
-  const gotas = (v * DRIP_FACTORS.macro) / minutes;
-  const micro = (v * DRIP_FACTORS.micro) / minutes;
+  const v =
+    Number.parseFloat(
+      document.getElementById(
+        'drip-v'
+      ).value
+    );
 
-  if (!isPositiveFinite(gotas, micro)) {
-    return showError('drip-result', 'Não foi possível calcular um fluxo válido.');
+  const t =
+    Number.parseFloat(
+      document.getElementById(
+        'drip-t'
+      ).value
+    );
+
+  const u =
+    document.getElementById(
+      'drip-u'
+    ).value;
+
+  if (
+    !isPositiveFinite(
+      v,
+      t
+    )
+  ) {
+    return showError(
+      'drip-result',
+      clinicalText(
+        'Volume e tempo devem ser maiores que zero.',
+        'Volume and time must both be greater than zero.'
+      )
+    );
   }
 
-  const macroDisplay = formatPositiveMeasurement(gotas);
-  const microDisplay = formatPositiveMeasurement(micro);
-  const lowFlow = gotas < 1 || micro < 1;
+  const minutes =
+    u === 'h'
+    ? t * 60
+    : t;
 
-  const res = document.getElementById('drip-result');
-  res.classList.remove('hidden');
+  const gotas =
+    (v * DRIP_FACTORS.macro) / minutes;
+
+  const micro =
+    (v * DRIP_FACTORS.micro) / minutes;
+
+  if (
+    !isPositiveFinite(
+      gotas,
+      micro
+    )
+  ) {
+    return showError(
+      'drip-result',
+      clinicalText(
+        'Não foi possível calcular um fluxo válido.',
+        'A valid flow rate could not be calculated.'
+      )
+    );
+  }
+
+  const macroDisplay =
+    formatPositiveMeasurement(
+      gotas
+    );
+
+  const microDisplay =
+    formatPositiveMeasurement(
+      micro
+    );
+
+  const lowFlow =
+    gotas < 1
+    || micro < 1;
+
+  const res =
+    document.getElementById(
+      'drip-result'
+    );
+
+  res.classList.remove(
+    'hidden'
+  );
+
   res.innerHTML = `
     <div class="grid grid-cols-2 text-center divide-x divide-slate-800">
       <div>
-        <p class="text-[10px] font-semibold text-slate-400 uppercase">Gotas/min · equipo ${DRIP_FACTORS.macro} gotas/mL</p>
+        <p class="text-[10px] font-semibold text-slate-400 uppercase">${escapeHtml(
+          clinicalText(
+            `Gotas/min · equipo ${DRIP_FACTORS.macro} gotas/mL`,
+            `Drops/min · giving set ${DRIP_FACTORS.macro} drops/mL`
+          )
+        )}</p>
         <p class="text-2xl font-bold text-cyan-400">${macroDisplay}</p>
       </div>
       <div>
-        <p class="text-[10px] font-semibold text-slate-400 uppercase">Microgotas/min · equipo ${DRIP_FACTORS.micro} microgotas/mL</p>
+        <p class="text-[10px] font-semibold text-slate-400 uppercase">${escapeHtml(
+          clinicalText(
+            `Microgotas/min · equipo ${DRIP_FACTORS.micro} microgotas/mL`,
+            `Microdrops/min · giving set ${DRIP_FACTORS.micro} microdrops/mL`
+          )
+        )}</p>
         <p class="text-2xl font-bold text-cyan-400">${microDisplay}</p>
       </div>
     </div>
-    ${lowFlow ? '<p class="text-[11px] text-amber-300 mt-3">Fluxo matemático positivo inferior a 1 gota/min em pelo menos um fator. Não arredonde para zero; confirme o equipo e avalie dispositivo de infusão apropriado.</p>' : ''}
+    ${
+      lowFlow
+      ? (
+          '<p class="text-[11px] text-amber-300 mt-3">'
+          + escapeHtml(
+              clinicalText(
+                'Fluxo matemático positivo inferior a 1 gota/min em pelo menos um fator. Não arredonde para zero; confirme o equipo e avalie dispositivo de infusão apropriado.',
+                'The calculated positive flow is below 1 drop/min for at least one factor. Do not round it to zero; confirm the giving set and assess whether an appropriate infusion device is required.'
+              )
+            )
+          + '</p>'
+        )
+      : ''
+    }
   `;
 }
 
@@ -743,174 +1116,752 @@ const DOSE_UNITS = {
 
 function calculateMeds(e) {
   e.preventDefault();
-  const presc = Number.parseFloat(document.getElementById('med-presc').value);
-  const disp = Number.parseFloat(document.getElementById('med-disp').value);
-  const vol = Number.parseFloat(document.getElementById('med-vol').value);
-  const prescUnit = document.getElementById('med-presc-unit').value;
-  const dispUnit = document.getElementById('med-disp-unit').value;
-  if (!isPositiveFinite(presc, disp, vol)) return showError('med-result', 'Dose prescrita, dose disponível e volume devem ser maiores que zero.');
 
-  const prescribedDef = DOSE_UNITS[prescUnit];
-  const availableDef = DOSE_UNITS[dispUnit];
-  if (!prescribedDef || !availableDef || prescribedDef.group !== availableDef.group) {
-    return showError('med-result', 'As unidades da dose prescrita e da dose disponível precisam ser compatíveis.');
+  const presc =
+    Number.parseFloat(
+      document.getElementById(
+        'med-presc'
+      ).value
+    );
+
+  const disp =
+    Number.parseFloat(
+      document.getElementById(
+        'med-disp'
+      ).value
+    );
+
+  const vol =
+    Number.parseFloat(
+      document.getElementById(
+        'med-vol'
+      ).value
+    );
+
+  const prescUnit =
+    document.getElementById(
+      'med-presc-unit'
+    ).value;
+
+  const dispUnit =
+    document.getElementById(
+      'med-disp-unit'
+    ).value;
+
+  if (
+    !isPositiveFinite(
+      presc,
+      disp,
+      vol
+    )
+  ) {
+    return showError(
+      'med-result',
+      clinicalText(
+        'Dose prescrita, dose disponível e volume devem ser maiores que zero.',
+        'Prescribed dose, available dose and volume must all be greater than zero.'
+      )
+    );
   }
 
-  const prescribedBase = presc * prescribedDef.factor;
-  const availableBase = disp * availableDef.factor;
-  const result = (prescribedBase * vol) / availableBase;
-  if (!isPositiveFinite(result)) return showError('med-result', 'Não foi possível calcular um volume válido.');
+  const prescribedDef =
+    DOSE_UNITS[
+      prescUnit
+    ];
 
-  const resultDisplay = formatPositiveMeasurement(result);
-  const belowDisplayThreshold = result < 0.001;
+  const availableDef =
+    DOSE_UNITS[
+      dispUnit
+    ];
 
-  const res = document.getElementById('med-result');
-  res.classList.remove('hidden');
+  if (
+    !prescribedDef
+    || !availableDef
+    || prescribedDef.group
+      !== availableDef.group
+  ) {
+    return showError(
+      'med-result',
+      clinicalText(
+        'As unidades da dose prescrita e da dose disponível precisam ser compatíveis.',
+        'The prescribed-dose and available-dose units must be compatible.'
+      )
+    );
+  }
+
+  const prescribedBase =
+    presc
+    * prescribedDef.factor;
+
+  const availableBase =
+    disp
+    * availableDef.factor;
+
+  const result =
+    (prescribedBase * vol) / availableBase;
+
+  if (
+    !isPositiveFinite(
+      result
+    )
+  ) {
+    return showError(
+      'med-result',
+      clinicalText(
+        'Não foi possível calcular um volume válido.',
+        'A valid volume could not be calculated.'
+      )
+    );
+  }
+
+  const resultDisplay =
+    formatPositiveMeasurement(
+      result
+    );
+
+  const belowDisplayThreshold =
+    result < 0.001;
+
+  const res =
+    document.getElementById(
+      'med-result'
+    );
+
+  res.classList.remove(
+    'hidden'
+  );
+
   res.innerHTML = `
-    <p class="text-[10px] font-semibold text-slate-400 uppercase">Volume calculado</p>
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">${escapeHtml(
+      clinicalText(
+        'Volume calculado',
+        'Calculated volume'
+      )
+    )}</p>
+
     <p class="text-2xl font-bold text-rose-400">${resultDisplay} mL</p>
-    ${belowDisplayThreshold ? '<p class="text-[11px] text-amber-300 mt-2">O resultado matemático é positivo e inferior a 0,001 mL. Não interprete nem arredonde como zero; confirme concentração, apresentação e dispositivo de medida antes da administração.</p>' : ''}
-    <p class="text-[11px] text-slate-400 mt-2">Confirme concentração, apresentação, via e limites de dose antes da administração.</p>
+
+    ${
+      belowDisplayThreshold
+      ? (
+          '<p class="text-[11px] text-amber-300 mt-2">'
+          + escapeHtml(
+              clinicalText(
+                'O resultado matemático é positivo e inferior a 0,001 mL. Não interprete nem arredonde como zero; confirme concentração, apresentação e dispositivo de medida antes da administração.',
+                'The mathematical result is positive and below 0.001 mL. Do not interpret or round it to zero; confirm the concentration, presentation and measuring device before administration.'
+              )
+            )
+          + '</p>'
+        )
+      : ''
+    }
+
+    <p class="text-[11px] text-slate-400 mt-2">${escapeHtml(
+      clinicalText(
+        'Confirme concentração, apresentação, via e limites de dose antes da administração.',
+        'Confirm concentration, presentation, route and dose limits before administration.'
+      )
+    )}</p>
   `;
 }
 
 function calculateBMI(e) {
   e.preventDefault();
-  const w = Number.parseFloat(document.getElementById('bmi-w').value);
-  const h = Number.parseFloat(document.getElementById('bmi-h').value);
-  const age = Number.parseInt(document.getElementById('bmi-age').value, 10);
-  if (!isPositiveFinite(w, h) || !Number.isInteger(age) || age < 0 || age > 120) {
-    return showError('bmi-result', 'Informe peso, altura e idade válidos.');
+
+  const w =
+    Number.parseFloat(
+      document.getElementById(
+        'bmi-w'
+      ).value
+    );
+
+  const h =
+    Number.parseFloat(
+      document.getElementById(
+        'bmi-h'
+      ).value
+    );
+
+  const age =
+    Number.parseInt(
+      document.getElementById(
+        'bmi-age'
+      ).value,
+      10
+    );
+
+  if (
+    !isPositiveFinite(
+      w,
+      h
+    )
+    || !Number.isInteger(
+      age
+    )
+    || age < 0
+    || age > 120
+  ) {
+    return showError(
+      'bmi-result',
+      clinicalText(
+        'Informe peso, altura e idade válidos.',
+        'Enter valid weight, height and age values.'
+      )
+    );
   }
 
-  const bmi = w / (h * h);
-  if (!Number.isFinite(bmi)) return showError('bmi-result', 'Não foi possível calcular um IMC válido.');
+  const bmi =
+    w / (h * h);
 
-  const res = document.getElementById('bmi-result');
-  res.classList.remove('hidden');
-  if (age < 20) {
+  if (
+    !Number.isFinite(
+      bmi
+    )
+  ) {
+    return showError(
+      'bmi-result',
+      clinicalText(
+        'Não foi possível calcular um IMC válido.',
+        'A valid BMI could not be calculated.'
+      )
+    );
+  }
+
+  const res =
+    document.getElementById(
+      'bmi-result'
+    );
+
+  res.classList.remove(
+    'hidden'
+  );
+
+  if (
+    age < 20
+  ) {
     res.innerHTML = `
-      <p class="text-[10px] font-semibold text-amber-300 uppercase">Classificação pediátrica não calculada</p>
+      <p class="text-[10px] font-semibold text-amber-300 uppercase">${escapeHtml(
+        clinicalText(
+          'Classificação pediátrica não calculada',
+          'Paediatric classification not calculated'
+        )
+      )}</p>
+
       <p class="text-2xl font-bold text-emerald-400 mt-1">${bmi.toFixed(1)} kg/m²</p>
-      <p class="text-sm text-slate-300 mt-1">Em crianças e adolescentes, a interpretação exige idade e sexo com curvas/percentis apropriados; os cortes de adultos não são aplicáveis.</p>
+
+      <p class="text-sm text-slate-300 mt-1">${escapeHtml(
+        clinicalText(
+          'Em crianças e adolescentes, a interpretação exige idade e sexo com curvas/percentis apropriados; os cortes de adultos não são aplicáveis.',
+          'For children and adolescents, interpretation requires age and sex with appropriate growth charts/percentiles; adult cut-offs do not apply.'
+        )
+      )}</p>
     `;
+
     return;
   }
 
   let classification = '';
-  if (age >= 60) {
-    if (bmi <= 22) classification = 'Baixo peso (risco nutricional)';
-    else if (bmi < 27) classification = 'Adequado (eutrófico)';
-    else classification = 'Sobrepeso';
+
+  if (
+    age >= 60
+  ) {
+    if (
+      bmi <= 22
+    ) {
+      classification =
+        clinicalText(
+          'Baixo peso (risco nutricional)',
+          'Low weight (nutritional risk)'
+        );
+
+    } else if (
+      bmi < 27
+    ) {
+      classification =
+        clinicalText(
+          'Adequado (eutrófico)',
+          'Adequate (eutrophic)'
+        );
+
+    } else {
+      classification =
+        clinicalText(
+          'Sobrepeso',
+          'Overweight'
+        );
+    }
+
   } else {
-    if (bmi < 18.5) classification = 'Abaixo do peso';
-    else if (bmi < 25) classification = 'Peso normal';
-    else if (bmi < 30) classification = 'Sobrepeso';
-    else classification = 'Obesidade';
+    if (
+      bmi < 18.5
+    ) {
+      classification =
+        clinicalText(
+          'Abaixo do peso',
+          'Underweight'
+        );
+
+    } else if (
+      bmi < 25
+    ) {
+      classification =
+        clinicalText(
+          'Peso normal',
+          'Normal weight'
+        );
+
+    } else if (
+      bmi < 30
+    ) {
+      classification =
+        clinicalText(
+          'Sobrepeso',
+          'Overweight'
+        );
+
+    } else {
+      classification =
+        clinicalText(
+          'Obesidade',
+          'Obesity'
+        );
+    }
   }
 
   res.innerHTML = `
-    <p class="text-[10px] font-semibold text-slate-400 uppercase">Tabela aplicada: ${age >= 60 ? 'idoso' : 'adulto'}</p>
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">${escapeHtml(
+      clinicalText(
+        `Tabela aplicada: ${age >= 60 ? 'idoso' : 'adulto'}`,
+        `Reference applied: ${age >= 60 ? 'older adult' : 'adult'}`
+      )
+    )}</p>
+
     <p class="text-2xl font-bold text-emerald-400 mt-1">${bmi.toFixed(1)} kg/m²</p>
+
     <p class="text-sm font-medium text-white">${escapeHtml(classification)}</p>
   `;
 }
 
 function calculatePed(e) {
   e.preventDefault();
-  const w = Number.parseFloat(document.getElementById('ped-w').value);
-  if (!isPositiveFinite(w) || w > 200) return showError('ped-result', 'Informe um peso pediátrico válido.');
+
+  const w =
+    Number.parseFloat(
+      document.getElementById(
+        'ped-w'
+      ).value
+    );
+
+  if (
+    !isPositiveFinite(
+      w
+    )
+    || w > 200
+  ) {
+    return showError(
+      'ped-result',
+      clinicalText(
+        'Informe um peso pediátrico válido.',
+        'Enter a valid paediatric weight.'
+      )
+    );
+  }
 
   let vol = 0;
-  if (w <= 10) vol = w * 100;
-  else if (w <= 20) vol = 1000 + ((w - 10) * 50);
-  else vol = 1500 + ((w - 20) * 20);
 
-  const mlPerHour = vol / 24;
-  const res = document.getElementById('ped-result');
-  res.classList.remove('hidden');
+  if (
+    w <= 10
+  ) {
+    vol =
+      w * 100;
+
+  } else if (
+    w <= 20
+  ) {
+    vol =
+      1000
+      + ((w - 10) * 50);
+
+  } else {
+    vol =
+      1500
+      + ((w - 20) * 20);
+  }
+
+  const mlPerHour =
+    vol / 24;
+
+  const res =
+    document.getElementById(
+      'ped-result'
+    );
+
+  res.classList.remove(
+    'hidden'
+  );
+
   res.innerHTML = `
-    <p class="text-[10px] font-semibold text-slate-400 uppercase">Volume basal de manutenção</p>
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">${escapeHtml(
+      clinicalText(
+        'Volume basal de manutenção',
+        'Baseline maintenance volume'
+      )
+    )}</p>
+
     <p class="text-xl font-bold text-sky-400">${vol.toFixed(0)} mL / 24h</p>
+
     <hr class="border-slate-800 my-2">
-    <p class="text-[10px] font-semibold text-slate-400 uppercase">Velocidade média</p>
+
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">${escapeHtml(
+      clinicalText(
+        'Velocidade média',
+        'Average rate'
+      )
+    )}</p>
+
     <p class="text-lg font-bold text-white">${mlPerHour.toFixed(1)} mL/h</p>
-    <p class="text-[11px] text-slate-400 mt-2">Estimativa de manutenção; necessidades reais variam com idade, estado clínico, perdas, eletrólitos e comorbidades.</p>
+
+    <p class="text-[11px] text-slate-400 mt-2">${escapeHtml(
+      clinicalText(
+        'Estimativa de manutenção; necessidades reais variam com idade, estado clínico, perdas, eletrólitos e comorbidades.',
+        'Maintenance estimate; actual requirements vary with age, clinical condition, losses, electrolytes and comorbidities.'
+      )
+    )}</p>
   `;
 }
 
 function calculateCrCl(e) {
   e.preventDefault();
-  const age = Number.parseInt(document.getElementById('crcl-age').value, 10);
-  const w = Number.parseFloat(document.getElementById('crcl-w').value);
-  const cr = Number.parseFloat(document.getElementById('crcl-cr').value);
-  const sex = document.getElementById('crcl-sex').value;
-  if (!Number.isInteger(age) || age < 18 || age > 120 || !isPositiveFinite(w, cr)) {
-    return showError('crcl-result', 'Cockcroft-Gault requer idade adulta, peso e creatinina sérica válidos.');
+
+  const age =
+    Number.parseInt(
+      document.getElementById(
+        'crcl-age'
+      ).value,
+      10
+    );
+
+  const w =
+    Number.parseFloat(
+      document.getElementById(
+        'crcl-w'
+      ).value
+    );
+
+  const cr =
+    Number.parseFloat(
+      document.getElementById(
+        'crcl-cr'
+      ).value
+    );
+
+  const sex =
+    document.getElementById(
+      'crcl-sex'
+    ).value;
+
+  if (
+    !Number.isInteger(
+      age
+    )
+    || age < 18
+    || age > 120
+    || !isPositiveFinite(
+      w,
+      cr
+    )
+  ) {
+    return showError(
+      'crcl-result',
+      clinicalText(
+        'Cockcroft-Gault requer idade adulta, peso e creatinina sérica válidos.',
+        'Cockcroft–Gault requires valid adult age, weight and serum creatinine values.'
+      )
+    );
   }
 
-  let crcl = ((140 - age) * w) / (72 * cr);
-  if (sex === 'F') crcl *= 0.85;
-  if (!isPositiveFinite(crcl)) return showError('crcl-result', 'Não foi possível calcular um clearance válido.');
+  let crcl =
+    ((140 - age) * w) / (72 * cr);
 
-  const res = document.getElementById('crcl-result');
-  res.classList.remove('hidden');
+  if (
+    sex === 'F'
+  ) {
+    crcl *= 0.85;
+  }
+
+  if (
+    !isPositiveFinite(
+      crcl
+    )
+  ) {
+    return showError(
+      'crcl-result',
+      clinicalText(
+        'Não foi possível calcular um clearance válido.',
+        'A valid creatinine clearance could not be calculated.'
+      )
+    );
+  }
+
+  const res =
+    document.getElementById(
+      'crcl-result'
+    );
+
+  res.classList.remove(
+    'hidden'
+  );
+
   res.innerHTML = `
-    <p class="text-[10px] font-semibold text-slate-400 uppercase">Clearance de creatinina estimado (Cockcroft-Gault)</p>
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">${escapeHtml(
+      clinicalText(
+        'Clearance de creatinina estimado (Cockcroft-Gault)',
+        'Estimated creatinine clearance (Cockcroft–Gault)'
+      )
+    )}</p>
+
     <p class="text-2xl font-bold text-amber-400 mt-1">${crcl.toFixed(1)} mL/min</p>
-    <p class="text-[11px] text-slate-400 mt-2">Não é equivalente à TFG/eGFR. A escolha do peso e a aplicabilidade da fórmula dependem do contexto clínico.</p>
+
+    <p class="text-[11px] text-slate-400 mt-2">${escapeHtml(
+      clinicalText(
+        'Não é equivalente à TFG/eGFR. A escolha do peso e a aplicabilidade da fórmula dependem do contexto clínico.',
+        'This is not equivalent to GFR/eGFR. Weight selection and applicability of the equation depend on the clinical context.'
+      )
+    )}</p>
   `;
 }
 
 function calculateNaegele(e) {
   e.preventDefault();
-  const dumStr = document.getElementById('dum-input').value;
-  if (!dumStr) return showError('naegele-result', 'Informe a data da última menstruação.');
 
-  const [year, month, day] = dumStr.split('-').map(Number);
-  const dumDate = new Date(year, month - 1, day, 12, 0, 0, 0);
-  if (Number.isNaN(dumDate.getTime())) return showError('naegele-result', 'DUM inválida.');
+  const dumStr =
+    document.getElementById(
+      'dum-input'
+    ).value;
 
-  const today = new Date();
-  today.setHours(12, 0, 0, 0);
-  const diffDays = Math.floor((today - dumDate) / 86400000);
-  if (diffDays < 0) return showError('naegele-result', 'A DUM não pode estar no futuro.');
-  if (diffDays > 315) return showError('naegele-result', 'A DUM informada resulta em idade gestacional acima de 45 semanas; confirme a data e a datação obstétrica.');
+  if (!dumStr) {
+    return showError(
+      'naegele-result',
+      clinicalText(
+        'Informe a data da última menstruação.',
+        'Enter the date of the last menstrual period.'
+      )
+    );
+  }
 
-  const dppDate = new Date(dumDate);
-  dppDate.setDate(dppDate.getDate() + 280);
-  const weeks = Math.floor(diffDays / 7);
-  const days = diffDays % 7;
+  const [
+    year,
+    month,
+    day
+  ] =
+    dumStr
+      .split(
+        '-'
+      )
+      .map(
+        Number
+      );
 
-  const res = document.getElementById('naegele-result');
-  res.classList.remove('hidden');
+  const dumDate =
+    new Date(
+      year,
+      month - 1,
+      day,
+      12,
+      0,
+      0,
+      0
+    );
+
+  if (
+    Number.isNaN(
+      dumDate.getTime()
+    )
+  ) {
+    return showError(
+      'naegele-result',
+      clinicalText(
+        'DUM inválida.',
+        'Invalid LMP date.'
+      )
+    );
+  }
+
+  const today =
+    new Date();
+
+  today.setHours(
+    12,
+    0,
+    0,
+    0
+  );
+
+  const diffDays =
+    Math.floor(
+      (today - dumDate)
+      / 86400000
+    );
+
+  if (
+    diffDays < 0
+  ) {
+    return showError(
+      'naegele-result',
+      clinicalText(
+        'A DUM não pode estar no futuro.',
+        'The LMP date cannot be in the future.'
+      )
+    );
+  }
+
+  if (
+    diffDays > 315
+  ) {
+    return showError(
+      'naegele-result',
+      clinicalText(
+        'A DUM informada resulta em idade gestacional acima de 45 semanas; confirme a data e a datação obstétrica.',
+        'The entered LMP produces a gestational age above 45 weeks; confirm the date and obstetric dating.'
+      )
+    );
+  }
+
+  const dppDate =
+    new Date(
+      dumDate
+    );
+
+  dppDate.setDate(
+    dppDate.getDate()
+    + 280
+  );
+
+  const weeks =
+    Math.floor(
+      diffDays / 7
+    );
+
+  const days =
+    diffDays % 7;
+
+  const res =
+    document.getElementById(
+      'naegele-result'
+    );
+
+  res.classList.remove(
+    'hidden'
+  );
+
+  const gestationalAge =
+    clinicalText(
+      `${weeks} sem e ${days} dias`,
+      `${weeks} weeks and ${days} days`
+    );
+
   res.innerHTML = `
-    <p class="text-[10px] font-semibold text-slate-400 uppercase">Data provável do parto</p>
-    <p class="text-xl font-bold text-pink-400">${dppDate.toLocaleDateString('pt-BR')}</p>
-    <p class="text-sm text-white mt-1">IG pela DUM hoje: <span class="font-bold">${weeks} sem e ${days} dias</span></p>
-    <p class="text-[11px] text-slate-400 mt-2">Estimativa baseada em DUM; confirme com critérios obstétricos apropriados, especialmente quando a DUM for incerta ou o ciclo for irregular.</p>
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">${escapeHtml(
+      clinicalText(
+        'Data provável do parto',
+        'Estimated date of delivery'
+      )
+    )}</p>
+
+    <p class="text-xl font-bold text-pink-400">${escapeHtml(
+      dppDate.toLocaleDateString(
+        uiLanguage()
+      )
+    )}</p>
+
+    <p class="text-sm text-white mt-1">${escapeHtml(
+      clinicalText(
+        'IG pela DUM hoje:',
+        'GA by LMP today:'
+      )
+    )} <span class="font-bold">${escapeHtml(gestationalAge)}</span></p>
+
+    <p class="text-[11px] text-slate-400 mt-2">${escapeHtml(
+      clinicalText(
+        'Estimativa baseada em DUM; confirme com critérios obstétricos apropriados, especialmente quando a DUM for incerta ou o ciclo for irregular.',
+        'Estimate based on LMP; confirm using appropriate obstetric dating criteria, especially when the LMP is uncertain or the menstrual cycle is irregular.'
+      )
+    )}</p>
   `;
 }
 
 function calculateMcDonald(e) {
   e.preventDefault();
-  const au = Number.parseFloat(document.getElementById('au-input').value);
-  if (!Number.isFinite(au) || au < 10 || au > 45) {
-    return showError('mcdonald-result', 'Informe uma altura uterina entre 10 e 45 cm.');
+
+  const au =
+    Number.parseFloat(
+      document.getElementById(
+        'au-input'
+      ).value
+    );
+
+  if (
+    !Number.isFinite(
+      au
+    )
+    || au < 10
+    || au > 45
+  ) {
+    return showError(
+      'mcdonald-result',
+      clinicalText(
+        'Informe uma altura uterina entre 10 e 45 cm.',
+        'Enter a fundal height between 10 and 45 cm.'
+      )
+    );
   }
 
-  const totalDays = Math.round(((au * 8) / 7) * 7);
-  const weeks = Math.floor(totalDays / 7);
-  const days = totalDays % 7;
-  const res = document.getElementById('mcdonald-result');
-  res.classList.remove('hidden');
+  const totalDays =
+    Math.round(
+      ((au * 8) / 7) * 7
+    );
+
+  const weeks =
+    Math.floor(
+      totalDays / 7
+    );
+
+  const days =
+    totalDays % 7;
+
+  const res =
+    document.getElementById(
+      'mcdonald-result'
+    );
+
+  res.classList.remove(
+    'hidden'
+  );
+
+  const gestationalAge =
+    clinicalText(
+      `${weeks} sem e ${days} dias`,
+      `${weeks} weeks and ${days} days`
+    );
+
   res.innerHTML = `
-    <p class="text-[10px] font-semibold text-slate-400 uppercase">Estimativa histórica pela regra de McDonald</p>
-    <p class="text-xl font-bold text-indigo-400">${weeks} sem e ${days} dias</p>
-    <p class="text-[11px] text-slate-400 mt-2">A altura uterina é principalmente uma medida de acompanhamento do crescimento uterino/fetal e não deve substituir a datação obstétrica adequada.</p>
+    <p class="text-[10px] font-semibold text-slate-400 uppercase">${escapeHtml(
+      clinicalText(
+        'Estimativa histórica pela regra de McDonald',
+        'Historical estimate using the McDonald rule'
+      )
+    )}</p>
+
+    <p class="text-xl font-bold text-indigo-400">${escapeHtml(gestationalAge)}</p>
+
+    <p class="text-[11px] text-slate-400 mt-2">${escapeHtml(
+      clinicalText(
+        'A altura uterina é principalmente uma medida de acompanhamento do crescimento uterino/fetal e não deve substituir a datação obstétrica adequada.',
+        'Fundal height is primarily a measure for monitoring uterine/fetal growth and should not replace appropriate obstetric dating.'
+      )
+    )}</p>
   `;
 }
-
 
 let lastNews2Request = null;
 let lastNews2Result = null;
@@ -7093,23 +8044,81 @@ async function calculateFourTool(
 
 
 function scoreApgar() {
-  const time = document.getElementById('apgar-time').value;
-  const ids = ['apgar-a', 'apgar-p', 'apgar-g', 'apgar-t', 'apgar-r'];
-  const values = ids.map((id) => document.getElementById(id).value);
-  const total = document.getElementById('apgar-total');
-  const note = document.getElementById('apgar-note');
+  const time =
+    document.getElementById(
+      'apgar-time'
+    ).value;
 
-  if (!time || values.some((value) => value === '')) {
-    total.textContent = '—';
-    note.textContent = 'Informe o momento e todos os cinco componentes.';
+  const ids = [
+    'apgar-a',
+    'apgar-p',
+    'apgar-g',
+    'apgar-t',
+    'apgar-r'
+  ];
+
+  const values =
+    ids.map(
+      (id) =>
+        document.getElementById(
+          id
+        ).value
+    );
+
+  const total =
+    document.getElementById(
+      'apgar-total'
+    );
+
+  const note =
+    document.getElementById(
+      'apgar-note'
+    );
+
+  if (
+    !time
+    || values.some(
+      (value) =>
+        value === ''
+    )
+  ) {
+    total.textContent =
+      '—';
+
+    note.textContent =
+      clinicalText(
+        'Informe o momento e todos os cinco componentes.',
+        'Enter the assessment time and all five components.'
+      );
+
     return;
   }
 
-  const score = values.reduce((sum, value) => sum + Number.parseInt(value, 10), 0);
-  total.textContent = String(score);
-  note.textContent = `Avaliação aos ${time} min. O Apgar descreve a condição do recém-nascido e não deve ser usado isoladamente para decidir o início da reanimação.`;
-}
+  const score =
+    values.reduce(
+      (
+        sum,
+        value
+      ) =>
+        sum
+        + Number.parseInt(
+            value,
+            10
+          ),
+      0
+    );
 
+  total.textContent =
+    String(
+      score
+    );
+
+  note.textContent =
+    clinicalText(
+      `Avaliação aos ${time} min. O Apgar descreve a condição do recém-nascido e não deve ser usado isoladamente para decidir o início da reanimação.`,
+      `Assessment at ${time} min. The Apgar score describes the newborn's condition and should not be used alone to decide whether to initiate resuscitation.`
+    );
+}
 
 // ITEM11_SERIAL_TRENDS_UI_START
 
@@ -9677,5 +10686,85 @@ globalThis.addEventListener?.(
         lastGrowthSource
       );
     }
+
+
+    const activePolicy =
+      globalThis
+        .ClinicalUiSession
+        ?.getNavigation?.(
+          'policy'
+        );
+
+    if (activePolicy) {
+      void loadPolicy(
+        activePolicy
+      );
+    }
+
+
+    const syntheticSubmit = {
+      preventDefault() {}
+    };
+
+
+    const legacyRerenders = [
+      [
+        'drip-result',
+        calculateDrip
+      ],
+      [
+        'med-result',
+        calculateMeds
+      ],
+      [
+        'bmi-result',
+        calculateBMI
+      ],
+      [
+        'ped-result',
+        calculatePed
+      ],
+      [
+        'crcl-result',
+        calculateCrCl
+      ],
+      [
+        'naegele-result',
+        calculateNaegele
+      ],
+      [
+        'mcdonald-result',
+        calculateMcDonald
+      ]
+    ];
+
+
+    for (
+      const [
+        resultId,
+        handler
+      ]
+      of legacyRerenders
+    ) {
+      const result =
+        document.getElementById(
+          resultId
+        );
+
+      if (
+        result
+        && !result.classList
+          .contains(
+            'hidden'
+          )
+      ) {
+        handler(
+          syntheticSubmit
+        );
+      }
+    }
+
+
+    scoreApgar();
   }
 );

@@ -29,6 +29,8 @@ def main() -> int:
             ROOT / "assets" / "app.css", ROOT / "assets" / "app.js",
             ROOT / "assets" / "bloodviolet-theme.css",
             ROOT / "assets" / "ui-session.js",
+            ROOT / "assets" / "policy-translations-en.js",
+            ROOT / "assets" / "bilingual-presentation.js",
             ROOT / "assets" / "offline" / "sae.json",
             ROOT / "assets" / "offline" / "policies.json",
             ROOT / "data" / "clinical_content_manifest.json",

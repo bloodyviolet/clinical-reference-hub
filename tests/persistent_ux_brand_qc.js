@@ -388,7 +388,7 @@ assert.strictEqual(
 
 assert(
   sw.includes(
-    'clinical-reference-v27-v2-bloodviolet-persistent-ux'
+    'clinical-reference-v28-v2-bilingual-completeness'
   )
 );
 
@@ -406,7 +406,7 @@ assert(
 
 assert(
   sw.includes(
-    "'/manifest.json?v=27'"
+    "'/manifest.json?v=28'"
   )
 );
 

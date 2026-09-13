@@ -76,7 +76,7 @@ EXPECTED_RUNTIME_SHA = (
 )
 
 CACHE_NAME = (
-    "clinical-reference-v27-v2-bloodviolet-persistent-ux"
+    "clinical-reference-v28-v2-bilingual-completeness"
 )
 
 
