@@ -1366,7 +1366,7 @@
     },
     "10": {
       "feature": "FOUR Score + GCS-P",
-      "implementation_state": "blocked_pending_brazil_review"
+      "implementation_state": "source_review_complete_implementation_pending"
     },
     "11": {
       "feature": "Serial trends",

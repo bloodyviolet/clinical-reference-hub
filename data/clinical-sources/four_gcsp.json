@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "item": 10,
+  "feature": "FOUR Score + GCS-P",
+  "clinical_review_date": "2026-09-12",
+  "implementation_status": "source_review_complete_implementation_pending",
+  "brazil_applicability": {
+    "four": "validated_brazilian_portuguese_adaptation_canonical_numeric_model",
+    "gcs_p": "canonical_international_numeric_model_with_brazilian_ministry_context",
+    "national_replacement_numeric_model_identified": false,
+    "note": "The reviewed Brazilian sources do not replace the canonical numerical models. FOUR has a validated Brazilian Portuguese version; GCS-P retains its canonical arithmetic with Brazilian Ministry context."
+  },
+  "sources": {
+    "gcs_structured_approach": {
+      "role": "canonical_international",
+      "authority": "Glasgow Coma Scale structured approach",
+      "url": "https://www.glasgowcomascale.org/faq/",
+      "verified_claims": [
+        "An untestable component is recorded as NT.",
+        "An untestable component is not converted to a numeric score.",
+        "A numeric total is not reported when any component is NT.",
+        "Available individual components remain clinically meaningful."
+      ]
+    },
+    "gcsp_original": {
+      "role": "canonical_peer_reviewed",
+      "authors": "Brennan PM, Murray GD, Teasdale GM",
+      "title": "Simplifying the use of prognostic information in traumatic brain injury. Part 1: the GCS-Pupils score",
+      "journal": "Journal of Neurosurgery",
+      "year": 2018,
+      "doi": "10.3171/2017.12.JNS172780",
+      "pmid": "29631516",
+      "verified_claims": [
+        "GCS-P is the Glasgow Coma Scale total minus the Pupil Reactivity Score.",
+        "The Pupil Reactivity Score ranges from zero to two."
+      ]
+    },
+    "gcsp_structured_approach": {
+      "role": "canonical_international",
+      "authority": "Glasgow Coma Scale structured approach",
+      "url": "https://www.glasgowcomascale.org/what-is-gcs-p/",
+      "verified_claims": [
+        "No unreactive pupil corresponds to PRS zero.",
+        "One unreactive pupil corresponds to PRS one.",
+        "Two unreactive pupils correspond to PRS two.",
+        "Calculable GCS-P values span one through fifteen."
+      ]
+    },
+    "brazil_ministry_gcs_p_context": {
+      "role": "brazilian_contextual_official",
+      "authority": "Ministério da Saúde do Brasil",
+      "title": "Linha de Cuidado do AVC no Adulto",
+      "url": "https://bvsms.saude.gov.br/bvs/publicacoes/linha_cuidado_acidente_vascular_cerebral_adulto.pdf",
+      "verified_claims": [
+        "Brazilian Ministry material preserves an explicit non-testable state when a Glasgow response cannot legitimately be obtained.",
+        "The Ministry material describes pupillary-response subtraction from the Glasgow total."
+      ],
+      "boundary": "Contextual Brazilian provenance; not treated as a replacement scoring system."
+    },
+    "four_original": {
+      "role": "canonical_peer_reviewed",
+      "authors": "Wijdicks EFM et al.",
+      "title": "Validation of a new coma scale: The FOUR score",
+      "journal": "Annals of Neurology",
+      "year": 2005,
+      "doi": "10.1002/ana.20611",
+      "pmid": "16178024",
+      "verified_claims": [
+        "FOUR has four components: eye, motor, brainstem reflexes, and respiration.",
+        "Each component ranges from zero through four.",
+        "The total therefore ranges from zero through sixteen."
+      ]
+    },
+    "four_brazil_validation": {
+      "role": "brazilian_peer_reviewed_validation",
+      "authors": "Bernardinelli FCP et al.",
+      "title": "Tradução, adaptação e validação da escala Full Outline of UnResponsiveness para o português do Brasil",
+      "journal": "Texto & Contexto - Enfermagem",
+      "year": 2022,
+      "doi": "10.1590/1980-265X-TCE-2021-0427pt",
+      "url": "https://www.scielo.br/j/tce/a/W3CzbFFZwKs6KSK39zPXF7P/?lang=pt",
+      "sample_adults": 188,
+      "verified_claims": [
+        "A Brazilian Portuguese FOUR version was translated, culturally adapted, and validated.",
+        "The Brazilian version retained the four domains and twenty items of the original scale.",
+        "The validation population was adult."
+      ],
+      "boundary": "The validation supports Brazilian Portuguese applicability but does not create a different numeric model."
+    }
+  },
+  "gcs_contract": {
+    "components": {
+      "eye": {
+        "min": 1,
+        "max": 4,
+        "nt_allowed": true
+      },
+      "verbal": {
+        "min": 1,
+        "max": 5,
+        "nt_allowed": true
+      },
+      "motor": {
+        "min": 1,
+        "max": 6,
+        "nt_allowed": true
+      }
+    },
+    "numeric_total_min": 3,
+    "numeric_total_max": 15,
+    "numeric_total_rule": "E + V + M only when all components are numeric",
+    "nt_rule": "Any NT component prevents a numeric total; retain individual component findings.",
+    "direct_total_without_components_allowed": false
+  },
+  "gcsp_contract": {
+    "formula": "GCS_total - pupil_reactivity_score",
+    "pupil_reactivity_score": {
+      "zero_unreactive": 0,
+      "one_unreactive": 1,
+      "two_unreactive": 2
+    },
+    "numeric_min": 1,
+    "numeric_max": 15,
+    "requires_numeric_gcs_total": true,
+    "unknown_pupil_state_numeric_result": false,
+    "prognostic_context": "Outcome interpretation from the original GCS-P work is traumatic-brain-injury specific unless separately qualified.",
+    "outcome_probability_tables_in_scope": false
+  },
+  "four_contract": {
+    "domains": {
+      "eye": {
+        "min": 0,
+        "max": 4
+      },
+      "motor": {
+        "min": 0,
+        "max": 4
+      },
+      "brainstem": {
+        "min": 0,
+        "max": 4
+      },
+      "respiration": {
+        "min": 0,
+        "max": 4
+      }
+    },
+    "numeric_total_min": 0,
+    "numeric_total_max": 16,
+    "total_rule": "sum the four domain scores",
+    "all_domains_required_for_numeric_total": true,
+    "derived_from_gcs": false,
+    "mortality_or_treatment_cutoff": null,
+    "pt_br_domain_names": {
+      "eye": "resposta ocular",
+      "motor": "resposta motora",
+      "brainstem": "reflexos do tronco encefálico",
+      "respiration": "padrão respiratório"
+    }
+  },
+  "safety_boundaries": {
+    "gcs_and_four_independent": true,
+    "gcsp_does_not_replace_gcs_components": true,
+    "pupil_findings_remain_visible": true,
+    "four_brainstem_findings_remain_visible": true,
+    "four_respiration_findings_remain_visible": true,
+    "synthetic_cross_instrument_score": false,
+    "invented_prognostic_threshold": false,
+    "pediatric_extension": "out_of_scope_pending_separate_qualification",
+    "sedation_paralysis_or_exam_interference": "Must be represented as examination context; do not silently convert an unobtainable finding to a numeric score."
+  },
+  "reference_vectors": {
+    "gcs": [
+      {
+        "id": "gcs_max",
+        "eye": 4,
+        "verbal": 5,
+        "motor": 6,
+        "expected_total": 15
+      },
+      {
+        "id": "gcs_min",
+        "eye": 1,
+        "verbal": 1,
+        "motor": 1,
+        "expected_total": 3
+      },
+      {
+        "id": "gcs_verbal_nt",
+        "eye": 4,
+        "verbal": "NT",
+        "motor": 6,
+        "expected_total": null
+      },
+      {
+        "id": "gcs_eye_nt",
+        "eye": "NT",
+        "verbal": 5,
+        "motor": 6,
+        "expected_total": null
+      },
+      {
+        "id": "gcs_motor_nt",
+        "eye": 4,
+        "verbal": 5,
+        "motor": "NT",
+        "expected_total": null
+      }
+    ],
+    "gcsp": [
+      {
+        "id": "gcsp_max",
+        "gcs_total": 15,
+        "prs": 0,
+        "expected": 15
+      },
+      {
+        "id": "gcsp_one_unreactive",
+        "gcs_total": 8,
+        "prs": 1,
+        "expected": 7
+      },
+      {
+        "id": "gcsp_both_unreactive",
+        "gcs_total": 15,
+        "prs": 2,
+        "expected": 13
+      },
+      {
+        "id": "gcsp_floor",
+        "gcs_total": 3,
+        "prs": 2,
+        "expected": 1
+      },
+      {
+        "id": "gcsp_gcs_nt",
+        "gcs_total": null,
+        "prs": 0,
+        "expected": null
+      },
+      {
+        "id": "gcsp_pupils_unknown",
+        "gcs_total": 15,
+        "prs": null,
+        "expected": null
+      }
+    ],
+    "four": [
+      {
+        "id": "four_max",
+        "eye": 4,
+        "motor": 4,
+        "brainstem": 4,
+        "respiration": 4,
+        "expected_total": 16
+      },
+      {
+        "id": "four_min",
+        "eye": 0,
+        "motor": 0,
+        "brainstem": 0,
+        "respiration": 0,
+        "expected_total": 0
+      },
+      {
+        "id": "four_ventilator_drive",
+        "eye": 4,
+        "motor": 4,
+        "brainstem": 4,
+        "respiration": 1,
+        "expected_total": 13
+      },
+      {
+        "id": "four_mixed",
+        "eye": 2,
+        "motor": 3,
+        "brainstem": 2,
+        "respiration": 2,
+        "expected_total": 9
+      },
+      {
+        "id": "four_incomplete",
+        "eye": 4,
+        "motor": 4,
+        "brainstem": null,
+        "respiration": 4,
+        "expected_total": null
+      }
+    ]
+  },
+  "implementation_boundaries": {
+    "authoritative_python_core_required": true,
+    "browser_only_authority_allowed": false,
+    "api_ui_pwa_this_tranche": false,
+    "clinical_core_this_tranche": false,
+    "legacy_browser_gcs_replacement_this_tranche": false,
+    "next_step": "implement canonical Python clinical core after provenance tranche is persisted"
+  }
+}
