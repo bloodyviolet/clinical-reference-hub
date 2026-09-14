@@ -7,8 +7,11 @@
   const RECENT_STORAGE_KEY =
     'clinical-reference-v2-pcdt-recent-v1';
 
+  const PAGE_SIZE = 50;
+
   const state = {
     query: '',
+    page: 1,
     selectedPcdtId: null,
     indexPayload: null,
     detailPayload: null,
@@ -145,6 +148,17 @@
       }
 
       if (
+        Number.isInteger(
+          payload.page
+        )
+        && payload.page >= 1
+      ) {
+        state.page =
+          payload.page;
+      }
+
+
+      if (
         typeof payload.selectedPcdtId
           === 'string'
         && /^[a-z0-9][a-z0-9-]{0,199}$/
@@ -167,6 +181,9 @@
         JSON.stringify({
           query:
             state.query,
+
+          page:
+            state.page,
 
           selectedPcdtId:
             state.selectedPcdtId,
@@ -502,12 +519,255 @@
       return;
     }
 
+    const total =
+      Number(
+        state.indexPayload.total
+        || 0
+      );
+
+    const first =
+      total > 0
+      ? (
+        (
+          state.page - 1
+        )
+        * PAGE_SIZE
+      ) + 1
+      : 0;
+
+    const last =
+      total > 0
+      ? Math.min(
+        first
+        + Number(
+          state.indexPayload.returned
+          || 0
+        )
+        - 1,
+        total
+      )
+      : 0;
+
     target.textContent =
       `${t(
         'pcdt.showing',
         'Exibindo',
         'Showing'
-      )} ${state.indexPayload.returned} / ${state.indexPayload.total}`;
+      )} ${first}–${last} ${t(
+        'pcdt.of',
+        'de',
+        'of'
+      )} ${total}`;
+  }
+
+
+  function renderPagination(
+    position
+  ) {
+    const data =
+      state.indexPayload;
+
+    if (!data) {
+      return '';
+    }
+
+    const total =
+      Number(
+        data.total
+        || 0
+      );
+
+    if (total <= 0) {
+      return '';
+    }
+
+    const totalPages =
+      Math.max(
+        1,
+        Math.ceil(
+          total
+          / PAGE_SIZE
+        )
+      );
+
+    const currentPage =
+      Math.min(
+        Math.max(
+          Number(
+            state.page
+            || 1
+          ),
+          1
+        ),
+        totalPages
+      );
+
+    const first =
+      (
+        (
+          currentPage - 1
+        )
+        * PAGE_SIZE
+      ) + 1;
+
+    const last =
+      Math.min(
+        first
+        + Number(
+          data.returned
+          || 0
+        )
+        - 1,
+        total
+      );
+
+    const pageButtons =
+      Array.from(
+        {
+          length:
+            totalPages,
+        },
+        (_, index) =>
+          index + 1
+      )
+      .map(
+        page => {
+          const current =
+            page
+            === currentPage;
+
+          return `
+            <button
+              type="button"
+              data-pcdt-page="${page}"
+              aria-label="${escapeHtml(
+                t(
+                  'pcdt.page',
+                  'Página',
+                  'Page'
+                )
+              )} ${page}"
+              ${current ? 'aria-current="page"' : ''}
+              class="min-w-9 h-9 px-3 rounded-lg border ${
+                current
+                ? 'border-teal-500 bg-teal-950/50 text-teal-200'
+                : 'border-slate-700 bg-slate-900 text-slate-300 hover:border-teal-700 hover:text-white'
+              } text-xs font-semibold transition"
+            >
+              ${page}
+            </button>
+          `;
+        }
+      )
+      .join('');
+
+    const previousDisabled =
+      currentPage <= 1;
+
+    const nextDisabled =
+      currentPage >= totalPages;
+
+    return `
+      <nav
+        data-pcdt-pagination="${escapeHtml(position)}"
+        aria-label="${escapeHtml(
+          t(
+            'pcdt.pagination',
+            'Paginação dos PCDTs',
+            'PCDT pagination'
+          )
+        )}"
+        class="bg-slate-950/60 border border-slate-800 rounded-xl p-3"
+      >
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <p class="text-xs text-slate-400">
+            ${escapeHtml(
+              t(
+                'pcdt.showing',
+                'Exibindo',
+                'Showing'
+              )
+            )}
+            ${first}–${last}
+            ${escapeHtml(
+              t(
+                'pcdt.of',
+                'de',
+                'of'
+              )
+            )}
+            ${total}
+            ·
+            ${escapeHtml(
+              t(
+                'pcdt.page',
+                'Página',
+                'Page'
+              )
+            )}
+            ${currentPage}
+            ${escapeHtml(
+              t(
+                'pcdt.of',
+                'de',
+                'of'
+              )
+            )}
+            ${totalPages}
+          </p>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              data-pcdt-page="${currentPage - 1}"
+              aria-label="${escapeHtml(
+                t(
+                  'pcdt.previous',
+                  'Página anterior',
+                  'Previous page'
+                )
+              )}"
+              ${previousDisabled ? 'disabled' : ''}
+              class="h-9 px-3 rounded-lg border border-slate-700 bg-slate-900 text-xs font-semibold text-slate-300 transition disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:border-teal-700 enabled:hover:text-white"
+            >
+              &lsaquo;
+              ${escapeHtml(
+                t(
+                  'pcdt.previousShort',
+                  'Anterior',
+                  'Previous'
+                )
+              )}
+            </button>
+
+            ${pageButtons}
+
+            <button
+              type="button"
+              data-pcdt-page="${currentPage + 1}"
+              aria-label="${escapeHtml(
+                t(
+                  'pcdt.next',
+                  'Próxima página',
+                  'Next page'
+                )
+              )}"
+              ${nextDisabled ? 'disabled' : ''}
+              class="h-9 px-3 rounded-lg border border-slate-700 bg-slate-900 text-xs font-semibold text-slate-300 transition disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:border-teal-700 enabled:hover:text-white"
+            >
+              ${escapeHtml(
+                t(
+                  'pcdt.nextShort',
+                  'Próxima',
+                  'Next'
+                )
+              )}
+              &rsaquo;
+            </button>
+          </div>
+        </div>
+      </nav>
+    `;
   }
 
 
@@ -554,7 +814,7 @@
       return;
     }
 
-    target.innerHTML =
+    const cards =
       data.items.map(
         item => {
           const selected =
@@ -678,7 +938,21 @@
           `;
         }
       ).join('');
+
+    target.innerHTML =
+      '<div class="mb-3">'
+      + renderPagination(
+        'top'
+      )
+      + '</div>'
+      + cards
+      + '<div class="mt-3">'
+      + renderPagination(
+        'bottom'
+      )
+      + '</div>';
   }
+
 
   function revisionText(
     event
@@ -1320,6 +1594,8 @@
     query = '',
     {
       preserveSelection = false,
+      page = 1,
+      scrollToTop = false,
     } = {}
   ) {
     const clean =
@@ -1327,11 +1603,21 @@
         query
         || ''
       )
-        .trim()
-        .slice(
-          0,
-          120
-        );
+      .trim()
+      .slice(
+        0,
+        120
+      );
+
+    const requestedPage =
+      (
+        Number.isInteger(
+          page
+        )
+        && page >= 1
+      )
+      ? page
+      : 1;
 
     state.searchEpoch += 1;
 
@@ -1347,15 +1633,25 @@
     state.query =
       clean;
 
+    state.page =
+      requestedPage;
+
     saveSession();
 
     const params =
       new URLSearchParams({
         limit:
-          '50',
+          String(
+            PAGE_SIZE
+          ),
 
         offset:
-          '0',
+          String(
+            (
+              requestedPage - 1
+            )
+            * PAGE_SIZE
+          ),
       });
 
     if (clean) {
@@ -1397,23 +1693,73 @@
         return;
       }
 
+      const total =
+        Number(
+          payload.total
+          || 0
+        );
+
+      const totalPages =
+        Math.max(
+          1,
+          Math.ceil(
+            total
+            / PAGE_SIZE
+          )
+        );
+
+      if (
+        total > 0
+        && requestedPage
+          > totalPages
+      ) {
+        await loadIndex(
+          clean,
+          {
+            preserveSelection,
+            page:
+              totalPages,
+            scrollToTop,
+          }
+        );
+
+        return;
+      }
+
       state.indexPayload =
         payload;
+
+      state.page =
+        requestedPage;
 
       if (
         preserveSelection
         && state.selectedPcdtId
         && !payload.items
-          .some(
+          ?.some(
             item =>
               item.pcdt_id
               === state.selectedPcdtId
           )
       ) {
-        clearExpandedState();
+        clearExpandedState({
+          persist: false,
+        });
       }
 
+      saveSession();
       renderIndex();
+
+      if (scrollToTop) {
+        document
+          .getElementById(
+            'pcdt-meta'
+          )
+          ?.scrollIntoView?.({
+            block:
+              'start',
+          });
+      }
 
     } catch (error) {
       if (
@@ -1428,6 +1774,7 @@
       );
     }
   }
+
 
   async function loadDetail(
     pcdtId,
@@ -1561,7 +1908,10 @@
             || '';
 
           void loadIndex(
-            value
+            value,
+            {
+              page: 1,
+            }
           );
         }
       );
@@ -1574,6 +1924,43 @@
       ?.addEventListener(
         'click',
         event => {
+          const pageTarget =
+            event.target
+              ?.closest?.(
+                '[data-pcdt-page]'
+              );
+
+          if (pageTarget) {
+            if (pageTarget.disabled) {
+              return;
+            }
+
+            const page =
+              Number.parseInt(
+                pageTarget.dataset
+                  .pcdtPage,
+                10
+              );
+
+            if (
+              !Number.isInteger(page)
+              || page < 1
+              || page === state.page
+            ) {
+              return;
+            }
+
+            void loadIndex(
+              state.query,
+              {
+                page,
+                scrollToTop: true,
+              }
+            );
+
+            return;
+          }
+
           const target =
             event.target
               ?.closest?.(
@@ -1655,7 +2042,10 @@
               }
 
               await loadIndex(
-                query
+                query,
+                {
+                  page: 1,
+                }
               );
 
               if (
@@ -1676,6 +2066,7 @@
         }
       );
   }
+
 
   async function initialise() {
     loadSession();
@@ -1702,6 +2093,8 @@
       state.query,
       {
         preserveSelection: true,
+        page:
+          state.page,
       }
     );
 
@@ -1735,13 +2128,17 @@
     });
 
     await loadIndex(
-      ''
+      '',
+      {
+        page: 1,
+      }
     );
 
     renderRecent();
 
     input?.focus?.();
   }
+
 
   document.addEventListener(
     'DOMContentLoaded',

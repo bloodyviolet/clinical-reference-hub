@@ -179,13 +179,13 @@ assert(
 
 assert(
   sw.includes(
-    'clinical-reference-v30-v2-pcdt-ux-bilingual'
+    'clinical-reference-v31-v2-pcdt-pagination'
   )
 );
 
 assert(
   html.includes(
-    '/manifest.json?v=30'
+    '/manifest.json?v=31'
   )
 );
 
@@ -375,5 +375,143 @@ assert(
 );
 
 console.log(
-  'V30_PCDT_UX_CONTRACT=PASS'
+  'V31_PCDT_UX_CONTRACT=PASS'
+);
+
+
+
+//
+// V31 PCDT pagination contract.
+//
+// The same renderer is used for both the unfiltered
+// repository home and filtered search results because
+// both are driven by state.indexPayload.total and the
+// same loadIndex(query, { page }) path.
+//
+
+assert(
+  ui.includes(
+    'const PAGE_SIZE = 50;'
+  )
+);
+
+assert(
+  ui.includes(
+    'payload.page'
+  )
+);
+
+assert(
+  ui.includes(
+    'page:\n            state.page'
+  )
+);
+
+assert(
+  ui.includes(
+    'data-pcdt-pagination='
+  )
+);
+
+assert(
+  ui.includes(
+    'data-pcdt-page='
+  )
+);
+
+assert(
+  ui.includes(
+    "renderPagination(\n        'top'"
+  )
+);
+
+assert(
+  ui.includes(
+    "renderPagination(\n        'bottom'"
+  )
+);
+
+assert(
+  ui.includes(
+    "'[data-pcdt-page]'"
+  )
+);
+
+assert(
+  ui.includes(
+    '* PAGE_SIZE'
+  )
+);
+
+assert(
+  ui.includes(
+    'scrollToTop: true'
+  )
+);
+
+assert(
+  ui.includes(
+    'aria-current="page"'
+  )
+);
+
+assert(
+  ui.includes(
+    "'pcdt.previous'"
+  )
+);
+
+assert(
+  ui.includes(
+    "'pcdt.next'"
+  )
+);
+
+assert(
+  ui.includes(
+    "value,\n            {\n              page: 1,"
+  )
+);
+
+assert(
+  ui.includes(
+    "'',\n      {\n        page: 1,"
+  )
+);
+
+assert(
+  ui.includes(
+    'requestEpoch'
+  )
+);
+
+assert(
+  ui.includes(
+    'state.searchEpoch'
+  )
+);
+
+assert(
+  ui.includes(
+    "'clinical-language-change'"
+  )
+);
+
+assert(
+  !ui.includes(
+    "offset:\n          '0'"
+  )
+);
+
+console.log(
+  'pcdt_repository_ui_qc: '
+  + 'V31 pagination above+below results, '
+  + 'home/search shared paging, page-1 reset, '
+  + 'session restore, stale-response guard, '
+  + 'keyboard semantics and language-state '
+  + 'stability assertions passed'
+);
+
+console.log(
+  'V31_PCDT_PAGINATION_CONTRACT=PASS'
 );

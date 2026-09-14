@@ -250,7 +250,7 @@ def test_persistent_ux_and_bloodviolet_static_contract():
     )
 
     assert (
-        "clinical-reference-v30-v2-pcdt-ux-bilingual"
+        "clinical-reference-v31-v2-pcdt-pagination"
         in sw
     )
 

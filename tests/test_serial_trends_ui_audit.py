@@ -76,7 +76,7 @@ EXPECTED_RUNTIME_SHA = (
 )
 
 CACHE_NAME = (
-    "clinical-reference-v30-v2-pcdt-ux-bilingual"
+    "clinical-reference-v31-v2-pcdt-pagination"
 )
 
 

@@ -339,7 +339,7 @@ for (
 
 assert(
   html.includes(
-    '/manifest.json?v=30'
+    '/manifest.json?v=31'
   )
 );
 
@@ -358,13 +358,13 @@ assert(
 
 assert(
   sw.includes(
-    'clinical-reference-v30-v2-pcdt-ux-bilingual'
+    'clinical-reference-v31-v2-pcdt-pagination'
   )
 );
 
 assert(
   sw.includes(
-    "'/manifest.json?v=30'"
+    "'/manifest.json?v=31'"
   )
 );
 
